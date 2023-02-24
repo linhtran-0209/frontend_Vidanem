@@ -38,8 +38,8 @@ import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 
 const TABLE_HEAD = [
   { id: 'email', label: 'Email', alignRight: false },
-  { id: 'ma_quan', label: 'Mã quận', alignRight: false },
-  { id: 'ma_phuong', label: 'Mã phường', alignRight: false },
+  { id: 'quan', label: 'Tỉnh/Thành phố', alignRight: false },
+  { id: 'phuong', label: 'Quận/Huyện', alignRight: false },
   { id: 'isVerified', label: 'Quyền', alignRight: false },
   { id: 'status', label: 'Action', alignRight: false },
   { id: '' },
@@ -201,11 +201,11 @@ const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), f
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { _id,email,  ma_quan, ma_phuong, quyen} = row;
+                    const { _id,email,  quan, phuong, quyen} = row;
                     const selectedUser = selected.indexOf(email) !== -1;
 
                     return (
-                      <TableRow hover key={_id} tabIndex={-1} ma_phuong="checkbox" selected={selectedUser}>
+                      <TableRow hover key={_id} tabIndex={-1} phuong="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, email)} />
                         </TableCell>
@@ -218,9 +218,9 @@ const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), f
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{ma_quan}</TableCell>
+                        <TableCell align="left">{quan}</TableCell>
 
-                        <TableCell align="left">{ma_phuong}</TableCell>
+                        <TableCell align="left">{phuong}</TableCell>
 
                         <TableCell align="left">{quyen}</TableCell>
 

@@ -35,7 +35,7 @@ function Login () {
                 <div className={styles.center}>
                 <h6 className={styles.from_heading}>Sử dụng email để đăng nhập vào hệ thống</h6>
                 <button type="button" className={styles.google_btn} onClick ={googleAuth}>
-                  <img src="../../public/assets/google.jpg" alt="google icon" />
+                  <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/768px-Google_%22G%22_Logo.svg.png' alt="google icon" />
 						<span>Đăng nhập với Google</span>
 
                 </button>
