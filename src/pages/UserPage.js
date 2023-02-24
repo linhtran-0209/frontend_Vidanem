@@ -1,14 +1,18 @@
+
+/* eslint-disable camelcase */
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+
 // @mui
 import {
   Card,
   Table,
   Stack,
   Paper,
-
+  Avatar,
   Button,
   Popover,
   Checkbox,
@@ -29,19 +33,20 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
-import USERLIST from '../_mock/user';
-
+// import USERLIST from '../_mock/us
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'email', label: 'Email', alignRight: false },
-  { id: 'tenphuong', label: 'Tên phường', alignRight: false },
-  { id: 'tenquan', label: 'Tên quận', alignRight: false },
-  { id: 'quyen', label: 'Quyền', alignRight: false },
+  { id: 'ma_quan', label: 'Mã quận', alignRight: false },
+  { id: 'ma_phuong', label: 'Mã phường', alignRight: false },
+  { id: 'isVerified', label: 'Quyền', alignRight: false },
+  { id: 'status', label: 'Action', alignRight: false },
   { id: '' },
 ];
 
 // ----------------------------------------------------------------------
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -72,7 +77,24 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+
 export default function UserPage() {
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    try {
+      const url = `http://localhost:5000/account/getAll`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+           setUSERLIST(data.data);
+
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -81,12 +103,13 @@ export default function UserPage() {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('email');
 
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [USERLIST, setUSERLIST] = useState([]);
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -103,18 +126,18 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = USERLIST.map((n) => n.email);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, email) => {
+    const selectedIndex = selected.indexOf(email);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, email);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -141,23 +164,23 @@ export default function UserPage() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> User</title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Tài khoản
+            Tất cả tài khoản
           </Typography>
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            Tạo tài khoản mới
+            Tài khoản mới
           </Button>
         </Stack>
 
@@ -178,34 +201,28 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, email, tenphuong, tenquan, quyen, status } = row;
+                    const { _id,email,  ma_quan, ma_phuong, quyen} = row;
                     const selectedUser = selected.indexOf(email) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={_id} tabIndex={-1} ma_phuong="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, email)} />
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            
                             <Typography variant="subtitle2" noWrap>
                               {email}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{tenphuong}</TableCell>
+                        <TableCell align="left">{ma_quan}</TableCell>
 
-                        <TableCell align="left">{tenquan}</TableCell>
+                        <TableCell align="left">{ma_phuong}</TableCell>
+
                         <TableCell align="left">{quyen}</TableCell>
-
-                        
-
-                        {/* <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell> */}
 
                         <TableCell align="right">
                           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
@@ -292,3 +309,4 @@ export default function UserPage() {
     </>
   );
 }
+

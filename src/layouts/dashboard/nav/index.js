@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
+import { userReducer} from '../../../reducer/useReducer';
 // mock
 import account from '../../../_mock/account';
 // hooks
@@ -14,6 +16,8 @@ import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
+
+
 
 // ----------------------------------------------------------------------
 
@@ -34,10 +38,30 @@ Nav.propTypes = {
   onCloseNav: PropTypes.func,
 };
 
+
 export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    
+
+    const getUser = async () => {
+        	try {
+        		const url = `http://localhost:5000/currentUser`;
+        		const { data } = await axios.get(url, { withCredentials: true });
+          const  parse=data.data.email;
+           		setUser(parse);
+                // console.log((JSON.parse(data)).data.email);      
+                console.log(data);
+// console.log("data empty");
+        	} catch (err) {
+        		console.log(err);
+        	}
+    }
+getUser();
+    }, []);
 
   useEffect(() => {
     if (openNav) {
@@ -62,9 +86,9 @@ export default function Nav({ openNav, onCloseNav }) {
           <StyledAccount>
             <Avatar src={account.photoURL} alt="photoURL" />
 
-            <Box sx={{ ml: 2 }}>
+            <Box sx={{ ml: 1 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {user}
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>

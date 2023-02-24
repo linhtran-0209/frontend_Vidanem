@@ -1,5 +1,7 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
+import { element } from 'prop-types';
+import { Children } from 'react';
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
 //
@@ -10,8 +12,8 @@ import Page404 from './pages/Page404';
 import SponserPage from './pages/SponserPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import ChildrenPage from './pages/ChildrenPage';
-// import { element } from 'prop-types';
-// import { Children } from 'react';
+import AccountPopover from './layouts/dashboard/header/AccountPopover';
+
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +30,10 @@ export default function Router() {
         { path: 'blog', element: <BlogPage /> },
         {path:"children", element:<ChildrenPage/>},
       ],
+    },
+    {
+      path:'/account',
+      element:<AccountPopover />,
     },
     {
       path: 'login',

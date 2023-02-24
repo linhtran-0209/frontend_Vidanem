@@ -1,8 +1,11 @@
+import axios from "axios";
+import { useState, useEffect} from "react";
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
+import { get } from "react-hook-form";
 // components
 import Iconify from '../components/iconify';
 // sections
@@ -14,11 +17,30 @@ import {
   AppWidgetSummary,
 } from '../sections/@dashboard/app';
 
+
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
   const theme = useTheme();
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    
 
+    const getUser = async () => {
+        	try {
+        		const url = `http://localhost:5000/currentUser`;
+        		const { data } = await axios.get(url, { withCredentials: true });
+          const  parse=data.data.email;
+           		setUser(parse);
+                // console.log((JSON.parse(data)).data.email);      
+                console.log(data);
+// console.log("data empty");
+        	} catch (err) {
+        		console.log(err);
+        	}
+    }
+getUser();
+    }, []);
   return (
     <>
       <Helmet>

@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import {useSelector, useDispatch} from "react-redux";
+
 // @mui
-import { alpha } from '@mui/material/styles';
+import { alpha, useTheme} from '@mui/material/styles';
+
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
 import account from '../../../_mock/account';
-
+import {login} from '../../../action/useraction';
 // ----------------------------------------------------------------------
+
 
 const MENU_OPTIONS = [
   {
@@ -25,6 +30,50 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+//   const dispatch = useDispatch ();
+//   const { error, user} = useSelector(
+//  (state) => state.user
+// );
+// // const theme = useTheme();
+//     // const [user, setUser] = useState(null);
+//     useEffect(() => {
+//       /*
+  
+//       const getUser = async () => {
+//             try {
+//               const url = `http://localhost:5000/currentUser`;
+//               const { data } = await axios.get(url, { withCredentials: true });
+//               setUser(data._json);
+//                   console.log((JSON.parse(data)).data.email);      
+//                   console.log("1234@asb.com");
+  
+//             } catch (err) {
+//               console.log(err);
+//            }
+//       } */
+//     dispatch(login());
+  
+//   }, [dispatch]);
+    const theme = useTheme();
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    
+
+    const getUser = async () => {
+        	try {
+        		const url = `http://localhost:5000/currentUser`;
+        		const { data } = await axios.get(url, { withCredentials: true });
+          const  parse=data.data.email;
+           		setUser(parse);
+                // console.log((JSON.parse(data)).data.email);      
+                console.log(data);
+// console.log("data empty");
+        	} catch (err) {
+        		console.log(err);
+        	}
+    }
+getUser();
+    }, []);
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -78,10 +127,11 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {/* {account.displayName} */}
+            {user}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {/* {account.email} */}
           </Typography>
         </Box>
 
