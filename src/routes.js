@@ -13,24 +13,37 @@ import SponserPage from './pages/SponserPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import ChildrenPage from './pages/ChildrenPage';
 import AccountPopover from './layouts/dashboard/header/AccountPopover';
-
+import Navbar from './components/nav-section/NavbarClient';
+// import AddingPageUser from './pages/admin/addingPage/AddingPageUser';
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   const routes = useRoutes([
     {
+      path:'/nav',
+      element:<Navbar/>,
+    },
+    {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
-        { path: 'user', element: <UserPage /> },
+        { path: 'users', element: <UserPage /> },
         { path: 'sponser', element: <SponserPage /> },
         { path: 'blog', element: <BlogPage /> },
         {path:"children", element:<ChildrenPage/>},
       ],
     },
+    // {
+    //   path :'/user',
+    //   element: <UserPage/>,
+    //   children: [
+    //     { element: <Navigate to="/user" />, index: true},
+    //     {path: 'add'}
+    //   ]
+    // },
     {
       path:'/account',
       element:<AccountPopover />,

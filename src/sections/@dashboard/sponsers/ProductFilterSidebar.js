@@ -82,7 +82,7 @@ export default function ShopFilterSidebar({ openFilter, onOpenFilter, onCloseFil
         <Divider />
 
         <Scrollbar>
-          <Stack spacing={3} sx={{ p: 3 }}>
+          <Stack spacing={3} sx={{ }}>
             <div>
               <Typography variant="subtitle1" gutterBottom>
                 Gender

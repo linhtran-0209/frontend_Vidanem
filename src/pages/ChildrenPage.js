@@ -1,51 +1,3 @@
-// import { Helmet } from 'react-helmet-async';
-// import { useState } from 'react';
-// // @mui
-// import { Container, Stack, Typography } from '@mui/material';
-// // components
-// import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../sections/@dashboard/products';
-// // mock
-// // import PRODUCTS from '../_mock/Sponser';
-// export default function ChildernPage() {
-//     const [openFilter, setOpenFilter] = useState(false);
-  
-//     const handleOpenFilter = () => {
-//       setOpenFilter(true);
-//     };
-  
-//     const handleCloseFilter = () => {
-//       setOpenFilter(false);
-//     };
-  
-//     return (
-//       <>
-//         <Helmet>
-//           <title> Trẻ em</title>
-//         </Helmet>
-  
-//         <Container>
-//           <Typography variant="h4" sx={{ mb: 5 }}>
-//             Trẻ em
-//           </Typography>
-  
-//           {/* <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}> */}
-//             {/* <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-//               <ProductFilterSidebar
-//                 openFilter={openFilter}
-//                 onOpenFilter={handleOpenFilter}
-//                 onCloseFilter={handleCloseFilter}
-//               />
-//               <ProductSort />
-//             </Stack> */}
-//           {/* </Stack> */}
-  
-//           {/* <ProductList products={PRODUCTS} /> */}
-//           {/* <ProductCartWidget /> */}
-//         </Container>
-//       </>
-//     );
-//   }
-  
 
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react';
@@ -53,7 +5,13 @@ import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 // @mui
 import {
   Card,
@@ -61,7 +19,6 @@ import {
   Stack,
   Paper,
   Avatar,
-  Button,
   Popover,
   Checkbox,
   TableRow,
@@ -87,15 +44,13 @@ import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 const TABLE_HEAD = [
   { id: 'name', label: 'Họ tên', alignRight: false },
   { id: 'date', label: 'Ngày sinh', alignRight: false },
-  { id: 'school', label:"Trường", alignRight: false },
+  { id: 'school', label: 'Trường', alignRight: false },
   { id: 'address', label: 'Địa chỉ', alignRight: false },
   { id: 'hoancanh', label: 'Hoàn cảnh', alignRight: false },
   { id: 'status', label: 'Action', alignRight: false },
-  
 ];
 
 // ----------------------------------------------------------------------
-
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -126,7 +81,6 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
 export default function UserPage() {
   useEffect(() => {
     getUser();
@@ -137,13 +91,11 @@ export default function UserPage() {
       const url = `http://localhost:5000/account/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
-           setUSERLIST(data.data);
-
-
+      setUSERLIST(data.data);
     } catch (err) {
       console.log(err);
     }
-  }
+  };
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -213,26 +165,90 @@ export default function UserPage() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
+  const [opendialog, setOpenDialog] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
 
   return (
     <>
       <Helmet>
         <title> Children</title>
       </Helmet>
-
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Tất cả trẻ em
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            Trẻ em
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}onClick={handleClickOpen}>
+            Thêm trẻ em
           </Button>
         </Stack>
-
+        <Dialog open={opendialog} onClose={handleClose}>
+          <DialogTitle>Thêm trẻ em mới</DialogTitle>
+          <DialogContent>
+            {/* <DialogContentText>
+              To subscribe to this website, please enter your email address here. We will send updates occasionally.
+            </DialogContentText> */}
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Họ và tên"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="date"
+              label="Ngày sinh"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="school"
+              label="Trường"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="address"
+              label="Địa chỉ"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="hoancanh"
+              label="Hoàn cảnh"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Hủy</Button>
+            <Button onClick={handleClose}>Thêm trẻ em</Button>
+          </DialogActions>
+        </Dialog>
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
@@ -250,7 +266,7 @@ const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), f
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { _id,email,  ma_quan, ma_phuong, quyen} = row;
+                    const { _id, email, ma_quan, ma_phuong, quyen } = row;
                     const selectedUser = selected.indexOf(email) !== -1;
 
                     return (
@@ -358,4 +374,3 @@ const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), f
     </>
   );
 }
-

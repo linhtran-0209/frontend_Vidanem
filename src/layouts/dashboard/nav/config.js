@@ -13,7 +13,7 @@ const navConfig = [
   },
   {
     title: 'Tài khoản',
-    path: '/dashboard/user',
+    path: '/dashboard/users',
     icon: icon('ic_user'),
   },
   {

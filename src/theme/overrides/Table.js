@@ -3,6 +3,7 @@
 export default function Table(theme) {
   return {
     MuiTableCell: {
+      height: 40,
       styleOverrides: {
         head: {
           color: theme.palette.text.secondary,

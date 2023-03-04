@@ -40,9 +40,9 @@ export default function UserListHead({
   };
 
   return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
+    <TableHead sx={{height: 20}}>
+      <TableRow sx={{height: 20}}>
+        <TableCell padding="checkbox" sx={{height: 20}}>
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -50,12 +50,12 @@ export default function UserListHead({
           />
         </TableCell>
         {headLabel.map((headCell) => (
-          <TableCell
+          <TableCell sx={{height: 20}}
             key={headCell.id}
             align={headCell.alignRight ? 'right' : 'left'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
-            <TableSortLabel
+            <TableSortLabel sx={{height: 20}}
               hideSortIcon
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
@@ -63,7 +63,7 @@ export default function UserListHead({
             >
               {headCell.label}
               {orderBy === headCell.id ? (
-                <Box sx={{ ...visuallyHidden }}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</Box>
+                <Box sx={{ ...visuallyHidden, height: 20 }}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</Box>
               ) : null}
             </TableSortLabel>
           </TableCell>

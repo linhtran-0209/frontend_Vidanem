@@ -1,62 +1,16 @@
-// import { Helmet } from 'react-helmet-async';
-// import { useState } from 'react';
 
-// // @mui
-// import { Container, Stack, Typography } from '@mui/material';
-// // components
-// import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../sections/@dashboard/products';
-// // mock
-// // import PRODUCTS from '../_mock/Sponser';
-
-// // ----------------------------------------------------------------------
-
-// export default function SponserPage() {
-//   const [openFilter, setOpenFilter] = useState(false);
-
-//   const handleOpenFilter = () => {
-//     setOpenFilter(true);
-//   };
-
-//   const handleCloseFilter = () => {
-//     setOpenFilter(false);
-//   };
-
-//   return (
-//     <>
-//       <Helmet>
-//         <title> Nhà tài trợ</title>
-//       </Helmet>
-
-//       <Container>
-//         <Typography variant="h4" sx={{ mb: 5 }}>
-//           Nhà tài trợ
-//         </Typography>
-
-//         {/* <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}> */}
-//           {/* <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-//             <ProductFilterSidebar
-//               openFilter={openFilter}
-//               onOpenFilter={handleOpenFilter}
-//               onCloseFilter={handleCloseFilter}
-//             />
-//             <ProductSort />
-//           </Stack> */}
-//         {/* </Stack> */}
-
-//         {/* <ProductList products={PRODUCTS} /> */}
-//         {/* <ProductCartWidget /> */}
-//       </Container>
-//     </>
-//   );
-// }
-
-
-/* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 // @mui
 import {
@@ -65,7 +19,6 @@ import {
   Stack,
   Paper,
   Avatar,
-  Button,
   Popover,
   Checkbox,
   TableRow,
@@ -83,7 +36,8 @@ import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { UserListHead } from '../sections/@dashboard/user';
+import SponserToolbar from '../sections/@dashboard/sponsers/SponserToolbar';
 // mock
 // import USERLIST from '../_mock/us
 // ----------------------------------------------------------------------
@@ -130,18 +84,17 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
-export default function UserPage() {
+export default function SponserPage() {
   useEffect(() => {
-    getUser();
+    getSponser();
   }, []);
 
-  const getUser = async () => {
+  const getSponser = async () => {
     try {
-      const url = `http://localhost:5000/account/getAll`;
+      const url = `http://localhost:5000/sponsor/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
-           setUSERLIST(data.data);
+           setSPONSERLIST(data.data);
 
 
     } catch (err) {
@@ -162,7 +115,7 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [USERLIST, setUSERLIST] = useState([]);
+  const [SPONSERLIST, setSPONSERLIST] = useState([]);
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -179,7 +132,7 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.email);
+      const newSelecteds = SPONSERLIST.map((n) => n.email);
       setSelected(newSelecteds);
       return;
     }
@@ -215,11 +168,21 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - SPONSERLIST.length) : 0;
 
-const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+const filteredSponsers = applySortFilter(SPONSERLIST, getComparator(order, orderBy), filterName);
 
-  const isNotFound = !filteredUsers.length && !!filterName;
+  const isNotFound = !filteredSponsers.length && !!filterName;
+  const [opendialog, setOpenDialog] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
+
 
   return (
     <>
@@ -232,13 +195,69 @@ const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), f
           <Typography variant="h4" gutterBottom>
             Tất cả đơn vị bảo trợ
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpen}>
             Đơn vị bảo trợ mới
           </Button>
         </Stack>
-
+        <Dialog open={opendialog} onClose={handleClose}>
+          <DialogTitle>Thêm nhà tài trợ mới</DialogTitle>
+          <DialogContent>
+            {/* <DialogContentText>
+              To subscribe to this website, please enter your email address here. We will send updates occasionally.
+            </DialogContentText> */}
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Họ và tên"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="phone"
+              label="Số điện thoại"
+              type="phone"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="tong_so_luong"
+              label="Tổng số lượng"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="tong_so_tien"
+              label="Tổng số tiên"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="mo_ta"
+              label="Mô tả"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Hủy</Button>
+            <Button onClick={handleClose}>Thêm nhà tài trợ</Button>
+          </DialogActions>
+        </Dialog>
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <SponserToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -247,41 +266,42 @@ const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), f
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={SPONSERLIST.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { _id,email,  ma_quan, ma_phuong, quyen} = row;
-                    const selectedUser = selected.indexOf(email) !== -1;
+                  {filteredSponsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    const { _id,tenDonVi, SDT,tongSoLuong, tongSoTien, moTa} = row;
+                    const selectedUser = selected.indexOf(tenDonVi) !== -1;
 
                     return (
                       <TableRow hover key={_id} tabIndex={-1} ma_phuong="checkbox" selected={selectedUser}>
-                        {/* <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, email)} />
-                        </TableCell> */}
+                        <TableCell padding="checkbox">
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, tenDonVi)} />
+                        </TableCell>
 
-                        {/* <TableCell component="th" scope="row" padding="none">
+                        <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Typography variant="subtitle2" noWrap>
-                              {email}
+                              {tenDonVi}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{ma_quan}</TableCell>
+                        <TableCell align="left">{SDT}</TableCell>
 
-                        <TableCell align="left">{ma_phuong}</TableCell>
+                        <TableCell align="left">{tongSoLuong}</TableCell>
 
-                        <TableCell align="left">{quyen}</TableCell>
+                        <TableCell align="left">{tongSoTien}</TableCell>
+                        <TableCell align="left">{moTa}</TableCell>
 
                         <TableCell align="right">
                           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
-                        </TableCell> */}
+                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -322,7 +342,7 @@ const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), f
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={SPONSERLIST.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

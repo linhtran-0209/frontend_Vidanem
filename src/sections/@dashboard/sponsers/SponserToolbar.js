@@ -32,13 +32,13 @@ const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-UserListToolbar.propTypes = {
+SponserToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
 };
 
-export default function UserListToolbar({ numSelected, filterName, onFilterName }) {
+export default function SponserToolbar({ numSelected, filterName, onFilterName }) {
   return (
     <StyledRoot
       sx={{
@@ -57,7 +57,7 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
         <StyledSearch sx={{height:40}}
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search user..."
+          placeholder="Search sponsor..."
           startAdornment={
             <InputAdornment position="start">
               <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
@@ -82,3 +82,4 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
     </StyledRoot>
   );
 }
+
