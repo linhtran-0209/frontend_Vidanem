@@ -1,8 +1,7 @@
 import {Link} from "react-router-dom";
-
-
+import React, {useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import axios from "axios";
-import { useState, } from "react";
 
 import styles from "../layouts/simple/styles.module.css";
 
@@ -29,6 +28,11 @@ function Login () {
     
 
     return (
+        <>
+        <Helmet>
+            <title>Đăng nhập</title>
+        </Helmet>
+            
         <div className={styles.container}>
             <h1 className={styles.heading}>Đăng nhập</h1>
             <div className={styles.form_container}>
@@ -45,6 +49,7 @@ function Login () {
                 </div>
             </div>
         </div>
+    </>
     );
 }
 export default Login;

@@ -12,23 +12,31 @@ import Page404 from './pages/Page404';
 import SponserPage from './pages/SponserPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import ChildrenPage from './pages/ChildrenPage';
-import AccountPopover from './layouts/dashboard/header/AccountPopover';
-import Navbar from './components/nav-section/NavbarClient';
-// import AddingPageUser from './pages/admin/addingPage/AddingPageUser';
+// import AccountPopover from './layouts/dashboard/header/AccountPopover';
+
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   const routes = useRoutes([
     {
-      path:'/nav',
-      element:<Navbar/>,
-    },
+      
+      element:<LoginPage />,
+      children: [
+        { element: <Navigate to="/login" />, index:true},
+        {path:'/login',element:<LoginPage />},
+      ],
+      
+},
+// {
+//   path:'/account',
+//   element:<AccountPopover />,
+// },
     {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
+        { element: <Navigate to="/dashboard/app" />},
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'users', element: <UserPage /> },
         { path: 'sponser', element: <SponserPage /> },
@@ -44,14 +52,6 @@ export default function Router() {
     //     {path: 'add'}
     //   ]
     // },
-    {
-      path:'/account',
-      element:<AccountPopover />,
-    },
-    {
-      path: 'login',
-      element: <LoginPage />,
-    },
     {
       element: <SimpleLayout />,
       children: [

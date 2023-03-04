@@ -32,7 +32,7 @@ const navConfig = [
     icon: icon('ic_blog'),
   },
   {
-    title: 'Đăng nhập',
+    title: 'Đăng xuất',
     path: '/login',
     icon: icon('ic_lock'),
   },

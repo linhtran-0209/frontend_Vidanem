@@ -200,7 +200,7 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> User</title>
+        <title> Tài khoản</title>
       </Helmet>
 
       <Container>

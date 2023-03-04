@@ -187,7 +187,7 @@ const filteredSponsers = applySortFilter(SPONSERLIST, getComparator(order, order
   return (
     <>
       <Helmet>
-        <title> Sponser</title>
+        <title> Nhà tài trợ</title>
       </Helmet>
 
       <Container>
