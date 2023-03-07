@@ -31,7 +31,8 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 import { UserModal } from './admin/components/user/UserModal';
 import { InsertModal } from './admin/components/user/InsertModal';
-// import { CleaningServices } from '@mui/icons-material';
+import { DeleteModal } from './admin/components/user/DeleteModal';
+
 // mock
 // import USERLIST from '../_mock/us
 // ----------------------------------------------------------------------
@@ -135,17 +136,16 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const[currentRole, setCurrentRole] = useState('');
-  const[currentEmail, setCurrentEmail] = useState('');
+  const [currentRole, setCurrentRole] = useState('');
+  const [currentEmail, setCurrentEmail] = useState('');
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
 
-    setCurrentRole(event.currentTarget.role)
-    setCurrentEmail(event.currentTarget.value)
-    console.log(event.currentTarget.value)
-    console.log(event.currentTarget.role)
-    
+    setCurrentRole(event.currentTarget.role);
+    setCurrentEmail(event.currentTarget.value);
+    console.log(event.currentTarget.value);
+    console.log(event.currentTarget.role);
   };
 
   const handleCloseMenu = () => {
@@ -204,17 +204,20 @@ export default function UserPage() {
   const isNotFound = !filteredUsers.length && !!filterName;
   const [openDialogCreate, setOpenDialogCreate] = React.useState(false);
   const [openDialogInsert, setOpenDialogInsert] = React.useState(false);
-  const handleClickOpenInsert = (e) => {
-    console.log(e.target.value)
-    // setCurrentRole(quyen)
-    setOpenDialogInsert(true);
-    // console.log(row);
-    
-  };
+  const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
+
   const handleClickOpenCreate = () => {
     setOpenDialogCreate(true);
   };
-
+  const handleClickOpenInsert = (e) => {
+    console.log(e.target.value);
+    // setCurrentRole(quyen)
+    setOpenDialogInsert(true);
+    // console.log(row);
+  };
+  const handleClickOpenDelete = () => {
+    setOpenDialogDelete(true);
+  };
   const handleCloseCreate = () => {
     setOpenDialogCreate(false);
   };
@@ -222,6 +225,9 @@ export default function UserPage() {
   console.log(openDialogInsert);
 
   const handleCloseInsert = () => {
+    setOpenDialogInsert(false);
+  };
+  const handleCloseDelete = () => {
     setOpenDialogInsert(false);
   };
   // const [quyen, setQuyen] = React.useState('');
@@ -303,57 +309,62 @@ export default function UserPage() {
                     const { _id, email, quan, phuong, quyen } = row;
                     const selectedUser = selected.indexOf(email) !== -1;
 
-                    const info = {quyen, email}
-                   
+                    const info = { quyen, email };
+
                     console.log(info);
                     return (
-                      
-                        <TableRow
-                          style={{ height: 40 }}
-                          hover
-                          key={_id}
-                          tabIndex={-1}
-                          phuong="checkbox"
-                          selected={selectedUser}
-                        >
-                          <TableCell style={{ height: 0, padding: 5 }}>
-                            <Checkbox
-                              style={{ height: 10 }}
-                              checked={selectedUser}
-                              onChange={(event) => handleClick(event, email)}
-                            />
-                          </TableCell>
+                      <TableRow
+                        style={{ height: 40 }}
+                        hover
+                        key={_id}
+                        tabIndex={-1}
+                        phuong="checkbox"
+                        selected={selectedUser}
+                      >
+                        <TableCell style={{ height: 0, padding: 5 }}>
+                          <Checkbox
+                            style={{ height: 10 }}
+                            checked={selectedUser}
+                            onChange={(event) => handleClick(event, email)}
+                          />
+                        </TableCell>
 
-                          <TableCell style={{ height: 40, padding: 5 }}>
-                            <Stack style={{ height: 20 }} direction="row" alignItems="center" spacing={2}>
-                              <Typography sx={{ height: 18 }} variant="subtitle2" noWrap>
-                                {email}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
+                        <TableCell style={{ height: 40, padding: 5 }}>
+                          <Stack style={{ height: 20 }} direction="row" alignItems="center" spacing={2}>
+                            <Typography sx={{ height: 18 }} variant="subtitle2" noWrap>
+                              {email}
+                            </Typography>
+                          </Stack>
+                        </TableCell>
 
-                          <TableCell style={{ height: 40 }} align="left">
-                            {quan}
-                          </TableCell>
+                        <TableCell style={{ height: 40 }} align="left">
+                          {quan}
+                        </TableCell>
 
-                          <TableCell style={{ height: 40 }} align="left">
-                            {phuong}
-                          </TableCell>
+                        <TableCell style={{ height: 40 }} align="left">
+                          {phuong}
+                        </TableCell>
 
-                          <TableCell style={{ padding: 30 }} align="left">
-                            {quyen}
-                          </TableCell>
+                        <TableCell style={{ padding: 30 }} align="left">
+                          {quyen}
+                        </TableCell>
 
-                          <TableCell style={{ height: 40 }} align="left">
-                            <IconButton style={{ height: 40 }} size="large" color="inherit" value={[[info.email]]} role={info.quyen} onClick={handleOpenMenu}>
-                              <Iconify style={{ height: 40 }} icon={'eva:more-vertical-fill'} />
-                            </IconButton>
-                          </TableCell>
-                          <Popover 
+                        <TableCell style={{ height: 40 }} align="left">
+                          <IconButton
+                            style={{ height: 40 }}
+                            size="large"
+                            color="inherit"
+                            value={[[info.email]]}
+                            role={info.quyen}
+                            onClick={handleOpenMenu}
+                          >
+                            <Iconify style={{ height: 40 }} icon={'eva:more-vertical-fill'} />
+                          </IconButton>
+                        </TableCell>
+                        <Popover
                           open={Boolean(open)}
                           anchorEl={open}
                           onClose={handleCloseMenu}
-
                           anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
                           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                           PaperProps={{
@@ -378,14 +389,18 @@ export default function UserPage() {
                             quyen={currentRole}
                           />
 
-                          <MenuItem sx={{ color: 'error.main' }}>
+                          <MenuItem sx={{ color: 'error.main' }} onClick={handleClickOpenDelete}>
                             <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2, border: 1 }} />
                             Delete
                           </MenuItem>
+                          <DeleteModal 
+                            openDialogDelete={openDialogDelete}
+                            handleClose={handleCloseDelete}
+                            email={currentEmail}
+                            quyen={currentRole}
+                          />
                         </Popover>
-                        </TableRow>
-                        
-                      
+                      </TableRow>
                     );
                   })}
                   {emptyRows > 0 && (
@@ -415,7 +430,6 @@ export default function UserPage() {
                           </Typography>
                         </Paper>
                       </TableCell>
-                      
                     </TableRow>
                   </TableBody>
                 )}

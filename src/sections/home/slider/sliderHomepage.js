@@ -14,7 +14,7 @@ export default function sliderHomepage() {
             component="img"
             alt="green iguana"
             height="140"
-            image="/static/images/cards/contemplative-reptile.jpg"
+            image="/src/assets/images/home/Slider1.png"
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
