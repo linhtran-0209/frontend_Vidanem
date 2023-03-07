@@ -36,7 +36,7 @@ export default function Homepage() {
     <StyledRoot>
       <StyledToolbar>
         <Navbar />
-        <Slider />
+         {/* <Slider /> */}
       </StyledToolbar>
     </StyledRoot>
   );
