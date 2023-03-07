@@ -228,7 +228,7 @@ export default function UserPage() {
     setOpenDialogInsert(false);
   };
   const handleCloseDelete = () => {
-    setOpenDialogInsert(false);
+    setOpenDialogDelete(false);
   };
   // const [quyen, setQuyen] = React.useState('');
   // const [quan, setQuan] = React.useState('');

@@ -6,12 +6,12 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
+import{ useEffect, useState } from 'react';
 
 
 
 export function DeleteModal(props) {
-  const element = document.querySelector('#delete-request-set-headers .status');
+ 
   const handleSubmit = async () => {
     console.log(props.email);
     console.log(props.quyen);
@@ -37,6 +37,7 @@ export function DeleteModal(props) {
     }
   };
   return (
+    <>
       <Dialog
         open={props.openDialogDelete}
         onClose={props.handleClose}
@@ -51,10 +52,11 @@ export function DeleteModal(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={props.handleClose}>Hủy</Button>
-          <Button onClick={handleSubmit} autoFocus>
+          <Button onClick={handleSubmit}>
             Đồng ý
           </Button>
         </DialogActions>
       </Dialog>
+      </>
   );
 }
