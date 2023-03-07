@@ -1,21 +1,11 @@
 /* eslint-disable camelcase */
-import { Link } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
-import { filter, set } from 'lodash';
-import { sentenceCase } from 'change-case';
+import { filter } from 'lodash';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select'
+import { SelectChangeEvent } from '@mui/material/Select';
 
 // @mui
 import {
@@ -23,9 +13,6 @@ import {
   Table,
   Stack,
   Paper,
-  Avatar,
-  Modal,
-  Box,
   Popover,
   Checkbox,
   TableRow,
@@ -38,12 +25,13 @@ import {
   TablePagination,
 } from '@mui/material';
 // components
-import create from './admin/addingPage/AddingPageUser';
-import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { UserModal } from './admin/components/user/UserModal';
+import { InsertModal } from './admin/components/user/InsertModal';
+// import { CleaningServices } from '@mui/icons-material';
 // mock
 // import USERLIST from '../_mock/us
 // ----------------------------------------------------------------------
@@ -97,6 +85,27 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
+  // let USERLISTS = [];
+  // async function getUser () {
+  //   try {
+  //     const url = `http://localhost:5000/account/getAll`;
+  //     const { data } = await axios.get(url, { withCredentials: true });
+  //     // const  parse=data.data.email;
+
+  //     console.log(data.data);
+  //     USERLISTS=(data.data);
+  //     console.log(USERLISTS);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+
+  // };
+
+  // useEffect(() => {
+  //   getUser();
+
+  // }, []);
+  const [USERLIST, setUSERLIST] = useState([]);
   useEffect(() => {
     getUser();
   }, []);
@@ -106,11 +115,13 @@ export default function UserPage() {
       const url = `http://localhost:5000/account/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
+
       setUSERLIST(data.data);
     } catch (err) {
       console.log(err);
     }
   };
+
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -124,10 +135,17 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const[currentRole, setCurrentRole] = useState('');
+  const[currentEmail, setCurrentEmail] = useState('');
 
-  const [USERLIST, setUSERLIST] = useState([]);
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
+
+    setCurrentRole(event.currentTarget.role)
+    setCurrentEmail(event.currentTarget.value)
+    console.log(event.currentTarget.value)
+    console.log(event.currentTarget.role)
+    
   };
 
   const handleCloseMenu = () => {
@@ -143,6 +161,7 @@ export default function UserPage() {
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = USERLIST.map((n) => n.email);
+      console.log(USERLIST);
       setSelected(newSelecteds);
       return;
     }
@@ -183,20 +202,59 @@ export default function UserPage() {
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
-  const [opendialog, setOpenDialog] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpenDialog(true);
+  const [openDialogCreate, setOpenDialogCreate] = React.useState(false);
+  const [openDialogInsert, setOpenDialogInsert] = React.useState(false);
+  const handleClickOpenInsert = (e) => {
+    console.log(e.target.value)
+    // setCurrentRole(quyen)
+    setOpenDialogInsert(true);
+    // console.log(row);
+    
+  };
+  const handleClickOpenCreate = () => {
+    setOpenDialogCreate(true);
   };
 
-  const handleClose = () => {
-    setOpenDialog(false);
+  const handleCloseCreate = () => {
+    setOpenDialogCreate(false);
   };
-  const [quyen, setQuyen] = React.useState('');
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setQuyen(event.target.value);
+  console.log(openDialogInsert);
+
+  const handleCloseInsert = () => {
+    setOpenDialogInsert(false);
   };
+  // const [quyen, setQuyen] = React.useState('');
+  // const [quan, setQuan] = React.useState('');
+  // const [phuong, setPhuong]=useState([]);
+  // const [openWards, setOpenWards] = useState([]);
+
+  // const handleChangeQuyen = (event) => {
+  //   console.log(event.target.value);
+  //   setQuyen(event.target.value);
+  // };
+
+  // const handleChangeQuan = async (event) => {
+
+  //   try {
+  //     setQuan(event.target.value)
+  //     const url = `https://provinces.open-api.vn/api/d/${event.target.value}?depth=2`;
+  //     const { data } = await axios.get(url);
+  //     // const  parse=data.data.email;
+  //     console.log(data);
+  //     // setUSERLIST(data.data);
+  //     setOpenWards(data.wards)
+
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  // const handleChangePhuong = (event) => {
+
+  //   setPhuong(event.target.value)
+  //   console.log(event.target.value)
+  // };
+
   return (
     <>
       <Helmet>
@@ -209,97 +267,21 @@ export default function UserPage() {
             Tất cả tài khoản
           </Typography>
 
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpen}>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpenCreate}>
             Tài khoản mới
           </Button>
         </Stack>
-        <Dialog open={opendialog} onClose={handleClose}>
-          <DialogTitle>Thêm tài khoản mới</DialogTitle>
-          <DialogContent>
-            {/* <DialogContentText>
-              To subscribe to this website, please enter your email address here. We will send updates occasionally.
-            </DialogContentText> */}
-            <TextField
-              autoFocus
-              margin="dense"
-              id="email"
-              label="Địa chỉ Email"
-              type="email"
-              fullWidth
-              variant="standard"
-            />
-            {/* <TextField
-              autoFocus
-              margin="dense"
-              id="isVerified"
-              label="Quyền"
-              type="text"
-              fullWidth
-              variant="standard"
-            /> */}
-            <FormControl variant="standard" sx={{ m: 0, minWidth: 550 }}>
-              <InputLabel id="demo-simple-select-standard-label">Quyền</InputLabel>
-              <Select
-                autoFocus
-                labelId="quyen"
-                id="quyen"
-                value={quyen}
-                onChange={handleChange}
-                label="Quyền"
-                fullWidth
-                margin="dense"
-              >
-                <MenuItem value={1}>Quyền 1</MenuItem>
-                <MenuItem value={2}>Quyền 2</MenuItem>
-                <MenuItem value={3}>Quyền 3</MenuItem>
-              </Select>
-            </FormControl>
-            
-            <FormControl variant="standard" sx={{ m: 0, minWidth: 550 }}>
-              <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
-              <Select
-                autoFocus
-                labelId="quan"
-                id="quan"
-                value={quyen}
-                onChange={handleChange}
-                label="Quận"
-                fullWidth
-                margin="dense"
-              >
-                <MenuItem value={769}>Thành phố Thủ Đức</MenuItem>
-                <MenuItem value={760}>Quận 1</MenuItem>
-                <MenuItem value={770}>Quận 3</MenuItem>
-                <MenuItem value={773}>Quận 4</MenuItem>
-                <MenuItem value={774}>Quận 5</MenuItem>
-                <MenuItem value={775}>Quận 6</MenuItem>
-                <MenuItem value={778}>Quận 7</MenuItem>
-                <MenuItem value={776}>Quận 8</MenuItem>
-                <MenuItem value={771}>Quận 10</MenuItem>
-                <MenuItem value={772}>Quận 11</MenuItem>
-                <MenuItem value={761}>Quận 12</MenuItem>
-                <MenuItem value={764}>Quận Gò Vấp</MenuItem>
-                <MenuItem value={765}>Quận Bình Thạnh</MenuItem>
-                <MenuItem value={766}>Quận Tân Bình</MenuItem>
-                <MenuItem value={767}>Quận Tân Phú</MenuItem>
-                <MenuItem value={768}>Quận Phú Nhuận</MenuItem>
-                <MenuItem value={777}>Quận Bình Tân</MenuItem>
-                <MenuItem value={783}>Huyện Củ Chi</MenuItem>
-                <MenuItem value={784}>Huyện Hóc Môn</MenuItem>
-                <MenuItem value={785}>Huyện Bình Chánh</MenuItem>
-                <MenuItem value={786}>Huyện Nhà Bè</MenuItem>
-                <MenuItem value={787}>Huyện Cần Giờ</MenuItem>
-                <MenuItem value={784}>Huyện Hóc Môn</MenuItem>
-                <MenuItem value={785}>Huyện Bình Chánh</MenuItem>
-              </Select>
-            </FormControl>
-            <TextField autoFocus margin="dense" id="phuong" label="Phường" type="text" fullWidth variant="standard" />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Hủy</Button>
-            <Button onClick={handleClose}>Thêm tài khoản</Button>
-          </DialogActions>
-        </Dialog>
+        <UserModal
+          opendialogcreate={openDialogCreate}
+          handleClose={handleCloseCreate}
+          // quyen={quyen}
+          // quan={quan}
+          // phuong={phuong}
+          // openWards={openWards}
+          // handleChangeQuyen={handleChangeQuyen}
+          // handleChangeQuan={handleChangeQuan}
+          // handleChangePhuong={handleChangePhuong}
+        />
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
@@ -315,54 +297,95 @@ export default function UserPage() {
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
+
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                     const { _id, email, quan, phuong, quyen } = row;
                     const selectedUser = selected.indexOf(email) !== -1;
 
+                    const info = {quyen, email}
+                   
+                    console.log(info);
                     return (
-                      <TableRow
-                        style={{ height: 40 }}
-                        hover
-                        key={_id}
-                        tabIndex={-1}
-                        phuong="checkbox"
-                        selected={selectedUser}
-                      >
-                        <TableCell style={{ height: 0, padding: 5 }}>
-                          <Checkbox
-                            style={{ height: 10 }}
-                            checked={selectedUser}
-                            onChange={(event) => handleClick(event, email)}
+                      
+                        <TableRow
+                          style={{ height: 40 }}
+                          hover
+                          key={_id}
+                          tabIndex={-1}
+                          phuong="checkbox"
+                          selected={selectedUser}
+                        >
+                          <TableCell style={{ height: 0, padding: 5 }}>
+                            <Checkbox
+                              style={{ height: 10 }}
+                              checked={selectedUser}
+                              onChange={(event) => handleClick(event, email)}
+                            />
+                          </TableCell>
+
+                          <TableCell style={{ height: 40, padding: 5 }}>
+                            <Stack style={{ height: 20 }} direction="row" alignItems="center" spacing={2}>
+                              <Typography sx={{ height: 18 }} variant="subtitle2" noWrap>
+                                {email}
+                              </Typography>
+                            </Stack>
+                          </TableCell>
+
+                          <TableCell style={{ height: 40 }} align="left">
+                            {quan}
+                          </TableCell>
+
+                          <TableCell style={{ height: 40 }} align="left">
+                            {phuong}
+                          </TableCell>
+
+                          <TableCell style={{ padding: 30 }} align="left">
+                            {quyen}
+                          </TableCell>
+
+                          <TableCell style={{ height: 40 }} align="left">
+                            <IconButton style={{ height: 40 }} size="large" color="inherit" value={[[info.email]]} role={info.quyen} onClick={handleOpenMenu}>
+                              <Iconify style={{ height: 40 }} icon={'eva:more-vertical-fill'} />
+                            </IconButton>
+                          </TableCell>
+                          <Popover 
+                          open={Boolean(open)}
+                          anchorEl={open}
+                          onClose={handleCloseMenu}
+
+                          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                          PaperProps={{
+                            sx: {
+                              width: 140,
+                              '& .MuiMenuItem-root': {
+                                px: 1,
+                                typography: 'body2',
+                                borderRadius: 0.75,
+                              },
+                            },
+                          }}
+                        >
+                          <MenuItem onClick={handleClickOpenInsert}>
+                            <Iconify icon={'eva:edit-fill'} sx={{ mr: 2, border: 1 }} />
+                            Edit
+                          </MenuItem>
+                          <InsertModal
+                            opendialogtt={openDialogInsert}
+                            handleClose={handleCloseInsert}
+                            email={currentEmail}
+                            quyen={currentRole}
                           />
-                        </TableCell>
 
-                        <TableCell style={{ height: 40, padding: 5 }}>
-                          <Stack style={{ height: 20 }} direction="row" alignItems="center" spacing={2}>
-                            <Typography sx={{ height: 18 }} variant="subtitle2" noWrap>
-                              {email}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-
-                        <TableCell style={{ height: 40 }} align="left">
-                          {quan}
-                        </TableCell>
-
-                        <TableCell style={{ height: 40 }} align="left">
-                          {phuong}
-                        </TableCell>
-
-                        <TableCell style={{ padding: 30 }} align="left">
-                          {quyen}
-                        </TableCell>
-
-                        <TableCell style={{ height: 40 }} align="left">
-                          <IconButton style={{ height: 40 }} size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify style={{ height: 40 }} icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
+                          <MenuItem sx={{ color: 'error.main' }}>
+                            <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2, border: 1 }} />
+                            Delete
+                          </MenuItem>
+                        </Popover>
+                        </TableRow>
+                        
+                      
                     );
                   })}
                   {emptyRows > 0 && (
@@ -392,6 +415,7 @@ export default function UserPage() {
                           </Typography>
                         </Paper>
                       </TableCell>
+                      
                     </TableRow>
                   </TableBody>
                 )}
@@ -410,34 +434,6 @@ export default function UserPage() {
           />
         </Card>
       </Container>
-
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2, border: 1 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2, border: 1 }} />
-          Delete
-        </MenuItem>
-      </Popover>
     </>
   );
 }

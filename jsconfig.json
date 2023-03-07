@@ -6,7 +6,7 @@
   },
   "include": [
     "src/**/*"
-  ],
+, "src/sections/home/.js"  ],
   "exclude": [
     "node_modules"
   ]

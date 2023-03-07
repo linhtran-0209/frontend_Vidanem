@@ -4,6 +4,7 @@ import { element } from 'prop-types';
 import { Children } from 'react';
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
+import Hompage from './pages/client/HomePage';
 //
 import BlogPage from './pages/BlogPage';
 import UserPage from './pages/UserPage';
@@ -19,6 +20,15 @@ import ChildrenPage from './pages/ChildrenPage';
 
 export default function Router() {
   const routes = useRoutes([
+    {
+      
+      element:<Hompage />,
+      children: [
+        { element: <Navigate to="/homepage" />, index:true},
+        {path:'/homepage',element:<LoginPage />},
+      ],
+      
+},
     {
       
       element:<LoginPage />,
