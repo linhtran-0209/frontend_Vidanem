@@ -183,8 +183,8 @@ export default function UserPage() {
       <Helmet>
         <title> Children</title>
       </Helmet>
-      <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+      <Container style={{marginTop: -10}}>
+        <Stack style={{marginBottom: 16}} direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Tất cả trẻ em
           </Typography>

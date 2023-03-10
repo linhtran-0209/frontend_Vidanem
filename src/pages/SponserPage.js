@@ -37,6 +37,7 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead } from '../sections/@dashboard/user';
+import {CreateModal} from './admin/components/sponsor/CreateModal';
 import SponserToolbar from '../sections/@dashboard/sponsers/SponserToolbar';
 // mock
 // import USERLIST from '../_mock/us
@@ -95,12 +96,11 @@ export default function SponserPage() {
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
            setSPONSERLIST(data.data);
-
-
     } catch (err) {
       console.log(err);
     }
   }
+  
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -116,6 +116,7 @@ export default function SponserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [SPONSERLIST, setSPONSERLIST] = useState([]);
+
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -123,7 +124,13 @@ export default function SponserPage() {
   const handleCloseMenu = () => {
     setOpen(null);
   };
-
+  const [openSponsorCreate, setOpenSponsorCreate] = React.useState(false);
+  const handleClickOpenCreate = () => {
+    setOpenSponsorCreate(true);
+  };
+  const handleCloseCreate = () => {
+    setOpenSponsorCreate(false);
+  };
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -190,72 +197,19 @@ const filteredSponsers = applySortFilter(SPONSERLIST, getComparator(order, order
         <title> Nhà tài trợ</title>
       </Helmet>
 
-      <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+      <Container style={{marginTop: -10}}>
+        <Stack style={{marginBottom: 16}}direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Tất cả đơn vị bảo trợ
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpen}>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpenCreate}>
             Đơn vị bảo trợ mới
           </Button>
         </Stack>
-        <Dialog open={opendialog} onClose={handleClose}>
-          <DialogTitle>Thêm nhà tài trợ mới</DialogTitle>
-          <DialogContent>
-            {/* <DialogContentText>
-              To subscribe to this website, please enter your email address here. We will send updates occasionally.
-            </DialogContentText> */}
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Họ và tên"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="phone"
-              label="Số điện thoại"
-              type="phone"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="tong_so_luong"
-              label="Tổng số lượng"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="tong_so_tien"
-              label="Tổng số tiên"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="mo_ta"
-              label="Mô tả"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Hủy</Button>
-            <Button onClick={handleClose}>Thêm nhà tài trợ</Button>
-          </DialogActions>
-        </Dialog>
+        <CreateModal
+          openDialogCreate ={openSponsorCreate}
+          handleClose={handleCloseCreate}
+        />
         <Card>
           <SponserToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 

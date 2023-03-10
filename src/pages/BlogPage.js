@@ -41,8 +41,8 @@ export default function BlogPage() {
         <title> Tin bài </title>
       </Helmet>
 
-      <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+      <Container style={{marginTop: -10}}>
+        <Stack style={{marginTop: 16}} direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Tin bài
           </Typography>

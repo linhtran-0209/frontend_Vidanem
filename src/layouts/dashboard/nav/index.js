@@ -83,7 +83,7 @@ getUser();
         <Logo />
       </Box>
 
-      <Box sx={{ mb: 5, mx: 2.5 }}>
+      {/* <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
             <Avatar src={account.photoURL} alt="photoURL" />
@@ -99,9 +99,9 @@ getUser();
             </Box>
           </StyledAccount>
         </Link>
-      </Box>
+      </Box> */}
 
-      <NavSection data={navConfig} />
+      <NavSection sx={{ m: 1.7 }} data={navConfig} />
 
       <Box sx={{ flexGrow: 1 }} />
 

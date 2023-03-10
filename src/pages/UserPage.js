@@ -50,8 +50,8 @@ const style = {
 
 const TABLE_HEAD = [
   { id: 'email', label: 'Email', alignRight: false },
-  { id: 'quan', label: 'Tỉnh/Thành phố', alignRight: false },
-  { id: 'phuong', label: 'Quận/Huyện', alignRight: false },
+  { id: 'quan', label: 'Quận/Huyện', alignRight: false },
+  { id: 'phuong', label: 'Phưòng/Xã', alignRight: false },
   { id: 'isVerified', label: 'Quyền', alignRight: false },
   { id: 'status', label: 'Hành động', alignRight: false },
 ];
@@ -267,13 +267,13 @@ export default function UserPage() {
         <title> Tài khoản</title>
       </Helmet>
 
-      <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+      <Container style={{marginTop: -10}}>
+        <Stack style={{marginBottom: 16}}direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Tất cả tài khoản
           </Typography>
 
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpenCreate}>
+          <Button  variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpenCreate}>
             Tài khoản mới
           </Button>
         </Stack>

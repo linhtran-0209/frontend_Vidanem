@@ -46,13 +46,13 @@ export function InsertModal(props) {
   };
   // console.log(props.quyen)
   return (
-    <Dialog open={props.opendialogtt} onClose={props.handleClose}>
+    <Dialog style= {{backgroundColor: 'whitesmoke'}} open={props.opendialogtt} onClose={props.handleClose}>
       <DialogTitle>Cập nhật quyền người dùng</DialogTitle>
       <DialogContent>
         {/* <DialogContentText>
              To subscribe to this website, please enter your email address here. We will send updates occasionally.
             </DialogContentText> */}
-        <FormControl
+        <FormControl style= {{backgroundColor: 'whitesmoke'}}
           variant="standard"
           sx={{
             m: 0,

@@ -16,7 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Stack from '@mui/material/Stack';
 import { bgBlur } from '../../../utils/cssStyles';
-import Login from 'src/pages/LoginPage';
+// import Login from 'src/pages/LoginPage';
 
 const pages = ['Home', 'Giới thiệu', 'Vì Đàn Em', 'Cộng đồng', 'Bản đồ'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
