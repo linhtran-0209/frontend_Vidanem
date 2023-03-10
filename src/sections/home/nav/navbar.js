@@ -16,12 +16,14 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Stack from '@mui/material/Stack';
 import { bgBlur } from '../../../utils/cssStyles';
+import * as logo from '../../../assets/images/home/header_logo_lg.png';
 // import Login from 'src/pages/LoginPage';
 
 const pages = ['Home', 'Giới thiệu', 'Vì Đàn Em', 'Cộng đồng', 'Bản đồ'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
+  const img = logo.default;
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -44,25 +46,11 @@ function ResponsiveAppBar() {
     <AppBar style={{ background: '#F9FAFB' }} position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon style={{ background: '#103996' }} sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            style={{ background: '#103996' }}
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 60,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
+          
+            <div style={{marginRight: 250}}>
+              <img style={{width: 200}} src={img} alt="ima" href="/"/>
+            </div>
+          
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton

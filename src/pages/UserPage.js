@@ -33,6 +33,7 @@ import { UserModal } from './admin/components/user/UserModal';
 import { InsertModal } from './admin/components/user/InsertModal';
 import { DeleteModal } from './admin/components/user/DeleteModal';
 
+
 // mock
 // import USERLIST from '../_mock/us
 // ----------------------------------------------------------------------
@@ -272,7 +273,9 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             Tất cả tài khoản
           </Typography>
-
+          <Button style={{marginRight: -650}} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpenCreate}>
+            Danh sách
+          </Button>
           <Button  variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpenCreate}>
             Tài khoản mới
           </Button>

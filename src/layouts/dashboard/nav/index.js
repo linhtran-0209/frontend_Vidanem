@@ -5,7 +5,8 @@ import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
-import { userReducer} from '../../../reducer/useReducer';
+import { Image } from 'mui-image';
+import { userReducer } from '../../../reducer/useReducer';
 // mock
 import account from '../../../_mock/account';
 // hooks
@@ -16,15 +17,15 @@ import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
-
-
+// import logo from '../../../assets/images/home/header_logo_lg.png';
+import * as logo from '../../../assets/images/home/header_logo_lg.png';
 
 // ----------------------------------------------------------------------
 
 const NAV_WIDTH = 280;
 
 const StyledAccount = styled('div')(({ theme }) => ({
-  width: 280, 
+  width: 280,
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(2, 2.5),
@@ -39,31 +40,30 @@ Nav.propTypes = {
   onCloseNav: PropTypes.func,
 };
 
-
 export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
   const [user, setUser] = useState(null);
-  useEffect(() => {
-    
+  const img = logo.default;
 
+  useEffect(() => {
     const getUser = async () => {
-        	try {
-        		const url = `http://localhost:5000/currentUser`;
-        		const { data } = await axios.get(url, { withCredentials: true });
-          // const  parse=data.data.email;
-          const parse = data.hoTen;
-           		setUser(parse);
-                // console.log((JSON.parse(data)).data.email);      
-                console.log(data);
-// console.log("data empty");
-        	} catch (err) {
-        		console.log(err);
-        	}
-    }
-getUser();
-    }, []);
+      try {
+        const url = `http://localhost:5000/currentUser`;
+        const { data } = await axios.get(url, { withCredentials: true });
+        // const  parse=data.data.email;
+        const parse = data.hoTen;
+        setUser(parse);
+        // console.log((JSON.parse(data)).data.email);
+        console.log(data);
+        // console.log("data empty");
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getUser();
+  }, []);
 
   useEffect(() => {
     if (openNav) {
@@ -79,10 +79,13 @@ getUser();
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
       }}
     >
-      <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
-        <Logo />
-      </Box>
-
+       
+       
+      <div style={{margin: 10}}>
+        <img src={img} alt="ima"/>
+      </div>
+        
+      
       {/* <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
@@ -100,11 +103,8 @@ getUser();
           </StyledAccount>
         </Link>
       </Box> */}
-
-      <NavSection sx={{ m: 1.7 }} data={navConfig} />
-
+      <NavSection sx={{ m: 1.8 }} data={navConfig} />
       <Box sx={{ flexGrow: 1 }} />
-
       {/* <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
         <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
           <Box

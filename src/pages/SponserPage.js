@@ -324,12 +324,12 @@ const filteredSponsers = applySortFilter(SPONSERLIST, getComparator(order, order
         }}
       >
         <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2, border: 1 }} />
           Edit
         </MenuItem>
 
         <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2, border: 1 }}/>
           Delete
         </MenuItem>
       </Popover>
