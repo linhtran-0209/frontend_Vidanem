@@ -6,7 +6,9 @@ import axios from "axios";
 import styles from "../layouts/simple/styles.module.css";
 
 function Login () {
+    console.log(process.env.REACT_APP_API_URL);
     const googleAuth = () =>{
+        
         window.open(
             `${process.env.REACT_APP_API_URL}/auth/google`,
             "_self"

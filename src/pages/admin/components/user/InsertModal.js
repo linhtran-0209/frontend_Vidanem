@@ -46,7 +46,7 @@ export function InsertModal(props) {
   };
   // console.log(props.quyen)
   return (
-    <Dialog style= {{backgroundColor: 'whitesmoke'}} open={props.opendialogtt} onClose={props.handleClose}>
+    <Dialog  open={props.opendialogtt} onClose={props.handleClose}>
       <DialogTitle>Cập nhật quyền người dùng</DialogTitle>
       <DialogContent>
         {/* <DialogContentText>

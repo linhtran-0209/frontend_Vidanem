@@ -12,6 +12,7 @@ import { StyledChart } from './components/chart';
 
 
 export default function App() {
+	console.log (process.env.REACT_APP_API_URL);
   // const [user, setUser] = useState(null);
   //   const getUser = async () => {
 	// 	try {

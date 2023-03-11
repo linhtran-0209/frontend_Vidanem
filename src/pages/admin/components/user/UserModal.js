@@ -59,10 +59,10 @@ export function UserModal({ opendialogcreate, handleClose }) {
     console.log(event.target.value);
     setOpenPhuong(event.target.value);
   };
+  console.log(openEmail);
+  console.log(openQuan);
+  console.log(openPhuong);
   const handleSubmit = async () => {
-    console.log(openEmail);
-    console.log(openQuan);
-    console.log(openPhuong);
     try {
       const url = `http://localhost:5000/account/insert`;
       axios.post(
