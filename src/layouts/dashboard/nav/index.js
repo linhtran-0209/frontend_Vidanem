@@ -50,7 +50,7 @@ export default function Nav({ openNav, onCloseNav }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const url = `http://localhost:5000/currentUser`;
+        const url = `http://localhost:5000/api/v1/currentUser`;
         const { data } = await axios.get(url, { withCredentials: true });
         // const  parse=data.data.email;
         const parse = data.hoTen;

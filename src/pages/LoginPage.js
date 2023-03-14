@@ -17,7 +17,7 @@ function Login () {
     const [user, setUser] = useState(null);
     const getUser = async () => {
         	try {
-        		const url = `http://localhost:5000/currentUser`;
+        		const url = `http://localhost:5000/api/v1/currentUser`;
         		const { data } = await axios.get(url, { withCredentials: true });
         		setUser(data.user._json);
                 console.log((JSON.parse(data)).data.email);

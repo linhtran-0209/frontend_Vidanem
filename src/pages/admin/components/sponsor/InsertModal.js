@@ -44,7 +44,7 @@ export function InsertModal(props) {
   const handleSubmit = async () => {
     console.log(props.id);
     try {
-      const url = `http://localhost:5000/sponsor/update`;
+      const url = `http://localhost:5000/api/v1/sponsor/update`;
 
       axios.put(
         url,

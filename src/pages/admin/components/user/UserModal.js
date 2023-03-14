@@ -65,7 +65,7 @@ export function UserModal({ opendialogcreate, handleClose }) {
 
   const handleSubmit = async () => {
     try {
-      const url = `http://localhost:5000/account/insert`;
+      const url = `http://localhost:5000/api/v1/account/insert`;
       await axios
         .post(
           url,

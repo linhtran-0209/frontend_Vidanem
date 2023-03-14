@@ -17,7 +17,7 @@ export function DeleteModal(props) {
     console.log(props.email);
     console.log(props.quyen);
     try {
-      const url = `http://localhost:5000/account/delete`;
+      const url = `http://localhost:5000/api/v1/account/delete`;
 
       axios
         .put(

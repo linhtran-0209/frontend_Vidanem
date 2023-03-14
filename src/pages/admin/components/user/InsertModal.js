@@ -27,7 +27,7 @@ export function InsertModal(props) {
     console.log(openQuyen);
     console.log(props.email);
     try {
-      const url = `http://localhost:5000/account/updateRole`;
+      const url = `http://localhost:5000/api/v1/account/updateRole`;
 
       axios
         .put(

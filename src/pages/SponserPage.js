@@ -92,7 +92,7 @@ export default function SponserPage() {
 
   const getSponser = async () => {
     try {
-      const url = `http://localhost:5000/sponsor/getAll`;
+      const url = `http://localhost:5000/api/v1/sponsor/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setSPONSERLIST(data.data);

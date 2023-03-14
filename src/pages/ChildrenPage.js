@@ -88,7 +88,7 @@ export default function UserPage() {
 
   const getUser = async () => {
     try {
-      const url = `http://localhost:5000/account/getAll`;
+      const url = `http://localhost:5000/api/v1/account/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setUSERLIST(data.data);
