@@ -211,7 +211,7 @@ export default function UserPage() {
     setOpenDialogCreate(true);
   };
   const handleClickOpenInsert = (e) => {
-    console.log(e.target.value);
+    console.log(e);
     // setCurrentRole(quyen)
     setOpenDialogInsert(true);
     // console.log(row);
@@ -385,23 +385,13 @@ export default function UserPage() {
                             <Iconify icon={'eva:edit-fill'} sx={{ mr: 2, border: 1 }} />
                             Edit
                           </MenuItem>
-                          <InsertModal
-                            opendialogtt={openDialogInsert}
-                            handleClose={handleCloseInsert}
-                            email={currentEmail}
-                            quyen={currentRole}
-                          />
+
 
                           <MenuItem sx={{ color: 'error.main' }} onClick={handleClickOpenDelete}>
                             <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2, border: 1 }} />
                             Delete
                           </MenuItem>
-                          <DeleteModal 
-                            openDialogDelete={openDialogDelete}
-                            handleClose={handleCloseDelete}
-                            email={currentEmail}
-                            quyen={currentRole}
-                          />
+                          
                         </Popover>
                       </TableRow>
                     );
@@ -412,7 +402,19 @@ export default function UserPage() {
                     </TableRow>
                   )}
                 </TableBody>
-
+                <InsertModal
+                            
+                            opendialogtt={openDialogInsert}
+                            handleClose={handleCloseInsert}
+                            email={currentEmail}
+                            quyen={currentRole}
+                          />
+                <DeleteModal 
+                            openDialogDelete={openDialogDelete}
+                            handleClose={handleCloseDelete}
+                            email={currentEmail}
+                            quyen={currentRole}
+                          />
                 {isNotFound && (
                   <TableBody>
                     <TableRow>

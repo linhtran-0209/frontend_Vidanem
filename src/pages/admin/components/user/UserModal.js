@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -12,18 +13,20 @@ import {
   TextField,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Email } from '@mui/icons-material';
 
 export function UserModal({ opendialogcreate, handleClose }) {
   useEffect(() => {
     getDistricts();
   }, []);
+
   const [openEmail, setOpenEmail] = useState('');
   const [openQuyen, setOpenQuyen] = useState('');
   const [openDistricts, setOpenDistricts] = useState([]);
   const [openQuan, setOpenQuan] = useState('');
   const [openWards, setOpenWards] = useState([]);
   const [openPhuong, setOpenPhuong] = useState('');
+  const [openSuccessMessage, setOpenSuccessMessage] = useState('');
+  const [openErrMessage, setOpenErrMessage] = useState('');
 
   const handleChangeEmail = (event) => {
     setOpenEmail(event.target.value);
@@ -54,120 +57,125 @@ export function UserModal({ opendialogcreate, handleClose }) {
       console.log(err);
     }
   };
-  
+
   const handleChangePhuong = async (event) => {
     console.log(event.target.value);
     setOpenPhuong(event.target.value);
   };
-  console.log(openEmail);
-  console.log(openQuan);
-  console.log(openPhuong);
+
   const handleSubmit = async () => {
     try {
       const url = `http://localhost:5000/account/insert`;
-      axios.post(
-        url,
-        {
-          email: openEmail,
-          ma_quan: openQuan,
-          ma_phuong: openPhuong,
-        },
-        { withCredentials: true }
-        // {
-        //   headers: {
-        //     Set-Cookie: acessToken = 63ef355c2a154459f53df7ea%20eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZWYzNTVjMmExNTQ0NTlmNTNkZjdlYSIsImVtYWlsIjoidHJhbnRoaWtoYW5obGluaDAyMDkyMDAxQGdtYWlsLmNvbSIsInF1eWVuIjoxLCJpYXQiOjE2NzgwMTg5NzIsImV4cCI6MTY3ODAxOTU3Mn0.9BNFN0oj92RfhRcaIPxuuM2amBXw-QctoAT12FHX6D8
-
-        //   }
-        // }
-      );
+      await axios
+        .post(
+          url,
+          {
+            email: openEmail,
+            ma_quan: openQuan,
+            ma_phuong: openPhuong,
+          },
+          { withCredentials: true }
+        )
+        .then((data) => {
+          console.log(data.data.message);
+          setOpenSuccessMessage(data.data.message);
+        });
     } catch (err) {
       console.log(err);
+      setOpenErrMessage(err.response.data.message);
     }
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setOpenSuccessMessage('');
+      setOpenErrMessage('');
+    }, 3000);
+  }, [openErrMessage, openSuccessMessage]);
+
   return (
-    <Dialog open={opendialogcreate} onClose={handleClose}>
-      <DialogTitle>Thêm tài khoản mới</DialogTitle>
-      <DialogContent>
-        {/* <DialogContentText>
-         To subscribe to this website, please enter your email address here. We will send updates occasionally.
-        </DialogContentText> */}
-        <TextField
-          autoFocus
-          margin="dense"
-          id="email"
-          label="Địa chỉ Email"
-          onChange={handleChangeEmail}
-          type="email"
-          fullWidth
-          variant="standard"
-        />
-        {/* <TextField
-         autoFocus
-         margin="dense"
-         id="isVerified"
-         label="Quyền"
-         type="text"
-         fullWidth
-         variant="standard"
-        /> */}
-
-        <FormControl
-          variant="standard"
-          sx={{
-            m: 0,
-            minWidth: 550,
-          }}
-        >
-          <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
-          <Select
+    <>
+      {openSuccessMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
+          {openSuccessMessage}
+        </Alert>
+      )}
+      {openErrMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
+          {openErrMessage}
+        </Alert>
+      )}
+      <Dialog  open={opendialogcreate} onClose={handleClose}>
+        <DialogTitle>Thêm tài khoản mới</DialogTitle>
+        <DialogContent>
+          <TextField
             autoFocus
-            labelId="quan"
-            id="quan"
-            // value={}
-            onChange={handleChangeQuan}
-            label="Quận"
-            fullWidth
             margin="dense"
-          >
-            {openDistricts.map((item) => (
-              <MenuItem key={item.code} value={item.code}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+            id="email"
+            label="Địa chỉ Email"
+            onChange={handleChangeEmail}
+            type="email"
+            fullWidth
+            variant="standard"
+          />
 
-        <FormControl
-          variant="standard"
-          sx={{
-            m: 0,
-            minWidth: 550,
-          }}
-        >
-          <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
-          <Select
-            autoFocus
-            labelId="phuong"
-            id="phuong"
-            // value={phuong}
-            onChange={handleChangePhuong}
-            label="Phường"
-            fullWidth
-            margin="dense"
+          <FormControl
+            variant="standard"
+            sx={{
+              m: 0,
+              minWidth: 550,
+            }}
           >
-            {openWards.map((item) => (
-              <MenuItem key={item.code} value={item.code}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Hủy</Button>
-        <Button onClick={handleSubmit}>Thêm tài khoản</Button>
-      </DialogActions>
-    </Dialog>
+            <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
+            <Select
+              autoFocus
+              labelId="quan"
+              id="quan"
+              // value={}
+              onChange={handleChangeQuan}
+              label="Quận"
+              fullWidth
+              margin="dense"
+            >
+              {openDistricts.map((item) => (
+                <MenuItem key={item.code} value={item.code}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl
+            variant="standard"
+            sx={{
+              m: 0,
+              minWidth: 550,
+            }}
+          >
+            <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
+            <Select
+              autoFocus
+              labelId="phuong"
+              id="phuong"
+              // value={phuong}
+              onChange={handleChangePhuong}
+              label="Phường"
+              fullWidth
+              margin="dense"
+            >
+              {openWards.map((item) => (
+                <MenuItem key={item.code} value={item.code}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Hủy</Button>
+          <Button onClick={handleSubmit}>Thêm tài khoản</Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }

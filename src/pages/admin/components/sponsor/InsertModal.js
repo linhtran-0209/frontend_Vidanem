@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {
-  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -15,11 +14,11 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Email } from '@mui/icons-material';
 
-export function CreateModal(props) {
-    const [openMaDonVi, setOpenMaDonVi] = useState();
-    const handleChangeMaDonVi = (event) => {
-      setOpenMaDonVi(event.target.value);
-    };
+export function InsertModal(props) {
+  const [openMaDonVi, setOpenMaDonVi] = useState();
+  const handleChangeMaDonVi = (event) => {
+    setOpenMaDonVi(event.target.value);
+  };
   const [openName, setOpenName] = useState('');
   const handleChangeName = (event) => {
     setOpenName(event.target.value);
@@ -39,33 +38,29 @@ export function CreateModal(props) {
   const [openMoTa, setOpenMoTa] = useState('');
   const handleChangeMoTa = (event) => {
     setOpenMoTa(event.target.value);
+    
   };
-  const [openSuccessMessage, setOpenSuccessMessage] = useState('');
-  const [openErrMessage, setOpenErrMessage] = useState('');
-  
-  const handleSubmit = async () => {
-    try {
-      const url = `http://localhost:5000/sponsor/insert`;
 
-      axios.post(
+  const handleSubmit = async () => {
+    console.log(props.id);
+    try {
+      const url = `http://localhost:5000/sponsor/update`;
+
+      axios.put(
         url,
         {
-            maDonVi:openMaDonVi,
-            tenDonVi:openName,
-            SDT:openPhone,
-            tongSoLuong:openTongSoLuong,
-            tongSoTien:openTongSoTien,
-            moTa:openMoTa
+          id: props.id,
+          maDonVi: openMaDonVi,
+          tenDonVi: openName,
+          SDT: openPhone,
+          tongSoLuong: openTongSoLuong,
+          tongSoTien: openTongSoTien,
+          moTa: openMoTa,
         },
         { withCredentials: true }
-      )
-      .then((data) => {
-        console.log(data.data.message);
-        setOpenSuccessMessage(data.data.message);
-      });
+      );
     } catch (err) {
       console.log(err);
-      setOpenErrMessage(err.response.data.message);
     }
   };
   console.log(openMaDonVi);
@@ -74,50 +69,35 @@ export function CreateModal(props) {
   console.log(openTongSoLuong);
   console.log(openTongSoTien);
   console.log(openMoTa);
-  useEffect(() => {
-    setTimeout(() => {
-      setOpenSuccessMessage('');
-      setOpenErrMessage('');
-    }, 3000);
-  }, [openErrMessage, openSuccessMessage]);
+
   return (
-    <>
-    {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
-          {openSuccessMessage}
-        </Alert>
-      )}
-      {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
-          {openErrMessage}
-        </Alert>
-      )}
-    <Dialog open={props.openDialogCreate} onClose={props.handleClose}>
-      <DialogTitle>Thêm nhà tài trợ mới</DialogTitle>
+    <Dialog open={props.openDialogInsert} onClose={props.handleClose}>
+      <DialogTitle>Cập nhật nhà tài trợ</DialogTitle>
       <DialogContent>
         {/* <DialogContentText>
               To subscribe to this website, please enter your email address here. We will send updates occasionally.
             </DialogContentText> */}
-        <TextField 
-        autoFocus 
-        margin="dense" 
-        id="code" 
-        label="Mã đơn vị" 
-        onChange={handleChangeMaDonVi}
-        type="text" 
-        fullWidth 
-        variant="standard" 
+        <TextField
+          autoFocus
+          margin="dense"
+          id="code"
+          label="Mã đơn vị"
+          onChange={handleChangeMaDonVi}
+          value={openMaDonVi}
+          type="text"
+          fullWidth
+          variant="standard"
         />
-        <TextField 
-        autoFocus 
-        margin="dense" 
-        id="name" 
-        label="Họ và tên" 
-        onChange={handleChangeName}
-        type="text" 
-        fullWidth 
-        variant="standard" 
-
+        <TextField
+          autoFocus
+          margin="dense"
+          id="name"
+          label="Họ và tên"
+          onChange={handleChangeName}
+          value={openName}
+          type="text"
+          fullWidth
+          variant="standard"
         />
         <TextField
           autoFocus
@@ -125,6 +105,7 @@ export function CreateModal(props) {
           id="phone"
           label="Số điện thoại"
           onChange={handleChangePhone}
+          value={openPhone}
           type="phone"
           fullWidth
           variant="standard"
@@ -135,6 +116,7 @@ export function CreateModal(props) {
           id="tong_so_luong"
           label="Tổng số lượng"
           onChange={handleChangeTongSoLuong}
+          value={openTongSoLuong}
           type="text"
           fullWidth
           variant="standard"
@@ -145,26 +127,27 @@ export function CreateModal(props) {
           id="tong_so_tien"
           label="Tổng số tiền"
           onChange={handleChangeTongSoTien}
+          value={openTongSoTien}
           type="text"
           fullWidth
           variant="standard"
         />
-        <TextField 
-            autoFocus 
-            margin="dense" 
-            id="mo_ta" 
-            label="Mô tả" 
-            onChange={handleChangeMoTa}
-            type="text" 
-            fullWidth 
-            variant="standard" />
+        <TextField
+          autoFocus
+          margin="dense"
+          id="mo_ta"
+          label="Mô tả"
+          onChange={handleChangeMoTa}
+          value={openMoTa}
+          type="text"
+          fullWidth
+          variant="standard"
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleClose}>Hủy</Button>
-        <Button onClick={handleSubmit}>Thêm nhà tài trợ</Button>
+        <Button onClick={handleSubmit}>Cập nhật nhà tài trợ</Button>
       </DialogActions>
     </Dialog>
-    </>
   );
-  
 }

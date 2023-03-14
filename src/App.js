@@ -6,6 +6,7 @@ import ThemeProvider from './theme';
 
 import ScrollToTop from './components/scroll-to-top';
 import { StyledChart } from './components/chart';
+import {Global} from './utils/global.css';
 // import axios from 'axios';
 // import { useEffect, useState } from "react";
 
