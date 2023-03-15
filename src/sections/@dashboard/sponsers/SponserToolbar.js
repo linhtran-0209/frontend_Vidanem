@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
-import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from '@mui/material';
+import { Toolbar, Tooltip, Button, Typography, OutlinedInput, InputAdornment } from '@mui/material';
 // component
 import Iconify from '../../../components/iconify';
 
@@ -10,8 +10,8 @@ import Iconify from '../../../components/iconify';
 const StyledRoot = styled(Toolbar)(({ theme }) => ({
   height: 96,
   display: 'flex',
-  justifyContent: 'space-between',
-  padding: theme.spacing(0, 1, 0, 3),
+  // justifyContent: 'space-between',
+  padding: theme.spacing(0, 1, 0, 5),
 }));
 
 const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
@@ -38,47 +38,31 @@ SponserToolbar.propTypes = {
   onFilterName: PropTypes.func,
 };
 
-export default function SponserToolbar({ numSelected, filterName, onFilterName }) {
+export default function SponserToolbar({ filterName, onFilterName, onClickSearch }) {
   return (
     <StyledRoot
       sx={{
         height:50,
-        ...(numSelected > 0 && {
-          color: 'primary.main',
-          bgcolor: 'primary.lighter',
-        }),
       }}
     >
-      {numSelected > 0 ? (
-        <Typography component="div" variant="subtitle1">
-          {numSelected} selected
-        </Typography>
-      ) : (
+
         <StyledSearch sx={{height:40}}
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search sponsor..."
+          placeholder="Tên đơn vị tài trợ..."
           startAdornment={
             <InputAdornment position="start">
               <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
             </InputAdornment>
           }
         />
-      )}
 
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <Iconify icon="eva:trash-2-fill" />
-          </IconButton>
+        <Tooltip title="Tìm kiếm" sx={{marginLeft: 2}}>
+        <Button variant="contained" onClick={onClickSearch}>
+            Tìm kiếm
+        </Button>
         </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <Iconify icon="ic:round-filter-list" />
-          </IconButton>
-        </Tooltip>
-      )}
+
     </StyledRoot>
   );
 }
