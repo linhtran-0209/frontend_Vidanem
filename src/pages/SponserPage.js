@@ -5,6 +5,7 @@ import { filter } from 'lodash';
 // import { sentenceCase } from 'change-case';
 import Button from '@mui/material/Button';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditIcon from '@mui/icons-material/Edit';
 
 // import TextField from '@mui/material/TextField';
 // import Dialog from '@mui/material/Dialog';
@@ -19,26 +20,19 @@ import {
   Table,
   Stack,
   Paper,
-  Avatar,
-  Popover,
-  Checkbox,
   TableRow,
-  MenuItem,
   TableBody,
   TableCell,
   Container,
   Typography,
-  IconButton,
   TableContainer,
-  TablePagination,
   Box,
-  Pagination
+  Pagination,Dialog,DialogTitle,DialogContent,DialogActions 
 } from '@mui/material';
 // components
-import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-import { InsertModal } from './admin/components/sponsor/InsertModal';
+import { EditModal } from './admin/components/sponsor/EditModal';
 // sections
 import { UserListHead } from '../sections/@dashboard/user';
 import { CreateModal } from './admin/components/sponsor/CreateModal';
@@ -59,6 +53,16 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 export default function SponserPage() {
+  
+  const [page, setPage] = useState(0);
+  const [filterName, setFilterName] = useState('');
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [total, setTotal] = useState(0);
+  const [SPONSERLIST, setSPONSERLIST] = useState([]);
+  const [selectedRow, setSelectedRow] = useState({_id:'',tenDonVi:''});
+  const [openSponsorCreate, setOpenSponsorCreate] = React.useState(false);
+  const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
+
   useEffect(() => {
     getSponser();
   }, []);
@@ -69,32 +73,11 @@ export default function SponserPage() {
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setSPONSERLIST(data.data);
-      setTotal(data.total)
+      setTotal(data.total);
     } catch (err) {
       console.log(err);
     }
   };
-
-  const [open, setOpen] = useState(null);
-
-  const [page, setPage] = useState(0);
-
-  // const [order, setOrder] = useState('asc');
-
-  const [selected, setSelected] = useState([]);
-
-  // const [orderBy, setOrderBy] = useState('email');
-
-  const [filterName, setFilterName] = useState('');
-
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [total, setTotal] = useState(0);
-
-  const [SPONSERLIST, setSPONSERLIST] = useState([]);
-  const [selectedRow, setSelectedRow] = useState(null);
-  const [openSponsorCreate, setOpenSponsorCreate] = React.useState(false);
-  const [openDialogInsert, setOpenDialogInsert] = React.useState(false);
-  const [currentId, setCurrentId] = useState('');
 
   const handleSearch = async () => {
     try {
@@ -102,7 +85,7 @@ export default function SponserPage() {
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setSPONSERLIST(data.data);
-      setTotal(data.total)
+      setTotal(data.total);
     } catch (err) {
       console.log(err);
     }
@@ -115,30 +98,37 @@ export default function SponserPage() {
     setOpenSponsorCreate(false);
   };
 
-  const handleClickOpenInsert = (event, row) => {
-    setSelectedRow(row);
-    setOpenDialogInsert(true);
-  };
+  const handleCloseEdit = async () => {
+    setOpenDialogEdit(false);
 
-  const handleCloseInsert = () => {
-    setOpenDialogInsert(false);
+    try {
+      const url = `http://localhost:5000/api/v1/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setSPONSERLIST(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleChangePage = async (event, newPage) => {
-    setPage(newPage-1);
+    setPage(newPage - 1);
     try {
       const url = `http://localhost:5000/api/v1/sponsor/getAll?keyword=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setSPONSERLIST(data.data);
-      setTotal(data.total)
+      setTotal(data.total);
     } catch (err) {
       console.log(err);
     }
-};
+  };
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+  const handleDeleteClick = (row) => {
+    setSelectedRow(row)
+    setShowDeleteDialog(true);
   };
 
   const handleFilterByName = (event) => {
@@ -148,24 +138,21 @@ export default function SponserPage() {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - total) : 0;
 
   const isNotFound = !SPONSERLIST.length && !!filterName;
-  const [opendialog, setOpenDialog] = React.useState(false);
 
   const handleRowClick = (event, row) => {
     setSelectedRow(row);
-    setOpenDialog(true);
+    setOpenDialogEdit(true);
   };
 
-  const handleClickOpen = () => {
-    setOpenDialog(true);
-  };
 
   const handleCloseDialog = () => {
-    setSelectedRow(null);
-    setOpenDialog(false);
+    setShowDeleteDialog(false);
   };
 
-  const handleClose = () => {
-    setOpenDialog(false);
+  const handleDelete = async () => {
+    const url = `http://localhost:5000/api/v1/sponsor/delete?id=${selectedRow._id}`
+    await axios.delete(url, { withCredentials: true });
+    // setShowDeleteDialog(false);
   };
 
   return (
@@ -173,7 +160,7 @@ export default function SponserPage() {
       <Helmet>
         <title> Nhà tài trợ</title>
       </Helmet>
-
+      
       <Container style={{ marginTop: -10 }}>
         <Stack style={{ marginBottom: 16 }} direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -190,7 +177,7 @@ export default function SponserPage() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead headLabel={TABLE_HEAD} rowCount={SPONSERLIST.length} />
+                <UserListHead headLabel={TABLE_HEAD} rowCount={total} />
                 <TableBody>
                   {SPONSERLIST.map((row) => {
                     const { _id, maDonVi, tenDonVi, SDT, soLuongDaTrao } = row;
@@ -198,21 +185,36 @@ export default function SponserPage() {
                     const info = { _id };
 
                     return (
-                      <TableRow hover key={_id}  onClick={(event) => handleRowClick(event, row)} sx={{ cursor: 'pointer', width: '200px', height: '10px' }}>
+                      <TableRow
+                        hover
+                        key={_id}
+                        onDoubleClick={(event) => handleRowClick(event, row)}
+                        sx={{ cursor: 'pointer', width: '200px', height: '10px' }}
+                      >
+                        <TableCell align="left" sx={{ width: '80px' }}>
+                          {maDonVi}
+                        </TableCell>
 
-                        <TableCell align="left" sx={{ width: '80px' }}>{maDonVi}</TableCell>
+                        <TableCell align="left" sx={{ width: '180px' }}>
+                          {tenDonVi}
+                        </TableCell>
 
-                        <TableCell align="left" sx={{ width: '180px' }}>{tenDonVi}</TableCell>
+                        <TableCell align="left" sx={{ width: '180px' }}>
+                          {SDT}
+                        </TableCell>
 
-                        <TableCell align="left" sx={{ width: '180px' }}>{SDT}</TableCell>
-
-                        <TableCell align="left" sx={{ width: '20px' }}>{soLuongDaTrao}</TableCell>
+                        <TableCell align="left" sx={{ width: '20px' }}>
+                          {soLuongDaTrao}
+                        </TableCell>
 
                         <TableCell align="center" sx={{ width: '20px' }}>
-                          <DeleteOutlineIcon color="error" />
-                         
+                        <Button onClick={(event) => handleRowClick(event, row)}>
+                            <EditIcon color="success" />
+                          </Button>
+                          <Button onClick={(event) => handleDeleteClick(row)}>
+                            <DeleteOutlineIcon color="error" />
+                          </Button>
                         </TableCell>
-                       
                       </TableRow>
                     );
                   })}
@@ -222,12 +224,20 @@ export default function SponserPage() {
                     </TableRow>
                   )}
                 </TableBody>
-                <InsertModal
-                  openDialogInsert={openDialogInsert}
-                  handleClose={handleCloseInsert}
-                  id={currentId}
-                  // email={currentEmail}
-                  // quyen={currentRole}
+                <Dialog open={showDeleteDialog} onClose={handleCloseDialog}>
+                  <DialogTitle>Xác nhận xóa</DialogTitle>
+                  <DialogContent>Bạn có chắc muốn xóa đơn vị tài trợ {selectedRow.tenDonVi}?</DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleCloseDialog}>Hủy</Button>
+                    <Button color="error" onClick={handleDelete}>
+                      Xóa
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+                <EditModal
+                  setOpenDialogEdit={openDialogEdit}
+                  handleClose={handleCloseEdit}
+                  id={selectedRow}
                 />
 
                 {isNotFound && (
@@ -257,13 +267,8 @@ export default function SponserPage() {
             </TableContainer>
           </Scrollbar>
 
-          {/* <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            rowsPerPage={rowsPerPage} 
-          /> */}
           <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
-            <Pagination count={Math.ceil(total / rowsPerPage)} page={page+1} onChange={handleChangePage} />
+            <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
           </Box>
         </Card>
       </Container>
