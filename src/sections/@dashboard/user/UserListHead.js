@@ -24,6 +24,10 @@ export default function UserListHead({
           </TableCell>
         ))}
       </TableRow>
+
     </TableHead>
+    
+    
   );
+  
 }

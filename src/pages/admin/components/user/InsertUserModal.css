@@ -1,0 +1,56 @@
+.dialogInsertUser {
+  margin-top: 80px;
+}
+.dialogInsertUser > div > div {
+  border-radius: 0px;
+}
+.titleupdateuser {
+  display: flex;
+  margin: 1rem;
+  font-weight: 700;
+  padding-top: 10px;
+  font-size: 20px;
+}
+.titleupdateuser > button {
+  margin-left: 21rem;
+}
+.titleupdateuser > button:hover {
+  margin-left: 21rem;
+  color: black;
+  background-color: rgb(241, 84, 84);
+}
+.formcontrolupdateuser {
+  margin: 1rem 0 0.5rem 3rem;
+  min-width: 450px;
+}
+.formcontrolupdateuser > div > div {
+  border-radius: 0px;
+}
+.formcontrolupdateuser > div {
+  border-radius: 0px;
+  background-color: aliceblue;
+}
+.divider {
+  height: 3px;
+  background: linear-gradient(blue, 20%, pink);
+}
+.capnhat {
+  border-radius: 0px;
+  margin-right: 20px;
+  margin-bottom: 13px;
+  border: 2px solid rgb(28, 28, 165);
+  background-color: rgb(28, 28, 165);
+  padding: 4px 12px;
+  color: #ffff;
+  height: 40px;
+  width: 150px;
+}
+.capnhat:hover {
+  border-radius: 0px;
+  border: 2px solid rgb(34, 34, 139);
+  background-color: rgb(34, 34, 139);
+  padding: 4px 12px;
+  color: #ffff;
+  height: 40px;
+  width: 150px;
+}

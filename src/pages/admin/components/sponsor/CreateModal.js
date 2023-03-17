@@ -6,15 +6,15 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextField,
-  makeStyles,
-  Avatar,
+  TextField
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 export function CreateModal(props) {
+
   const [SPONSER, setSPONSER] = useState({logo: null});
   const [preview, setPreview] = useState(null);
+
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
 
@@ -49,6 +49,23 @@ export function CreateModal(props) {
             setOpenSuccessMessage(res.data.message);
           } else setOpenErrMessage(res.data.message);
         });
+      axios.post(
+        url,
+        {
+          maDonVi: SPONSER.maDonVi,
+          tenDonVi: SPONSER.tenDonVi,
+          SDT: SPONSER.SDT,
+          tongSoLuong: SPONSER.tongSoLuong,
+          tongSoTien: SPONSER.tongSoTien,
+          moTa: SPONSER.moTa,
+        },
+        { withCredentials: true }
+      )
+      .then((data) => {
+        console.log(data);
+        setOpenSuccessMessage(data.data.message);
+      });
+
     } catch (err) {
       setOpenErrMessage(err.response.data.message);
     }
@@ -72,6 +89,7 @@ export function CreateModal(props) {
           {openErrMessage}
         </Alert>
       )}
+
       <Dialog open={props.openDialogCreate} onClose={props.handleClose}>
         <DialogTitle>Thêm nhà tài trợ mới</DialogTitle>
         <DialogContent>
@@ -84,6 +102,7 @@ export function CreateModal(props) {
                   maxWidth: '100%',
                   borderRadius: '30%',
                   objectFit: 'cover',
+                  height: 300
                 }}
               />
             )}
@@ -176,6 +195,8 @@ export function CreateModal(props) {
           <Button onClick={handleSubmit}>Thêm nhà tài trợ</Button>
         </DialogActions>
       </Dialog>
+
+
     </>
   );
 }

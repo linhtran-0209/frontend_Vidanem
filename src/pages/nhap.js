@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
+import { filter } from 'lodash';
+// import { sentenceCase } from 'change-case';
 import Button from '@mui/material/Button';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 
+// import TextField from '@mui/material/TextField';
+// import Dialog from '@mui/material/Dialog';
+// import DialogActions from '@mui/material/DialogActions';
+// import DialogContent from '@mui/material/DialogContent';
+// import DialogContentText from '@mui/material/DialogContentText';
+// import DialogTitle from '@mui/material/DialogTitle';
+
 // @mui
 import {
-  Alert,
   Card,
   Table,
   Stack,
@@ -19,11 +27,7 @@ import {
   Typography,
   TableContainer,
   Box,
-  Pagination,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Pagination,Dialog,DialogTitle,DialogContent,DialogActions 
 } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
@@ -44,23 +48,20 @@ const TABLE_HEAD = [
   { id: 'phone', label: 'Số điện thoại', alignRight: false },
   { id: 'so_luong_da_trao', label: 'Đã trao', alignRight: false },
   { id: 'action', label: '', alignRight: false },
-  { id: 'action', label: 'Hành động', alignRight: false },
-
 ];
 
 // ----------------------------------------------------------------------
 
 export default function SponserPage() {
+  
   const [page, setPage] = useState(0);
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [total, setTotal] = useState(0);
   const [SPONSERLIST, setSPONSERLIST] = useState([]);
-  const [selectedRow, setSelectedRow] = useState({ _id: '', tenDonVi: '' });
+  const [selectedRow, setSelectedRow] = useState({_id:'',tenDonVi:''});
   const [openSponsorCreate, setOpenSponsorCreate] = React.useState(false);
   const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
-  const [openSuccessMessage, setOpenSuccessMessage] = useState('');
-  const [openErrMessage, setOpenErrMessage] = useState('');
 
   useEffect(() => {
     getSponser();
@@ -126,7 +127,7 @@ export default function SponserPage() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const handleDeleteClick = (row) => {
-    setSelectedRow(row);
+    setSelectedRow(row)
     setShowDeleteDialog(true);
   };
 
@@ -143,38 +144,23 @@ export default function SponserPage() {
     setOpenDialogEdit(true);
   };
 
+
   const handleCloseDialog = () => {
     setShowDeleteDialog(false);
   };
 
   const handleDelete = async () => {
-    const url = `http://localhost:5000/api/v1/sponsor/delete?id=${selectedRow._id}`;
-    await axios.delete(url, { withCredentials: true }).then((res) => {
-      if (res.status === 200) {
-        setOpenSuccessMessage(res.data.message);
-      } else setOpenErrMessage(res.data.message);
-    });
-    setShowDeleteDialog(false);
+    const url = `http://localhost:5000/api/v1/sponsor/delete?id=${selectedRow._id}`
     await axios.delete(url, { withCredentials: true });
     // setShowDeleteDialog(false);
   };
 
   return (
     <>
-      {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
-          {openSuccessMessage}
-        </Alert>
-      )}
-      {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
-          {openErrMessage}
-        </Alert>
-      )}
       <Helmet>
         <title> Nhà tài trợ</title>
       </Helmet>
-
+      
       <Container style={{ marginTop: -10 }}>
         <Stack style={{ marginBottom: 16 }} direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -221,12 +207,12 @@ export default function SponserPage() {
                           {soLuongDaTrao}
                         </TableCell>
 
-                        <TableCell align="center" sx={{ width: '20px', paddingRight: -10}}>
-                          <Button onClick={(event) => handleRowClick(event, row)}>
-                            <Iconify style={{ color: 'green', marginRight:-80 }} icon={'eva:edit-fill'} sx={{ border: 1 }} />
+                        <TableCell align="center" sx={{ width: '20px' }}>
+                        <Button onClick={(event) => handleRowClick(event, row)}>
+                            <EditIcon color="success" />
                           </Button>
                           <Button onClick={(event) => handleDeleteClick(row)}>
-                          <Iconify icon={'eva:trash-2-outline'} sx={{ border: 1, color: 'error.main'}} />
+                            <DeleteOutlineIcon color="error" />
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -248,14 +234,11 @@ export default function SponserPage() {
                     </Button>
                   </DialogActions>
                 </Dialog>
-
-                <EditModal setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} id={selectedRow} />
-
-                {/* <EditModal
+                <EditModal
                   setOpenDialogEdit={openDialogEdit}
                   handleClose={handleCloseEdit}
                   id={selectedRow}
-                /> */}
+                />
 
                 {isNotFound && (
                   <TableBody>

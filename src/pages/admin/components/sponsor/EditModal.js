@@ -1,5 +1,14 @@
 import axios from 'axios';
-import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+
+import {
+  Alert,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 export function EditModal(props) {
@@ -52,19 +61,15 @@ export function EditModal(props) {
         },
         withCredentials: true,
       }).then(res => {
-        console.log(1);
         if (res.status === 200) {
-          console.log(2);
           setOpenSuccessMessage(res.data.message);
-          console.log(3);
         } else setOpenErrMessage(res.data.message);
       });
       // props.handleClose();
     } catch (err) {
       console.log(err);
-    }
+  }
   };
-
   return (
     <>
 
@@ -104,6 +109,7 @@ export function EditModal(props) {
             Chọn Logo
           </Button>
         </label>
+
         <TextField
           autoFocus
           margin="dense"
@@ -176,6 +182,9 @@ export function EditModal(props) {
         <Button onClick={handleSubmit}>Cập nhật nhà tài trợ</Button>
       </DialogActions>
     </Dialog>
+
     </>
   );
 }
+
+

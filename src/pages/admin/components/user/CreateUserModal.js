@@ -7,14 +7,16 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
 
-export function UserModal({ opendialogcreate, handleClose }) {
+export function CreateUserModal({ opendialogcreate, handleClose }) {
   useEffect(() => {
     getDistricts();
   }, []);
@@ -59,7 +61,7 @@ export function UserModal({ opendialogcreate, handleClose }) {
   };
 
   const handleChangePhuong = async (event) => {
-    console.log(event.target.value);
+    console.log(openWards);
     setOpenPhuong(event.target.value);
   };
 
@@ -105,26 +107,31 @@ export function UserModal({ opendialogcreate, handleClose }) {
           {openErrMessage}
         </Alert>
       )}
-      <Dialog  open={opendialogcreate} onClose={handleClose}>
-        <DialogTitle>Thêm tài khoản mới</DialogTitle>
+      <Dialog className="dialogCreateUser" open={opendialogcreate} onClose={handleClose}>
+        <div className="titlecreateuser"> Thêm tài khoản mới
+        <IconButton className onClick={handleClose}>
+          <CloseIcon />
+        </IconButton>
+        </div>
+        <div className="divider" />
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="email"
-            label="Địa chỉ Email"
-            onChange={handleChangeEmail}
-            type="email"
-            fullWidth
-            variant="standard"
-          />
+          <FormControl className="formcontrolcreateuser" variant="standard">
+            <TextField
+              htmlFor="demo-customized-textbox"
+              autoFocus
+              margin="dense"
+              id="email"
+              label="Địa chỉ Email *"
+              onChange={handleChangeEmail}
+              type="email"
+              fullWidth
+            />
+          </FormControl>
 
           <FormControl
-            variant="standard"
-            sx={{
-              m: 0,
-              minWidth: 550,
-            }}
+            className="formcontrolcreateuser"
+            
+            variant="outlined"
           >
             <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
             <Select
@@ -146,11 +153,9 @@ export function UserModal({ opendialogcreate, handleClose }) {
           </FormControl>
 
           <FormControl
-            variant="standard"
-            sx={{
-              m: 0,
-              minWidth: 550,
-            }}
+            className="formcontrolcreateuser"
+            
+            variant="outlined"
           >
             <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
             <Select
@@ -172,8 +177,8 @@ export function UserModal({ opendialogcreate, handleClose }) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Hủy</Button>
-          <Button onClick={handleSubmit}>Thêm tài khoản</Button>
+          {/* <Button onClick={handleClose}>Hủy</Button> */}
+          <Button className='themtaikhoan' onClick={handleSubmit}>Thêm tài khoản</Button>
         </DialogActions>
       </Dialog>
     </>
