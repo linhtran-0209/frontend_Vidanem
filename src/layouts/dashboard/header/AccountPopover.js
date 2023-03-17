@@ -56,6 +56,7 @@ export default function AccountPopover() {
 //   }, [dispatch]);
     const theme = useTheme();
   const [user, setUser] = useState(null);
+  const [avatar,setAvatar]=useState('')
   useEffect(() => {
     
 
@@ -63,8 +64,9 @@ export default function AccountPopover() {
         	try {
         		const url = `http://localhost:5000/api/v1/currentUser`;
         		const { data } = await axios.get(url, { withCredentials: true });
-          const  parse=data.hoTen;
-           		setUser(parse);
+          
+           		setUser(data.hoTen);
+              setAvatar(data.avatar);
                 // console.log((JSON.parse(data)).data.email);      
                 console.log(data);
 // console.log("data empty");
@@ -103,7 +105,7 @@ getUser();
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={avatar} />
       </IconButton>
 
       <Popover

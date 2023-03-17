@@ -6,10 +6,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
-import { Alert } from '@mui/material';
+import { Alert, IconButton } from '@mui/material';
 
-export function DeleteModal(props) {
+export function  DeleteUserModal(props) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
 
@@ -56,20 +57,26 @@ export function DeleteModal(props) {
         </Alert>
       )}
       <Dialog
+        className='dialogDeleteUser'
         open={props.openDialogDelete}
         onClose={props.handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{'Bạn có đồng ý xóa tài khoản ?'}</DialogTitle>
+        <div className="titledeleteuser"> Cập nhật tài khoản
+        <IconButton className onClick={props.handleClose}>
+          <CloseIcon />
+        </IconButton>
+        </div>
+        <div className="divider" />
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Bạn có thật sự muốn xóa tài khoản, nếu bạn muốn xóa chọn "Đồng ý" và ngược lại
+            Bạn có thật sự muốn xóa tài khoản, nếu bạn muốn xóa chọn "Đồng ý" và ngược lại.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleClose}>Hủy</Button>
-          <Button onClick={handleSubmit}>Đồng ý</Button>
+          <Button className='huyuser' onClick={props.handleClose}>Hủy</Button>
+          <Button className='xoauser' onClick={handleSubmit}>Đồng ý</Button>
         </DialogActions>
       </Dialog>
     </>

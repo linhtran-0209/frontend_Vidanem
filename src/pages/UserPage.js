@@ -29,10 +29,9 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-import { UserModal } from './admin/components/user/UserModal';
-import { InsertModal } from './admin/components/user/InsertModal';
-import { DeleteModal } from './admin/components/user/DeleteModal';
-
+import { CreateUserModal } from './admin/components/user/CreateUserModal';
+import { InsertUserModal } from './admin/components/user/InsertUserModal';
+import { DeleteUserModal } from './admin/components/user/DeleteUserModal';
 
 // mock
 // import USERLIST from '../_mock/us
@@ -54,7 +53,8 @@ const TABLE_HEAD = [
   { id: 'quan', label: 'Quận/Huyện', alignRight: false },
   { id: 'phuong', label: 'Phưòng/Xã', alignRight: false },
   { id: 'isVerified', label: 'Quyền', alignRight: false },
-  { id: 'status', label: 'Hành động', alignRight: false },
+  { id: 'isActive', label: 'Trạng thái', alignRight: false },
+  { id: 'action', label: 'Hành động', alignRight: false },
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -117,7 +117,7 @@ export default function UserPage() {
       const url = `http://localhost:5000/api/v1/account/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
-
+      console.log(data.data);
       setUSERLIST(data.data);
     } catch (err) {
       console.log(err);
@@ -136,7 +136,7 @@ export default function UserPage() {
 
   const [filterName, setFilterName] = useState('');
 
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentRole, setCurrentRole] = useState('');
   const [currentEmail, setCurrentEmail] = useState('');
 
@@ -268,19 +268,29 @@ export default function UserPage() {
         <title> Tài khoản</title>
       </Helmet>
 
-      <Container style={{marginTop: -10}}>
-        <Stack style={{marginBottom: 16}}direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+      <Container style={{ marginTop: -10 }}>
+        <Stack style={{ marginBottom: 16 }} direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Tất cả tài khoản
           </Typography>
-          <Button style={{marginRight: -650}} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpenCreate}>
+          <Button
+            className="buttondanhsach"
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+            onClick={handleClickOpenCreate}
+          >
             Danh sách
           </Button>
-          <Button  variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpenCreate}>
+          <Button
+            className="buttontaikhoanmoi"
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+            onClick={handleClickOpenCreate}
+          >
             Tài khoản mới
           </Button>
         </Stack>
-        <UserModal
+        <CreateUserModal
           opendialogcreate={openDialogCreate}
           handleClose={handleCloseCreate}
           // quyen={quyen}
@@ -291,7 +301,7 @@ export default function UserPage() {
           // handleChangeQuan={handleChangeQuan}
           // handleChangePhuong={handleChangePhuong}
         />
-        <Card>
+        <Card sx={{ boxShadow: 3 }}>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
@@ -309,34 +319,32 @@ export default function UserPage() {
 
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-                    const { _id, email, quan, phuong, quyen } = row;
+                    const { _id, email, quan, phuong, quyen, isActive } = row;
                     const selectedUser = selected.indexOf(email) !== -1;
-
+                    console.log(row);
                     const info = { quyen, email };
 
                     console.log(info);
                     return (
                       <TableRow
-                        style={{ height: 40 }}
+                        style={{ height: 40, borderBottom: '1.59px solid rgba(192,192,192,0.3)' }}
                         hover
                         key={_id}
                         tabIndex={-1}
                         phuong="checkbox"
                         selected={selectedUser}
                       >
-                        <TableCell style={{ height: 0, padding: 5 }}>
+                        {/* <TableCell style={{ height: 0, padding: 5 }}>
                           <Checkbox
                             style={{ height: 10 }}
                             checked={selectedUser}
                             onChange={(event) => handleClick(event, email)}
                           />
-                        </TableCell>
+                        </TableCell> */}
 
-                        <TableCell style={{ height: 40, padding: 5 }}>
+                        <TableCell style={{ height: 40, padding: 13 }}>
                           <Stack style={{ height: 20 }} direction="row" alignItems="center" spacing={2}>
-                            <Typography sx={{ height: 18 }} variant="subtitle2" noWrap>
-                              {email}
-                            </Typography>
+                            {email}
                           </Stack>
                         </TableCell>
 
@@ -348,11 +356,14 @@ export default function UserPage() {
                           {phuong}
                         </TableCell>
 
-                        <TableCell style={{ padding: 30 }} align="left">
+                        <TableCell style={{ paddingLeft: 30 }} align="left">
                           {quyen}
                         </TableCell>
+                        <TableCell style={{ padding: 0 }} align="left">
+                          {isActive}
+                        </TableCell>
 
-                        <TableCell style={{ height: 40 }} align="left">
+                        {/* <TableCell style={{ height: 40 }} align="left">
                           <IconButton
                             style={{ height: 40 }}
                             size="large"
@@ -380,19 +391,28 @@ export default function UserPage() {
                               },
                             },
                           }}
+                        > */}
+                        <TableCell
+                          style={{ height: 40, display: 'inline-flex', padding: 0, borderBottom: '0', marginTop: 8 }}
+                          align="left"
                         >
-                          <MenuItem onClick={handleClickOpenInsert}>
-                            <Iconify icon={'eva:edit-fill'} sx={{ mr: 2, border: 1 }} />
-                            Edit
+                          <MenuItem
+                            style={{ padding: 0, paddingLeft: 20, paddingRight: 5 }}
+                            onClick={handleClickOpenInsert}
+                          >
+                            <Iconify style={{ color: 'green' }} icon={'eva:edit-fill'} sx={{ border: 1 }} />
                           </MenuItem>
 
-
-                          <MenuItem sx={{ color: 'error.main' }} onClick={handleClickOpenDelete}>
-                            <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2, border: 1 }} />
-                            Delete
+                          <MenuItem
+                            style={{ padding: 0, paddingLeft: 2, paddingRight: 5 }}
+                            sx={{ color: 'error.main' }}
+                            onClick={handleClickOpenDelete}
+                          >
+                            <Iconify icon={'eva:trash-2-outline'} sx={{ border: 1}} />
                           </MenuItem>
-                          
-                        </Popover>
+                        </TableCell>
+
+                        {/* </Popover> */}
                       </TableRow>
                     );
                   })}
@@ -402,19 +422,18 @@ export default function UserPage() {
                     </TableRow>
                   )}
                 </TableBody>
-                <InsertModal
-                            
-                            opendialogtt={openDialogInsert}
-                            handleClose={handleCloseInsert}
-                            email={currentEmail}
-                            quyen={currentRole}
-                          />
-                <DeleteModal 
-                            openDialogDelete={openDialogDelete}
-                            handleClose={handleCloseDelete}
-                            email={currentEmail}
-                            quyen={currentRole}
-                          />
+                <InsertUserModal
+                  openDialogInsert={openDialogInsert}
+                  handleClose={handleCloseInsert}
+                  email={currentEmail}
+                  quyen={currentRole}
+                />
+                <DeleteUserModal
+                  openDialogDelete={openDialogDelete}
+                  handleClose={handleCloseDelete}
+                  email={currentEmail}
+                  quyen={currentRole}
+                />
                 {isNotFound && (
                   <TableBody>
                     <TableRow>
@@ -443,7 +462,7 @@ export default function UserPage() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[10, 25, 40]}
             component="div"
             count={USERLIST.length}
             rowsPerPage={rowsPerPage}

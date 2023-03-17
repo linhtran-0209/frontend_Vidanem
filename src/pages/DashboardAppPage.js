@@ -1,11 +1,11 @@
-import axios from "axios";
-import { useState, useEffect} from "react";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
-import { get } from "react-hook-form";
+import { get } from 'react-hook-form';
 // components
 import Iconify from '../components/iconify';
 // sections
@@ -17,30 +17,27 @@ import {
   AppWidgetSummary,
 } from '../sections/@dashboard/app';
 
-
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
   const theme = useTheme();
   const [user, setUser] = useState(null);
   useEffect(() => {
-    
-
     const getUser = async () => {
-        	try {
-        		const url = `http://localhost:5000/api/v1/currentUser`;
-        		const { data } = await axios.get(url, { withCredentials: true });
-            const  parse=data.data.email;
-           		setUser(parse);
-                // console.log((JSON.parse(data)).data.email);      
-                console.log(data);
-// console.log("data empty");
-        	} catch (err) {
-        		console.log(err);
-        	}
-    }
-getUser();
-    }, []);
+      try {
+        const url = `http://localhost:5000/api/v1/currentUser`;
+        const { data } = await axios.get(url, { withCredentials: true });
+        const parse = data.data.email;
+        setUser(parse);
+        // console.log((JSON.parse(data)).data.email);
+        console.log(data);
+        // console.log("data empty");
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getUser();
+  }, []);
   return (
     <>
       <Helmet>
@@ -54,19 +51,19 @@ getUser();
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Tài khoản" total={11} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Tài khoản" total={7} icon={'ant-design:android-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Nhà tài trợ" total={100} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title="Nhà tài trợ" total={3} color="info" icon={'ant-design:apple-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Trẻ em" total={100} color="warning" icon={'ant-design:windows-filled'} />
+            <AppWidgetSummary title="Trẻ em" total={1} color="warning" icon={'ant-design:windows-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Tin bài" total={100} color="error" icon={'ant-design:bug-filled'} />
+            <AppWidgetSummary title="Tin bài" total={1} color="error" icon={'ant-design:bug-filled'} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
@@ -126,7 +123,6 @@ getUser();
               ]}
             />
           </Grid>
-
         </Grid>
       </Container>
     </>

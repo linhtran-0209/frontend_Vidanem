@@ -27,11 +27,7 @@ import {
   Typography,
   TableContainer,
   Box,
-  Pagination,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Pagination,Dialog,DialogTitle,DialogContent,DialogActions 
 } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
@@ -51,18 +47,19 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Tên đơn vị', alignRight: false },
   { id: 'phone', label: 'Số điện thoại', alignRight: false },
   { id: 'so_luong_da_trao', label: 'Đã trao', alignRight: false },
-  { id: 'action', label: 'Hành động', alignRight: false },
+  { id: 'action', label: '', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
 
 export default function SponserPage() {
+  
   const [page, setPage] = useState(0);
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [total, setTotal] = useState(0);
   const [SPONSERLIST, setSPONSERLIST] = useState([]);
-  const [selectedRow, setSelectedRow] = useState({ _id: '', tenDonVi: '' });
+  const [selectedRow, setSelectedRow] = useState({_id:'',tenDonVi:''});
   const [openSponsorCreate, setOpenSponsorCreate] = React.useState(false);
   const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
 
@@ -130,7 +127,7 @@ export default function SponserPage() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const handleDeleteClick = (row) => {
-    setSelectedRow(row);
+    setSelectedRow(row)
     setShowDeleteDialog(true);
   };
 
@@ -147,12 +144,13 @@ export default function SponserPage() {
     setOpenDialogEdit(true);
   };
 
+
   const handleCloseDialog = () => {
     setShowDeleteDialog(false);
   };
 
   const handleDelete = async () => {
-    const url = `http://localhost:5000/api/v1/sponsor/delete?id=${selectedRow._id}`;
+    const url = `http://localhost:5000/api/v1/sponsor/delete?id=${selectedRow._id}`
     await axios.delete(url, { withCredentials: true });
     // setShowDeleteDialog(false);
   };
@@ -162,7 +160,7 @@ export default function SponserPage() {
       <Helmet>
         <title> Nhà tài trợ</title>
       </Helmet>
-
+      
       <Container style={{ marginTop: -10 }}>
         <Stack style={{ marginBottom: 16 }} direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -209,12 +207,12 @@ export default function SponserPage() {
                           {soLuongDaTrao}
                         </TableCell>
 
-                        <TableCell align="center" sx={{ width: '20px', paddingRight: -10}}>
-                          <Button onClick={(event) => handleRowClick(event, row)}>
-                            <Iconify style={{ color: 'green', marginRight:-80 }} icon={'eva:edit-fill'} sx={{ border: 1 }} />
+                        <TableCell align="center" sx={{ width: '20px' }}>
+                        <Button onClick={(event) => handleRowClick(event, row)}>
+                            <EditIcon color="success" />
                           </Button>
                           <Button onClick={(event) => handleDeleteClick(row)}>
-                          <Iconify icon={'eva:trash-2-outline'} sx={{ border: 1, color: 'error.main'}} />
+                            <DeleteOutlineIcon color="error" />
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -236,11 +234,11 @@ export default function SponserPage() {
                     </Button>
                   </DialogActions>
                 </Dialog>
-                {/* <EditModal
+                <EditModal
                   setOpenDialogEdit={openDialogEdit}
                   handleClose={handleCloseEdit}
                   id={selectedRow}
-                /> */}
+                />
 
                 {isNotFound && (
                   <TableBody>
