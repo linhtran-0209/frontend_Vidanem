@@ -16,6 +16,7 @@ import EditIcon from '@mui/icons-material/Edit';
 
 // @mui
 import {
+  Alert,
   Card,
   Table,
   Stack,
@@ -27,7 +28,11 @@ import {
   Typography,
   TableContainer,
   Box,
-  Pagination,Dialog,DialogTitle,DialogContent,DialogActions 
+  Pagination,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
@@ -53,15 +58,16 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 export default function SponserPage() {
-  
   const [page, setPage] = useState(0);
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [total, setTotal] = useState(0);
   const [SPONSERLIST, setSPONSERLIST] = useState([]);
-  const [selectedRow, setSelectedRow] = useState({_id:'',tenDonVi:''});
+  const [selectedRow, setSelectedRow] = useState({ _id: '', tenDonVi: '' });
   const [openSponsorCreate, setOpenSponsorCreate] = React.useState(false);
   const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
+  const [openSuccessMessage, setOpenSuccessMessage] = useState('');
+  const [openErrMessage, setOpenErrMessage] = useState('');
 
   useEffect(() => {
     getSponser();
@@ -127,7 +133,7 @@ export default function SponserPage() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const handleDeleteClick = (row) => {
-    setSelectedRow(row)
+    setSelectedRow(row);
     setShowDeleteDialog(true);
   };
 
@@ -144,23 +150,36 @@ export default function SponserPage() {
     setOpenDialogEdit(true);
   };
 
-
   const handleCloseDialog = () => {
     setShowDeleteDialog(false);
   };
 
   const handleDelete = async () => {
-    const url = `http://localhost:5000/api/v1/sponsor/delete?id=${selectedRow._id}`
-    await axios.delete(url, { withCredentials: true });
-    // setShowDeleteDialog(false);
+    const url = `http://localhost:5000/api/v1/sponsor/delete?id=${selectedRow._id}`;
+    await axios.delete(url, { withCredentials: true }).then((res) => {
+      if (res.status === 200) {
+        setOpenSuccessMessage(res.data.message);
+      } else setOpenErrMessage(res.data.message);
+    });
+    setShowDeleteDialog(false);
   };
 
   return (
     <>
+      {openSuccessMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
+          {openSuccessMessage}
+        </Alert>
+      )}
+      {openErrMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
+          {openErrMessage}
+        </Alert>
+      )}
       <Helmet>
         <title> Nhà tài trợ</title>
       </Helmet>
-      
+
       <Container style={{ marginTop: -10 }}>
         <Stack style={{ marginBottom: 16 }} direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -208,7 +227,7 @@ export default function SponserPage() {
                         </TableCell>
 
                         <TableCell align="center" sx={{ width: '20px' }}>
-                        <Button onClick={(event) => handleRowClick(event, row)}>
+                          <Button onClick={(event) => handleRowClick(event, row)}>
                             <EditIcon color="success" />
                           </Button>
                           <Button onClick={(event) => handleDeleteClick(row)}>
@@ -234,11 +253,7 @@ export default function SponserPage() {
                     </Button>
                   </DialogActions>
                 </Dialog>
-                <EditModal
-                  setOpenDialogEdit={openDialogEdit}
-                  handleClose={handleCloseEdit}
-                  id={selectedRow}
-                />
+                <EditModal setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} id={selectedRow} />
 
                 {isNotFound && (
                   <TableBody>
