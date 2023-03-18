@@ -32,6 +32,8 @@ import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 import { CreateUserModal } from './admin/components/user/CreateUserModal';
 import { InsertUserModal } from './admin/components/user/InsertUserModal';
 import { DeleteUserModal } from './admin/components/user/DeleteUserModal';
+import { ChangeActiveUserModal } from './admin/components/user/ChangeActiveUserModal';
+
 
 // mock
 // import USERLIST from '../_mock/us
@@ -87,26 +89,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
-  // let USERLISTS = [];
-  // async function getUser () {
-  //   try {
-  //     const url = `http://localhost:5000/account/getAll`;
-  //     const { data } = await axios.get(url, { withCredentials: true });
-  //     // const  parse=data.data.email;
 
-  //     console.log(data.data);
-  //     USERLISTS=(data.data);
-  //     console.log(USERLISTS);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-
-  // };
-
-  // useEffect(() => {
-  //   getUser();
-
-  // }, []);
   const [USERLIST, setUSERLIST] = useState([]);
   useEffect(() => {
     getUser();
@@ -117,7 +100,7 @@ export default function UserPage() {
       const url = `http://localhost:5000/api/v1/account/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
-      console.log(data.data);
+      // console.log(data.data);
       setUSERLIST(data.data);
     } catch (err) {
       console.log(err);
@@ -145,8 +128,8 @@ export default function UserPage() {
 
     setCurrentRole(event.currentTarget.role);
     setCurrentEmail(event.currentTarget.value);
-    console.log(event.currentTarget.value);
-    console.log(event.currentTarget.role);
+    // console.log(event.currentTarget.value);
+    // console.log(event.currentTarget.role);
   };
 
   const handleCloseMenu = () => {
@@ -162,7 +145,7 @@ export default function UserPage() {
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = USERLIST.map((n) => n.email);
-      console.log(USERLIST);
+      // console.log(USERLIST);
       setSelected(newSelecteds);
       return;
     }
@@ -203,33 +186,43 @@ export default function UserPage() {
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
+  const [selectedRow, setSelectedRow] = useState({});
   const [openDialogCreate, setOpenDialogCreate] = React.useState(false);
   const [openDialogInsert, setOpenDialogInsert] = React.useState(false);
   const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
+  const [openDialogChangeActive, setOpenDialogChangeActive] = React.useState(false);
 
   const handleClickOpenCreate = () => {
     setOpenDialogCreate(true);
   };
   const handleClickOpenInsert = (e) => {
-    console.log(e);
+    // console.log(e);
     // setCurrentRole(quyen)
     setOpenDialogInsert(true);
     // console.log(row);
   };
-  const handleClickOpenDelete = () => {
+  const handleClickOpenDelete = (event, row) => {
+    setSelectedRow(row);
     setOpenDialogDelete(true);
+  };
+  const handleClickOpenChangeActive = (event, row) => {
+    setSelectedRow(row);
+    setOpenDialogChangeActive(true);
   };
   const handleCloseCreate = () => {
     setOpenDialogCreate(false);
   };
 
-  console.log(openDialogInsert);
+  // console.log(openDialogInsert);
 
   const handleCloseInsert = () => {
     setOpenDialogInsert(false);
   };
   const handleCloseDelete = () => {
     setOpenDialogDelete(false);
+  };
+  const handleCloseChangeActive = () => {
+    setOpenDialogChangeActive(false);
   };
   // const [quyen, setQuyen] = React.useState('');
   // const [quan, setQuan] = React.useState('');
@@ -319,12 +312,14 @@ export default function UserPage() {
 
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-                    const { _id, email, quan, phuong, quyen, isActive } = row;
+                    const { _id, email, quan, phuong, isActive } = row;
+                    let quyen = '';
+                    if (row.quyen === 1) quyen = 'Hội đồng Đội Thành phố';
+                    else if (row.quyen === 2) quyen = 'Hội đồng Đội quận, huyện';
+                    else quyen = 'Cấp Liên đội';
                     const selectedUser = selected.indexOf(email) !== -1;
-                    console.log(row);
                     const info = { quyen, email };
 
-                    console.log(info);
                     return (
                       <TableRow
                         style={{ height: 40, borderBottom: '1.59px solid rgba(192,192,192,0.3)' }}
@@ -359,8 +354,23 @@ export default function UserPage() {
                         <TableCell style={{ paddingLeft: 30 }} align="left">
                           {quyen}
                         </TableCell>
-                        <TableCell style={{ padding: 0 }} align="left">
-                          {isActive}
+                        <TableCell style={{ padding: 0 }} align="center">
+                          {isActive && (
+                            <MenuItem
+                              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                              onClick={(event) => handleClickOpenChangeActive(event, row)}
+                            >
+                              <Iconify style={{ color: 'green' }} icon={'eva:unlock-outline'} />
+                            </MenuItem>
+                          )}
+                          {!isActive && (
+                            <MenuItem
+                              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                              onClick={(event) => handleClickOpenChangeActive(event, row)}
+                            >
+                              <Iconify style={{ color: 'red' }} icon={'eva:lock-outline'} />
+                            </MenuItem>
+                          )}
                         </TableCell>
 
                         {/* <TableCell style={{ height: 40 }} align="left">
@@ -394,21 +404,21 @@ export default function UserPage() {
                         > */}
                         <TableCell
                           style={{ height: 40, display: 'inline-flex', padding: 0, borderBottom: '0', marginTop: 8 }}
-                          align="left"
+                          align="center"
                         >
                           <MenuItem
-                            style={{ padding: 0, paddingLeft: 20, paddingRight: 5 }}
+                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                             onClick={handleClickOpenInsert}
                           >
-                            <Iconify style={{ color: 'green' }} icon={'eva:edit-fill'} sx={{ border: 1 }} />
+                            <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
                           </MenuItem>
 
                           <MenuItem
-                            style={{ padding: 0, paddingLeft: 2, paddingRight: 5 }}
+                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                             sx={{ color: 'error.main' }}
-                            onClick={handleClickOpenDelete}
+                            onClick={(event) => handleClickOpenDelete(event, row)}
                           >
-                            <Iconify icon={'eva:trash-2-outline'} sx={{ border: 1}} />
+                            <Iconify icon={'eva:trash-2-outline'} />
                           </MenuItem>
                         </TableCell>
 
@@ -431,8 +441,12 @@ export default function UserPage() {
                 <DeleteUserModal
                   openDialogDelete={openDialogDelete}
                   handleClose={handleCloseDelete}
-                  email={currentEmail}
-                  quyen={currentRole}
+                  row={selectedRow}
+                />
+                <ChangeActiveUserModal
+                  openDialogDelete={openDialogChangeActive}
+                  handleClose={handleCloseChangeActive}
+                  row={selectedRow}
                 />
                 {isNotFound && (
                   <TableBody>

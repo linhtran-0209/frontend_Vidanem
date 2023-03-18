@@ -1,0 +1,62 @@
+.dialogDeleteUser {
+}
+.dialogDeleteUser > div > div {
+  border-radius: 0px;
+}
+.titledeleteuser {
+  display: flex;
+  margin: 1rem;
+  font-weight: 700;
+  padding-top: 10px;
+  font-size: 20px;
+}
+.titledeleteuser > button {
+  margin-left: 21rem;
+}
+.titledeleteuser > button:hover {
+  margin-left: 21rem;
+  color: black;
+  background-color: rgb(241, 84, 84);
+}
+.huyuser {
+  border-radius: 0px;
+  margin-right: 15px;
+  margin-bottom: 13px;
+  border: 2px solid rgb(28, 28, 165);
+  background-color: rgb(28, 28, 165);
+  padding: 4px 12px;
+  color: #ffff;
+  height: 40px;
+  width: 80px;
+}
+.huyuser:hover {
+  border-radius: 0px;
+  margin-right: 15px;
+  margin-bottom: 13px;
+  border: 2px solid rgb(241, 84, 84);
+  background-color: rgb(241, 84, 84);
+  padding: 4px 12px;
+  color: #ffff;
+  height: 40px;
+  width: 80px;
+}
+.xoauser {
+  border-radius: 0px;
+  margin-right: 20px;
+  margin-bottom: 13px;
+  border: 2px solid rgb(28, 28, 165);
+  background-color: rgb(28, 28, 165);
+  padding: 4px 12px;
+  color: #ffff;
+  height: 40px;
+  width: 120px;
+}
+.xoauser:hover {
+  border-radius: 0px;
+  border: 2px solid rgb(34, 34, 139);
+  background-color: rgb(34, 34, 139);
+  padding: 4px 12px;
+  color: #ffff;
+  height: 40px;
+  width: 120px;
+}

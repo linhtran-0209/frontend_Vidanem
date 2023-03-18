@@ -9,19 +9,21 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
 import { Alert, IconButton } from '@mui/material';
 
-export function DeleteUserModal(props) {
+export function ChangeActiveUserModal(props) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
 
   const handleSubmit = async () => {
+    console.log(props.row);
     try {
-      const url = `http://localhost:5000/api/v1/account/delete`;
+      const url = `http://localhost:5000/api/v1/account/changeActive`;
 
       axios
         .put(
           url,
           {
             email: props.row.email,
+            isActive: !props.row.isActive,
           },
           { withCredentials: true }
         )
@@ -62,19 +64,25 @@ export function DeleteUserModal(props) {
       >
         <div className="titledeleteuser">
           {' '}
-          Xóa tài khoản
+          Cập nhật tài khoản
           <IconButton className onClick={props.handleClose}>
             <CloseIcon />
           </IconButton>
         </div>
         <div className="divider" />
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <p>Bạn có thật sự muốn xóa tài khoản {props.row.email}? </p>
-            <p>
-              Nếu bạn muốn xóa chọn <b>"Đồng ý"</b> và ngược lại.
-            </p>
-          </DialogContentText>
+          {props.row.isActive && (
+            <DialogContentText id="alert-dialog-description">
+              <p>Bạn có thật sự muốn khóa tài khoản {props.row.email}? </p>
+              <p>Nếu bạn muốn khóa chọn <b>"Đồng ý"</b> và ngược lại.</p>
+            </DialogContentText>
+          )}
+          {!props.row.isActive && (
+            <DialogContentText id="alert-dialog-description">
+              <p>Bạn có thật sự muốn mở khóa tài khoản {props.row.email}? </p>
+              <p>Nếu bạn muốn mở khóa chọn <b>"Đồng ý"</b> và ngược lại.</p>
+            </DialogContentText>
+          )}
         </DialogContent>
         <DialogActions>
           <Button className="huyuser" onClick={props.handleClose}>
