@@ -390,16 +390,16 @@ export function InsertUserModal(props) {
     // console.log(openQuyen);
     // console.log(props.email);
     try {
-      const url = `http://localhost:5000/api/v1/account/updateRole`;
+      const url = `http://localhost:5000/api/v1/account/update`;
 
       axios
         .put(
           url,
           {
-            email: props.row.email,
-            // hoTen:props.row.hoTen,
-            // quan:openQuan,
-            // phuong:openQuyen,
+            email: account.email,
+            hoTen: account.hoTen,
+            ma_quan: openQuan,
+            ma_phuong: openPhuong,
             quyen: openQuyen,
           },
           { withCredentials: true }
