@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import Button from '@mui/material/Button';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import EditIcon from '@mui/icons-material/Edit';
-import MenuItem from '@mui/material/MenuItem';
+// import MenuItem from '@mui/material/MenuItem';
 
 // @mui
 import {
@@ -20,6 +18,7 @@ import {
   TableContainer,
   Box,
   Pagination,
+  MenuItem,
 } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
@@ -41,7 +40,7 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Tên đơn vị', alignRight: false },
   { id: 'phone', label: 'Số điện thoại', alignRight: false },
   { id: 'so_luong_da_trao', label: 'Đã trao', alignRight: false },
-  { id: 'action', label: 'Hành động', alignRight: false },
+  { id: 'action', label: '', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -153,7 +152,8 @@ export default function SponserPage() {
             Đơn vị bảo trợ
           </Typography>
           <Button
-            className="buttonThemMoi"
+            // className="buttonThemMoi"
+            className="buttonthemdonvi"
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
             onClick={handleClickOpenCreate}
@@ -172,15 +172,12 @@ export default function SponserPage() {
                 <TableBody>
                   {SPONSERLIST.map((row) => {
                     const { _id, logo, maDonVi, tenDonVi, SDT, soLuongDaTrao } = row;
-                    // const selectedUser = selected.indexOf(tenDonVi) !== -1;
-                    const info = { _id };
 
                     return (
                       <TableRow
                         hover
                         key={_id}
                         onDoubleClick={(event) => handleRowClick(event, row)}
-                        // style={{ height: 40, borderBottom: '1.59px solid rgba(192,192,192,0.3)' }}
                         sx={{ cursor: 'pointer', width: '200px', height: '60px' }}
                       >
                         <TableCell align="center">
@@ -195,20 +192,19 @@ export default function SponserPage() {
 
                         <TableCell align="left">{soLuongDaTrao}</TableCell>
 
-                        <TableCell style={{ display: 'inline-flex' }} align="center">
-                          <MenuItem
-                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                            onClick={(event) => handleRowClick(event, row)}
-                            align="center"
-                          >
+                        <TableCell
+                          className="coliconsponser"
+                          // style={{ height: 40, display: 'inline-flex', padding: 0, borderBottom: '0', marginTop: 8 }}
+                          // align="center"
+                        >
+                          <MenuItem className="updatesponser" onClick={(event) => handleRowClick(event, row)}>
                             <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
                           </MenuItem>
 
                           <MenuItem
-                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                            className="deletesponser"
                             sx={{ color: 'error.main' }}
                             onClick={(event) => handleDeleteClick(row)}
-                            align="center"
                           >
                             <Iconify icon={'eva:trash-2-outline'} />
                           </MenuItem>

@@ -10,6 +10,7 @@ import {
   TextField,
   FormControl
 } from '@mui/material';
+// import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
 export function EditModal(props) {
@@ -38,7 +39,7 @@ export function EditModal(props) {
       const url = `http://localhost:5000/api/v1/sponsor/byId?id=${props.row._id}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setSPONSER(data.data);
-      setPreview(data.data.logo)
+      setPreview(data.data.logo);
     } catch (err) {
       console.log(err);
     }
@@ -57,23 +58,67 @@ export function EditModal(props) {
       formData.append('tongSoTien', SPONSER.tongSoTien);
       formData.append('moTa', SPONSER.moTa);
       console.log(formData);
-      axios.put(url, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      }).then(res => {
-        if (res.status === 200) {
-          setOpenSuccessMessage(res.data.message);
-        } else setOpenErrMessage(res.data.message);
-      });
+      axios
+        .put(url, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            setOpenSuccessMessage(res.data.message);
+          } else setOpenErrMessage(res.data.message);
+        });
       // props.handleClose();
     } catch (err) {
       console.log(err);
-  }
+    }
   };
   return (
     <>
+      <Dialog open={props.setOpenDialogEdit} onClose={props.handleClose}>
+        {openSuccessMessage && (
+          <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
+            {openSuccessMessage}
+          </Alert>
+        )}
+        {openErrMessage && (
+          <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
+            {openErrMessage}
+          </Alert>
+        )}
+        <DialogTitle>Cập nhật nhà tài trợ</DialogTitle>
+        <DialogContent>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                style={{
+                  maxWidth: '100%',
+                  borderRadius: '30%',
+                  objectFit: 'cover',
+                  height: 200,
+                }}
+              />
+            )}
+          </div>
+          <input
+            accept="image/*"
+            id="image-input"
+            type="file"
+            style={{ display: 'none' }}
+            onChange={handleImageChange}
+          />
+          <label
+            htmlFor="image-input"
+            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 16 }}
+          >
+            <Button variant="contained" color="primary" component="span">
+              Chọn Logo
+            </Button>
+          </label>
 
     <Dialog open={props.setOpenDialogEdit} onClose={props.handleClose}>
     {openSuccessMessage && (
@@ -159,9 +204,12 @@ export function EditModal(props) {
         <Button onClick={handleSubmit}>Cập nhật nhà tài trợ</Button>
       </DialogActions>
     </Dialog>
-
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleClose}>Hủy</Button>
+          <Button onClick={handleSubmit}>Cập nhật nhà tài trợ</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
-
-

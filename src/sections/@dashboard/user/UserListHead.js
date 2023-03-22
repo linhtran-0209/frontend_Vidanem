@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 // @mui
 import { TableRow, TableCell, TableHead } from '@mui/material';
+import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -15,19 +16,19 @@ export default function UserListHead({
 }) {
 
 
+
+
   return (
     <TableHead sx={{ height: 20 }}>
-      <TableRow sx={{ height: 20 }}>
+      <TableRow sx={{ height: 20, paddingRight: 0 }}>
         {headLabel.map((headCell) => (
-          <TableCell sx={{ height: 20, fontWeight: "bold" }} key={headCell.id}>
+          <TableCell sx={{ height: 20, paddingRight: 0, fontWeight: "bold" }} key={headCell.id}>
             {headCell.label}
           </TableCell>
         ))}
       </TableRow>
-
     </TableHead>
-    
-    
   );
+  
   
 }

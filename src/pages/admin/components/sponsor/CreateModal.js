@@ -124,6 +124,7 @@ export function CreateModal(props) {
               Chọn Logo
             </Button>
           </label>
+
           <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
             <TextField
               margin="dense"
@@ -158,7 +159,7 @@ export function CreateModal(props) {
             <TextField
               margin="dense"
               label="Giới thiệu"
-              onChange={(e) => setSPONSER({ ...SPONSER, moTa: e.target.value })}
+              onChange={(e) => setSPONSER({ ...SPONSER, gioiThieu: e.target.value })}
               value={SPONSER.gioiThieu || ''}
               type="text"
               fullWidth
