@@ -17,12 +17,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
 
 export function CreateUserModal({ opendialogcreate, handleClose }) {
+  
   useEffect(() => {
     getDistricts();
   }, []);
 
   const [openEmail, setOpenEmail] = useState('');
   const [openQuyen, setOpenQuyen] = useState('');
+  const [openHoTen, setOpenHoTen] = useState('');
   const [openDistricts, setOpenDistricts] = useState([]);
   const [openQuan, setOpenQuan] = useState('');
   const [openWards, setOpenWards] = useState([]);
@@ -32,6 +34,9 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
 
   const handleChangeEmail = (event) => {
     setOpenEmail(event.target.value);
+  };
+  const handleChangeHoTen = (event) => {
+    setOpenHoTen(event.target.value);
   };
   const handleChangeQuyen = (event) => {
     setOpenQuyen(event.target.value);
@@ -73,8 +78,10 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
           url,
           {
             email: openEmail,
+            hoTen: openHoTen,
             ma_quan: openQuan,
             ma_phuong: openPhuong,
+            quyen:openQuyen
           },
           { withCredentials: true }
         )
@@ -108,10 +115,12 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
         </Alert>
       )}
       <Dialog className="dialogCreateUser" open={opendialogcreate} onClose={handleClose}>
-        <div className="titlecreateuser"> Thêm tài khoản mới
-        <IconButton className onClick={handleClose}>
-          <CloseIcon />
-        </IconButton>
+        <div className="titlecreateuser">
+          {' '}
+          Thêm tài khoản mới
+          <IconButton className onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
         </div>
         <div className="divider" />
         <DialogContent>
@@ -127,12 +136,20 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
               fullWidth
             />
           </FormControl>
+          <FormControl className="formcontrolcreateuser" variant="standard">
+            <TextField
+              htmlFor="demo-customized-textbox"
+              autoFocus
+              margin="dense"
+              id="hoTen"
+              label="Họ tên *"
+              onChange={handleChangeHoTen}
+              type="text"
+              fullWidth
+            />
+          </FormControl>
 
-          <FormControl
-            className="formcontrolcreateuser"
-            
-            variant="outlined"
-          >
+          <FormControl className="formcontrolcreateuser" variant="outlined">
             <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
             <Select
               autoFocus
@@ -152,11 +169,7 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
             </Select>
           </FormControl>
 
-          <FormControl
-            className="formcontrolcreateuser"
-            
-            variant="outlined"
-          >
+          <FormControl className="formcontrolcreateuser" variant="outlined">
             <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
             <Select
               autoFocus
@@ -175,10 +188,29 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
               ))}
             </Select>
           </FormControl>
+          <FormControl className="formcontrolupdateuser" style={{ backgroundColor: 'whitesmoke' }} variant="outlined">
+            <InputLabel id="demo-simple-select-standard-label">Quyền</InputLabel>
+            <Select
+              autoFocus
+              labelId="quyen"
+              id="quyen"
+              // value={openQuyen}
+              onChange={handleChangeQuyen}
+              label="Quyền"
+              fullWidth
+              margin="dense"
+            >
+              <MenuItem value={'1'}>Hội đồng Đội Thành phố</MenuItem>
+              <MenuItem value={'2'}>Hội đồng Đội quận, huyện</MenuItem>
+              <MenuItem value={'3'}>Cấp Liên Đội</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           {/* <Button onClick={handleClose}>Hủy</Button> */}
-          <Button className='themtaikhoan' onClick={handleSubmit}>Thêm tài khoản</Button>
+          <Button className="themtaikhoan" onClick={handleSubmit}>
+            Thêm tài khoản
+          </Button>
         </DialogActions>
       </Dialog>
     </>

@@ -24,6 +24,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  MenuItem,
 } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
@@ -43,9 +44,8 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Tên đơn vị', alignRight: false },
   { id: 'phone', label: 'Số điện thoại', alignRight: false },
   { id: 'so_luong_da_trao', label: 'Đã trao', alignRight: false },
-  { id: 'action', label: '', alignRight: false },
+  { id: 'action', label: 'Mô tả', alignRight: false },
   { id: 'action', label: 'Hành động', alignRight: false },
-
 ];
 
 // ----------------------------------------------------------------------
@@ -180,8 +180,13 @@ export default function SponserPage() {
           <Typography variant="h4" gutterBottom>
             Đơn vị bảo trợ
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpenCreate}>
-            Thêm mới
+          <Button
+            className="buttonthemdonvi"
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+            onClick={handleClickOpenCreate}
+          >
+            Thêm đơn vị bảo trợ
           </Button>
         </Stack>
         <CreateModal openDialogCreate={openSponsorCreate} handleClose={handleCloseCreate} />
@@ -194,7 +199,7 @@ export default function SponserPage() {
                 <UserListHead headLabel={TABLE_HEAD} rowCount={total} />
                 <TableBody>
                   {SPONSERLIST.map((row) => {
-                    const { _id, maDonVi, tenDonVi, SDT, soLuongDaTrao } = row;
+                    const { _id, logo, maDonVi,tenDonVi, SDT, soLuongDaTrao, moTa} = row;
                     // const selectedUser = selected.indexOf(tenDonVi) !== -1;
                     const info = { _id };
 
@@ -205,29 +210,54 @@ export default function SponserPage() {
                         onDoubleClick={(event) => handleRowClick(event, row)}
                         sx={{ cursor: 'pointer', width: '200px', height: '10px' }}
                       >
-                        <TableCell align="left" sx={{ width: '80px' }}>
+                        <TableCell style={{ height: 40 }} align="left" >
                           {maDonVi}
                         </TableCell>
 
-                        <TableCell align="left" sx={{ width: '180px' }}>
+                        <TableCell style={{ height: 40 }} align="left" >
                           {tenDonVi}
                         </TableCell>
 
-                        <TableCell align="left" sx={{ width: '180px' }}>
+                        <TableCell style={{ height: 40 }} align="left" >
                           {SDT}
                         </TableCell>
 
-                        <TableCell align="left" sx={{ width: '20px' }}>
+                        <TableCell style={{ height: 40 }} align="left" >
                           {soLuongDaTrao}
                         </TableCell>
+                        <TableCell style={{ height: 40 }} align="left">
+                          {moTa}
+                        </TableCell>
 
-                        <TableCell align="center" sx={{ width: '20px', paddingRight: -10}}>
+                        {/* <TableCell align="center" sx={{ width: '20px', paddingRight: -10 }}>
                           <Button onClick={(event) => handleRowClick(event, row)}>
-                            <Iconify style={{ color: 'green', marginRight:-80 }} icon={'eva:edit-fill'} sx={{ border: 1 }} />
+                            <Iconify
+                              style={{ color: 'green', marginRight: -80 }}
+                              icon={'eva:edit-fill'}
+                              sx={{ border: 1 }}
+                            />
                           </Button>
                           <Button onClick={(event) => handleDeleteClick(row)}>
-                          <Iconify icon={'eva:trash-2-outline'} sx={{ border: 1, color: 'error.main'}} />
+                            <Iconify icon={'eva:trash-2-outline'} sx={{ border: 1, color: 'error.main' }} />
                           </Button>
+                        </TableCell> */}
+                        <TableCell className='coliconsponser'
+                          // style={{ height: 40, display: 'inline-flex', padding: 0, borderBottom: '0', marginTop: 8 }}
+                          // align="center"
+                        >
+                          <MenuItem className='updatesponser '
+                           
+                           
+                          >
+                            <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
+                          </MenuItem>
+
+                          <MenuItem className='deletesponser'
+                            sx={{ color: 'error.main' }}
+                        
+                          >
+                            <Iconify icon={'eva:trash-2-outline'} />
+                          </MenuItem>
                         </TableCell>
                       </TableRow>
                     );

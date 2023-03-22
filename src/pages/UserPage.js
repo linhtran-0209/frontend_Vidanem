@@ -30,10 +30,10 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 import { CreateUserModal } from './admin/components/user/CreateUserModal';
+import { CreateUserExcelModal } from './admin/components/user/CreateUserExcelModal';
 import { InsertUserModal } from './admin/components/user/InsertUserModal';
 import { DeleteUserModal } from './admin/components/user/DeleteUserModal';
 import { ChangeActiveUserModal } from './admin/components/user/ChangeActiveUserModal';
-
 
 // mock
 // import USERLIST from '../_mock/us
@@ -52,6 +52,7 @@ const style = {
 
 const TABLE_HEAD = [
   { id: 'email', label: 'Email', alignRight: false },
+  { id: 'hoTen', label: 'Họ tên', alignRight: false },
   { id: 'quan', label: 'Quận/Huyện', alignRight: false },
   { id: 'phuong', label: 'Phưòng/Xã', alignRight: false },
   { id: 'isVerified', label: 'Quyền', alignRight: false },
@@ -89,7 +90,6 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
-
   const [USERLIST, setUSERLIST] = useState([]);
   useEffect(() => {
     getUser();
@@ -125,7 +125,7 @@ export default function UserPage() {
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
-
+    console.log(event.currentTarget);
     setCurrentRole(event.currentTarget.role);
     setCurrentEmail(event.currentTarget.value);
     // console.log(event.currentTarget.value);
@@ -188,6 +188,7 @@ export default function UserPage() {
   const isNotFound = !filteredUsers.length && !!filterName;
   const [selectedRow, setSelectedRow] = useState({});
   const [openDialogCreate, setOpenDialogCreate] = React.useState(false);
+  const [openCreateExcelModal, setOpenCreateExcelModal] = React.useState(false);
   const [openDialogInsert, setOpenDialogInsert] = React.useState(false);
   const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
   const [openDialogChangeActive, setOpenDialogChangeActive] = React.useState(false);
@@ -195,11 +196,15 @@ export default function UserPage() {
   const handleClickOpenCreate = () => {
     setOpenDialogCreate(true);
   };
-  const handleClickOpenInsert = (e) => {
+  const handleClickOpenCreateExcelModal = () => {
+    setOpenCreateExcelModal(true);
+  };
+  const handleClickOpenInsert = (event, row) => {
     // console.log(e);
     // setCurrentRole(quyen)
+    setSelectedRow(row);
     setOpenDialogInsert(true);
-    // console.log(row);
+    console.log(row);
   };
   const handleClickOpenDelete = (event, row) => {
     setSelectedRow(row);
@@ -211,6 +216,9 @@ export default function UserPage() {
   };
   const handleCloseCreate = () => {
     setOpenDialogCreate(false);
+  };
+  const handleCloseCreateExcel = () => {
+    setOpenCreateExcelModal(false);
   };
 
   // console.log(openDialogInsert);
@@ -270,7 +278,7 @@ export default function UserPage() {
             className="buttondanhsach"
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={handleClickOpenCreate}
+            onClick={handleClickOpenCreateExcelModal}
           >
             Danh sách
           </Button>
@@ -283,6 +291,7 @@ export default function UserPage() {
             Tài khoản mới
           </Button>
         </Stack>
+        <CreateUserExcelModal opencreateExcelModal={openCreateExcelModal} handleClose={handleCloseCreateExcel} />
         <CreateUserModal
           opendialogcreate={openDialogCreate}
           handleClose={handleCloseCreate}
@@ -312,7 +321,7 @@ export default function UserPage() {
 
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-                    const { _id, email, quan, phuong, isActive } = row;
+                    const { _id, email, hoTen, quan, phuong, isActive } = row;
                     let quyen = '';
                     if (row.quyen === 1) quyen = 'Hội đồng Đội Thành phố';
                     else if (row.quyen === 2) quyen = 'Hội đồng Đội quận, huyện';
@@ -344,6 +353,10 @@ export default function UserPage() {
                         </TableCell>
 
                         <TableCell style={{ height: 40 }} align="left">
+                          {hoTen}
+                        </TableCell>
+
+                        <TableCell style={{ height: 40 }} align="left">
                           {quan}
                         </TableCell>
 
@@ -351,7 +364,7 @@ export default function UserPage() {
                           {phuong}
                         </TableCell>
 
-                        <TableCell style={{ paddingLeft: 30 }} align="left">
+                        <TableCell style={{ paddingLeft: 17 }} align="left">
                           {quyen}
                         </TableCell>
                         <TableCell style={{ padding: 0 }} align="center">
@@ -403,18 +416,16 @@ export default function UserPage() {
                           }}
                         > */}
                         <TableCell
-                          style={{ height: 40, display: 'inline-flex', padding: 0, borderBottom: '0', marginTop: 8 }}
-                          align="center"
+                          className="colusericon"
+                          // style={{ height: 40, display: 'inline-flex', padding: 0, borderBottom: '0', marginTop: 8 }}
+                          // align="center"
                         >
-                          <MenuItem
-                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                            onClick={handleClickOpenInsert}
-                          >
+                          <MenuItem className="updateuser" onClick={(event) => handleClickOpenInsert(event, row)}>
                             <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
                           </MenuItem>
 
                           <MenuItem
-                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                            className="deleteuser"
                             sx={{ color: 'error.main' }}
                             onClick={(event) => handleClickOpenDelete(event, row)}
                           >
@@ -435,8 +446,7 @@ export default function UserPage() {
                 <InsertUserModal
                   openDialogInsert={openDialogInsert}
                   handleClose={handleCloseInsert}
-                  email={currentEmail}
-                  quyen={currentRole}
+                  row={selectedRow}
                 />
                 <DeleteUserModal
                   openDialogDelete={openDialogDelete}

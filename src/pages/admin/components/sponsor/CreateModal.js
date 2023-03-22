@@ -132,7 +132,7 @@ export function CreateModal(props) {
             value={SPONSER.maDonVi || ''}
             type="text"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
           <TextField
             autoFocus
@@ -143,7 +143,7 @@ export function CreateModal(props) {
             value={SPONSER.tenDonVi || ''}
             type="text"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
           <TextField
             autoFocus
@@ -154,7 +154,7 @@ export function CreateModal(props) {
             value={SPONSER.SDT || ''}
             type="phone"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
           <TextField
             autoFocus
@@ -165,7 +165,7 @@ export function CreateModal(props) {
             value={SPONSER.tongSoLuong || ''}
             type="text"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
           <TextField
             autoFocus
@@ -176,7 +176,7 @@ export function CreateModal(props) {
             value={SPONSER.tongSoTien || ''}
             type="text"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
           <TextField
             autoFocus
@@ -187,7 +187,7 @@ export function CreateModal(props) {
             value={SPONSER.moTa || ''}
             type="text"
             fullWidth
-            variant="standard"
+            variant="outlined"
           />
         </DialogContent>
         <DialogActions>

@@ -1,0 +1,108 @@
+.createExcelModal > div > div {
+  min-width: 800px;
+  min-height: 550px;
+  border-radius: 0px;
+}
+.titlecreateuser {
+  display: flex;
+  margin-left: 3rem;
+  font-weight: 700;
+  padding-top: 10px;
+  padding-left: 20px;
+  font-size: 20px;
+}
+.titlecreateuser > button {
+  margin-left: 25rem;
+}
+.titlecreateuser > button:hover {
+  margin-left: 25rem;
+  color: black;
+  background-color: rgb(241, 84, 84);
+}
+
+.divider {
+  height: 3px;
+  background: linear-gradient(blue, 20%, pink);
+}
+.namecontent {
+  font-weight: 600;
+  font-size: 20px;
+  text-align: center;
+  color: rgb(37, 37, 36);
+  opacity: 85%;
+}
+.groupbutton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 24px 0;
+}
+.downloadbutton {
+  width: 170px;
+  height: 40px;
+  margin-right: 8px;
+  border-radius: 0px;
+  position: relative;
+  background-color: #1f7244;
+}
+.downloadbutton:hover {
+  width: 170px;
+  height: 40px;
+  margin-right: 8px;
+  border-radius: 0px;
+  position: relative;
+  background-color: #1f7244;
+}
+.downloadbutton a {
+  text-decoration: none;
+  display: block;
+  color: white;
+  position: absolute;
+  border-radius: 0px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  line-height: 40px;
+}
+.uploadbutton {
+  width: 170px;
+  height: 40px;
+  margin-right: 8px;
+  border-radius: 0px;
+  position: relative;
+  color: white;
+  background-color: rgb(28, 28, 165);
+}
+.uploadbutton:hover {
+  width: 170px;
+  height: 40px;
+  margin-right: 8px;
+  border-radius: 0px;
+  position: relative;
+  color: white;
+  background-color: rgb(28, 28, 165);
+}
+
+.formcontrolcreateuser {
+  margin: 1rem 0rem 0.5rem 1rem;
+  min-width: 520px;
+}
+
+.formcontrolcreateuser > div {
+  border-radius: 0px;
+  background-color: aliceblue;
+}
+.formcontrolcreateuser > div:hover {
+  border: none;
+}
+.formcontrolcreateuser > div > div {
+  border-radius: 0px;
+}
+.ketqua {
+  font-weight: 600;
+  font-size: 20px;
+  text-align: center;
+  color: rgb(37, 37, 36);
+  opacity: 85%;
+}

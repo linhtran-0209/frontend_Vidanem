@@ -6,7 +6,7 @@
 }
 .titleupdateuser {
   display: flex;
-  margin: 1rem;
+  margin: 1rem 0rem 1rem 2.5rem;
   font-weight: 700;
   padding-top: 10px;
   font-size: 20px;
@@ -20,8 +20,8 @@
   background-color: rgb(241, 84, 84);
 }
 .formcontrolupdateuser {
-  margin: 1rem 0 0.5rem 3rem;
-  min-width: 450px;
+  margin: 1rem 0 0.5rem 1rem;
+  min-width: 520px;
 }
 .formcontrolupdateuser > div > div {
   border-radius: 0px;
@@ -36,7 +36,7 @@
 }
 .capnhat {
   border-radius: 0px;
-  margin-right: 20px;
+  margin-right: 30px;
   margin-bottom: 13px;
   border: 2px solid rgb(28, 28, 165);
   background-color: rgb(28, 28, 165);
