@@ -3,7 +3,7 @@
   min-height: 550px;
   border-radius: 0px;
 }
-.titlecreateuser {
+.titlecreateuserexcel {
   display: flex;
   margin-left: 3rem;
   font-weight: 700;
@@ -11,10 +11,10 @@
   padding-left: 20px;
   font-size: 20px;
 }
-.titlecreateuser > button {
+.titlecreateuserexcel > button {
   margin-left: 25rem;
 }
-.titlecreateuser > button:hover {
+.titlecreateuserexcel > button:hover {
   margin-left: 25rem;
   color: black;
   background-color: rgb(241, 84, 84);
@@ -42,6 +42,7 @@
   height: 40px;
   margin-right: 8px;
   border-radius: 0px;
+  color: white;
   position: relative;
   background-color: #1f7244;
 }

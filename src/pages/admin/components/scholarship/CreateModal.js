@@ -116,7 +116,6 @@ export function CreateModal(props) {
                 placeholder="Tên đơn vị tài trợ..."
                 value={search}
                 onChange={(e) => {
-                  console.log(e.target.value);
                   setSearch(e.target.value);
                 }}
                 fullWidth

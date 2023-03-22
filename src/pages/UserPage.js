@@ -198,8 +198,6 @@ export default function UserPage() {
     setOpenCreateExcelModal(true);
   };
   const handleClickOpenInsert = (event, row) => {
-    // console.log(e);
-    // setCurrentRole(quyen)
     setSelectedRow(row);
     setOpenDialogInsert(true);
     console.log(row);
@@ -278,7 +276,7 @@ export default function UserPage() {
             startIcon={<Iconify icon="eva:plus-fill" />}
             onClick={handleClickOpenCreateExcelModal}
           >
-            Danh sách
+            Nhập từ Excel
           </Button>
           <Button
             className="buttonThemMoi"
@@ -293,13 +291,6 @@ export default function UserPage() {
         <CreateUserModal
           opendialogcreate={openDialogCreate}
           handleClose={handleCloseCreate}
-          // quyen={quyen}
-          // quan={quan}
-          // phuong={phuong}
-          // openWards={openWards}
-          // handleChangeQuyen={handleChangeQuyen}
-          // handleChangeQuan={handleChangeQuan}
-          // handleChangePhuong={handleChangePhuong}
         />
         <Card sx={{ boxShadow: 3 }}>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />

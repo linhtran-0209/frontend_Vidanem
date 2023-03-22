@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   FormControl,
   IconButton,
   InputLabel,
@@ -16,15 +15,15 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
 
-export function CreateUserModal({ opendialogcreate, handleClose }) {
-  
+export function CreateUserModal(props) {
   useEffect(() => {
     getDistricts();
   }, []);
 
-  const [openEmail, setOpenEmail] = useState('');
+  const [account, setAccount] = useState({ email: '', hoTen: ''});
   const [openQuyen, setOpenQuyen] = useState('');
-  const [openHoTen, setOpenHoTen] = useState('');
+  const [enableQuan, setEnableQuan] = useState(false);
+  const [enablePhuong, setEnablePhuong] = useState(false);
   const [openDistricts, setOpenDistricts] = useState([]);
   const [openQuan, setOpenQuan] = useState('');
   const [openWards, setOpenWards] = useState([]);
@@ -32,14 +31,21 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
 
-  const handleChangeEmail = (event) => {
-    setOpenEmail(event.target.value);
-  };
-  const handleChangeHoTen = (event) => {
-    setOpenHoTen(event.target.value);
-  };
   const handleChangeQuyen = (event) => {
     setOpenQuyen(event.target.value);
+    if (event.target.value === 1) {
+      setEnablePhuong(false);
+      setEnableQuan(false);
+      setOpenQuan('');
+      setOpenPhuong('')
+    } else if (event.target.value === 2) {
+      setEnablePhuong(false);
+      setEnableQuan(true);
+      setOpenPhuong('')
+    } else {
+      setEnablePhuong(true);
+      setEnableQuan(true);
+    }
   };
 
   const getDistricts = async () => {
@@ -77,11 +83,11 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
         .post(
           url,
           {
-            email: openEmail,
-            hoTen: openHoTen,
+            email: account.email,
+            hoTen: account.hoTen,
             ma_quan: openQuan,
             ma_phuong: openPhuong,
-            quyen:openQuyen
+            quyen: openQuyen,
           },
           { withCredentials: true }
         )
@@ -114,26 +120,23 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
           {openErrMessage}
         </Alert>
       )}
-      <Dialog className="dialogCreateUser" open={opendialogcreate} onClose={handleClose}>
+      <Dialog className="dialogCreateUser" open={props.opendialogcreate} onClose={props.handleClose}>
         <div className="titlecreateuser">
           {' '}
           Thêm tài khoản mới
-          <IconButton className onClick={handleClose}>
+          <IconButton onClick={props.handleClose}>
             <CloseIcon />
           </IconButton>
         </div>
         <div className="divider" />
         <DialogContent>
-          <FormControl 
-          className="formcontrolcreateuser" variant="standard"
-          fullWidth>
-            <TextField 
+          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+            <TextField
               htmlFor="demo-customized-textbox"
-              autoFocus
               margin="dense"
               id="email"
               label="Địa chỉ Email *"
-              onChange={handleChangeEmail}
+              onChange={(e) => setAccount({ ...account, email: e.target.value })}
               type="email"
               fullWidth
             />
@@ -141,59 +144,22 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
           <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
             <TextField
               htmlFor="demo-customized-textbox"
-              autoFocus
               margin="dense"
               id="hoTen"
               label="Họ tên *"
-              onChange={handleChangeHoTen}
+              onChange={(e) => setAccount({ ...account, hoTen: e.target.value })}
               type="text"
               fullWidth
             />
           </FormControl>
-
-          <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
-            <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
-            <Select
-              autoFocus
-              labelId="quan"
-              id="quan"
-              // value={}
-              onChange={handleChangeQuan}
-              label="Quận"
-              fullWidth
-              margin="dense"
-            >
-              {openDistricts.map((item) => (
-                <MenuItem key={item.code} value={item.code}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
-            <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
-            <Select
-              autoFocus
-              labelId="phuong"
-              id="phuong"
-              // value={phuong}
-              onChange={handleChangePhuong}
-              label="Phường"
-              fullWidth
-              margin="dense"
-            >
-              {openWards.map((item) => (
-                <MenuItem key={item.code} value={item.code}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl className="formcontrolcreateuser" style={{ backgroundColor: 'whitesmoke' }} variant="outlined" fullWidth>
+          <FormControl
+            className="formcontrolcreateuser"
+            style={{ backgroundColor: 'whitesmoke' }}
+            variant="outlined"
+            fullWidth
+          >
             <InputLabel id="demo-simple-select-standard-label">Quyền</InputLabel>
             <Select
-              autoFocus
               labelId="quyen"
               id="quyen"
               // value={openQuyen}
@@ -202,11 +168,93 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
               fullWidth
               margin="dense"
             >
-              <MenuItem value={'1'}>Hội đồng Đội Thành phố</MenuItem>
-              <MenuItem value={'2'}>Hội đồng Đội quận, huyện</MenuItem>
-              <MenuItem value={'3'}>Cấp Liên Đội</MenuItem>
+              <MenuItem value={1}>Hội đồng Đội Thành phố</MenuItem>
+              <MenuItem value={2}>Hội đồng Đội quận, huyện</MenuItem>
+              <MenuItem value={3}>Cấp Liên Đội</MenuItem>
             </Select>
           </FormControl>
+
+          {enableQuan ? (
+            <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
+              <Select
+                labelId="quan"
+                id="quan"
+                value={openQuan}
+                onChange={handleChangeQuan}
+                label="Quận"
+                fullWidth
+                margin="dense"
+              >
+                {openDistricts.map((item) => (
+                  <MenuItem key={item.code} value={item.code}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          ) : (
+            <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
+              <Select
+                disabled
+                labelId="quan"
+                id="quan"
+                value={openQuan}
+                onChange={handleChangeQuan}
+                label="Quận"
+                fullWidth
+                margin="dense"
+              >
+                {openDistricts.map((item) => (
+                  <MenuItem key={item.code} value={item.code}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+
+          {enablePhuong ? (
+            <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
+              <Select
+                labelId="phuong"
+                id="phuong"
+                value={openPhuong}
+                onChange={handleChangePhuong}
+                label="Phường"
+                fullWidth
+                margin="dense"
+              >
+                {openWards.map((item) => (
+                  <MenuItem key={item.code} value={item.code}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          ) : (
+            <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
+              <Select
+                disabled
+                labelId="phuong"
+                id="phuong"
+                value={openPhuong}
+                onChange={handleChangePhuong}
+                label="Phường"
+                fullWidth
+                margin="dense"
+              >
+                {openWards.map((item) => (
+                  <MenuItem key={item.code} value={item.code}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
         </DialogContent>
         <DialogActions>
           {/* <Button onClick={handleClose}>Hủy</Button> */}
