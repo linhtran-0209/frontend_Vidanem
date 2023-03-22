@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  FormControl
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
@@ -18,10 +19,10 @@ export function EditModal(props) {
   const [openErrMessage, setOpenErrMessage] = useState('');
 
   useEffect(() => {
-    if (props.id) {
+    if (props.row) {
       getSponser();
     }
-  }, [props.id]);
+  }, [props.row]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -33,7 +34,8 @@ export function EditModal(props) {
 
   const getSponser = async () => {
     try {
-      const url = `http://localhost:5000/api/v1/sponsor/byId?id=${props.id._id}`;
+      console.log(props.row)
+      const url = `http://localhost:5000/api/v1/sponsor/byId?id=${props.row._id}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setSPONSER(data.data);
       setPreview(data.data.logo)
@@ -44,7 +46,7 @@ export function EditModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `http://localhost:5000/api/v1/sponsor/update?id=${props.id._id}`;
+      const url = `http://localhost:5000/api/v1/sponsor/update?id=${props.row._id}`;
 
       const formData = new FormData();
       formData.append('logo', SPONSER.logo);
@@ -85,6 +87,7 @@ export function EditModal(props) {
       </Alert>
     )}
       <DialogTitle>Cập nhật nhà tài trợ</DialogTitle>
+      <div className="divider" />
       <DialogContent>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           {preview && (
@@ -93,7 +96,7 @@ export function EditModal(props) {
               alt="Preview"
               style={{
                 maxWidth: '100%',
-                borderRadius: '30%',
+                // borderRadius: '30%',
                 objectFit: 'cover',
                 height: 200
               }}
@@ -110,72 +113,46 @@ export function EditModal(props) {
           </Button>
         </label>
 
-        <TextField
-          autoFocus
-          margin="dense"
-          id="code"
-          label="Mã đơn vị"
-          onChange={(e) => setSPONSER({ ...SPONSER, maDonVi: e.target.value })}
-          value={SPONSER.maDonVi || ''}
-          type="text"
-          fullWidth
-          variant="standard"
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="Tên đơn vị tài trợ"
-          onChange={(e) => setSPONSER({ ...SPONSER, tenDonVi: e.target.value })}
-          value={SPONSER.tenDonVi || ''}
-          type="text"
-          fullWidth
-          variant="standard"
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          id="phone"
-          label="Số điện thoại"
-          onChange={(e) => setSPONSER({ ...SPONSER, SDT: e.target.value })}
-          value={SPONSER.SDT || ''}
-          type="phone"
-          fullWidth
-          variant="standard"
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          id="tong_so_luong"
-          label="Tổng số lượng"
-          onChange={(e) => setSPONSER({ ...SPONSER, tongSoLuong: e.target.value })}
-          value={SPONSER.tongSoLuong || ''}
-          type="text"
-          fullWidth
-          variant="standard"
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          id="tong_so_tien"
-          label="Tổng số tiền"
-          onChange={(e) => setSPONSER({ ...SPONSER, tongSoTien: e.target.value })}
-          value={SPONSER.tongSoTien || ''}
-          type="text"
-          fullWidth
-          variant="standard"
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          id="mo_ta"
-          label="Mô tả"
-          onChange={(e) => setSPONSER({ ...SPONSER, moTa: e.target.value })}
-          value={SPONSER.moTa || ''}
-          type="text"
-          fullWidth
-          variant="standard"
-        />
+        <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+            <TextField
+              margin="dense"
+              label="Mã đơn vị"
+              onChange={(e) => setSPONSER({ ...SPONSER, maDonVi: e.target.value })}
+              value={SPONSER.maDonVi || ''}
+              type="text"
+              fullWidth
+            />
+          </FormControl>
+          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+            <TextField
+              margin="dense"
+              label="Tên đơn vị tài trợ"
+              onChange={(e) => setSPONSER({ ...SPONSER, tenDonVi: e.target.value })}
+              value={SPONSER.tenDonVi || ''}
+              type="text"
+              fullWidth
+            />
+          </FormControl>
+          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+            <TextField
+              margin="dense"
+              label="Số điện thoại"
+              onChange={(e) => setSPONSER({ ...SPONSER, SDT: e.target.value })}
+              value={SPONSER.SDT || ''}
+              type="phone"
+              fullWidth
+            />
+          </FormControl>
+          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+            <TextField
+              margin="dense"
+              label="Giới thiệu"
+              onChange={(e) => setSPONSER({ ...SPONSER, moTa: e.target.value })}
+              value={SPONSER.gioiThieu || ''}
+              type="text"
+              fullWidth
+            />
+          </FormControl>
       </DialogContent>
       <DialogActions>
         <Button onClick={props.handleClose}>Hủy</Button>

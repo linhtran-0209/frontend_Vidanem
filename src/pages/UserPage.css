@@ -10,7 +10,7 @@
 .buttondanhsach:hover{
     background-color:#1F7244 ;
 }
-.buttontaikhoanmoi{
+.buttonThemMoi{
     border-radius: 0px;
     border: 2px solid rgb(28, 28, 165);
     background-color:rgb(28, 28, 165) ;
@@ -19,6 +19,6 @@
     height: 40px;
     width: 150px;
 }
-.buttontaikhoanmoi{
+.buttonThemMoi{
    
 }

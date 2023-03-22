@@ -128,8 +128,6 @@ export default function UserPage() {
 
     setCurrentRole(event.currentTarget.role);
     setCurrentEmail(event.currentTarget.value);
-    // console.log(event.currentTarget.value);
-    // console.log(event.currentTarget.role);
   };
 
   const handleCloseMenu = () => {
@@ -275,7 +273,7 @@ export default function UserPage() {
             Danh sách
           </Button>
           <Button
-            className="buttontaikhoanmoi"
+            className="buttonThemMoi"
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
             onClick={handleClickOpenCreate}

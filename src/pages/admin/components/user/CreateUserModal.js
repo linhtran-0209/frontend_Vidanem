@@ -115,8 +115,10 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
         </div>
         <div className="divider" />
         <DialogContent>
-          <FormControl className="formcontrolcreateuser" variant="standard">
-            <TextField
+          <FormControl 
+          className="formcontrolcreateuser" variant="standard"
+          fullWidth>
+            <TextField 
               htmlFor="demo-customized-textbox"
               autoFocus
               margin="dense"
@@ -130,7 +132,7 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
 
           <FormControl
             className="formcontrolcreateuser"
-            
+            fullWidth
             variant="outlined"
           >
             <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
@@ -154,7 +156,7 @@ export function CreateUserModal({ opendialogcreate, handleClose }) {
 
           <FormControl
             className="formcontrolcreateuser"
-            
+            fullWidth
             variant="outlined"
           >
             <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>

@@ -17,6 +17,11 @@ const navConfig = [
     icon: icon('ic_user'),
   },
   {
+    title: 'Học bổng',
+    path: '/dashboard/scholarship',
+    icon: icon('ic_scholarship'),
+  },
+  {
     title: 'Nhà tài trợ',
     path: '/dashboard/sponser',
     icon: icon('ic_sponser'),

@@ -12,6 +12,7 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import SponserPage from './pages/SponserPage';
 import DashboardAppPage from './pages/DashboardAppPage';
+import ScholarshipPage from './pages/ScholarshipPage'
 import ChildrenPage from './pages/ChildrenPage';
 // import AccountPopover from './layouts/dashboard/header/AccountPopover';
 
@@ -49,6 +50,7 @@ export default function Router() {
         { element: <Navigate to="/dashboard/app" />},
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'users', element: <UserPage /> },
+        { path: 'scholarship', element: <ScholarshipPage /> },
         { path: 'sponser', element: <SponserPage /> },
         { path: 'blog', element: <BlogPage /> },
         {path:"children", element:<ChildrenPage/>},

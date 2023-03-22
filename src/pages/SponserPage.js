@@ -4,10 +4,10 @@ import { Helmet } from 'react-helmet-async';
 import Button from '@mui/material/Button';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
+import MenuItem from '@mui/material/MenuItem';
 
 // @mui
 import {
-  Alert,
   Card,
   Table,
   Stack,
@@ -20,10 +20,6 @@ import {
   TableContainer,
   Box,
   Pagination,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
@@ -32,6 +28,7 @@ import { EditModal } from './admin/components/sponsor/EditModal';
 // sections
 import { UserListHead } from '../sections/@dashboard/user';
 import { CreateModal } from './admin/components/sponsor/CreateModal';
+import { DeleteSponsorModal } from './admin/components/sponsor/DeleteSponsorModal';
 import SponserToolbar from '../sections/@dashboard/sponsers/SponserToolbar';
 
 // mock
@@ -39,13 +36,12 @@ import SponserToolbar from '../sections/@dashboard/sponsers/SponserToolbar';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: 'logo', label: 'Logo', alignRight: false },
   { id: 'ma_don_vi', label: 'Mã đơn vị', alignRight: false },
   { id: 'name', label: 'Tên đơn vị', alignRight: false },
   { id: 'phone', label: 'Số điện thoại', alignRight: false },
   { id: 'so_luong_da_trao', label: 'Đã trao', alignRight: false },
-  { id: 'action', label: '', alignRight: false },
   { id: 'action', label: 'Hành động', alignRight: false },
-
 ];
 
 // ----------------------------------------------------------------------
@@ -56,11 +52,10 @@ export default function SponserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [total, setTotal] = useState(0);
   const [SPONSERLIST, setSPONSERLIST] = useState([]);
-  const [selectedRow, setSelectedRow] = useState({ _id: '', tenDonVi: '' });
+  const [selectedRow, setSelectedRow] = useState({});
   const [openSponsorCreate, setOpenSponsorCreate] = React.useState(false);
   const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
-  const [openSuccessMessage, setOpenSuccessMessage] = useState('');
-  const [openErrMessage, setOpenErrMessage] = useState('');
+  const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
 
   useEffect(() => {
     getSponser();
@@ -123,11 +118,10 @@ export default function SponserPage() {
       console.log(err);
     }
   };
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const handleDeleteClick = (row) => {
     setSelectedRow(row);
-    setShowDeleteDialog(true);
+    setOpenDialogDelete(true);
   };
 
   const handleFilterByName = (event) => {
@@ -143,34 +137,12 @@ export default function SponserPage() {
     setOpenDialogEdit(true);
   };
 
-  const handleCloseDialog = () => {
-    setShowDeleteDialog(false);
-  };
-
-  const handleDelete = async () => {
-    const url = `http://localhost:5000/api/v1/sponsor/delete?id=${selectedRow._id}`;
-    await axios.delete(url, { withCredentials: true }).then((res) => {
-      if (res.status === 200) {
-        setOpenSuccessMessage(res.data.message);
-      } else setOpenErrMessage(res.data.message);
-    });
-    setShowDeleteDialog(false);
-    await axios.delete(url, { withCredentials: true });
-    // setShowDeleteDialog(false);
+  const handleCloseDelete = () => {
+    setOpenDialogDelete(false);
   };
 
   return (
     <>
-      {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
-          {openSuccessMessage}
-        </Alert>
-      )}
-      {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
-          {openErrMessage}
-        </Alert>
-      )}
       <Helmet>
         <title> Nhà tài trợ</title>
       </Helmet>
@@ -180,7 +152,12 @@ export default function SponserPage() {
           <Typography variant="h4" gutterBottom>
             Đơn vị bảo trợ
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpenCreate}>
+          <Button
+            className="buttonThemMoi"
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+            onClick={handleClickOpenCreate}
+          >
             Thêm mới
           </Button>
         </Stack>
@@ -194,7 +171,7 @@ export default function SponserPage() {
                 <UserListHead headLabel={TABLE_HEAD} rowCount={total} />
                 <TableBody>
                   {SPONSERLIST.map((row) => {
-                    const { _id, maDonVi, tenDonVi, SDT, soLuongDaTrao } = row;
+                    const { _id, logo, maDonVi, tenDonVi, SDT, soLuongDaTrao } = row;
                     // const selectedUser = selected.indexOf(tenDonVi) !== -1;
                     const info = { _id };
 
@@ -203,31 +180,38 @@ export default function SponserPage() {
                         hover
                         key={_id}
                         onDoubleClick={(event) => handleRowClick(event, row)}
-                        sx={{ cursor: 'pointer', width: '200px', height: '10px' }}
+                        // style={{ height: 40, borderBottom: '1.59px solid rgba(192,192,192,0.3)' }}
+                        sx={{ cursor: 'pointer', width: '200px', height: '60px' }}
                       >
-                        <TableCell align="left" sx={{ width: '80px' }}>
-                          {maDonVi}
+                        <TableCell align="center">
+                          <img src={logo} alt="Logo" width="40" height="40" />
                         </TableCell>
 
-                        <TableCell align="left" sx={{ width: '180px' }}>
-                          {tenDonVi}
-                        </TableCell>
+                        <TableCell align="left">{maDonVi}</TableCell>
 
-                        <TableCell align="left" sx={{ width: '180px' }}>
-                          {SDT}
-                        </TableCell>
+                        <TableCell align="left">{tenDonVi}</TableCell>
 
-                        <TableCell align="left" sx={{ width: '20px' }}>
-                          {soLuongDaTrao}
-                        </TableCell>
+                        <TableCell align="left">{SDT}</TableCell>
 
-                        <TableCell align="center" sx={{ width: '20px', paddingRight: -10}}>
-                          <Button onClick={(event) => handleRowClick(event, row)}>
-                            <Iconify style={{ color: 'green', marginRight:-80 }} icon={'eva:edit-fill'} sx={{ border: 1 }} />
-                          </Button>
-                          <Button onClick={(event) => handleDeleteClick(row)}>
-                          <Iconify icon={'eva:trash-2-outline'} sx={{ border: 1, color: 'error.main'}} />
-                          </Button>
+                        <TableCell align="left">{soLuongDaTrao}</TableCell>
+
+                        <TableCell style={{ display: 'inline-flex' }} align="center">
+                          <MenuItem
+                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                            onClick={(event) => handleRowClick(event, row)}
+                            align="center"
+                          >
+                            <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
+                          </MenuItem>
+
+                          <MenuItem
+                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                            sx={{ color: 'error.main' }}
+                            onClick={(event) => handleDeleteClick(row)}
+                            align="center"
+                          >
+                            <Iconify icon={'eva:trash-2-outline'} />
+                          </MenuItem>
                         </TableCell>
                       </TableRow>
                     );
@@ -238,19 +222,14 @@ export default function SponserPage() {
                     </TableRow>
                   )}
                 </TableBody>
-                <Dialog open={showDeleteDialog} onClose={handleCloseDialog}>
-                  <DialogTitle>Xác nhận xóa</DialogTitle>
-                  <DialogContent>Bạn có chắc muốn xóa đơn vị tài trợ {selectedRow.tenDonVi}?</DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleCloseDialog}>Hủy</Button>
-                    <Button color="error" onClick={handleDelete}>
-                      Xóa
-                    </Button>
-                  </DialogActions>
-                </Dialog>
 
-                <EditModal setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} id={selectedRow} />
+                <EditModal setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} row={selectedRow} />
 
+                <DeleteSponsorModal
+                  openDialogDelete={openDialogDelete}
+                  handleClose={handleCloseDelete}
+                  row={selectedRow}
+                />
                 {/* <EditModal
                   setOpenDialogEdit={openDialogEdit}
                   handleClose={handleCloseEdit}
@@ -271,7 +250,7 @@ export default function SponserPage() {
                           </Typography>
 
                           <Typography variant="body2">
-                            Không tìm thấy đươn vị bảo trợ có tên là &nbsp;
+                            Không tìm thấy đơn vị bảo trợ có tên là &nbsp;
                             <strong>&quot;{filterName}&quot;</strong>.
                             <br /> Hãy thử kiểm tra lỗi chính tả hoặc sử dụng các từ hoàn chỉnh.
                           </Typography>
