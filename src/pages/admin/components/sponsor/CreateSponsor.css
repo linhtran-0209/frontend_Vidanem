@@ -9,10 +9,10 @@
     font-size: 20px;
   }
   .titlecreateuser > button {
-    margin-left: 21rem;
+    margin-left: 20rem;
   }
   .titlecreateuser > button:hover {
-    margin-left: 21rem;
+    margin-left: 20rem;
     color: black;
     background-color: rgb(241, 84, 84);
   }

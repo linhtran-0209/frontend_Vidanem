@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
-import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from '@mui/material';
+import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment, FormControl, InputLabel, Select, Button } from '@mui/material';
 // component
 import Iconify from '../../../components/iconify';
+
 
 // ----------------------------------------------------------------------
 
@@ -15,7 +16,7 @@ const StyledRoot = styled(Toolbar)(({ theme }) => ({
 }));
 
 const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
-  width: 240,
+  width: 320,
   transition: theme.transitions.create(['box-shadow', 'width'], {
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.shorter,
@@ -57,28 +58,76 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
         <StyledSearch sx={{height:40}}
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search user..."
+          placeholder="Email..."
           startAdornment={
             <InputAdornment position="start">
               <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
             </InputAdornment>
           }
         />
+        
       )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <Iconify icon="eva:trash-2-fill" />
-          </IconButton>
+ 
+      <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
+              <Select
+                labelId="quan"
+                id="quan"
+                // value={openQuan}
+                // onChange={handleChangeQuan}
+                label="Quận"
+                
+                margin="dense"
+              >
+                {/* {openDistricts.map((item) => (
+                  <MenuItem key={item.code} value={item.code}>
+                    {item.name}
+                  </MenuItem>
+                ))} */}
+              </Select>
+            </FormControl>
+            <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
+              <Select
+                labelId="quan"
+                id="quan"
+                // value={openQuan}
+                // onChange={handleChangeQuan}
+                label="Quận"
+                
+                margin="dense"
+              >
+                {/* {openDistricts.map((item) => (
+                  <MenuItem key={item.code} value={item.code}>
+                    {item.name}
+                  </MenuItem>
+                ))} */}
+              </Select>
+            </FormControl>
+            <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-standard-label">Quyền</InputLabel>
+              <Select
+                labelId="quan"
+                id="quan"
+                // value={openQuan}
+                // onChange={handleChangeQuan}
+                label="Quận"
+                
+                margin="dense"
+              >
+                {/* {openDistricts.map((item) => (
+                  <MenuItem key={item.code} value={item.code}>
+                    {item.name}
+                  </MenuItem>
+                ))} */}
+              </Select>
+            </FormControl>
+            <Tooltip title="Tìm kiếm" sx={{marginLeft: 2}}>
+        <Button variant="contained" >
+            Tìm kiếm
+        </Button>
+       
         </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <Iconify icon="ic:round-filter-list" />
-          </IconButton>
-        </Tooltip>
-      )}
     </StyledRoot>
   );
 }

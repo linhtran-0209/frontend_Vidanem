@@ -10,7 +10,10 @@ import {
   FormControl,
   MenuItem,
   Select,
+  InputLabel,
+  IconButton,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
 
 export function CreateModal(props) {
@@ -89,7 +92,13 @@ export function CreateModal(props) {
       )}
 
       <Dialog open={props.openDialogCreate} onClose={props.handleClose}>
-        <DialogTitle>Thêm học bổng</DialogTitle>
+      <div className="titlecreateuser">
+          {' '}
+          Thêm học bổng
+          {/* <IconButton onClick={props.handleClose}>
+            <CloseIcon />
+          </IconButton> */}
+        </div>
         <div className="divider" />
         <DialogContent>
           <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
@@ -111,6 +120,7 @@ export function CreateModal(props) {
             />
           </FormControl>
           <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
+            <InputLabel id="demo-simple-select-standard-label">Đơn vị tài trợ</InputLabel>
             <Select onChange={handleChange} label="Đơn vị tài trợ" value={selected} fullWidth margin="dense">
               <TextField
                 placeholder="Tên đơn vị tài trợ..."
@@ -120,7 +130,7 @@ export function CreateModal(props) {
                 }}
                 fullWidth
                 inputProps={{
-                  autoComplete: "off"
+                  autoComplete: 'off',
                 }}
               />
 

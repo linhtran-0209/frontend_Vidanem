@@ -12,6 +12,9 @@ import {StylesUserPages} from './pages/UserPage.css';
 import {StylesUpdateUserModal} from './pages/admin/components/user/InsertUserModal.css';
 import {StylesDeleteUserModal}from './pages/admin/components/user/DeleteUserModal.css';
 import {StyleSponsorPage} from './pages/SponserPage.css';
+// import {StylesCreateSponsor} from './pages/admin/components/sponsor/CreateSponsor.css'
+import {styleSearchSponser} from './sections/@dashboard/user/UserListToolbar.css';
+// import {styleCreateScholarship} from './pages/admin/components/scholarship/CreateScholarshipModal.css'
 // import {StyleCreateSponsor} from './pages/admin/components';
 
 // import {Global} from './utils/global.css';

@@ -5,6 +5,7 @@ import { Toolbar, Tooltip, Button, Typography, OutlinedInput, InputAdornment } f
 // component
 import Iconify from '../../../components/iconify';
 
+
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled(Toolbar)(({ theme }) => ({
@@ -15,7 +16,7 @@ const StyledRoot = styled(Toolbar)(({ theme }) => ({
 }));
 
 const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
-  width: 240,
+  width: 320,
   transition: theme.transitions.create(['box-shadow', 'width'], {
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.shorter,
@@ -61,8 +62,9 @@ export default function ScholarshipToolbar({ filterName, onFilterName, onClickSe
         <Button variant="contained" onClick={onClickSearch}>
             Tìm kiếm
         </Button>
+       
         </Tooltip>
-
+        
     </StyledRoot>
   );
 }

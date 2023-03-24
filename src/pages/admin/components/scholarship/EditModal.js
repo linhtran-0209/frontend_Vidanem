@@ -197,7 +197,7 @@ export function EditModal(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={props.handleClose}>Hủy</Button>
-          <Button onClick={handleSubmit}>Cập nhật nhà tài trợ</Button>
+          <Button onClick={handleSubmit}>Cập nhật học bổng</Button>
         </DialogActions>
       </Dialog>
     </>

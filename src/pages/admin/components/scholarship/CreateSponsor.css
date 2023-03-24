@@ -8,10 +8,10 @@
     padding-top: 10px;
     font-size: 20px;
   }
-  .titlecreateuser > button {
+  .titlecreatesuser > button {
     margin-left: 21rem;
   }
-  .titlecreateuser > button:hover {
+  .titlecreatesuser > button:hover {
     margin-left: 21rem;
     color: black;
     background-color: rgb(241, 84, 84);

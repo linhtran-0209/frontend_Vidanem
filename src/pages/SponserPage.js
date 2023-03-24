@@ -40,7 +40,7 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Tên đơn vị', alignRight: false },
   { id: 'phone', label: 'Số điện thoại', alignRight: false },
   { id: 'so_luong_da_trao', label: 'Đã trao', alignRight: false },
-  { id: 'action', label: '', alignRight: false },
+  { id: 'action', label: 'Hành động', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------

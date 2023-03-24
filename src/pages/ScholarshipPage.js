@@ -39,7 +39,7 @@ const TABLE_HEAD = [
   { id: 'ten_hoc_bong', label: 'Tên học bổng', alignRight: false },
   { id: 'so_luong', label: 'Số lượng', alignRight: false },
   { id: 'ghi_chu', label: 'Ghi chú', alignRight: false },
-  { id: 'action', label: '', alignRight: false },
+  { id: 'action', label: 'Hành động', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------

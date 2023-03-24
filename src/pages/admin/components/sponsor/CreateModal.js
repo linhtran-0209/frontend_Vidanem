@@ -8,7 +8,9 @@ import {
   DialogTitle,
   TextField,
   FormControl,
+  IconButton,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
 
 export function CreateModal(props) {
@@ -92,7 +94,13 @@ export function CreateModal(props) {
       )}
 
       <Dialog open={props.openDialogCreate} onClose={props.handleClose}>
-        <DialogTitle>Thêm nhà tài trợ mới</DialogTitle>
+      <div className="titlecreateuser">
+          {' '}
+          Thêm nhà tài trợ mới
+          {/* <IconButton>IconButton onClick={props.handleClose}>
+            <CloseIcon />
+          </IconButton> */}
+        </div>
         <div className="divider" />
         <DialogContent>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
