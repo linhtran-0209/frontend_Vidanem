@@ -24,7 +24,7 @@ export function EditModal(props) {
   const [openErrMessage, setOpenErrMessage] = useState('');
 
   const getSponsorList = async () => {
-    const url = `http://localhost:5000/api/v1/sponsor/getAll`;
+    const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
     const { data } = await axios.get(url, { withCredentials: true });
     setSPONSERLIST(data.data);
   };
@@ -41,7 +41,7 @@ export function EditModal(props) {
 
   const getScholarship = async () => {
     try {
-      const url = `http://localhost:5000/api/v1/scholarship/byId?id=${props.row._id}`;
+      const url = `${process.env.REACT_APP_API_URL}/scholarship/byId?id=${props.row._id}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setScholarship(data.data);
       console.log(data.data.donViTaiTro);
@@ -63,7 +63,7 @@ export function EditModal(props) {
   const handleSubmit = async () => {
     try {
       console.log(selected);
-      const url = `http://localhost:5000/api/v1/scholarship/update?id=${props.row._id}`;
+      const url = `${process.env.REACT_APP_API_URL}/scholarship/update?id=${props.row._id}`;
 
       // await axios
       //   .post(
@@ -143,7 +143,7 @@ export function EditModal(props) {
                 onChange={(e) => setSearch(e.target.value)}
                 fullWidth
                 inputProps={{
-                  autoComplete: "off"
+                  autoComplete: 'off',
                 }}
               />
 

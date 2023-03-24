@@ -62,7 +62,7 @@ export default function SponserPage() {
 
   const getSponser = async () => {
     try {
-      const url = `http://localhost:5000/api/v1/sponsor/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setSPONSERLIST(data.data);
@@ -74,7 +74,7 @@ export default function SponserPage() {
 
   const handleSearch = async () => {
     try {
-      const url = `http://localhost:5000/api/v1/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setSPONSERLIST(data.data);
@@ -95,7 +95,7 @@ export default function SponserPage() {
     setOpenDialogEdit(false);
 
     try {
-      const url = `http://localhost:5000/api/v1/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setSPONSERLIST(data.data);
@@ -108,7 +108,7 @@ export default function SponserPage() {
   const handleChangePage = async (event, newPage) => {
     setPage(newPage - 1);
     try {
-      const url = `http://localhost:5000/api/v1/sponsor/getAll?keyword=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?keyword=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setSPONSERLIST(data.data);

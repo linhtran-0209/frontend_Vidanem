@@ -1,4 +1,3 @@
-
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -88,7 +87,7 @@ export default function UserPage() {
 
   const getUser = async () => {
     try {
-      const url = `http://localhost:5000/api/v1/account/getAll`;
+      const url = `${process.env.REACT_APP_API_URL}/account/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setUSERLIST(data.data);
@@ -183,12 +182,12 @@ export default function UserPage() {
       <Helmet>
         <title> Children</title>
       </Helmet>
-      <Container style={{marginTop: -10}}>
-        <Stack style={{marginBottom: 16}} direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+      <Container style={{ marginTop: -10 }}>
+        <Stack style={{ marginBottom: 16 }} direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Tất cả trẻ em
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}onClick={handleClickOpen}>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpen}>
             Thêm trẻ em
           </Button>
         </Stack>
@@ -198,42 +197,10 @@ export default function UserPage() {
             {/* <DialogContentText>
               To subscribe to this website, please enter your email address here. We will send updates occasionally.
             </DialogContentText> */}
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Họ và tên"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="date"
-              label="Ngày sinh"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="school"
-              label="Trường"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="address"
-              label="Địa chỉ"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
+            <TextField autoFocus margin="dense" id="name" label="Họ và tên" type="text" fullWidth variant="standard" />
+            <TextField autoFocus margin="dense" id="date" label="Ngày sinh" type="text" fullWidth variant="standard" />
+            <TextField autoFocus margin="dense" id="school" label="Trường" type="text" fullWidth variant="standard" />
+            <TextField autoFocus margin="dense" id="address" label="Địa chỉ" type="text" fullWidth variant="standard" />
             <TextField
               autoFocus
               margin="dense"

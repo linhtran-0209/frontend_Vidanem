@@ -25,7 +25,7 @@ export default function DashboardAppPage() {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const url = `http://localhost:5000/api/v1/currentUser`;
+        const url = `${process.env.REACT_APP_API_URL}/currentUser`;
         const { data } = await axios.get(url, { withCredentials: true });
         const parse = data.data.email;
         setUser(parse);

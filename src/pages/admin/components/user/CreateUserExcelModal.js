@@ -1,12 +1,6 @@
 import axios from 'axios';
 import clsx from 'clsx';
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Button, Dialog, DialogContent, IconButton, Typography } from '@mui/material';
 import UploadIcon from '@mui/icons-material/Upload';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
@@ -19,7 +13,7 @@ export function CreateUserExcelModal(props) {
 
   const handleDownloadTemplate = async () => {
     try {
-      const url = `http://localhost:5000/api/v1/account/getTemplate`;
+      const url = `${process.env.REACT_APP_API_URL}/account/getTemplate`;
       const response = await axios.get(url, {
         withCredentials: true,
         responseType: 'blob', // set the response type to blob
@@ -42,24 +36,25 @@ export function CreateUserExcelModal(props) {
   };
 
   const handleRemove = () => {
-    setFile(null)
-    setMessage(null)
-    setFailure(0)
-  }
+    setFile(null);
+    setMessage(null);
+    setFailure(0);
+  };
   const handleSubmitFile = async () => {
-    const url = `http://localhost:5000/api/v1/account/importExcel`
+    const url = `${process.env.REACT_APP_API_URL}/account/importExcel`;
     const formData = new FormData();
     formData.append('excel', file);
     await axios
-    .post(url, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      withCredentials: true,
-    }).then((res) => {
+      .post(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
+      })
+      .then((res) => {
         setMessage(res.data.message);
         if (res.status !== 200) {
-            setFailure(res.data.failure)
+          setFailure(res.data.failure);
         }
       });
   };
@@ -117,12 +112,15 @@ export function CreateUserExcelModal(props) {
             <Typography className="ketqua">Kết quả</Typography>
           </div>
           <div>
-            {failure === 0 && <p style={{color: 'green'}}>{message}</p>}
-            {failure !== 0 && 
-            <>
-            <p className="ketqua" style={{ color: 'red' }}>Lỗi: {failure}</p>
-            <p style={{ color: 'red' }}>{message}</p>
-            </>}
+            {failure === 0 && <p style={{ color: 'green' }}>{message}</p>}
+            {failure !== 0 && (
+              <>
+                <p className="ketqua" style={{ color: 'red' }}>
+                  Lỗi: {failure}
+                </p>
+                <p style={{ color: 'red' }}>{message}</p>
+              </>
+            )}
           </div>
         </DialogContent>
       </Dialog>

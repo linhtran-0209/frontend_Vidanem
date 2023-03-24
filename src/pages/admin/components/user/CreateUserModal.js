@@ -20,7 +20,7 @@ export function CreateUserModal(props) {
     getDistricts();
   }, []);
 
-  const [account, setAccount] = useState({ email: '', hoTen: ''});
+  const [account, setAccount] = useState({ email: '', hoTen: '' });
   const [openQuyen, setOpenQuyen] = useState('');
   const [enableQuan, setEnableQuan] = useState(false);
   const [enablePhuong, setEnablePhuong] = useState(false);
@@ -37,11 +37,11 @@ export function CreateUserModal(props) {
       setEnablePhuong(false);
       setEnableQuan(false);
       setOpenQuan('');
-      setOpenPhuong('')
+      setOpenPhuong('');
     } else if (event.target.value === 2) {
       setEnablePhuong(false);
       setEnableQuan(true);
-      setOpenPhuong('')
+      setOpenPhuong('');
     } else {
       setEnablePhuong(true);
       setEnableQuan(true);
@@ -78,7 +78,7 @@ export function CreateUserModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `http://localhost:5000/api/v1/account/insert`;
+      const url = `${process.env.REACT_APP_API_URL}/account/insert`;
       await axios
         .post(
           url,
