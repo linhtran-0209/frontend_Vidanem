@@ -1,10 +1,23 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 // @mui
+import MenuItem from '@mui/material/MenuItem';
 import { styled, alpha } from '@mui/material/styles';
-import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment, FormControl, InputLabel, Select, Button } from '@mui/material';
+import {
+  Toolbar,
+  Tooltip,
+  IconButton,
+  Typography,
+  OutlinedInput,
+  InputAdornment,
+  FormControl,
+  InputLabel,
+  Select,
+  Button,
+} from '@mui/material';
 // component
 import Iconify from '../../../components/iconify';
-
 
 // ----------------------------------------------------------------------
 
@@ -39,72 +52,75 @@ UserListToolbar.propTypes = {
   onFilterName: PropTypes.func,
 };
 
-export default function UserListToolbar({ numSelected, filterName, onFilterName }) {
+export default function UserListToolbar({
+  filterName,
+  onFilterName,
+  quan,
+  handleChangeQuan,
+  openWards,
+  phuong,
+  handleChangePhuong,
+  onClickSearch,
+}) {
+  const [openDistricts, setOpenDistricts] = useState([]);
+  useEffect(() => {
+    getDistricts();
+  }, []);
+  const getDistricts = async () => {
+    try {
+      const url = `https://provinces.open-api.vn/api/p/79?depth=2`;
+      const { data } = await axios.get(url);
+
+      setOpenDistricts(data.districts);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <StyledRoot
       sx={{
-        height:50,
-        ...(numSelected > 0 && {
-          color: 'primary.main',
-          bgcolor: 'primary.lighter',
-        }),
+        height: 50,
       }}
     >
-      {numSelected > 0 ? (
-        <Typography component="div" variant="subtitle1">
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <StyledSearch sx={{height:40}}
-          value={filterName}
-          onChange={onFilterName}
-          placeholder="Email..."
-          startAdornment={
-            <InputAdornment position="start">
-              <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
-            </InputAdornment>
-          }
-        />
-        
-      )}
- 
+      <StyledSearch
+        sx={{ height: 40 }}
+        value={filterName}
+        onChange={onFilterName}
+        placeholder="Email..."
+        startAdornment={
+          <InputAdornment position="start">
+            <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
+          </InputAdornment>
+        }
+      />
+
       <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
-              <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
-              <Select
-                labelId="quan"
-                id="quan"
-                // value={openQuan}
-                // onChange={handleChangeQuan}
-                label="Quận"
-                
-                margin="dense"
-              >
-                {/* {openDistricts.map((item) => (
-                  <MenuItem key={item.code} value={item.code}>
-                    {item.name}
-                  </MenuItem>
-                ))} */}
-              </Select>
-            </FormControl>
-            <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
-              <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
-              <Select
-                labelId="quan"
-                id="quan"
-                // value={openQuan}
-                // onChange={handleChangeQuan}
-                label="Quận"
-                
-                margin="dense"
-              >
-                {/* {openDistricts.map((item) => (
-                  <MenuItem key={item.code} value={item.code}>
-                    {item.name}
-                  </MenuItem>
-                ))} */}
-              </Select>
-            </FormControl>
-            <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
+        <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
+        <Select labelId="quan" id="quan" value={quan} onChange={handleChangeQuan} label="Quận" margin="dense">
+          {openDistricts.map((item) => (
+            <MenuItem key={item.code} value={item.code}>
+              {item.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
+        <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
+        <Select labelId="phuong" id="phuong" value={phuong} onChange={handleChangePhuong} label="Phường" margin="dense">
+          {openWards && (
+            <>
+              {openWards.map((item) => (
+                <MenuItem key={item.code} value={item.code}>
+                  {item.name}
+                </MenuItem>
+              ))}
+            </>
+          )}
+        </Select>
+      </FormControl>
+      {/* <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Quyền</InputLabel>
               <Select
                 labelId="quan"
@@ -115,19 +131,18 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
                 
                 margin="dense"
               >
-                {/* {openDistricts.map((item) => (
+                 {openDistricts.map((item) => (
                   <MenuItem key={item.code} value={item.code}>
                     {item.name}
                   </MenuItem>
-                ))} */}
+                ))} 
               </Select>
-            </FormControl>
-            <Tooltip title="Tìm kiếm" sx={{marginLeft: 2}}>
-        <Button variant="contained" >
-            Tìm kiếm
+            </FormControl> */}
+      <Tooltip title="Tìm kiếm" sx={{ marginLeft: 2 }}>
+        <Button variant="contained" onClick={onClickSearch}>
+          Tìm kiếm
         </Button>
-       
-        </Tooltip>
+      </Tooltip>
     </StyledRoot>
   );
 }

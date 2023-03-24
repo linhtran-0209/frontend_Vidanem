@@ -5,7 +5,6 @@ import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import { SelectChangeEvent } from '@mui/material/Select';
 
 // @mui
 import {
@@ -13,16 +12,14 @@ import {
   Table,
   Stack,
   Paper,
-  Popover,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,
   Container,
   Typography,
-  IconButton,
   TableContainer,
-  TablePagination,
+  Pagination,
+  Box,
 } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
@@ -57,40 +54,12 @@ const TABLE_HEAD = [
   { id: 'phuong', label: 'Phưòng/Xã', alignRight: false },
   { id: 'isVerified', label: 'Quyền', alignRight: false },
   { id: 'isActive', label: 'Trạng thái', alignRight: false },
-  { id: 'action', label: 'Hành động', alignRight: false },
+  { id: 'action', label: '', alignRight: false },
 ];
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(array, (_user) => _user.email.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
 
 export default function UserPage() {
   const [USERLIST, setUSERLIST] = useState([]);
+
   useEffect(() => {
     getUser();
   }, []);
@@ -102,88 +71,67 @@ export default function UserPage() {
       // const  parse=data.data.email;
       // console.log(data.data);
       setUSERLIST(data.data);
+      setTotal(data.total);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const [open, setOpen] = useState(null);
-
+  const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
-
-  const [order, setOrder] = useState('asc');
-
-  const [selected, setSelected] = useState([]);
-
-  const [orderBy, setOrderBy] = useState('email');
-
+  const [quan, setQuan] = useState('');
+  const [phuong, setPhuong] = useState('');
+  const [openWards, setOpenWards] = useState([]);
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [currentRole, setCurrentRole] = useState('');
-  const [currentEmail, setCurrentEmail] = useState('');
 
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-    console.log(event.currentTarget);
-    setCurrentRole(event.currentTarget.role);
-    setCurrentEmail(event.currentTarget.value);
-  };
-
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.email);
-      // console.log(USERLIST);
-      setSelected(newSelecteds);
-      return;
+  const handleSearch = async () => {
+    try {
+      const url = `http://localhost:5000/api/v1/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setUSERLIST(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
     }
-    setSelected([]);
   };
 
-  const handleClick = (event, email) => {
-    const selectedIndex = selected.indexOf(email);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, email);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+  const handleChangePage = async (event, newPage) => {
+    setPage(newPage - 1);
+    try {
+      const url = `http://localhost:5000/api/v1/account/getAll?email=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setUSERLIST(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
     }
-    setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const handleChangeQuan = async (event) => {
+    setQuan(event.target.value);
+    try {
+      const url = `https://provinces.open-api.vn/api/d/${event.target.value}?depth=2`;
+      const { data } = await axios.get(url);
+      setOpenWards(data.wards);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
+  const handleChangePhuong = async (event) => {
+    setPhuong(event.target.value);
   };
 
   const handleFilterByName = (event) => {
-    setPage(0);
     setFilterName(event.target.value);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
-  const isNotFound = !filteredUsers.length && !!filterName;
+  const isNotFound = !USERLIST.length && !!filterName;
   const [selectedRow, setSelectedRow] = useState({});
   const [openDialogCreate, setOpenDialogCreate] = React.useState(false);
   const [openCreateExcelModal, setOpenCreateExcelModal] = React.useState(false);
@@ -288,52 +236,40 @@ export default function UserPage() {
           </Button>
         </Stack>
         <CreateUserExcelModal opencreateExcelModal={openCreateExcelModal} handleClose={handleCloseCreateExcel} />
-        <CreateUserModal
-          opendialogcreate={openDialogCreate}
-          handleClose={handleCloseCreate}
-        />
+        <CreateUserModal opendialogcreate={openDialogCreate} handleClose={handleCloseCreate} />
         <Card sx={{ boxShadow: 3 }}>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <UserListToolbar
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+            quan={quan}
+            handleChangeQuan={handleChangeQuan}
+            openWards={openWards}
+            phuong={phuong}
+            handleChangePhuong={handleChangePhuong}
+            onClickSearch={handleSearch}
+          />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
+                <UserListHead headLabel={TABLE_HEAD} rowCount={USERLIST.length} />
 
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+                  {USERLIST.map((row) => {
                     const { _id, email, hoTen, quan, phuong, isActive } = row;
                     let quyen = '';
                     if (row.quyen === 1) quyen = 'Hội đồng Đội Thành phố';
                     else if (row.quyen === 2) quyen = 'Hội đồng Đội quận, huyện';
                     else quyen = 'Cấp Liên đội';
-                    const selectedUser = selected.indexOf(email) !== -1;
-                    const info = { quyen, email };
 
                     return (
                       <TableRow
                         style={{ height: 40, borderBottom: '1.59px solid rgba(192,192,192,0.3)' }}
                         hover
                         key={_id}
-                        tabIndex={-1}
-                        phuong="checkbox"
-                        selected={selectedUser}
+                        onDoubleClick={(event) => handleClickOpenInsert(event, row)}
+                        sx={{ cursor: 'pointer', width: '200px', height: '60px' }}
                       >
-                        {/* <TableCell style={{ height: 0, padding: 5 }}>
-                          <Checkbox
-                            style={{ height: 10 }}
-                            checked={selectedUser}
-                            onChange={(event) => handleClick(event, email)}
-                          />
-                        </TableCell> */}
 
                         <TableCell style={{ height: 40, padding: 13 }}>
                           <Stack style={{ height: 20 }} direction="row" alignItems="center" spacing={2}>
@@ -428,7 +364,7 @@ export default function UserPage() {
                   })}
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
+                      <TableCell colSpan={7} />
                     </TableRow>
                   )}
                 </TableBody>
@@ -450,20 +386,19 @@ export default function UserPage() {
                 {isNotFound && (
                   <TableBody>
                     <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
                         <Paper
                           sx={{
                             textAlign: 'center',
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            Not found
+                            Không tìm thấy
                           </Typography>
 
                           <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
+                            Không tìm thấy tài khoản với những thông tin trên &nbsp;
+                            <br /> Hãy thử kiểm tra lỗi chính tả hoặc sử dụng các lựa chọn.
                           </Typography>
                         </Paper>
                       </TableCell>
@@ -474,15 +409,9 @@ export default function UserPage() {
             </TableContainer>
           </Scrollbar>
 
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 40]}
-            component="div"
-            count={USERLIST.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+          <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
+            <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+          </Box>
         </Card>
       </Container>
     </>
