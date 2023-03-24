@@ -97,7 +97,7 @@ export default function UserPage() {
 
   const getUser = async () => {
     try {
-      const url = `http://localhost:5000/api/v1/account/getAll`;
+      const url = `${process.env.REACT_APP_API_URL}/account/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       // console.log(data.data);
@@ -288,10 +288,7 @@ export default function UserPage() {
           </Button>
         </Stack>
         <CreateUserExcelModal opencreateExcelModal={openCreateExcelModal} handleClose={handleCloseCreateExcel} />
-        <CreateUserModal
-          opendialogcreate={openDialogCreate}
-          handleClose={handleCloseCreate}
-        />
+        <CreateUserModal opendialogcreate={openDialogCreate} handleClose={handleCloseCreate} />
         <Card sx={{ boxShadow: 3 }}>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 

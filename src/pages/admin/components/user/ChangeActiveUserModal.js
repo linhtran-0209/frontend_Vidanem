@@ -16,7 +16,7 @@ export function ChangeActiveUserModal(props) {
   const handleSubmit = async () => {
     console.log(props.row);
     try {
-      const url = `http://localhost:5000/api/v1/account/changeActive`;
+      const url = `${process.env.REACT_APP_API_URL}/account/changeActive`;
 
       axios
         .put(
@@ -31,7 +31,7 @@ export function ChangeActiveUserModal(props) {
           console.log(data);
           setOpenSuccessMessage(data.data.message);
         });
-        props.handleClose()
+      props.handleClose();
     } catch (err) {
       setOpenErrMessage(err.response.data.message);
       console.log(err);
@@ -74,13 +74,17 @@ export function ChangeActiveUserModal(props) {
           {props.row.isActive && (
             <DialogContentText id="alert-dialog-description">
               <p>Bạn có thật sự muốn khóa tài khoản {props.row.email}? </p>
-              <p>Nếu bạn muốn khóa chọn <b>"Đồng ý"</b> và ngược lại.</p>
+              <p>
+                Nếu bạn muốn khóa chọn <b>"Đồng ý"</b> và ngược lại.
+              </p>
             </DialogContentText>
           )}
           {!props.row.isActive && (
             <DialogContentText id="alert-dialog-description">
               <p>Bạn có thật sự muốn mở khóa tài khoản {props.row.email}? </p>
-              <p>Nếu bạn muốn mở khóa chọn <b>"Đồng ý"</b> và ngược lại.</p>
+              <p>
+                Nếu bạn muốn mở khóa chọn <b>"Đồng ý"</b> và ngược lại.
+              </p>
             </DialogContentText>
           )}
         </DialogContent>

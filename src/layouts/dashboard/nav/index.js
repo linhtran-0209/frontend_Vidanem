@@ -50,7 +50,7 @@ export default function Nav({ openNav, onCloseNav }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const url = `http://localhost:5000/api/v1/currentUser`;
+        const url = `${process.env.REACT_APP_API_URL}/currentUser`;
         const { data } = await axios.get(url, { withCredentials: true });
         // const  parse=data.data.email;
         const parse = data.hoTen;
@@ -79,13 +79,10 @@ export default function Nav({ openNav, onCloseNav }) {
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
       }}
     >
-       
-       
-      <div style={{margin: 10}}>
-        <img src={img} alt="ima"/>
+      <div style={{ margin: 10 }}>
+        <img src={img} alt="ima" />
       </div>
-        
-      
+
       {/* <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>

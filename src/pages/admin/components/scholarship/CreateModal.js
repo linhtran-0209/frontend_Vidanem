@@ -22,7 +22,7 @@ export function CreateModal(props) {
   const [openErrMessage, setOpenErrMessage] = useState('');
 
   // useEffect(async () => {
-  //   const url = `http://localhost:5000/api/v1/sponsor/getAll`;
+  //   const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
   //   const { data } = await axios.get(url, { withCredentials: true });
   //   const result = data.data.filter((option) => option.tenDonVi.toLowerCase().includes(search));
   //   setSPONSERLIST(result);
@@ -36,7 +36,7 @@ export function CreateModal(props) {
   const handleSubmit = async () => {
     try {
       // console.log(scholarship);
-      const url = `http://localhost:5000/api/v1/scholarship/insert`;
+      const url = `${process.env.REACT_APP_API_URL}/scholarship/insert`;
       await axios
         .post(
           url,
@@ -61,7 +61,7 @@ export function CreateModal(props) {
   };
 
   const getSponsorList = async () => {
-    const url = `http://localhost:5000/api/v1/sponsor/getAll`;
+    const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
     const { data } = await axios.get(url, { withCredentials: true });
     setSPONSERLIST(data.data);
   };
@@ -120,7 +120,7 @@ export function CreateModal(props) {
                 }}
                 fullWidth
                 inputProps={{
-                  autoComplete: "off"
+                  autoComplete: 'off',
                 }}
               />
 

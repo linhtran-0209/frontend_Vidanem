@@ -15,7 +15,7 @@ export function DeleteUserModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `http://localhost:5000/api/v1/account/delete`;
+      const url = `${process.env.REACT_APP_API_URL}/account/delete`;
 
       axios
         .put(
@@ -29,7 +29,7 @@ export function DeleteUserModal(props) {
           console.log(data);
           setOpenSuccessMessage(data.data.message);
         });
-        props.handleClose()
+      props.handleClose();
     } catch (err) {
       setOpenErrMessage(err.response.data.message);
       console.log(err);

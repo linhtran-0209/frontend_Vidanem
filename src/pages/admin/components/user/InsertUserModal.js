@@ -74,7 +74,7 @@
 
 //   const getUser = async () => {
 //     try {
-//       const url = `http://localhost:5000/api/v1/account/byEmail?email=${props.row.email}`;
+//       const url = `${process.env.REACT_APP_API_URL}/account/byEmail?email=${props.row.email}`;
 //       const { data } = await axios.get(url, { withCredentials: true });
 //       setUsers(data.data);
 //       console(data.data);
@@ -86,7 +86,7 @@
 //     console.log(props);
 //     console.log(openUsers);
 //     try {
-//       const url = `http://localhost:5000/api/v1/account/update`;
+//       const url = `${process.env.REACT_APP_API_URL}/account/update`;
 //       const formData = new FormData();
 //       formData.append('email', openUsers.email);
 //       formData.append('hoTen', openUsers.hoTen);
@@ -289,7 +289,7 @@ export function InsertUserModal(props) {
   const getUser = async () => {
     try {
       const email = props.row.email || '';
-      const url = `http://localhost:5000/api/v1/account/byEmail?email=${email}`;
+      const url = `${process.env.REACT_APP_API_URL}/account/byEmail?email=${email}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setAccount(data.data);
       console.log(data.data);
@@ -390,7 +390,7 @@ export function InsertUserModal(props) {
     // console.log(openQuyen);
     // console.log(props.email);
     try {
-      const url = `http://localhost:5000/api/v1/account/update`;
+      const url = `${process.env.REACT_APP_API_URL}/account/update`;
 
       axios
         .put(
