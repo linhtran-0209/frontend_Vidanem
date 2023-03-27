@@ -87,7 +87,7 @@ export default function UserPage() {
 
   const handleSearch = async () => {
     try {
-      const url = `http://localhost:5000/api/v1/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}`;
+      const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setUSERLIST(data.data);
@@ -100,7 +100,7 @@ export default function UserPage() {
   const handleChangePage = async (event, newPage) => {
     setPage(newPage - 1);
     try {
-      const url = `http://localhost:5000/api/v1/account/getAll?email=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}`;
+      const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setUSERLIST(data.data);
@@ -270,7 +270,6 @@ export default function UserPage() {
                         onDoubleClick={(event) => handleClickOpenInsert(event, row)}
                         sx={{ cursor: 'pointer', width: '200px', height: '60px' }}
                       >
-
                         <TableCell style={{ height: 40, padding: 13 }}>
                           <Stack style={{ height: 20 }} direction="row" alignItems="center" spacing={2}>
                             {email}
