@@ -20,7 +20,7 @@ export function CreateUserExcelModal(props) {
         withCredentials: true,
         responseType: 'blob', // set the response type to blob
       });
-      const fileName = 'Template Import Account.xlsx'; // set the file name
+      const fileName = 'Mẫu danh sách tài khoản.xlsx'; // set the file name
       const blob = new Blob([response.data]); // create a Blob from the response data
       const link = document.createElement('a'); // create a link element
       link.href = window.URL.createObjectURL(blob); // set the link href to a URL created from the Blob
