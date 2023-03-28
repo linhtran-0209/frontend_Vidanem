@@ -196,13 +196,13 @@ export default function ScholarshipPage() {
                           {maHocBong}
                         </TableCell>
 
-                        <TableCell align="left">{tenHocBong}</TableCell>
+                        <TableCell align="left" style={{ width: 350 }}>{tenHocBong}</TableCell>
 
                         <TableCell align="left" style={{ width: 180 }}>
                           {soLuong}
                         </TableCell>
 
-                        <TableCell align="left">{ghiChu}</TableCell>
+                        <TableCell align="left" style={{ width: 250 }}>{ghiChu}</TableCell>
 
                         <TableCell style={{ display: 'inline-flex', width: 50 }} align="center">
                           <MenuItem

@@ -59,11 +59,11 @@ export default function SponserToolbar({ filterName, onFilterName, onClickSearch
           }
         />
 
-        {/* <Tooltip title="Tìm kiếm" sx={{marginLeft: 2}}>
+        <Tooltip title="Tìm kiếm" sx={{marginLeft: 2}}>
         <Button variant="contained" onClick={onClickSearch}>
             Tìm kiếm
         </Button>
-        </Tooltip> */}
+        </Tooltip>
 
     </StyledRoot>
   );

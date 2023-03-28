@@ -195,9 +195,9 @@ export default function SponserPage() {
                         <TableCell align="left">{soLuongDaTrao}</TableCell>
 
                         <TableCell
-                          className="coliconsponser"
-                          // style={{ height: 40, display: 'inline-flex', padding: 0, borderBottom: '0', marginTop: 8 }}
-                          // align="center"
+                          // className="coliconsponser"
+                          style={{ display: 'inline-flex' }}
+                          align="center"
                         >
                           <MenuItem className="updatesponser" onClick={(event) => handleRowClick(event, row)}>
                             <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
