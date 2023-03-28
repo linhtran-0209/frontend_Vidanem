@@ -1,6 +1,6 @@
 import axios from 'axios';
 import clsx from 'clsx';
-import { Button, Dialog, DialogContent, IconButton, Typography } from '@mui/material';
+import { Button, Dialog, DialogContent, IconButton, Typography, TableContainer,Table,TableHead,TableRow,TableCell, TableBody } from '@mui/material';
 import UploadIcon from '@mui/icons-material/Upload';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
@@ -10,6 +10,8 @@ export function CreateUserExcelModal(props) {
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState(null);
   const [failure, setFailure] = useState(0);
+  const [detail, setDetail] = useState([]);
+
 
   const handleDownloadTemplate = async () => {
     try {
@@ -39,6 +41,7 @@ export function CreateUserExcelModal(props) {
     setFile(null);
     setMessage(null);
     setFailure(0);
+    setDetail([])
   };
   const handleSubmitFile = async () => {
     const url = `${process.env.REACT_APP_API_URL}/account/importExcel`;
@@ -52,10 +55,10 @@ export function CreateUserExcelModal(props) {
         withCredentials: true,
       })
       .then((res) => {
-        setMessage(res.data.message);
         if (res.status !== 200) {
           setFailure(res.data.failure);
-        }
+          setDetail(res.data.detail)
+        } else setMessage(res.data.message);
       });
   };
 
@@ -96,8 +99,8 @@ export function CreateUserExcelModal(props) {
             </label>
           </div>
           {file && (
-            <div className="">
-              <div className="">
+            <div className="" style={{ display: 'flex', justifyContent: 'center' }}>
+              <div className="" style={{ display: 'flex', justifyContent: 'center' }}>
                 <p>{file.name}</p>
                 <IconButton className="" size="small" onClick={handleRemove}>
                   <CloseIcon fontSize="inherit" color="error" />
@@ -116,9 +119,43 @@ export function CreateUserExcelModal(props) {
             {failure !== 0 && (
               <>
                 <p className="ketqua" style={{ color: 'red' }}>
-                  Lỗi: {failure}
+                  Tài khoản bị lỗi: {failure}
                 </p>
-                <p style={{ color: 'red' }}>{message}</p>
+                {/* <p style={{ color: 'red' }}>{message}</p> */}
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                      <TableCell align="left">STT</TableCell>
+                        <TableCell align="left">Email</TableCell>
+                        <TableCell align="left">Lỗi</TableCell>
+                      </TableRow>
+                    </TableHead>{' '}
+                    <TableBody>
+                      {detail.map((row, index) => {
+                        const { email, err } = row;
+                        // const selectedUser = selected.indexOf(tenDonVi) !== -1;
+
+                        return (
+                          <TableRow
+                            hover
+                            key={index}
+                          >
+                            <TableCell align="left">
+                              {index}
+                            </TableCell>
+
+                            <TableCell align="left">{email}</TableCell>
+
+                            <TableCell align="left">
+                              {err}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </>
             )}
           </div>

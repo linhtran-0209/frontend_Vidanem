@@ -72,15 +72,17 @@ export default function SponserPage() {
     }
   };
 
-  const handleSearch = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
-      const { data } = await axios.get(url, { withCredentials: true });
-      // const  parse=data.data.email;
-      setSPONSERLIST(data.data);
-      setTotal(data.total);
-    } catch (err) {
-      console.log(err);
+  const handleSearch = async (event) => {
+    if (event.key === 'Enter' || !event.key){
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
+        const { data } = await axios.get(url, { withCredentials: true });
+        // const  parse=data.data.email;
+        setSPONSERLIST(data.data);
+        setTotal(data.total);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 

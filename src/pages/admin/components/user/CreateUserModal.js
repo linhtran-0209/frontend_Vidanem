@@ -21,9 +21,9 @@ export function CreateUserModal(props) {
   }, []);
 
   const [account, setAccount] = useState({ email: '', hoTen: '' });
-  const [openQuyen, setOpenQuyen] = useState('');
-  const [enableQuan, setEnableQuan] = useState(false);
-  const [enablePhuong, setEnablePhuong] = useState(false);
+  const [openQuyen, setOpenQuyen] = useState(3);
+  const [enableQuan, setEnableQuan] = useState(true);
+  const [enablePhuong, setEnablePhuong] = useState(true);
   const [openDistricts, setOpenDistricts] = useState([]);
   const [openQuan, setOpenQuan] = useState('');
   const [openWards, setOpenWards] = useState([]);
@@ -162,7 +162,7 @@ export function CreateUserModal(props) {
             <Select
               labelId="quyen"
               id="quyen"
-              // value={openQuyen}
+              value={openQuyen}
               onChange={handleChangeQuyen}
               label="Quyền"
               fullWidth
@@ -174,30 +174,10 @@ export function CreateUserModal(props) {
             </Select>
           </FormControl>
 
-          {enableQuan ? (
+          {enableQuan && (
             <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
               <Select
-                labelId="quan"
-                id="quan"
-                value={openQuan}
-                onChange={handleChangeQuan}
-                label="Quận"
-                fullWidth
-                margin="dense"
-              >
-                {openDistricts.map((item) => (
-                  <MenuItem key={item.code} value={item.code}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          ) : (
-            <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
-              <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
-              <Select
-                disabled
                 labelId="quan"
                 id="quan"
                 value={openQuan}
@@ -215,30 +195,10 @@ export function CreateUserModal(props) {
             </FormControl>
           )}
 
-          {enablePhuong ? (
+          {enablePhuong && (
             <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
               <Select
-                labelId="phuong"
-                id="phuong"
-                value={openPhuong}
-                onChange={handleChangePhuong}
-                label="Phường"
-                fullWidth
-                margin="dense"
-              >
-                {openWards.map((item) => (
-                  <MenuItem key={item.code} value={item.code}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          ) : (
-            <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
-              <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
-              <Select
-                disabled
                 labelId="phuong"
                 id="phuong"
                 value={openPhuong}

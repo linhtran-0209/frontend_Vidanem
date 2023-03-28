@@ -54,9 +54,7 @@ export function EditModal(props) {
       formData.append('maDonVi', SPONSER.maDonVi);
       formData.append('tenDonVi', SPONSER.tenDonVi);
       formData.append('SDT', SPONSER.SDT);
-      formData.append('tongSoLuong', SPONSER.tongSoLuong);
-      formData.append('tongSoTien', SPONSER.tongSoTien);
-      formData.append('moTa', SPONSER.moTa);
+      formData.append('gioiThieu', SPONSER.gioiThieu);
       console.log(formData);
       axios
         .put(url, formData, {
@@ -198,7 +196,7 @@ export function EditModal(props) {
                 <TextField
                   margin="dense"
                   label="Giới thiệu"
-                  onChange={(e) => setSPONSER({ ...SPONSER, moTa: e.target.value })}
+                  onChange={(e) => setSPONSER({ ...SPONSER, gioiThieu: e.target.value })}
                   value={SPONSER.gioiThieu || ''}
                   type="text"
                   fullWidth

@@ -49,6 +49,8 @@ export default function SponserToolbar({ filterName, onFilterName, onClickSearch
         <StyledSearch sx={{height:40}}
           value={filterName}
           onChange={onFilterName}
+          onBlur={onClickSearch}
+          onKeyDown={onClickSearch}
           placeholder="Tên đơn vị tài trợ..."
           startAdornment={
             <InputAdornment position="start">
@@ -57,11 +59,11 @@ export default function SponserToolbar({ filterName, onFilterName, onClickSearch
           }
         />
 
-        <Tooltip title="Tìm kiếm" sx={{marginLeft: 2}}>
+        {/* <Tooltip title="Tìm kiếm" sx={{marginLeft: 2}}>
         <Button variant="contained" onClick={onClickSearch}>
             Tìm kiếm
         </Button>
-        </Tooltip>
+        </Tooltip> */}
 
     </StyledRoot>
   );

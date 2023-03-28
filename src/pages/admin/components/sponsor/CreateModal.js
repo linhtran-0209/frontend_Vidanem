@@ -5,12 +5,9 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   TextField,
   FormControl,
-  IconButton,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
 
 export function CreateModal(props) {
@@ -37,9 +34,7 @@ export function CreateModal(props) {
       formData.append('maDonVi', SPONSER.maDonVi);
       formData.append('tenDonVi', SPONSER.tenDonVi);
       formData.append('SDT', SPONSER.SDT);
-      formData.append('tongSoLuong', SPONSER.tongSoLuong);
-      formData.append('tongSoTien', SPONSER.tongSoTien);
-      formData.append('moTa', SPONSER.moTa);
+      formData.append('gioiThieu', SPONSER.gioiThieu);
       axios
         .post(url, formData, {
           headers: {
@@ -51,23 +46,6 @@ export function CreateModal(props) {
           if (res.status === 200) {
             setOpenSuccessMessage(res.data.message);
           } else setOpenErrMessage(res.data.message);
-        });
-      axios
-        .post(
-          url,
-          {
-            maDonVi: SPONSER.maDonVi,
-            tenDonVi: SPONSER.tenDonVi,
-            SDT: SPONSER.SDT,
-            tongSoLuong: SPONSER.tongSoLuong,
-            tongSoTien: SPONSER.tongSoTien,
-            moTa: SPONSER.moTa,
-          },
-          { withCredentials: true }
-        )
-        .then((data) => {
-          console.log(data);
-          setOpenSuccessMessage(data.data.message);
         });
     } catch (err) {
       setOpenErrMessage(err.response.data.message);

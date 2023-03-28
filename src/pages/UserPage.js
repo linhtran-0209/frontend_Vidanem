@@ -20,6 +20,7 @@ import {
   TableContainer,
   Pagination,
   Box,
+  Tooltip,
 } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
@@ -78,29 +79,31 @@ export default function UserPage() {
   };
 
   const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [quan, setQuan] = useState('');
   const [phuong, setPhuong] = useState('');
+  const [quyen, setQuyen] = useState('');
   const [openWards, setOpenWards] = useState([]);
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const handleSearch = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}`;
-      const { data } = await axios.get(url, { withCredentials: true });
-      // const  parse=data.data.email;
-      setUSERLIST(data.data);
-      setTotal(data.total);
-    } catch (err) {
-      console.log(err);
+  const handleSearch = async (event) => {
+    if (event.key === 'Enter' || !event.key) {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}`;
+        const { data } = await axios.get(url, { withCredentials: true });
+        setUSERLIST(data.data);
+        setTotal(data.total);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
   const handleChangePage = async (event, newPage) => {
     setPage(newPage - 1);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}`;
+      const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setUSERLIST(data.data);
@@ -112,10 +115,21 @@ export default function UserPage() {
 
   const handleChangeQuan = async (event) => {
     setQuan(event.target.value);
+    if (event.target.value) {
+      try {
+        const url = `https://provinces.open-api.vn/api/d/${event.target.value}?depth=2`;
+        const { data } = await axios.get(url);
+        setOpenWards(data.wards);
+      } catch (err) {
+        console.log(err);
+      }
+    } else setPhuong('');
     try {
-      const url = `https://provinces.open-api.vn/api/d/${event.target.value}?depth=2`;
-      const { data } = await axios.get(url);
-      setOpenWards(data.wards);
+      const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${event.target.value}&quyen=${quyen}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setUSERLIST(data.data);
+      setTotal(data.total);
     } catch (err) {
       console.log(err);
     }
@@ -123,6 +137,28 @@ export default function UserPage() {
 
   const handleChangePhuong = async (event) => {
     setPhuong(event.target.value);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${event.target.value}&quyen=${quyen}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setUSERLIST(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleChangeQuyen = async (event) => {
+    setQuyen(event.target.value);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${event.target.value}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setUSERLIST(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleFilterByName = (event) => {
@@ -131,7 +167,7 @@ export default function UserPage() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const isNotFound = !USERLIST.length && !!filterName;
+  const isNotFound = !USERLIST.length;
   const [selectedRow, setSelectedRow] = useState({});
   const [openDialogCreate, setOpenDialogCreate] = React.useState(false);
   const [openCreateExcelModal, setOpenCreateExcelModal] = React.useState(false);
@@ -165,8 +201,6 @@ export default function UserPage() {
     setOpenCreateExcelModal(false);
   };
 
-  // console.log(openDialogInsert);
-
   const handleCloseInsert = () => {
     setOpenDialogInsert(false);
   };
@@ -176,36 +210,6 @@ export default function UserPage() {
   const handleCloseChangeActive = () => {
     setOpenDialogChangeActive(false);
   };
-  // const [quyen, setQuyen] = React.useState('');
-  // const [quan, setQuan] = React.useState('');
-  // const [phuong, setPhuong]=useState([]);
-  // const [openWards, setOpenWards] = useState([]);
-
-  // const handleChangeQuyen = (event) => {
-  //   console.log(event.target.value);
-  //   setQuyen(event.target.value);
-  // };
-
-  // const handleChangeQuan = async (event) => {
-
-  //   try {
-  //     setQuan(event.target.value)
-  //     const url = `https://provinces.open-api.vn/api/d/${event.target.value}?depth=2`;
-  //     const { data } = await axios.get(url);
-  //     // const  parse=data.data.email;
-  //     console.log(data);
-  //     // setUSERLIST(data.data);
-  //     setOpenWards(data.wards)
-
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-  // const handleChangePhuong = (event) => {
-
-  //   setPhuong(event.target.value)
-  //   console.log(event.target.value)
-  // };
 
   return (
     <>
@@ -246,6 +250,8 @@ export default function UserPage() {
             openWards={openWards}
             phuong={phuong}
             handleChangePhuong={handleChangePhuong}
+            quyen={quyen}
+            handleChangeQuyen={handleChangeQuyen}
             onClickSearch={handleSearch}
           />
 
@@ -270,11 +276,11 @@ export default function UserPage() {
                         onDoubleClick={(event) => handleClickOpenInsert(event, row)}
                         sx={{ cursor: 'pointer', width: '200px', height: '60px' }}
                       >
-                        <TableCell style={{ height: 40, padding: 13 }}>
-                          <Stack style={{ height: 20 }} direction="row" alignItems="center" spacing={2}>
-                            {email}
-                          </Stack>
-                        </TableCell>
+                        <Tooltip title={email}>
+                          <TableCell style={{ height: 40 }}>
+                            {email.length > 15 ? `${email.slice(0, 15)}...` : email}
+                          </TableCell>
+                        </Tooltip>
 
                         <TableCell style={{ height: 40 }} align="left">
                           {hoTen}
@@ -293,61 +299,38 @@ export default function UserPage() {
                         </TableCell>
                         <TableCell style={{ padding: 0 }} align="center">
                           {isActive && (
-                            <MenuItem
-                              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                              onClick={(event) => handleClickOpenChangeActive(event, row)}
-                            >
-                              <Iconify style={{ color: 'green' }} icon={'eva:unlock-outline'} />
-                            </MenuItem>
+                            <Tooltip title="Khóa tài khoản">
+                              <MenuItem
+                                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                                onClick={(event) => handleClickOpenChangeActive(event, row)}
+                              >
+                                <Iconify style={{ color: 'green' }} icon={'eva:unlock-outline'} />
+                              </MenuItem>
+                            </Tooltip>
                           )}
                           {!isActive && (
-                            <MenuItem
-                              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                              onClick={(event) => handleClickOpenChangeActive(event, row)}
-                            >
-                              <Iconify style={{ color: 'red' }} icon={'eva:lock-outline'} />
-                            </MenuItem>
+                            <Tooltip title="Mở khóa tài khoản">
+                              <MenuItem
+                                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                                onClick={(event) => handleClickOpenChangeActive(event, row)}
+                              >
+                                <Iconify style={{ color: 'red' }} icon={'eva:lock-outline'} />
+                              </MenuItem>
+                            </Tooltip>
                           )}
                         </TableCell>
 
-                        {/* <TableCell style={{ height: 40 }} align="left">
-                          <IconButton
-                            style={{ height: 40 }}
-                            size="large"
-                            color="inherit"
-                            value={[[info.email]]}
-                            role={info.quyen}
-                            onClick={handleOpenMenu}
-                          >
-                            <Iconify style={{ height: 40 }} icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
-                        <Popover
-                          open={Boolean(open)}
-                          anchorEl={open}
-                          onClose={handleCloseMenu}
-                          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                          PaperProps={{
-                            sx: {
-                              width: 140,
-                              '& .MuiMenuItem-root': {
-                                px: 1,
-                                typography: 'body2',
-                                borderRadius: 0.75,
-                              },
-                            },
-                          }}
-                        > */}
                         <TableCell
-                          className="colusericon"
-                          // style={{ height: 40, display: 'inline-flex', padding: 0, borderBottom: '0', marginTop: 8 }}
-                          // align="center"
+                          // className="colusericon"
+                          style={{ display: 'inline-flex' }}
+                          align="center"
                         >
-                          <MenuItem className="updateuser" onClick={(event) => handleClickOpenInsert(event, row)}>
-                            <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
-                          </MenuItem>
-
+                          <Tooltip title="Cập nhật">
+                            <MenuItem className="updateuser" onClick={(event) => handleClickOpenInsert(event, row)}>
+                              <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
+                            </MenuItem>
+                          </Tooltip>
+                          <Tooltip title="Xóa">
                           <MenuItem
                             className="deleteuser"
                             sx={{ color: 'error.main' }}
@@ -355,17 +338,18 @@ export default function UserPage() {
                           >
                             <Iconify icon={'eva:trash-2-outline'} />
                           </MenuItem>
+                          </Tooltip>
                         </TableCell>
 
                         {/* </Popover> */}
                       </TableRow>
                     );
                   })}
-                  {emptyRows > 0 && (
+                  {/* {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={7} />
                     </TableRow>
-                  )}
+                  )} */}
                 </TableBody>
                 <InsertUserModal
                   openDialogInsert={openDialogInsert}
