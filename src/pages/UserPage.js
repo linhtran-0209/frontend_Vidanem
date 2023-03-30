@@ -100,6 +100,20 @@ export default function UserPage() {
     }
   };
 
+  const handleClickExportExcel = async () =>{
+    const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}&export=true`;
+    await axios.get(url, {
+      withCredentials: true,
+      responseType: 'blob', // set the response type to blob
+    }).then(response => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Danh sách tài khoản.xlsx';
+      a.click();
+    });
+  }
+
   const handleChangePage = async (event, newPage) => {
     setPage(newPage - 1);
     try {
@@ -222,6 +236,7 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             Tất cả tài khoản
           </Typography>
+          <div>
           <Button
             className="buttondanhsach"
             variant="contained"
@@ -231,6 +246,13 @@ export default function UserPage() {
             Nhập từ Excel
           </Button>
           <Button
+            className="buttonxuatexcel"
+            startIcon={<Iconify icon="mdi:microsoft-excel" />}
+            onClick={handleClickExportExcel}
+          >
+            Xuất Excel
+          </Button>
+          <Button
             className="buttonThemMoi"
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
@@ -238,6 +260,8 @@ export default function UserPage() {
           >
             Tài khoản mới
           </Button>
+          </div>
+
         </Stack>
         <CreateUserExcelModal opencreateExcelModal={openCreateExcelModal} handleClose={handleCloseCreateExcel} />
         <CreateUserModal opendialogcreate={openDialogCreate} handleClose={handleCloseCreate} />

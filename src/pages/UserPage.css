@@ -3,12 +3,22 @@
     border: 2px solid #1F7244;
     background-color:#1F7244 ;
     padding: 4px 12px;
-    margin-left:39rem;
+    margin-right: 16px; 
     height: 40px;
     width: 150px;
 }
 .buttondanhsach:hover{
     background-color:#1F7244 ;
+}
+.buttonxuatexcel{
+    border-radius: 0px;
+    border: 2px solid #1F7244;
+    background-color:white ;
+    color: #1F7244;
+    padding: 4px 12px;
+    margin-right: 16px; 
+    height: 40px;
+    width: 150px;
 }
 .buttonThemMoi{
     border-radius: 0px;
