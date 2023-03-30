@@ -54,7 +54,7 @@ const TABLE_HEAD = [
   { id: 'phuong', label: 'Phưòng/Xã', alignRight: false },
   { id: 'isVerified', label: 'Quyền', alignRight: false },
   { id: 'isActive', label: 'Trạng thái', alignRight: false },
-  { id: 'action', label: '', alignRight: false },
+  { id: 'action', label: 'Hành động', alignRight: false },
 ];
 
 export default function UserPage() {
