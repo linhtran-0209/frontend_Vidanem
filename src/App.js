@@ -14,6 +14,7 @@ import {StylesDeleteUserModal}from './pages/admin/components/user/DeleteUserModa
 import {StyleSponsorPage} from './pages/SponserPage.css';
 // import {StylesCreateSponsor} from './pages/admin/components/sponsor/CreateSponsor.css'
 import {styleSearchSponser} from './sections/@dashboard/user/UserListToolbar.css';
+import {styleCreateChildren} from './pages/admin/components/children/CreateChildren.css';
 // import {styleCreateScholarship} from './pages/admin/components/scholarship/CreateScholarshipModal.css'
 // import {StyleCreateSponsor} from './pages/admin/components';
 
