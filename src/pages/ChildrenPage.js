@@ -35,7 +35,8 @@ import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { UserListHead } from '../sections/@dashboard/user';
+import { ChildrenToolbar } from '../sections/@dashboard/children';
 // mock
 // import USERLIST from '../_mock/us
 // ----------------------------------------------------------------------
@@ -193,7 +194,7 @@ export default function UserPage() {
         </Stack>
         
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <ChildrenToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>

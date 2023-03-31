@@ -72,15 +72,17 @@ export default function SponserPage() {
     }
   };
 
-  const handleSearch = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
-      const { data } = await axios.get(url, { withCredentials: true });
-      // const  parse=data.data.email;
-      setSPONSERLIST(data.data);
-      setTotal(data.total);
-    } catch (err) {
-      console.log(err);
+  const handleSearch = async (event) => {
+    if (event.key === 'Enter' || !event.key){
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
+        const { data } = await axios.get(url, { withCredentials: true });
+        // const  parse=data.data.email;
+        setSPONSERLIST(data.data);
+        setTotal(data.total);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -193,9 +195,9 @@ export default function SponserPage() {
                         <TableCell align="left">{soLuongDaTrao}</TableCell>
 
                         <TableCell
-                          className="coliconsponser"
-                          // style={{ height: 40, display: 'inline-flex', padding: 0, borderBottom: '0', marginTop: 8 }}
-                          // align="center"
+                          // className="coliconsponser"
+                          style={{ display: 'inline-flex' }}
+                          align="center"
                         >
                           <MenuItem className="updatesponser" onClick={(event) => handleRowClick(event, row)}>
                             <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />

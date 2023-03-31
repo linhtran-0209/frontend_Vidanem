@@ -5,6 +5,7 @@ import { Toolbar, Tooltip, Button, Typography, OutlinedInput, InputAdornment } f
 // component
 import Iconify from '../../../components/iconify';
 
+
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled(Toolbar)(({ theme }) => ({
@@ -15,7 +16,7 @@ const StyledRoot = styled(Toolbar)(({ theme }) => ({
 }));
 
 const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
-  minWidth: 320,
+  width: 320,
   transition: theme.transitions.create(['box-shadow', 'width'], {
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.shorter,
@@ -32,13 +33,13 @@ const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-SponserToolbar.propTypes = {
+ChildrenToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
 };
 
-export default function SponserToolbar({ filterName, onFilterName, onClickSearch }) {
+export default function ChildrenToolbar({ filterName, onFilterName, onClickSearch }) {
   return (
     <StyledRoot
       sx={{
@@ -49,12 +50,10 @@ export default function SponserToolbar({ filterName, onFilterName, onClickSearch
         <StyledSearch sx={{height:40}}
           value={filterName}
           onChange={onFilterName}
-          onBlur={onClickSearch}
-          onKeyDown={onClickSearch}
-          placeholder="Tên đơn vị tài trợ..."
+          placeholder="Họ tên..."
           startAdornment={
             <InputAdornment position="start">
-              <Iconify icon="eva:search-fill" sx={{color: 'text.disabled', width: 20, height: 20 }} />
+              <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
             </InputAdornment>
           }
         />
@@ -63,8 +62,9 @@ export default function SponserToolbar({ filterName, onFilterName, onClickSearch
         <Button variant="contained" onClick={onClickSearch}>
             Tìm kiếm
         </Button>
+       
         </Tooltip>
-
+        
     </StyledRoot>
   );
 }

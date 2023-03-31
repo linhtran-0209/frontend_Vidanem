@@ -4,18 +4,7 @@ import PropTypes from 'prop-types';
 // @mui
 import MenuItem from '@mui/material/MenuItem';
 import { styled, alpha } from '@mui/material/styles';
-import {
-  Toolbar,
-  Tooltip,
-  IconButton,
-  Typography,
-  OutlinedInput,
-  InputAdornment,
-  FormControl,
-  InputLabel,
-  Select,
-  Button,
-} from '@mui/material';
+import { Toolbar, OutlinedInput, InputAdornment, FormControl, InputLabel, Select } from '@mui/material';
 // component
 import Iconify from '../../../components/iconify';
 
@@ -60,6 +49,8 @@ export default function UserListToolbar({
   openWards,
   phuong,
   handleChangePhuong,
+  quyen,
+  handleChangeQuyen,
   onClickSearch,
 }) {
   const [openDistricts, setOpenDistricts] = useState([]);
@@ -77,6 +68,7 @@ export default function UserListToolbar({
       console.log(err);
     }
   };
+  
   return (
     <StyledRoot
       sx={{
@@ -87,6 +79,8 @@ export default function UserListToolbar({
         sx={{ height: 40 }}
         value={filterName}
         onChange={onFilterName}
+        onBlur={onClickSearch}
+        onKeyDown={onClickSearch}
         placeholder="Email..."
         startAdornment={
           <InputAdornment position="start">
@@ -98,6 +92,7 @@ export default function UserListToolbar({
       <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
         <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
         <Select labelId="quan" id="quan" value={quan} onChange={handleChangeQuan} label="Quận" margin="dense">
+          <MenuItem value="">------------------------</MenuItem>
           {openDistricts.map((item) => (
             <MenuItem key={item.code} value={item.code}>
               {item.name}
@@ -109,23 +104,31 @@ export default function UserListToolbar({
       <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
         <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
         <Select labelId="phuong" id="phuong" value={phuong} onChange={handleChangePhuong} label="Phường" margin="dense">
-          {openWards && (
-            <>
+              <MenuItem value="">------------------------</MenuItem>
               {openWards.map((item) => (
                 <MenuItem key={item.code} value={item.code}>
                   {item.name}
                 </MenuItem>
               ))}
-            </>
-          )}
         </Select>
       </FormControl>
       
-      <Tooltip title="Tìm kiếm" sx={{ marginLeft: 2 }}>
-        <Button variant="contained" onClick={onClickSearch}>
-          Tìm kiếm
-        </Button>
-      </Tooltip>
+      <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-standard-label">Quyền</InputLabel>
+              <Select
+                labelId="quyen"
+                id="quyen"
+                value={quyen}
+                onChange={handleChangeQuyen}                
+                margin="dense"
+              >
+                <MenuItem value=''>--------------------------------</MenuItem>
+              <MenuItem value={1}>Hội đồng Đội Thành phố</MenuItem>
+              <MenuItem value={2}>Hội đồng Đội quận, huyện</MenuItem>
+              <MenuItem value={3}>Cấp Liên Đội</MenuItem>
+              </Select>
+            </FormControl>
+
     </StyledRoot>
   );
 }
