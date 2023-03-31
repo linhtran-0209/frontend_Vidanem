@@ -36,9 +36,10 @@ export default function Router() {
       ],
     },
     {
-      path: '/dashboard/children',
+      
       element: <DashboardLayout />,
-      children: [{ element: <Navigate to="/dashboard/children" /> }, { path: 'insert', element: <InsertChildren /> }],
+      children: [{ element: <Navigate to="/dashboard/children" /> },
+          { path: '/dashboard/children/insert', element: <InsertChildren /> }],
     },
     {
       path: '/dashboard',
@@ -53,6 +54,7 @@ export default function Router() {
         {
           path: 'children',
           element: <ChildrenPage />,
+          
         },
       ],
     },
