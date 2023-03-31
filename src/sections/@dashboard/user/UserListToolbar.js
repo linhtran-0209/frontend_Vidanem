@@ -72,7 +72,7 @@ export default function UserListToolbar({
   return (
     <StyledRoot
       sx={{
-        height: 80,
+        height: 74,
       }}
     >
       <StyledSearch
@@ -112,6 +112,7 @@ export default function UserListToolbar({
               ))}
         </Select>
       </FormControl>
+      
       <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Quyền</InputLabel>
               <Select
@@ -127,11 +128,7 @@ export default function UserListToolbar({
               <MenuItem value={3}>Cấp Liên Đội</MenuItem>
               </Select>
             </FormControl>
-      {/* <Tooltip title="Tìm kiếm" sx={{ marginLeft: 2 }}>
-        <Button variant="contained" onClick={onClickSearch}>
-          Tìm kiếm
-        </Button>
-      </Tooltip> */}
+
     </StyledRoot>
   );
 }

@@ -12,48 +12,50 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import SponserPage from './pages/SponserPage';
 import DashboardAppPage from './pages/DashboardAppPage';
-import ScholarshipPage from './pages/ScholarshipPage'
+import ScholarshipPage from './pages/ScholarshipPage';
 import ChildrenPage from './pages/ChildrenPage';
+import InsertChildren from './pages/admin/components/children/CreateChildren';
 // import AccountPopover from './layouts/dashboard/header/AccountPopover';
-
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   const routes = useRoutes([
     {
-      
-      element:<Hompage />,
+      element: <Hompage />,
       children: [
-        { element: <Navigate to="/homepage" />, index:true},
-        {path:'/homepage',element:<LoginPage />},
+        { element: <Navigate to="/homepage" />, index: true },
+        { path: '/homepage', element: <LoginPage /> },
       ],
-      
-},
+    },
+    {
+      element: <LoginPage />,
+      children: [
+        { element: <Navigate to="/login" />, index: true },
+        { path: '/login', element: <LoginPage /> },
+      ],
+    },
     {
       
-      element:<LoginPage />,
-      children: [
-        { element: <Navigate to="/login" />, index:true},
-        {path:'/login',element:<LoginPage />},
-      ],
-      
-},
-// {
-//   path:'/account',
-//   element:<AccountPopover />,
-// },
+      element: <DashboardLayout />,
+      children: [{ element: <Navigate to="/dashboard/children" /> },
+          { path: '/dashboard/children/insert', element: <InsertChildren /> }],
+    },
     {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />},
+        { element: <Navigate to="/dashboard/app" /> },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'users', element: <UserPage /> },
         { path: 'scholarship', element: <ScholarshipPage /> },
         { path: 'sponser', element: <SponserPage /> },
         { path: 'blog', element: <BlogPage /> },
-        {path:"children", element:<ChildrenPage/>},
+        {
+          path: 'children',
+          element: <ChildrenPage />,
+          
+        },
       ],
     },
     // {

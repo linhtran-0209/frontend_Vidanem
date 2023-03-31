@@ -35,7 +35,8 @@ import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { UserListHead } from '../sections/@dashboard/user';
+import { ChildrenToolbar } from '../sections/@dashboard/children';
 // mock
 // import USERLIST from '../_mock/us
 // ----------------------------------------------------------------------
@@ -187,37 +188,13 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             Tất cả trẻ em
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpen}>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpen} href='/dashboard/children/insert'>
             Thêm trẻ em
           </Button>
         </Stack>
-        <Dialog open={opendialog} onClose={handleClose}>
-          <DialogTitle>Thêm trẻ em mới</DialogTitle>
-          <DialogContent>
-            {/* <DialogContentText>
-              To subscribe to this website, please enter your email address here. We will send updates occasionally.
-            </DialogContentText> */}
-            <TextField autoFocus margin="dense" id="name" label="Họ và tên" type="text" fullWidth variant="standard" />
-            <TextField autoFocus margin="dense" id="date" label="Ngày sinh" type="text" fullWidth variant="standard" />
-            <TextField autoFocus margin="dense" id="school" label="Trường" type="text" fullWidth variant="standard" />
-            <TextField autoFocus margin="dense" id="address" label="Địa chỉ" type="text" fullWidth variant="standard" />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="hoancanh"
-              label="Hoàn cảnh"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Hủy</Button>
-            <Button onClick={handleClose}>Thêm trẻ em</Button>
-          </DialogActions>
-        </Dialog>
+        
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <ChildrenToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>

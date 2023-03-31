@@ -1,0 +1,66 @@
+
+.container__ten{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container__diachi{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container__hoctap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container__donvi{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container__hoancanh{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.formcontrol__inform{
+    width: 350px;
+}
+
+.formcontrol__inform > div{
+    padding: 10px 15px;
+
+}
+.formcontrol__inform > div> label{
+    padding: 10px 15px;
+}
+.formcontrol__hoancanh{
+    width: 670px;
+}
+.formcontrol__hoancanh >textarea{
+    padding: 10px 15px;
+    height:92px;
+    line-height: 1.4375em;
+    font-size: 1rem;
+    font-family: Public Sans,sans-serif;
+    font-weight: 400;
+    margin-top: 18px;
+    margin-bottom: 4px;
+    width: 100%;
+    color: #637381;
+    box-sizing: border-box;
+    cursor: text;
+    border-color: rgba(145, 158, 171, 0.32);
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    overflow: hidden;
+}
+.formcontrol__hoancanh >textarea::after{
+    border-color: blue;
+}
+.formcontrol__hoancanh >textarea::before{
+    border-color: blue;
+}
+

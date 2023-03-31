@@ -1,3 +1,4 @@
+
 import PropTypes from 'prop-types';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -9,16 +10,16 @@ import Iconify from '../../../components/iconify';
 //
 // import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
-import LanguagePopover from './LanguagePopover';
+
 import NotificationsPopover from './NotificationsPopover';
 
 // ----------------------------------------------------------------------
 
 const NAV_WIDTH = 280;
 
-const HEADER_MOBILE = 44;
+const HEADER_MOBILE = 64;
 
-const HEADER_DESKTOP = 70;
+const HEADER_DESKTOP = 92;
 
 const StyledRoot = styled(AppBar)(({ theme }) => ({
   ...bgBlur({ color: theme.palette.background.default }),
@@ -32,7 +33,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   minHeight: HEADER_MOBILE,
   [theme.breakpoints.up('lg')]: {
     minHeight: HEADER_DESKTOP,
-    padding: theme.spacing(0, 0),
+    padding: theme.spacing(0, 5),
   },
 }));
 
@@ -44,7 +45,7 @@ Header.propTypes = {
 
 export default function Header({ onOpenNav }) {
   return (
-    <StyledRoot >
+    <StyledRoot>
       <StyledToolbar>
         <IconButton
           onClick={onOpenNav}
@@ -57,7 +58,7 @@ export default function Header({ onOpenNav }) {
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
 
-        {/* <Searchbar /> */}
+        
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack
@@ -68,7 +69,7 @@ export default function Header({ onOpenNav }) {
             sm: 1,
           }}
         >
-          <LanguagePopover />
+          
           <NotificationsPopover />
           <AccountPopover />
         </Stack>
