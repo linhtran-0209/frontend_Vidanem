@@ -115,7 +115,7 @@ export function CreateUserExcelModal(props) {
             <Typography className="ketqua">Kết quả</Typography>
           </div>
           <div>
-            {failure === 0 && <p style={{ color: 'green' }}>{message}</p>}
+            {failure === 0 && <p lassName="ketqua" style={{ color: 'green' }}>{message}</p>}
             {failure !== 0 && (
               <>
                 <p className="ketqua" style={{ color: 'red' }}>
