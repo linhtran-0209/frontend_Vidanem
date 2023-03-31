@@ -28,6 +28,7 @@ import { EditModal } from './admin/components/sponsor/EditModal';
 import { UserListHead } from '../sections/@dashboard/user';
 import { CreateModal } from './admin/components/sponsor/CreateModal';
 import { DeleteSponsorModal } from './admin/components/sponsor/DeleteSponsorModal';
+import { CreateSponsorExcelModal } from './admin/components/sponsor/CreateSponsorExcelModal';
 import SponserToolbar from '../sections/@dashboard/sponsers/SponserToolbar';
 
 // mock
@@ -55,6 +56,8 @@ export default function SponserPage() {
   const [openSponsorCreate, setOpenSponsorCreate] = React.useState(false);
   const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
   const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
+  const [openCreateExcelModal, setOpenCreateExcelModal] = React.useState(false);
+
 
   useEffect(() => {
     getSponser();
@@ -84,6 +87,28 @@ export default function SponserPage() {
         console.log(err);
       }
     }
+  };
+
+  const handleClickExportExcel = async () =>{
+    const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}&export=true`;
+    await axios.get(url, {
+      withCredentials: true,
+      responseType: 'blob', // set the response type to blob
+    }).then(response => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Danh sách đơn vị tài trợ.xlsx';
+      a.click();
+    });
+  }
+
+  const handleClickOpenCreateExcelModal = () => {
+    setOpenCreateExcelModal(true);
+  };
+
+  const handleCloseCreateExcel = () => {
+    setOpenCreateExcelModal(false);
   };
 
   const handleClickOpenCreate = () => {
@@ -153,7 +178,32 @@ export default function SponserPage() {
           <Typography variant="h4" gutterBottom>
             Đơn vị bảo trợ
           </Typography>
+          <div>
           <Button
+            className="buttondanhsach"
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+            onClick={handleClickOpenCreateExcelModal}
+          >
+            Nhập từ Excel
+          </Button>
+          <Button
+            className="buttonxuatexcel"
+            startIcon={<Iconify icon="mdi:microsoft-excel" />}
+            onClick={handleClickExportExcel}
+          >
+            Xuất Excel
+          </Button>
+          <Button
+            className="buttonThemMoi"
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+            onClick={handleClickOpenCreate}
+          >
+            Thêm mới
+          </Button>
+          </div>
+          {/* <Button
             // className="buttonThemMoi"
             className="buttonthemdonvi"
             variant="contained"
@@ -161,8 +211,10 @@ export default function SponserPage() {
             onClick={handleClickOpenCreate}
           >
             Thêm mới
-          </Button>
+          </Button> */}
         </Stack>
+        <CreateSponsorExcelModal opencreateExcelModal={openCreateExcelModal} handleClose={handleCloseCreateExcel} />
+
         <CreateModal openDialogCreate={openSponsorCreate} handleClose={handleCloseCreate} />
         <Card>
           <SponserToolbar filterName={filterName} onFilterName={handleFilterByName} onClickSearch={handleSearch} />

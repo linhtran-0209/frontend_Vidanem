@@ -50,6 +50,8 @@ export default function ScholarshipToolbar({ filterName, onFilterName, onClickSe
         <StyledSearch sx={{height:40}}
           value={filterName}
           onChange={onFilterName}
+          onBlur={onClickSearch}
+          onKeyDown={onClickSearch}
           placeholder="Tên học bổng..."
           startAdornment={
             <InputAdornment position="start">

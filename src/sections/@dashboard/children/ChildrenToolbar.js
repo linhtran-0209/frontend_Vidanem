@@ -50,6 +50,8 @@ export default function ChildrenToolbar({ filterName, onFilterName, onClickSearc
         <StyledSearch sx={{height:40}}
           value={filterName}
           onChange={onFilterName}
+          onBlur={onClickSearch}
+          onKeyDown={onClickSearch}
           placeholder="Họ tên..."
           startAdornment={
             <InputAdornment position="start">

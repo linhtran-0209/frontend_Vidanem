@@ -29,6 +29,7 @@ import { UserListHead } from '../sections/@dashboard/user';
 import { CreateModal } from './admin/components/scholarship/CreateModal';
 import { DeleteModal } from './admin/components/scholarship/DeleteModal';
 import ScholarshipToolbar from '../sections/@dashboard/scholarship/ScholarshipToolbar';
+import { CreateScholarshipExcelModal } from './admin/components/scholarship/CreateScholarshipExcelModal';
 
 // mock
 // import USERLIST from '../_mock/us
@@ -56,6 +57,7 @@ export default function ScholarshipPage() {
   const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
+  const [openCreateExcelModal, setOpenCreateExcelModal] = React.useState(false);
 
   useEffect(() => {
     getScholarship();
@@ -73,16 +75,42 @@ export default function ScholarshipPage() {
     }
   };
 
-  const handleSearch = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
-      const { data } = await axios.get(url, { withCredentials: true });
-      // const  parse=data.data.email;
-      setScholarshipList(data.data);
-      setTotal(data.total);
-    } catch (err) {
-      console.log(err);
+  const handleSearch = async (event) => {
+    if (event.key === 'Enter' || !event.key) {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
+        const { data } = await axios.get(url, { withCredentials: true });
+        // const  parse=data.data.email;
+        setScholarshipList(data.data);
+        setTotal(data.total);
+      } catch (err) {
+        console.log(err);
+      }
     }
+  };
+
+  const handleClickExportExcel = async () => {
+    const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}&export=true`;
+    await axios
+      .get(url, {
+        withCredentials: true,
+        responseType: 'blob', // set the response type to blob
+      })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Danh sách học bổng.xlsx';
+        a.click();
+      });
+  };
+
+  const handleClickOpenCreateExcelModal = () => {
+    setOpenCreateExcelModal(true);
+  };
+
+  const handleCloseCreateExcel = () => {
+    setOpenCreateExcelModal(false);
   };
 
   const handleClickOpenCreate = () => {
@@ -163,15 +191,34 @@ export default function ScholarshipPage() {
           <Typography variant="h4" gutterBottom>
             Đơn vị bảo trợ
           </Typography>
-          <Button
-            className="buttonThemMoi"
-            variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={handleClickOpenCreate}
-          >
-            Thêm mới
-          </Button>
+          <div>
+            <Button
+              className="buttondanhsach"
+              variant="contained"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+              onClick={handleClickOpenCreateExcelModal}
+            >
+              Nhập từ Excel
+            </Button>
+            <Button
+              className="buttonxuatexcel"
+              startIcon={<Iconify icon="mdi:microsoft-excel" />}
+              onClick={handleClickExportExcel}
+            >
+              Xuất Excel
+            </Button>
+            <Button
+              className="buttonThemMoi"
+              variant="contained"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+              onClick={handleClickOpenCreate}
+            >
+              Thêm mới
+            </Button>
+          </div>
         </Stack>
+        <CreateScholarshipExcelModal opencreateExcelModal={openCreateExcelModal} handleClose={handleCloseCreateExcel} />
+
         <CreateModal openDialogCreate={openScholarshipCreate} handleClose={handleCloseCreate} />
         <Card>
           <ScholarshipToolbar filterName={filterName} onFilterName={handleFilterByName} onClickSearch={handleSearch} />
@@ -196,13 +243,17 @@ export default function ScholarshipPage() {
                           {maHocBong}
                         </TableCell>
 
-                        <TableCell align="left" style={{ width: 350 }}>{tenHocBong}</TableCell>
+                        <TableCell align="left" style={{ width: 350 }}>
+                          {tenHocBong}
+                        </TableCell>
 
                         <TableCell align="left" style={{ width: 180 }}>
                           {soLuong}
                         </TableCell>
 
-                        <TableCell align="left" style={{ width: 250 }}>{ghiChu}</TableCell>
+                        <TableCell align="left" style={{ width: 250 }}>
+                          {ghiChu}
+                        </TableCell>
 
                         <TableCell style={{ display: 'inline-flex', width: 50 }} align="center">
                           <MenuItem
