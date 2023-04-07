@@ -48,6 +48,7 @@ export default function ChildrenToolbar({ filterName, onFilterName, onClickSearc
     >
 
         <StyledSearch sx={{height:40}}
+        className='search__user'
           value={filterName}
           onChange={onFilterName}
           onBlur={onClickSearch}

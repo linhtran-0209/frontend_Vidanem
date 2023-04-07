@@ -321,11 +321,11 @@ export default function UserPage() {
                         <TableCell style={{ paddingLeft: 17 }} align="left">
                           {quyen}
                         </TableCell>
-                        <TableCell style={{ padding: 0 }} align="center">
+                        <TableCell className='block__container'>
                           {isActive && (
                             <Tooltip title="Khóa tài khoản">
-                              <MenuItem
-                                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                              <MenuItem className='block__content'
+                                
                                 onClick={(event) => handleClickOpenChangeActive(event, row)}
                               >
                                 <Iconify style={{ color: 'green' }} icon={'eva:unlock-outline'} />
@@ -335,7 +335,7 @@ export default function UserPage() {
                           {!isActive && (
                             <Tooltip title="Mở khóa tài khoản">
                               <MenuItem
-                                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                                className='block__content'
                                 onClick={(event) => handleClickOpenChangeActive(event, row)}
                               >
                                 <Iconify style={{ color: 'red' }} icon={'eva:lock-outline'} />
@@ -345,9 +345,8 @@ export default function UserPage() {
                         </TableCell>
 
                         <TableCell
-                          // className="colusericon"
-                          style={{ display: 'inline-flex' }}
-                          align="center"
+                          className='icon__container'
+                          
                         >
                           <Tooltip title="Cập nhật">
                             <MenuItem className="updateuser" onClick={(event) => handleClickOpenInsert(event, row)}>

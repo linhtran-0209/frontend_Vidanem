@@ -84,7 +84,7 @@ export function CreateScholarshipExcelModal(props) {
       >
         <div className="titlecreateuserexcel">
           {' '}
-          Upload danh học bổng
+          Upload danh sách học bổng
           <IconButton onClick={props.handleClose}>
             <CloseIcon />
           </IconButton>

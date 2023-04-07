@@ -7,7 +7,9 @@ import {
   DialogContent,
   TextField,
   FormControl,
+  IconButton,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
 
 export function CreateModal(props) {
@@ -71,16 +73,16 @@ export function CreateModal(props) {
         </Alert>
       )}
 
-      <Dialog open={props.openDialogCreate} onClose={props.handleClose}>
-      <div className="titlecreateuser">
+      <Dialog className='dialogcreatesponsor' open={props.openDialogCreate} onClose={props.handleClose}>
+      <div className="titlecreatesponsor">
           {' '}
           Thêm nhà tài trợ mới
-          {/* <IconButton>IconButton onClick={props.handleClose}>
+          <IconButton onClick={props.handleClose}>
             <CloseIcon />
-          </IconButton> */}
+          </IconButton>
         </div>
         <div className="divider" />
-        <DialogContent>
+        <DialogContent className='form__info__createsponsor'>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {preview && (
               <img
@@ -111,7 +113,7 @@ export function CreateModal(props) {
             </Button>
           </label>
 
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          <FormControl className="formcontrolcreatesponsor" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Mã đơn vị"
@@ -121,7 +123,7 @@ export function CreateModal(props) {
               fullWidth
             />
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          <FormControl className="formcontrolcreatesponsor" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Tên đơn vị tài trợ"
@@ -131,7 +133,7 @@ export function CreateModal(props) {
               fullWidth
             />
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          <FormControl className="formcontrolcreatesponsor" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Số điện thoại"
@@ -141,7 +143,7 @@ export function CreateModal(props) {
               fullWidth
             />
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          <FormControl className="formcontrolcreatesponsor" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Giới thiệu"
@@ -153,8 +155,8 @@ export function CreateModal(props) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleClose}>Hủy</Button>
-          <Button onClick={handleSubmit}>Thêm nhà tài trợ</Button>
+          <Button className="huythemnhataitro" onClick={props.handleClose}>Hủy</Button>
+          <Button className="themnhataitro" onClick={handleSubmit}>Thêm nhà tài trợ</Button>
         </DialogActions>
       </Dialog>
     </>

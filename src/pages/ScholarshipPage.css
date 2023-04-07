@@ -1,20 +1,11 @@
-.buttonthemdonvi{
-    border-radius: 0px;
-    border: 2px solid rgb(28, 28, 165);
-    background-color:rgb(28, 28, 165) ;
-    padding: 4px 12px;
-    
-    height: 40px;
-    width: 200px;
-}
-.icon__sponser__container{
+.icon__scholarship__container{
     display: flex;
     justify-content: center;
     align-items: center;
-    padding:16px 20px 16px 0px;
+    padding:16px 55px 16px 0px;
     border: none;
 }
-.sponser__update{
+.scholarship__update{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,7 +16,7 @@
     padding-right: 1px;
     border-bottom: none;
 }
-.sponser__delete{
+.scholarship__delete{
     display: flex;
     justify-content: center;
     align-items: center;

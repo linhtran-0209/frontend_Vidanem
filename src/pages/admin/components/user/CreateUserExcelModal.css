@@ -85,25 +85,4 @@
   background-color: rgb(28, 28, 165);
 }
 
-.formcontrolcreateuser {
-  margin: 1rem 0rem 0rem 0rem;
-  min-width: 520px;
-}
 
-.formcontrolcreateuser > div {
-  border-radius: 0px;
-  background-color: aliceblue;
-}
-.formcontrolcreateuser > div:hover {
-  border: none;
-}
-.formcontrolcreateuser > div > div {
-  border-radius: 0px;
-}
-.ketqua {
-  font-weight: 600;
-  font-size: 20px;
-  text-align: center;
-  color: rgb(37, 37, 36);
-  opacity: 85%;
-}

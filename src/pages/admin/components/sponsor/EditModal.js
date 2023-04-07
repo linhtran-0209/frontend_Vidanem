@@ -9,8 +9,10 @@ import {
   DialogTitle,
   TextField,
   FormControl,
+  IconButton,
 } from '@mui/material';
 // import { Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
 
 export function EditModal(props) {
@@ -75,7 +77,7 @@ export function EditModal(props) {
   };
   return (
     <>
-      <Dialog open={props.setOpenDialogEdit} onClose={props.handleClose}>
+      {/* <Dialog open={props.setOpenDialogEdit} onClose={props.handleClose}> */}
         {openSuccessMessage && (
           <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
             {openSuccessMessage}
@@ -86,7 +88,15 @@ export function EditModal(props) {
             {openErrMessage}
           </Alert>
         )}
-        <DialogTitle>Cập nhật nhà tài trợ</DialogTitle>
+        <Dialog className='dialogupdatesponsor' open={props.setOpenDialogEdit} onClose={props.handleClose}>
+      <div className="titleupdatesponsor">
+          {' '}
+          Cập nhật nhà tài trợ
+          <IconButton onClick={props.handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <div className="divider" />
         <DialogContent>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {preview && (
@@ -118,51 +128,9 @@ export function EditModal(props) {
             </Button>
           </label>
 
-          <Dialog open={props.setOpenDialogEdit} onClose={props.handleClose}>
-            {openSuccessMessage && (
-              <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
-                {openSuccessMessage}
-              </Alert>
-            )}
-            {openErrMessage && (
-              <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
-                {openErrMessage}
-              </Alert>
-            )}
-            <DialogTitle>Cập nhật nhà tài trợ</DialogTitle>
-            <div className="divider" />
-            <DialogContent>
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                {preview && (
-                  <img
-                    src={preview}
-                    alt="Preview"
-                    style={{
-                      maxWidth: '100%',
-                      // borderRadius: '30%',
-                      objectFit: 'cover',
-                      height: 200,
-                    }}
-                  />
-                )}
-              </div>
-              <input
-                accept="image/*"
-                id="image-input"
-                type="file"
-                style={{ display: 'none' }}
-                onChange={handleImageChange}
-              />
-              <label
-                htmlFor="image-input"
-                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 16 }}
-              >
-                <Button variant="contained" color="primary" component="span">
-                  Chọn Logo
-                </Button>
-              </label>
+          
 
-              <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+              <FormControl className="formcontrolupdatesponsor" variant="standard" fullWidth>
                 <TextField
                   margin="dense"
                   label="Mã đơn vị"
@@ -172,7 +140,7 @@ export function EditModal(props) {
                   fullWidth
                 />
               </FormControl>
-              <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+              <FormControl className="formcontrolupdatesponsor" variant="standard" fullWidth>
                 <TextField
                   margin="dense"
                   label="Tên đơn vị tài trợ"
@@ -182,7 +150,7 @@ export function EditModal(props) {
                   fullWidth
                 />
               </FormControl>
-              <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+              <FormControl className="formcontrolupdatesponsor" variant="standard" fullWidth>
                 <TextField
                   margin="dense"
                   label="Số điện thoại"
@@ -192,7 +160,7 @@ export function EditModal(props) {
                   fullWidth
                 />
               </FormControl>
-              <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+              <FormControl className="formcontrolupdatesponsor" variant="standard" fullWidth>
                 <TextField
                   margin="dense"
                   label="Giới thiệu"
@@ -204,16 +172,13 @@ export function EditModal(props) {
               </FormControl>
             </DialogContent>
             <DialogActions>
-              <Button onClick={props.handleClose}>Hủy</Button>
-              <Button onClick={handleSubmit}>Cập nhật nhà tài trợ</Button>
-            </DialogActions>
-          </Dialog>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={props.handleClose}>Hủy</Button>
-          <Button onClick={handleSubmit}>Cập nhật nhà tài trợ</Button>
+          <Button className="huycapnhatnhataitro" onClick={props.handleClose}>Hủy</Button>
+          <Button className="capnhatnhataitro" onClick={handleSubmit}>Cập nhật</Button>
         </DialogActions>
-      </Dialog>
+          </Dialog>
+        
+        
+     
     </>
   );
 }

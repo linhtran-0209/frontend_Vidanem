@@ -13,3 +13,6 @@
     padding:8px;
 
 }
+.search__user > input{
+    padding: 0;
+}

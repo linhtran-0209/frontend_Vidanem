@@ -9,15 +9,17 @@ import { StyledChart } from './components/chart';
 import {StyleCreateUser} from'./pages/admin/components/user/CreateUserModal.css';
 import {StyleCreateUserExcel} from './pages/admin/components/user/CreateUserExcelModal.css';
 import {StylesUserPages} from './pages/UserPage.css';
+import {StyleScholarshipPages} from'./pages/ScholarshipPage.css';
 import {StylesUpdateUserModal} from './pages/admin/components/user/InsertUserModal.css';
 import {StylesDeleteUserModal}from './pages/admin/components/user/DeleteUserModal.css';
 import {StyleSponsorPage} from './pages/SponserPage.css';
 // import {StylesCreateSponsor} from './pages/admin/components/sponsor/CreateSponsor.css'
 import {styleSearchSponser} from './sections/@dashboard/user/UserListToolbar.css';
 import {styleCreateChildren} from './pages/admin/components/children/CreateChildren.css';
-// import {styleCreateScholarship} from './pages/admin/components/scholarship/CreateScholarshipModal.css'
-// import {StyleCreateSponsor} from './pages/admin/components';
-
+import {StyleCreateScholarship} from './pages/admin/components/scholarship/CreateScholarship.css';
+import {StyleUpdateScholarship} from './pages/admin/components/scholarship/EditModal.css';
+import {StyleCreateSponsor} from './pages/admin/components/sponsor/CreateSponsor.css';
+import {StyleEditSponsor} from './pages/admin/components/sponsor/EditModalSponsor.css';
 // import {Global} from './utils/global.css';
 // import axios from 'axios';
 // import { useEffect, useState } from "react";

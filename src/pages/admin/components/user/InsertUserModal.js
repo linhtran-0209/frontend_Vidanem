@@ -182,7 +182,8 @@ export function InsertUserModal(props) {
           </IconButton>
         </div>
         <div className="divider" />
-        <DialogContent>
+        <DialogContent className='form__info'>
+        <div className='form__info__container'>
           <FormControl className="formcontrolupdateuser" variant="standard" fullWidth>
             <TextField
               htmlFor="demo-customized-textbox"
@@ -207,9 +208,9 @@ export function InsertUserModal(props) {
               fullWidth
             />
           </FormControl>
-
+          </div>
           <FormControl
-            className="formcontrolcreateuser"
+            className="formcontrolupdate__changerole"
             style={{ backgroundColor: 'whitesmoke' }}
             variant="outlined"
             fullWidth
@@ -230,13 +231,16 @@ export function InsertUserModal(props) {
             </Select>
           </FormControl>
 
+          <div className='form__update__address'>
+          <div className='form__update__address__info'>
           {enableQuan && (
-            <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
+            <div className='form__update__address__quan'>
+            <FormControl className="formcontrolupdateuser" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
               <Select
                 labelId="quan"
                 id="quan"
-                value={openQuan || ''}
+                value={openQuan}
                 onChange={handleChangeQuan}
                 label="Quận"
                 fullWidth
@@ -249,15 +253,19 @@ export function InsertUserModal(props) {
                 ))}
               </Select>
             </FormControl>
+            </div>
           )}
+          </div>
 
+          <div className='form__update__address__info'>
           {enablePhuong && (
-            <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
+            <div className='form__update__address__phuong'>
+            <FormControl className="formcontrolupdateuser" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
               <Select
                 labelId="phuong"
                 id="phuong"
-                value={openPhuong || ''}
+                value={openPhuong}
                 onChange={handleChangePhuong}
                 label="Phường"
                 fullWidth
@@ -270,7 +278,11 @@ export function InsertUserModal(props) {
                 ))}
               </Select>
             </FormControl>
+            </div>
           )}
+        </div>
+        
+        </div>
         </DialogContent>
         <DialogActions>
           {/* <Button onClick={props.handleClose}>Hủy</Button> */}

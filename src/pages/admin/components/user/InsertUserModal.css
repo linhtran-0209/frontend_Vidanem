@@ -3,6 +3,8 @@
 }
 .dialogInsertUser > div > div {
   border-radius: 0px;
+  max-width: 800px;
+  min-width: 600px;
 }
 .titleupdateuser {
   display: flex;
@@ -19,17 +21,61 @@
   color: black;
   background-color: rgb(241, 84, 84);
 }
-.formcontrolupdateuser {
+.form__info{
+  padding: 20px 15px;
+}
+.form__info__container{
+  display: flex;
+  justify-content: center;
+}
+.form__info__container>.formcontrolupdateuser {
   margin: 1rem 0 0rem 0rem;
-  min-width: 520px;
+  min-width: 240px;
+  margin:15px 15px;
 }
 .formcontrolupdateuser > div > div {
   border-radius: 0px;
+  
 }
 .formcontrolupdateuser > div {
   border-radius: 0px;
   background-color: aliceblue;
 }
+.formcontrolupdate__changerole{
+  width: 550px;
+  min-width: 320px;
+  margin:15px 15px;
+}
+.formcontrolupdate__changerole > div {
+  border-radius: 0px;
+  background-color: aliceblue;
+}
+.formcontrolupdate__changerole > div:hover {
+  border: none;
+}
+.formcontrolupdate__changerole > div > div {
+  border-radius: 0px;
+}
+.form__update__address{
+  display: flex;
+  justify-content: center;
+}
+.form__update__address__info .form__update__address__quan{
+
+  margin:15px 15px;
+}
+.form__update__address__info .form__update__address__quan >.formcontrolupdateuser{
+  width: 260px;
+  min-width: 240px; 
+}
+.form__update__address__info .form__update__address__phuong{
+  margin:15px 15px;
+}
+.form__update__address__info .form__update__address__phuong >.formcontrolupdateuser{
+  width: 260px;
+  min-width: 240px;
+}
+
 .divider {
   height: 3px;
   background: linear-gradient(blue, 20%, pink);

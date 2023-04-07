@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 
+
 // @mui
 import {
   Alert,
@@ -19,6 +20,7 @@ import {
   TableContainer,
   Box,
   Pagination,
+  Tooltip,
 } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
@@ -255,21 +257,23 @@ export default function ScholarshipPage() {
                           {ghiChu}
                         </TableCell>
 
-                        <TableCell style={{ display: 'inline-flex', width: 50 }} align="center">
+                        <TableCell
+                          className='icon__scholarship__container'  
+                        >
+                          <Tooltip title="Cập nhật">
+                            <MenuItem className="scholarship__update" onClick={(event) => handleRowClick(event, row)}>
+                              <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
+                            </MenuItem>
+                          </Tooltip>
+                          <Tooltip title="Xóa">
                           <MenuItem
-                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                            onClick={(event) => handleRowClick(event, row)}
-                          >
-                            <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
-                          </MenuItem>
-
-                          <MenuItem
-                            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                            className="scholarship__delete"
                             sx={{ color: 'error.main' }}
                             onClick={(event) => handleDeleteClick(row)}
                           >
                             <Iconify icon={'eva:trash-2-outline'} />
                           </MenuItem>
+                          </Tooltip>
                         </TableCell>
                       </TableRow>
                     );

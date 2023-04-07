@@ -10,7 +10,9 @@ import {
   MenuItem,
   Select,
   InputLabel,
+  IconButton,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
 
 export function CreateModal(props) {
@@ -88,17 +90,18 @@ export function CreateModal(props) {
         </Alert>
       )}
 
-      <Dialog open={props.openDialogCreate} onClose={props.handleClose}>
-      <div className="titlecreateuser">
+      <Dialog className='dialogcreatescholarship' open={props.openDialogCreate} onClose={props.handleClose}>
+      <div className="titlecreatesholarship">
           {' '}
           Thêm học bổng
-          {/* <IconButton onClick={props.handleClose}>
+          <IconButton onClick={props.handleClose}>
             <CloseIcon />
-          </IconButton> */}
+          </IconButton>
         </div>
         <div className="divider" />
-        <DialogContent>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+        <DialogContent className='form__info__createscholarship'>
+        <div className='form__info__createscholarship__container'>
+          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Mã học bổng"
@@ -107,7 +110,7 @@ export function CreateModal(props) {
               fullWidth
             />
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Tên học bổng"
@@ -116,7 +119,8 @@ export function CreateModal(props) {
               fullWidth
             />
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
+          </div>
+          <FormControl className="formcontrolcreatesholarship__name" variant="outlined" fullWidth>
             <InputLabel id="demo-simple-select-standard-label">Đơn vị tài trợ</InputLabel>
             <Select onChange={handleChange} label="Đơn vị tài trợ" value={selected} fullWidth margin="dense">
               <TextField
@@ -138,7 +142,8 @@ export function CreateModal(props) {
               ))}
             </Select>
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          <div className='form__info__moneyscholarship__container'>
+          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Số lượng"
@@ -147,7 +152,7 @@ export function CreateModal(props) {
               fullWidth
             />
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Số tiền mỗi suất"
@@ -156,7 +161,7 @@ export function CreateModal(props) {
               fullWidth
             />
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Hình thức"
@@ -165,7 +170,8 @@ export function CreateModal(props) {
               fullWidth
             />
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          </div>
+          <FormControl className="formcontrolcreatesholarship__note" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Ghi chú"
@@ -176,8 +182,8 @@ export function CreateModal(props) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleClose}>Hủy</Button>
-          <Button onClick={handleSubmit}>Thêm nhà học bổng</Button>
+          <Button className="huythemhocbong" onClick={props.handleClose}>Hủy</Button>
+          <Button className="themhocbong" onClick={handleSubmit}>Thêm học bổng</Button>
         </DialogActions>
       </Dialog>
     </>

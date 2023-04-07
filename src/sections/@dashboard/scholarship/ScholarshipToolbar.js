@@ -48,6 +48,7 @@ export default function ScholarshipToolbar({ filterName, onFilterName, onClickSe
     >
 
         <StyledSearch sx={{height:40}}
+        className='search__user'
           value={filterName}
           onChange={onFilterName}
           onBlur={onClickSearch}

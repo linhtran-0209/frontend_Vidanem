@@ -11,7 +11,9 @@ import {
   FormControl,
   MenuItem,
   Select,
+  IconButton,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
 
 export function EditModal(props) {
@@ -102,11 +104,18 @@ export function EditModal(props) {
         </Alert>
       )}
 
-      <Dialog open={props.setOpenDialogEdit} onClose={props.handleClose}>
-        <DialogTitle>Cập nhật học bổng</DialogTitle>
+      <Dialog className='dialogupdatescholarship' open={props.setOpenDialogEdit} onClose={props.handleClose}>
+      <div className="titleupdatescholarship">
+          {' '}
+          Cập nhật học bổng
+          <IconButton className onClick={props.handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </div>
         <div className="divider" />
-        <DialogContent>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+        <DialogContent className='form__info__updatescholarship'>
+        <div className='form__info__updatescholarship__container'>
+          <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Mã học bổng"
@@ -116,7 +125,7 @@ export function EditModal(props) {
               fullWidth
             />
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Tên học bổng"
@@ -126,7 +135,8 @@ export function EditModal(props) {
               fullWidth
             />
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
+          </div>
+          <FormControl className="formcontrolupdatesholarship__name" variant="outlined" fullWidth>
             <Select
               onChange={handleChange}
               label="Đơn vị tài trợ"
@@ -154,7 +164,8 @@ export function EditModal(props) {
               ))}
             </Select>
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          <div className='form__info__moneyupdatescholarship__container'>
+          <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Số lượng"
@@ -164,7 +175,7 @@ export function EditModal(props) {
               fullWidth
             />
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Số tiền mỗi suất"
@@ -174,7 +185,7 @@ export function EditModal(props) {
               fullWidth
             />
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Hình thức"
@@ -184,7 +195,8 @@ export function EditModal(props) {
               fullWidth
             />
           </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+          </div>
+          <FormControl className="formcontrolupdatesholarship__note" variant="standard" fullWidth>
             <TextField
               margin="dense"
               label="Ghi chú"
@@ -196,8 +208,8 @@ export function EditModal(props) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleClose}>Hủy</Button>
-          <Button onClick={handleSubmit}>Cập nhật học bổng</Button>
+          <Button className="huycapnhathocbong" onClick={props.handleClose}>Hủy</Button>
+          <Button className="capnhathocbong" onClick={handleSubmit}>Cập nhật học bổng</Button>
         </DialogActions>
       </Dialog>
     </>

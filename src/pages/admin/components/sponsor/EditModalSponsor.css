@@ -1,0 +1,84 @@
+.dialogupdatesponsor > div > div {
+    border-radius: 0px;
+    max-width: 650px;
+    min-width: 600px;
+    }
+    .titleupdatesponsor {
+      display: flex;
+      margin: 1rem;
+      font-weight: 700;
+      padding-top: 10px;
+      padding-left: 20px;
+      font-size: 20px;
+    }
+    .titleupdatesponsor> button {
+      margin-left: 22rem;
+    }
+    .titleupdatesponsor > button:hover {
+      margin-left: 22rem;
+      color: black;
+      background-color: rgb(241, 84, 84);
+    }
+    
+    .divider {
+      height: 3px;
+      background: linear-gradient(blue, 20%, pink);
+    }
+    
+    .formcontrolupdatesponsor {
+        margin: 1rem 0rem 0rem 0rem;
+        min-width: 320px;
+      }
+      
+      .formcontrolupdatesponsor > div {
+        border-radius: 0px;
+        background-color: aliceblue;
+      }
+      .formcontrolupdatesponsor > div:hover {
+        border: none;
+      }
+      .formcontrolupdatesponsor > div > div {
+        border-radius: 0px;
+      }
+      .huycapnhatnhataitro {
+        border-radius: 0px;
+        margin-right: 15px;
+        margin-bottom: 13px;
+        border: 2px solid rgb(28, 28, 165);
+        background-color: rgb(28, 28, 165);
+        padding: 4px 12px;
+        color: #ffff;
+        height: 40px;
+        width: 80px;
+      }
+      .huycapnhatnhataitro:hover {
+        border-radius: 0px;
+        margin-right: 15px;
+        margin-bottom: 13px;
+        border: 2px solid rgb(230, 41, 41);
+        background-color: rgb(230, 41, 41);
+        padding: 4px 12px;
+        color: #ffff;
+        height: 40px;
+        width: 80px;
+      }
+      .capnhatnhataitro {
+        border-radius: 0px;
+        margin-right: 20px;
+        margin-bottom: 13px;
+        border: 2px solid rgb(28, 28, 165);
+        background-color: rgb(28, 28, 165);
+        padding: 4px 12px;
+        color: #ffff;
+        height: 40px;
+        width: 150px;
+      }
+      .capnhatnhataitro:hover {
+        border-radius: 0px;
+        border: 2px solid rgb(34, 34, 139);
+        background-color: rgb(34, 34, 139);
+        padding: 4px 12px;
+        color: #ffff;
+        height: 40px;
+        width: 150px;
+      }

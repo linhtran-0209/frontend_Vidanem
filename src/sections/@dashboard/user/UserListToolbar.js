@@ -76,6 +76,7 @@ export default function UserListToolbar({
       }}
     >
       <StyledSearch
+        className='search__user'
         sx={{ height: 40 }}
         value={filterName}
         onChange={onFilterName}

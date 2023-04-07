@@ -46,7 +46,7 @@ export default function BlogPage() {
           <Typography variant="h4" gutterBottom>
             Tin bài
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpen} >
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} href='/dashboard/blog/insert' >
             Bài viết mới
           </Button>
         </Stack>

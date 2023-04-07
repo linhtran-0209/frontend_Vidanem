@@ -15,6 +15,7 @@ import DashboardAppPage from './pages/DashboardAppPage';
 import ScholarshipPage from './pages/ScholarshipPage';
 import ChildrenPage from './pages/ChildrenPage';
 import InsertChildren from './pages/admin/components/children/CreateChildren';
+import InsertBlog from './pages/admin/components/blog/CreateBlog';
 // import AccountPopover from './layouts/dashboard/header/AccountPopover';
 
 // ----------------------------------------------------------------------
@@ -35,12 +36,7 @@ export default function Router() {
         { path: '/login', element: <LoginPage /> },
       ],
     },
-    {
-      
-      element: <DashboardLayout />,
-      children: [{ element: <Navigate to="/dashboard/children" /> },
-          { path: '/dashboard/children/insert', element: <InsertChildren /> }],
-    },
+   
     {
       path: '/dashboard',
       element: <DashboardLayout />,
@@ -66,6 +62,18 @@ export default function Router() {
     //     {path: 'add'}
     //   ]
     // },
+    {
+      
+      element: <DashboardLayout />,
+      children: [{ element: <Navigate to="/dashboard/children" /> },
+          { path: '/dashboard/children/insert', element: <InsertChildren /> }],
+    },
+    {
+      
+      element: <DashboardLayout />,
+      children: [{ element: <Navigate to="/dashboard/blog" /> },
+          { path: '/dashboard/blog/insert', element: <InsertBlog /> }],
+    },
     {
       element: <SimpleLayout />,
       children: [

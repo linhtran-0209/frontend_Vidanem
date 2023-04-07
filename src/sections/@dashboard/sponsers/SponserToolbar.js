@@ -47,6 +47,7 @@ export default function SponserToolbar({ filterName, onFilterName, onClickSearch
     >
 
         <StyledSearch sx={{height:40}}
+        className='search__user'
           value={filterName}
           onChange={onFilterName}
           onBlur={onClickSearch}

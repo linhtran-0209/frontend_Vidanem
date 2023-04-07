@@ -1,5 +1,7 @@
 .dialogCreateUser > div > div {
   border-radius: 0px;
+  max-width: 800px;
+  min-width: 600px;
 }
 .titlecreateuser {
   display: flex;
@@ -22,20 +24,69 @@
   height: 3px;
   background: linear-gradient(blue, 20%, pink);
 }
-.formcontrolcreateuser {  
-  margin: 1rem 0rem 0rem 0rem;
-  min-width: 450px;
+.form__info{
+  padding: 20px 15px;
 }
+.form__info__container{
+  display: flex;
+  justify-content: center;
+}
+.form__info__container>.formcontrolcreateuser {  
+  min-width: 240px;
+  margin:15px 15px;
+}
+
 
 .formcontrolcreateuser > div {
   border-radius: 0px;
   background-color: aliceblue;
 }
+
 .formcontrolcreateuser > div:hover {
   border: none;
 }
 .formcontrolcreateuser > div > div {
   border-radius: 0px;
+}
+.formcontrol__changerole{
+  width: 550px;
+  min-width: 320px;
+  margin:15px 15px;
+}
+.formcontrol__changerole > div {
+  border-radius: 0px;
+  background-color: aliceblue;
+}
+
+.formcontrol__changerole > div:hover {
+  border: none;
+}
+.formcontrol__changerole > div > div {
+  border-radius: 0px;
+}
+.form__address{
+  display: flex;
+  justify-content: center;
+}
+.form__address__info{
+  
+}
+.form__address__info .form__address__quan{
+
+}
+.form__address__info .form__address__quan >.formcontrolcreateuser{
+  width: 260px;
+  min-width: 240px;
+  margin:15px 15px;
+  
+}
+.form__address__info .form__address__phuong{
+  
+}
+.form__address__info .form__address__phuong >.formcontrolcreateuser{
+  width: 260px;
+  min-width: 240px;
+  margin:15px 15px;
 }
 .themtaikhoan {
   margin-bottom: 13px;

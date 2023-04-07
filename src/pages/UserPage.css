@@ -32,31 +32,59 @@
 .buttonThemMoi{
    
 }
-.colusericon{
-    height: 40px;
-    display: inline-flex;
+.block__container{
+    padding:16px 25px;
     align-items: center;
-    margin-left: 10px;
-    padding: 0px;
-    margin-bottom: 10px;
-    margin-top: 2px;
-    border-bottom: none;
+}
+.block__content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 5px;
+    padding-right: 5px;
+    
+    
+}
+.block__content:hover{
+    position: relative;
+    background-color: rgba(145, 158, 171, 0.08);
+    width: 40px;
+    
+    
+    
+}
+.icon__container{
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:16px 20px 16px 20px;
+    border: none;
 }
 .updateuser{
     display: flex;
     justify-content: center;
     align-items: center;
-    /* padding-top: 16px; */
-    /* padding-left: 0; */
-    padding-right: 5px;
+    width: 30px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 1px;
+    padding-right: 1px;
     border-bottom: none;
+    
 }
 .deleteuser{
     display: flex;
     justify-content: center;
     align-items: center;
-    /* padding-top: 16px; */
-    padding-left: 5px;
-    /* padding-right: 0; */
+    width: 30px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 1px;
+    padding-right: 1px;
     border-bottom: none;
+    
 }

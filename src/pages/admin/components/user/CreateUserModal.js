@@ -129,7 +129,8 @@ export function CreateUserModal(props) {
           </IconButton>
         </div>
         <div className="divider" />
-        <DialogContent>
+        <DialogContent className='form__info'>
+        <div className='form__info__container'>
           <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
             <TextField
               htmlFor="demo-customized-textbox"
@@ -152,8 +153,9 @@ export function CreateUserModal(props) {
               fullWidth
             />
           </FormControl>
+          </div>
           <FormControl
-            className="formcontrolcreateuser"
+            className="formcontrol__changerole"
             style={{ backgroundColor: 'whitesmoke' }}
             variant="outlined"
             fullWidth
@@ -173,8 +175,10 @@ export function CreateUserModal(props) {
               <MenuItem value={3}>Cấp Liên Đội</MenuItem>
             </Select>
           </FormControl>
-
+          <div className='form__address'>
+          <div className='form__address__info'>
           {enableQuan && (
+            <div className='form__address__quan'>
             <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
               <Select
@@ -193,9 +197,13 @@ export function CreateUserModal(props) {
                 ))}
               </Select>
             </FormControl>
+            </div>
           )}
+          </div>
 
+          <div className='form__address__info'>
           {enablePhuong && (
+            <div className='form__address__phuong'>
             <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
               <Select
@@ -214,7 +222,11 @@ export function CreateUserModal(props) {
                 ))}
               </Select>
             </FormControl>
+            </div>
           )}
+        </div>
+        
+        </div>
         </DialogContent>
         <DialogActions>
           {/* <Button onClick={handleClose}>Hủy</Button> */}

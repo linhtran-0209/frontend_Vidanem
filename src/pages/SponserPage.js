@@ -19,6 +19,7 @@ import {
   Box,
   Pagination,
   MenuItem,
+  Tooltip,
 } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
@@ -247,21 +248,22 @@ export default function SponserPage() {
                         <TableCell align="left">{soLuongDaTrao}</TableCell>
 
                         <TableCell
-                          // className="coliconsponser"
-                          style={{ display: 'inline-flex' }}
-                          align="center"
+                          className='icon__sponser__container'  
                         >
-                          <MenuItem className="updatesponser" onClick={(event) => handleRowClick(event, row)}>
-                            <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
-                          </MenuItem>
-
+                          <Tooltip title="Cập nhật">
+                            <MenuItem className="sponser__update" onClick={(event) => handleRowClick(event, row)}>
+                              <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
+                            </MenuItem>
+                          </Tooltip>
+                          <Tooltip title="Xóa">
                           <MenuItem
-                            className="deletesponser"
+                            className="sponser__delete"
                             sx={{ color: 'error.main' }}
                             onClick={(event) => handleDeleteClick(row)}
                           >
                             <Iconify icon={'eva:trash-2-outline'} />
                           </MenuItem>
+                          </Tooltip>
                         </TableCell>
                       </TableRow>
                     );
