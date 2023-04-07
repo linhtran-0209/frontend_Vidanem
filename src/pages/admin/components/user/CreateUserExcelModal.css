@@ -1,11 +1,11 @@
 .createExcelModal > div > div {
-  min-width: 800px;
-  min-height: 550px;
   border-radius: 0px;
+  max-width: 800px;
+  min-width: 600px;
 }
 .titlecreateuserexcel {
   display: flex;
-  margin-left: 3rem;
+  margin: 1rem;
   font-weight: 700;
   padding-top: 10px;
   padding-left: 20px;
@@ -84,5 +84,3 @@
   color: white;
   background-color: rgb(28, 28, 165);
 }
-
-
