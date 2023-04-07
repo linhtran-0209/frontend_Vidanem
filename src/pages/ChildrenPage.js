@@ -187,10 +187,18 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             Tất cả trẻ em
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpen} href='/dashboard/children/insert'>
+          <Button
+            className="buttonThemMoi"
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+            onClick={handleClickOpen} 
+            href='/dashboard/children/insert'
+            
+          >
             Thêm trẻ em
           </Button>
         </Stack>
+        
         
         <Card>
           <ChildrenToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
