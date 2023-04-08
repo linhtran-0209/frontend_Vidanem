@@ -1,34 +1,28 @@
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
-import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
+import moment from 'moment';
+
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+
 // @mui
 import {
   Card,
   Table,
   Stack,
   Paper,
-  Avatar,
   Popover,
-  Checkbox,
   TableRow,
   MenuItem,
   TableBody,
   TableCell,
   Container,
   Typography,
-  IconButton,
   TableContainer,
-  TablePagination,
+  Box,
+  Pagination,
 } from '@mui/material';
 // components
 import Label from '../components/label';
@@ -44,53 +38,33 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Họ tên', alignRight: false },
   { id: 'date', label: 'Ngày sinh', alignRight: false },
   { id: 'school', label: 'Trường', alignRight: false },
-  { id: 'address', label: 'Địa chỉ', alignRight: false },
   { id: 'hoancanh', label: 'Hoàn cảnh', alignRight: false },
+  { id: 'nhataitro', label: 'Đơn vị bảo trợ', alignRight: false },
+  { id: 'namnhan', label: 'Năm nhận', alignRight: false },
+  { id: 'trangthai', label: 'Trạng thái', alignRight: false },
   { id: 'status', label: 'Action', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
+export default function ChildrenPage() {
+  const [total, setTotal] = useState(0);
+  const [selectedRow, setSelectedRow] = useState({});
+  const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
+  const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
 
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(array, (_user) => _user.email.toLowerCase().indexOf(query.toLowerCase()) !== -1);
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
-
-export default function UserPage() {
+  const navigate = useNavigate();
   useEffect(() => {
-    getUser();
+    getChildren();
   }, []);
 
-  const getUser = async () => {
+  const getChildren = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/account/getAll`;
+      const url = `${process.env.REACT_APP_API_URL}/treem/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
-      setUSERLIST(data.data);
+      setChildrenList(data.data);
+      setTotal(data.total);
     } catch (err) {
       console.log(err);
     }
@@ -99,78 +73,76 @@ export default function UserPage() {
 
   const [page, setPage] = useState(0);
 
-  const [order, setOrder] = useState('asc');
-
-  const [selected, setSelected] = useState([]);
-
-  const [orderBy, setOrderBy] = useState('email');
-
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [USERLIST, setUSERLIST] = useState([]);
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-  };
+  const [childrenList, setChildrenList] = useState([]);
 
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.email);
-      setSelected(newSelecteds);
-      return;
+  const handleSearch = async (event) => {
+    if (event.key === 'Enter' || !event.key) {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoTen=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
+        const { data } = await axios.get(url, { withCredentials: true });
+        // const  parse=data.data.email;
+        setChildrenList(data.data);
+        setTotal(data.total);
+      } catch (err) {
+        console.log(err);
+      }
     }
-    setSelected([]);
   };
 
-  const handleClick = (event, email) => {
-    const selectedIndex = selected.indexOf(email);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, email);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+  const handleClickExportExcel = async () => {
+    const url = `${process.env.REACT_APP_API_URL}/treem/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}&export=true`;
+    await axios
+      .get(url, {
+        withCredentials: true,
+        responseType: 'blob', // set the response type to blob
+      })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Danh sách trẻ em nhận bảo trợ.xlsx';
+        a.click();
+      });
+  };
+
+  const handleRowClick = (event, row) => {
+    setSelectedRow(row);
+    setOpenDialogEdit(true);
+  };
+
+  const handleDeleteClick = (row) => {
+    setSelectedRow(row);
+    setOpenDialogDelete(true);
+  };
+
+  const handleChangePage = async (event, newPage) => {
+    setPage(newPage - 1);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoTen=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setChildrenList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
     }
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
   };
 
   const handleFilterByName = (event) => {
-    setPage(0);
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - childrenList.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
-  const isNotFound = !filteredUsers.length && !!filterName;
+  const isNotFound = !childrenList.length && !!filterName;
   const [opendialog, setOpenDialog] = React.useState(false);
 
   const handleClickOpen = () => {
-    setOpenDialog(true);
+    navigate(`/dashboard/children/insert`);
   };
 
   const handleClose = () => {
@@ -180,124 +152,107 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> Children</title>
+        <title> Trẻ Em </title>
       </Helmet>
       <Container style={{ marginTop: -10 }}>
         <Stack style={{ marginBottom: 16 }} direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
             Tất cả trẻ em
           </Typography>
-          <Button
-            className="buttonThemMoi"
-            variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={handleClickOpen} 
-            href='/dashboard/children/insert'
-            
-          >
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpen}>
             Thêm trẻ em
           </Button>
         </Stack>
-        
-        
+
         <Card>
-          <ChildrenToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <ChildrenToolbar filterName={filterName} onFilterName={handleFilterByName} />
 
-          
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { _id, email, ma_quan, ma_phuong, quyen } = row;
-                    const selectedUser = selected.indexOf(email) !== -1;
+          <TableContainer sx={{ minWidth: 800 }}>
+            <Table>
+              <UserListHead headLabel={TABLE_HEAD} rowCount={childrenList.length} />
+              <TableBody>
+                {childrenList.map((row) => {
+                  const { _id, hoTen, ngaySinh, truong, hoanCanh, donViBaoTro, namNhan, namHoanThanh, authStatus } =
+                    row;
+                  let trangthai = '';
+                  if (row.authStatus === 'DeXuat') trangthai = 'Đề Xuất';
+                  else if (row.authStatus === 'ChoDuyet') trangthai = 'Chờ Duyệt';
+                  else trangthai = 'Đã Duyệt';
+                  return (
+                    <TableRow hover key={_id}>
+                      <TableCell align="left">{hoTen}</TableCell>
 
-                    return (
-                      <TableRow hover key={_id} tabIndex={-1} ma_phuong="checkbox" selected={selectedUser}>
-                        {/* <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, email)} />
-                        </TableCell> */}
+                      <TableCell align="left">{moment(ngaySinh).format('DD/MM/YYYY')}</TableCell>
 
-                        {/* <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Typography variant="subtitle2" noWrap>
-                              {email}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
+                      <TableCell align="left">{truong}</TableCell>
+                      <TableCell align="left">{hoanCanh}</TableCell>
+                      <TableCell align="left">{donViBaoTro[0].tenDonVi}</TableCell>
 
-                        <TableCell align="left">{ma_quan}</TableCell>
+                      <TableCell align="left">{namNhan}</TableCell>
 
-                        <TableCell align="left">{ma_phuong}</TableCell>
+                      <TableCell align="left">{trangthai}</TableCell>
+                      <TableCell
+                        // className="coliconsponser"
+                        style={{ display: 'inline-flex' }}
+                        align="center"
+                      >
+                        <MenuItem className="updatesponser" onClick={(event) => handleRowClick(event, row)}>
+                          <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
+                        </MenuItem>
 
-                        <TableCell align="left">{quyen}</TableCell>
-
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell> */}
-                      </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-
-                {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: 'center',
-                          }}
+                        <MenuItem
+                          className="deletesponser"
+                          sx={{ color: 'error.main' }}
+                          onClick={(event) => handleDeleteClick(row)}
                         >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
-
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
-                          </Typography>
-                        </Paper>
+                          <Iconify icon={'eva:trash-2-outline'} />
+                        </MenuItem>
                       </TableCell>
                     </TableRow>
-                  </TableBody>
+                  );
+                })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
                 )}
-              </Table>
-            </TableContainer>
-          
+              </TableBody>
 
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={USERLIST.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+              {isNotFound && (
+                <TableBody>
+                  <TableRow>
+                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <Paper
+                        sx={{
+                          textAlign: 'center',
+                        }}
+                      >
+                        <Typography variant="h6" paragraph>
+                          Not found
+                        </Typography>
+
+                        <Typography variant="body2">
+                          No results found for &nbsp;
+                          <strong>&quot;{filterName}&quot;</strong>.
+                          <br /> Try checking for typos or using complete words.
+                        </Typography>
+                      </Paper>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              )}
+            </Table>
+          </TableContainer>
+
+          <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
+            <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+          </Box>
         </Card>
       </Container>
 
       <Popover
         open={Boolean(open)}
         anchorEl={open}
-        onClose={handleCloseMenu}
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         PaperProps={{

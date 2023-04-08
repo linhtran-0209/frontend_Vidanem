@@ -38,6 +38,12 @@ export default function Router() {
     },
    
     {
+      
+      element: <DashboardLayout />,
+      children: [{ element: <Navigate to="/dashboard/year" /> },
+          { path: '/dashboard/year' }],
+    },
+    {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
@@ -46,6 +52,7 @@ export default function Router() {
         { path: 'users', element: <UserPage /> },
         { path: 'scholarship', element: <ScholarshipPage /> },
         { path: 'sponser', element: <SponserPage /> },
+        { path: 'year', element: <InsertChildren /> },
         { path: 'blog', element: <BlogPage /> },
         {
           path: 'children',

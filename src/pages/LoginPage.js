@@ -1,21 +1,24 @@
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
 
 import styles from '../layouts/simple/styles.module.css';
 
 function Login() {
+  useEffect(() => {
+    getUser();
+  }, []);
   console.log(process.env.REACT_APP_API_URL);
   const googleAuth = () => {
     window.open(`${process.env.REACT_APP_API_URL}/auth/google`, '_self');
   };
-  const [user, setUser] = useState(null);
+
   const getUser = async () => {
     try {
       const url = `${process.env.REACT_APP_API_URL}/currentUser`;
       const { data } = await axios.get(url, { withCredentials: true });
-      setUser(data.user._json);
+      if (data.status !== 200) await axios.get(`${process.env.REACT_APP_API_URL}/logout`, { withCredentials: true });
       console.log(JSON.parse(data).data.email);
     } catch (err) {
       console.log(err);

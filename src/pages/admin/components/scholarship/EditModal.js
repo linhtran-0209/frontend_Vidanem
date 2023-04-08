@@ -140,11 +140,9 @@ export function EditModal(props) {
             <Select
               onChange={handleChange}
               label="Đơn vị tài trợ"
-              defaultSelectedValue={selected}
               value={selected}
               fullWidth
               margin="dense"
-              defaultValue={selected}
             >
               <TextField
                 autoFocus

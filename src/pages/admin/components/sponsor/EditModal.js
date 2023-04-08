@@ -22,7 +22,7 @@ export function EditModal(props) {
   const [openErrMessage, setOpenErrMessage] = useState('');
 
   useEffect(() => {
-    if (props.row.id) {
+    if (props.row._id) {
       getSponser();
     }
   }, [props.row]);
