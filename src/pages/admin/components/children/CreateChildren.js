@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 
 import { LoadingButton } from '@mui/lab';
-import 'react-multi-carousel/lib/styles.css';
+// import 'react-multi-carousel/lib/styles.css';
 // hooks
 // utils
 import { fData } from '../../../../utils/formatNumber';
