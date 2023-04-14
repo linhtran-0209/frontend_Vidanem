@@ -313,7 +313,6 @@ export default function InsertChildren() {
 
           <div className="container__hoctap">
             <FormControl className="formcontrol__inform" variant="outlined" fullWidth>
-              <div>
                 <InputLabel id="demo-simple-select-standard-label">Đơn vị tài trợ</InputLabel>
                 <Select
                   onChange={handleChangeSponsor}
@@ -340,7 +339,6 @@ export default function InsertChildren() {
                     </MenuItem>
                   ))}
                 </Select>
-              </div>
             </FormControl>
             <FormControl className="formcontrol__inform" variant="outlined" fullWidth>
               <div>
@@ -432,7 +430,7 @@ export default function InsertChildren() {
                       }}
                     >
                       <h3 style={{ marginLeft: 20 }}>
-                        {hoctap.hocKy} - Năm {hoctap.namHoc}
+                        {hoctap.hocKy} - Năm {hoctap.maNamHoc}
                       </h3>
                       <p style={{ marginLeft: 40 }}>Học Lực: {hoctap.hocLuc}</p>
                     </Card>
