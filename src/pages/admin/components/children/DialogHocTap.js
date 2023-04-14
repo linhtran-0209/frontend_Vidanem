@@ -10,8 +10,10 @@ import {
   MenuItem,
   Select,
   InputLabel,
+  IconButton,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
 
 export function DialogHocTap(props) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
@@ -19,8 +21,8 @@ export function DialogHocTap(props) {
   const [hocTap, setHocTap] = useState({});
 
   const handleSubmit = async () => {
-    props.handleCickAdd(hocTap)
-    props.handleClose()
+    props.handleCickAdd(hocTap);
+    props.handleClose();
   };
 
   useEffect(() => {
@@ -42,93 +44,65 @@ export function DialogHocTap(props) {
         </Alert>
       )}
 
-      <Dialog open={props.openDialogCreate} onClose={props.handleClose}>
-        <div className="titlecreateuser">
+      <Dialog className="dialogcreateyear" open={props.openDialogCreate} onClose={props.handleClose}>
+        <div className="titlecreateyear">
           {' '}
           Thông tin học tập
-          {/* <IconButton onClick={props.handleClose}>
+          <IconButton onClick={props.handleClose}>
             <CloseIcon />
-          </IconButton> */}
+          </IconButton>
         </div>
         <div className="divider" />
-        <DialogContent>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Năm học"
-              onChange={(e) => setHocTap({ ...hocTap, namHoc: e.target.value })}
-              type="text"
-              fullWidth
-            />
-          </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Học kỳ"
-              onChange={(e) => setHocTap({ ...hocTap, hocKy: e.target.value })}
-              type="text"
-              fullWidth
-            />
-          </FormControl>
-          {/* <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
-            <InputLabel id="demo-simple-select-standard-label">Đơn vị tài trợ</InputLabel>
-            <Select onChange={handleChange} label="Đơn vị tài trợ" value={selected} fullWidth margin="dense">
+        <DialogContent className="form_year">
+          <div className="form__year__container">
+            <FormControl className="formcontrolcreateyear" variant="standard" fullWidth>
               <TextField
-                placeholder="Tên đơn vị tài trợ..."
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                }}
-                fullWidth
-                inputProps={{
-                  autoComplete: 'off',
-                }}
-              />
-
-              {SPONSERLIST.filter((option) => option.tenDonVi.toLowerCase().includes(search)).map((option) => (
-                <MenuItem key={option._id} value={option} label={option.tenDonVi}>
-                  {option.tenDonVi}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl> */}
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Học lực"
-              onChange={(e) => setHocTap({ ...hocTap, hocLuc: e.target.value })}
-              type="phone"
-              fullWidth
-            />
-          </FormControl>
-          <div className="container__hoancanh">
-            <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
-              <label label="Thành tích *" htmlFor="thanh-tich" style={{ marginTop: 15 }}>
-                Thành tích
-              </label>
-              <textarea
-                id="thanh-tich"
-                label="Thành tích *"
+                margin="dense"
+                label="Năm học"
+                onChange={(e) => setHocTap({ ...hocTap, namHoc: e.target.value })}
                 type="text"
-                onChange={(e) => setHocTap({ ...hocTap, thanhTich: e.target.value })}
-                placeholder="Thành tích"
-                style={{ margin: 0, backgroundColor: 'aliceblue' }}
+                fullWidth
               />
             </FormControl>
+            <FormControl className="formcontrolcreateyear" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Học kỳ"
+                onChange={(e) => setHocTap({ ...hocTap, hocKy: e.target.value })}
+                type="text"
+                fullWidth
+              />
+            </FormControl>
+
+            <FormControl className="formcontrolcreateyear" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Học lực"
+                onChange={(e) => setHocTap({ ...hocTap, hocLuc: e.target.value })}
+                type="phone"
+                fullWidth
+              />
+            </FormControl>
+            <div className="container__hoancanh">
+              <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
+                <label label="Thành tích *" htmlFor="thanh-tich" style={{ marginTop: 15 }}>
+                  Thành tích
+                </label>
+                <textarea
+                  id="thanh-tich"
+                  label="Thành tích *"
+                  type="text"
+                  onChange={(e) => setHocTap({ ...hocTap, thanhTich: e.target.value })}
+                  placeholder="Thành tích"
+                  style={{ margin: 0, backgroundColor: 'aliceblue' }}
+                />
+              </FormControl>
+            </div>
           </div>
-          {/* <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Thành tích"
-              onChange={(e) => setScholarship({ ...scholarship, soTien: e.target.value })}
-              type="text"
-              fullWidth
-            />
-          </FormControl> */}
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleClose}>Hủy</Button>
-          <Button onClick={handleSubmit}>Thêm</Button>
+          
+          <Button  className="themnamhoc" onClick={handleSubmit}>Thêm</Button>
         </DialogActions>
       </Dialog>
     </>

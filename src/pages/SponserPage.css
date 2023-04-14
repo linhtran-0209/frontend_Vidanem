@@ -1,11 +1,12 @@
 .buttonthemdonvi{
+    
     border-radius: 0px;
     border: 2px solid rgb(28, 28, 165);
     background-color:rgb(28, 28, 165) ;
     padding: 4px 12px;
     
     height: 40px;
-    width: 200px;
+    width: 150px;
 }
 .icon__sponser__container{
     display: flex;

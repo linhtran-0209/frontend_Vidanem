@@ -7,7 +7,8 @@ import store from "./store";
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
-
+// editor
+import 'react-quill/dist/quill.snow.css';
 // ----------------------------------------------------------------------
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

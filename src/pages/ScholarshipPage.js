@@ -185,7 +185,7 @@ export default function ScholarshipPage() {
         </Alert>
       )}
       <Helmet>
-        <title> Nhà tài trợ</title>
+        <title> Học bổng</title>
       </Helmet>
 
       <Container style={{ marginTop: -10 }}>

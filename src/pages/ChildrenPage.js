@@ -23,6 +23,7 @@ import {
   TableContainer,
   Box,
   Pagination,
+  Tooltip,
 } from '@mui/material';
 // components
 import Label from '../components/label';
@@ -42,7 +43,7 @@ const TABLE_HEAD = [
   { id: 'nhataitro', label: 'Đơn vị bảo trợ', alignRight: false },
   { id: 'namnhan', label: 'Năm nhận', alignRight: false },
   { id: 'trangthai', label: 'Trạng thái', alignRight: false },
-  { id: 'status', label: 'Action', alignRight: false },
+  { id: 'status', label: 'Hành động', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -159,8 +160,8 @@ export default function ChildrenPage() {
           <Typography variant="h4" gutterBottom>
             Tất cả trẻ em
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpen}>
-            Thêm trẻ em
+          <Button className='buttonthemtreem' variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleClickOpen}>
+            Thêm mới
           </Button>
         </Stack>
 
@@ -185,29 +186,30 @@ export default function ChildrenPage() {
                       <TableCell align="left">{moment(ngaySinh).format('DD/MM/YYYY')}</TableCell>
 
                       <TableCell align="left">{truong}</TableCell>
-                      <TableCell align="left">{hoanCanh}</TableCell>
+                      <TableCell className="children__hoancanh" align="left">{hoanCanh}</TableCell>
                       <TableCell align="left">{donViBaoTro[0].tenDonVi}</TableCell>
 
                       <TableCell align="left">{namNhan}</TableCell>
 
                       <TableCell align="left">{trangthai}</TableCell>
                       <TableCell
-                        // className="coliconsponser"
-                        style={{ display: 'inline-flex' }}
-                        align="center"
-                      >
-                        <MenuItem className="updatesponser" onClick={(event) => handleRowClick(event, row)}>
-                          <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
-                        </MenuItem>
-
-                        <MenuItem
-                          className="deletesponser"
-                          sx={{ color: 'error.main' }}
-                          onClick={(event) => handleDeleteClick(row)}
+                          className='icon__children__container'  
                         >
-                          <Iconify icon={'eva:trash-2-outline'} />
-                        </MenuItem>
-                      </TableCell>
+                          <Tooltip title="Cập nhật">
+                            <MenuItem className="children__update" onClick={(event) => handleRowClick(event, row)}>
+                              <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
+                            </MenuItem>
+                          </Tooltip>
+                          <Tooltip title="Xóa">
+                          <MenuItem
+                            className="children__delete"
+                            sx={{ color: 'error.main' }}
+                            onClick={(event) => handleDeleteClick(row)}
+                          >
+                            <Iconify icon={'eva:trash-2-outline'} />
+                          </MenuItem>
+                          </Tooltip>
+                        </TableCell>
                     </TableRow>
                   );
                 })}

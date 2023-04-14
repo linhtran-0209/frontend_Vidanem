@@ -21,6 +21,8 @@ import {StyleCreateScholarship} from './pages/admin/components/scholarship/Creat
 import {StyleUpdateScholarship} from './pages/admin/components/scholarship/EditModal.css';
 import {StyleCreateSponsor} from './pages/admin/components/sponsor/CreateSponsor.css';
 import {StyleEditSponsor} from './pages/admin/components/sponsor/EditModalSponsor.css';
+import {StyleCreateBlog} from './pages/admin/components/blog/CreateBlog.css';
+import {StyleCreateYear} from './pages/admin/components/children/DialogHocTap.css';
 // import {Global} from './utils/global.css';
 // import axios from 'axios';
 // import { useEffect, useState } from "react";

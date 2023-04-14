@@ -26,11 +26,11 @@ const navConfig = [
     path: '/dashboard/sponser',
     icon: icon('ic_sponser'),
   },
-  {
-    title:'Năm học',
-    path: '/dashboard/year',
-    icon: icon('ic_year'),
-  },
+  // {
+  //   title:'Năm học',
+  //   path: '/dashboard/year',
+  //   icon: icon('ic_year'),
+  // },
   {
     title:'Trẻ em',
     path: '/dashboard/children',
