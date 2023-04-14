@@ -21,14 +21,15 @@ import {
   Pagination,
   Tooltip,
 } from '@mui/material';
+import moment from 'moment';
 // components
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-import { EditModal } from './admin/components/scholarship/EditModal';
+import { EditModal } from './admin/components/year/EditModal';
 // sections
 import { UserListHead } from '../sections/@dashboard/user';
 import { CreateModal } from './admin/components/year/CreateModal';
-import { DeleteModal } from './admin/components/scholarship/DeleteModal';
+import { DeleteModal } from './admin/components/year/DeleteModal';
 
 // mock
 // import USERLIST from '../_mock/us
@@ -63,7 +64,7 @@ export default function YearPage() {
 
   const getYears = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/getAll`;
+      const url = `${process.env.REACT_APP_API_URL}/namhoc/getAll?curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setYearsList(data.data);
@@ -167,7 +168,7 @@ export default function YearPage() {
                 <UserListHead headLabel={TABLE_HEAD} rowCount={total} />
                 <TableBody>
                   {YearsList.map((row) => {
-                    const { _id, maHocBong, tenHocBong, soLuong, ghiChu, donViTaiTro } = row;
+                    const { _id, maNamHoc, namHoc, batDau, ketThuc } = row;
                     // const selectedUser = selected.indexOf(tenDonVi) !== -1;
 
                     return (
@@ -178,19 +179,19 @@ export default function YearPage() {
                         sx={{ cursor: 'pointer', width: '200px', height: '10px' }}
                       >
                         <TableCell align="left" style={{ width: 180 }}>
-                          {maHocBong}
+                          {maNamHoc}
                         </TableCell>
 
                         <TableCell align="left" style={{ width: 350 }}>
-                          {tenHocBong}
+                          {namHoc}
                         </TableCell>
 
                         <TableCell align="left" style={{ width: 180 }}>
-                          {soLuong}
+                        {moment(batDau).format('DD/MM/YYYY')}
                         </TableCell>
 
                         <TableCell align="left" style={{ width: 250 }}>
-                          {ghiChu}
+                        {moment(ketThuc).format('DD/MM/YYYY')}
                         </TableCell>
 
                         <TableCell className="icon__scholarship__container">

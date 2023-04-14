@@ -1,12 +1,16 @@
 import axios from 'axios';
+
 import {
   Alert,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
+  DialogTitle,
   TextField,
   FormControl,
+  MenuItem,
+  Select,
   IconButton,
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -16,34 +20,26 @@ import CloseIcon from '@mui/icons-material/Close';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
-export function CreateModal(props) {
+export function EditModal(props) {
   const [year, setYear] = useState({});
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [selectedDateBatDau, setSelectedDateBatDau] = useState(moment());
   const [selectedDateKetThuc, setSelectedDateKetThuc] = useState(moment());
 
+  useEffect(() => {
+    if (props.row) {
+      getYear();
+    }
+  }, [props.row]);
 
-  const handleSubmit = async () => {
+  const getYear = async () => {
     try {
-      console.log(year);
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/insert`;
-      await axios
-        .post(
-          url,
-          {
-            maNamHoc: year.maNamHoc,
-            namHoc: year.namHoc,
-            batDau: year.batDau,
-            ketThuc: year.ketThuc
-          },
-          { withCredentials: true }
-        )
-        .then((data) => {
-          setOpenSuccessMessage(data.data.message);
-        });
+      const url = `${process.env.REACT_APP_API_URL}/namhoc/byId?id=${props.row._id}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      setYear(data.data);
     } catch (err) {
-      setOpenErrMessage(err.response.data.message);
+      console.log(err);
     }
   };
 
@@ -59,12 +55,32 @@ export function CreateModal(props) {
     setYear({ ...year, ketThuc: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setOpenSuccessMessage('');
-      setOpenErrMessage('');
-    }, 3000);
-  }, [openErrMessage, openSuccessMessage]);
+  const handleSubmit = async () => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/namhoc/update`;
+
+      await axios
+        .put(
+          url,
+          {
+            id: props.row._id,
+            maNamHoc: year.maNamHoc,
+            namHoc: year.namHoc,
+            batDau: year.batDau,
+            ketThuc: year.ketThuc
+          },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            setOpenSuccessMessage(res.data.message);
+          } else setOpenErrMessage(res.data.message);
+        });
+      props.handleClose();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       {openSuccessMessage && (
@@ -78,11 +94,11 @@ export function CreateModal(props) {
         </Alert>
       )}
 
-      <Dialog className='dialogcreatescholarship' open={props.openDialogCreate} onClose={props.handleClose}>
-      <div className="titlecreatesholarship">
+      <Dialog className='dialogupdatescholarship' open={props.setOpenDialogEdit} onClose={props.handleClose}>
+      <div className="titleupdatescholarship">
           {' '}
-          Thêm năm học
-          <IconButton onClick={props.handleClose}>
+          Cập nhật năm học
+          <IconButton className onClick={props.handleClose}>
             <CloseIcon />
           </IconButton>
         </div>
@@ -93,7 +109,9 @@ export function CreateModal(props) {
             <TextField
               margin="dense"
               label="Mã năm học"
-              onChange={(e) => setYear({ ...year, maNamHoc: e.target.value })}
+              value={year.maNamHoc || ''}
+              disabled
+              // onChange={(e) => setYear({ ...year, maNamHoc: e.target.value })}
               type="text"
               fullWidth
               style={{background:'white'}}
@@ -105,6 +123,7 @@ export function CreateModal(props) {
               margin="dense"
               label="Năm Học"
               style={{background:'white'}}
+              value={year.namHoc || ''}
               onChange={(e) => setYear({ ...year, namHoc: e.target.value })}
               type="text"
               fullWidth
@@ -127,8 +146,8 @@ export function CreateModal(props) {
 
         </DialogContent>
         <DialogActions>
-          <Button className="huythemhocbong" onClick={props.handleClose}>Hủy</Button>
-          <Button className="themhocbong" onClick={handleSubmit}>Thêm năm học</Button>
+          <Button className="huycapnhathocbong" onClick={props.handleClose}>Hủy</Button>
+          <Button className="capnhathocbong" onClick={handleSubmit}>Cập nhật học bổng</Button>
         </DialogActions>
       </Dialog>
     </>

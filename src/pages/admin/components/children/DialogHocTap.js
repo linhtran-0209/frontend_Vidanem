@@ -17,12 +17,27 @@ export function DialogHocTap(props) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [hocTap, setHocTap] = useState({});
+  const [YearsList, setYearsList] = useState([]);
 
   const handleSubmit = async () => {
     if (props.isEdit) {
       props.handleCickEdit(hocTap);
     } else props.handleCickAdd(hocTap);
     props.handleClose();
+  };
+
+  useEffect(() => {
+    getYears();
+  }, []);
+
+  const getYears = async () => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/namhoc/getAll?all=true`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      setYearsList(data.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
