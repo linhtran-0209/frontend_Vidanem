@@ -1,7 +1,6 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
-import { element } from 'prop-types';
-import { Children } from 'react';
+
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
 import Hompage from './pages/client/HomePage';
@@ -14,8 +13,11 @@ import SponserPage from './pages/SponserPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import ScholarshipPage from './pages/ScholarshipPage';
 import ChildrenPage from './pages/ChildrenPage';
+import YearPage from './pages/Yearpage';
 import InsertChildren from './pages/admin/components/children/CreateChildren';
+import EditChildren from './pages/admin/components/children/EditChildren';
 import InsertBlog from './pages/admin/components/blog/CreateBlog';
+
 // import AccountPopover from './layouts/dashboard/header/AccountPopover';
 
 // ----------------------------------------------------------------------
@@ -36,13 +38,6 @@ export default function Router() {
         { path: '/login', element: <LoginPage /> },
       ],
     },
-   
-    {
-      
-      element: <DashboardLayout />,
-      children: [{ element: <Navigate to="/dashboard/year" /> },
-          { path: '/dashboard/year' }],
-    },
     {
       path: '/dashboard',
       element: <DashboardLayout />,
@@ -52,12 +47,11 @@ export default function Router() {
         { path: 'users', element: <UserPage /> },
         { path: 'scholarship', element: <ScholarshipPage /> },
         { path: 'sponser', element: <SponserPage /> },
-        { path: 'year', element: <InsertChildren /> },
+        { path: 'year', element: <YearPage /> },
         { path: 'blog', element: <BlogPage /> },
         {
           path: 'children',
           element: <ChildrenPage />,
-          
         },
       ],
     },
@@ -70,16 +64,19 @@ export default function Router() {
     //   ]
     // },
     {
-      
       element: <DashboardLayout />,
-      children: [{ element: <Navigate to="/dashboard/children" /> },
-          { path: '/dashboard/children/insert', element: <InsertChildren /> }],
+      children: [
+        { element: <Navigate to="/dashboard/children" /> },
+        { path: '/dashboard/children/insert', element: <InsertChildren /> },
+        { path: '/dashboard/children/edit/:id', element: <EditChildren /> },
+      ],
     },
     {
-      
       element: <DashboardLayout />,
-      children: [{ element: <Navigate to="/dashboard/blog" /> },
-          { path: '/dashboard/blog/insert', element: <InsertBlog /> }],
+      children: [
+        { element: <Navigate to="/dashboard/blog" /> },
+        { path: '/dashboard/blog/insert', element: <InsertBlog /> },
+      ],
     },
     {
       element: <SimpleLayout />,

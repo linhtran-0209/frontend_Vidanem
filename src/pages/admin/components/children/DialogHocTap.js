@@ -19,10 +19,27 @@ export function DialogHocTap(props) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [hocTap, setHocTap] = useState({});
+  const [YearsList, setYearsList] = useState([]);
 
   const handleSubmit = async () => {
-    props.handleCickAdd(hocTap);
+    if (props.isEdit) {
+      props.handleCickEdit(hocTap);
+    } else props.handleCickAdd(hocTap);
     props.handleClose();
+  };
+
+  useEffect(() => {
+    getYears();
+  }, []);
+
+  const getYears = async () => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/namhoc/getAll?all=true`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      setYearsList(data.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -53,7 +70,60 @@ export function DialogHocTap(props) {
           </IconButton>
         </div>
         <div className="divider" />
-        <DialogContent className="form_year">
+
+        {props.isEdit ? (
+          <DialogContent className="form_year">
+          <div className="form__year__container">
+            <FormControl className="formcontrolcreateyear" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Năm học"
+                defaultValue={props.infoHocTap.namHoc}
+                onChange={(e) => setHocTap({ ...hocTap, namHoc: e.target.value })}
+                type="text"
+                fullWidth
+              />
+            </FormControl>
+            <FormControl className="formcontrolcreateyear" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Học kỳ"
+                defaultValue={props.infoHocTap.hocKy}
+                onChange={(e) => setHocTap({ ...hocTap, hocKy: e.target.value })}
+                type="text"
+                fullWidth
+              />
+            </FormControl>
+            <FormControl className="formcontrolcreateyear" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Học lực"
+                defaultValue={props.infoHocTap.hocLuc}
+                onChange={(e) => setHocTap({ ...hocTap, hocLuc: e.target.value })}
+                type="phone"
+                fullWidth
+              />
+            </FormControl>
+            <div className="container__hoancanh">
+              <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
+                <label label="Thành tích *" htmlFor="thanh-tich" style={{ marginTop: 15 }}>
+                  Thành tích
+                </label>
+                <textarea
+                  id="thanh-tich"
+                  label="Thành tích *"
+                  type="text"
+                  defaultValue={props.infoHocTap.thanhTich}
+                  onChange={(e) => setHocTap({ ...hocTap, thanhTich: e.target.value })}
+                  placeholder="Thành tích"
+                  style={{ margin: 0, backgroundColor: 'aliceblue' }}
+                />
+              </FormControl>
+            </div>
+            </div>
+          </DialogContent>
+        ) : (
+          <DialogContent className="form_year">
           <div className="form__year__container">
             <FormControl className="formcontrolcreateyear" variant="standard" fullWidth>
               <TextField
@@ -100,9 +170,10 @@ export function DialogHocTap(props) {
             </div>
           </div>
         </DialogContent>
+        )}
         <DialogActions>
-          
-          <Button  className="themnamhoc" onClick={handleSubmit}>Thêm</Button>
+          <Button onClick={props.handleClose}>Hủy</Button>
+          <Button onClick={handleSubmit}>{props.isEdit ? 'Cập nhật' : 'Thêm'}</Button>
         </DialogActions>
       </Dialog>
     </>
