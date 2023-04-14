@@ -111,7 +111,7 @@ export default function ChildrenPage() {
 
   const handleRowClick = (event, row) => {
     setSelectedRow(row);
-    setOpenDialogEdit(true);
+    navigate(`/dashboard/children/edit/${row._id}`);
   };
 
   const handleDeleteClick = (row) => {
@@ -169,7 +169,7 @@ export default function ChildrenPage() {
 
           <TableContainer sx={{ minWidth: 800 }}>
             <Table>
-              <UserListHead headLabel={TABLE_HEAD} rowCount={childrenList.length} />
+              <UserListHead headLabel={TABLE_HEAD} rowCount={total} />
               <TableBody>
                 {childrenList.map((row) => {
                   const { _id, hoTen, ngaySinh, truong, hoanCanh, donViBaoTro, namNhan, namHoanThanh, authStatus } =
@@ -179,7 +179,11 @@ export default function ChildrenPage() {
                   else if (row.authStatus === 'ChoDuyet') trangthai = 'Chờ Duyệt';
                   else trangthai = 'Đã Duyệt';
                   return (
-                    <TableRow hover key={_id}>
+                    <TableRow 
+                    hover
+                    key={_id}
+                    onDoubleClick={(event) => handleRowClick(event, row)}
+                    sx={{ cursor: 'pointer', width: '200px', height: '60px' }}>
                       <TableCell align="left">{hoTen}</TableCell>
 
                       <TableCell align="left">{moment(ngaySinh).format('DD/MM/YYYY')}</TableCell>

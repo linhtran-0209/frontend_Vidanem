@@ -78,3 +78,13 @@
     border-color: blue;
 }
 
+.Card {
+    position: relative;
+  }
+  
+  .block__content {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+

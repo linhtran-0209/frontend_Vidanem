@@ -21,7 +21,6 @@ export function EditModal(props) {
   const [scholarship, setScholarship] = useState({});
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState(null);
-  const [changed, setChanged] = useState(false);
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
 
@@ -46,7 +45,6 @@ export function EditModal(props) {
       const url = `${process.env.REACT_APP_API_URL}/scholarship/byId?id=${props.row._id}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setScholarship(data.data);
-      console.log(data.data.donViTaiTro);
       setSelected(data.data.donViTaiTro);
     } catch (err) {
       console.log(err);
@@ -54,7 +52,6 @@ export function EditModal(props) {
   };
 
   const handleChange = (e) => {
-    setChanged(true);
     setSelected(e.target.value);
     setScholarship({ ...scholarship, donViTaiTro: e.target.value });
     console.log(selected);

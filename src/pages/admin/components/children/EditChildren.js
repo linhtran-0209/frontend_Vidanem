@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
   MenuItem,
@@ -25,37 +26,79 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { fData } from '../../../../utils/formatNumber';
 import { DialogHocTap } from './DialogHocTap';
 
-export default function InsertChildren() {
+export default function EditChildren() {
+  const { id } = useParams();
+  const [quyen, setQuyen] = useState(0);
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [preview, setPreview] = useState([]);
   const [images, setImages] = useState([]);
+  const [imagesEdit, setImagesEdit] = useState([]);
+  const [imagesDelete, setImagesDelete] = useState([]);
   const [search, setSearch] = useState('');
   const [SPONSERLIST, setSPONSERLIST] = useState([]);
   const [SCHOLARSHIPLIST, setSCHOLARSHIPLIST] = useState([]);
-  const [treEm, setTreEm] = useState();
-  const [selectedSponsor, setSelectedSponsor] = useState(null);
-  const [selectedScholarship, setSelectedScholarship] = useState(null);
+  const [treEm, setTreEm] = useState({});
+  const [selectedSponsor, setSelectedSponsor] = useState('');
+  const [selectedScholarship, setSelectedScholarship] = useState('');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [hocTap, sethocTap] = useState([]);
+  const [hocTapNew, sethocTapNew] = useState([]);
 
   const [openDialogHocTap, setOpenDialogHocTap] = useState(false);
-  const [selectedHocTapIndex, setSelectedHocTapIndex] = useState(0);
   const [isEdit, setIsEdit] = useState(false);
   const [infoHocTap, setInfoHocTap] = useState({});
-  const [selectedDate, setSelectedSponsorDate] = useState(new Date());
+  const [selectedHocTapIndex, setSelectedHocTapIndex] = useState(0);
+  const [selectedDate, setSelectedDate] = useState(moment());
 
   const handleDateChange = (date) => {
     console.log(date);
-    setSelectedSponsorDate(date);
+    setSelectedDate(date);
     setTreEm({ ...treEm, ngaySinh: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
   };
+
+  const getUser = async () => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/currentUser`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      console.log(data.quyen);
+      setQuyen(data.quyen);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getChild = async () => {
+    const url = `${process.env.REACT_APP_API_URL}/treem/byId?id=${id}`;
+    const { data } = await axios.get(url, { withCredentials: true });
+    setTreEm(data.data);
+    const momentDate = moment.utc(data.data.ngaySinh);
+    const formattedDate = momentDate.format('DD/MM/YYYY');
+    console.log(momentDate);
+    console.log(moment());
+    // setSelectedDate(formattedDate);
+    // setSelectedDate(new Date());
+    setSelectedSponsor(data.data.donViBaoTro[0]);
+    getScholarshipList(data.data.donViBaoTro[0]);
+    setSelectedScholarship(data.data.hocBong[0]);
+    setPreview(data.data.hinhAnh);
+    getHocTap(data.data._id);
+  };
+
+  useEffect(() => {
+    getChild();
+  }, []);
 
   const getSponsorList = async () => {
     const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
     const { data } = await axios.get(url, { withCredentials: true });
     setSPONSERLIST(data.data);
   };
+
   useEffect(() => {
     getSponsorList();
   }, []);
@@ -64,6 +107,12 @@ export default function InsertChildren() {
     const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?donViTaiTro=${donViBaoTro}`;
     const { data } = await axios.get(url, { withCredentials: true });
     setSCHOLARSHIPLIST(data.data);
+  };
+
+  const getHocTap = async (treem) => {
+    const url = `${process.env.REACT_APP_API_URL}/hoctap/bytreem?treem=${treem}`;
+    const { data } = await axios.get(url, { withCredentials: true });
+    sethocTap(data.data);
   };
 
   const handleChangeSponsor = (e) => {
@@ -77,24 +126,31 @@ export default function InsertChildren() {
     setTreEm({ ...treEm, hocBong: e.target.value });
   };
 
-  const handleFileUpload = (event) => {
-    const selectedFiles = event.target.files;
-    const selectedImages = [];
-    const images = [];
+  const handleRemoveImage = (index) => {
+    if (preview.length - 1 === selectedImageIndex) setSelectedImageIndex(0);
+    setImagesDelete([...preview, preview[index]]);
+    setPreview((prev) => {
+      const newPreview = [...prev];
+      newPreview.splice(index, 1);
+      return newPreview;
+    });
+  };
 
-    // Kiểm tra số lượng ảnh đã chọn
-    if (selectedFiles.length <= 4) {
-      for (let i = 0; i < selectedFiles.length; i += 1) {
-        const file = selectedFiles[i];
-        images.push(file);
-        const imageUrl = URL.createObjectURL(file);
-        selectedImages.push(imageUrl);
-      }
-      setPreview(selectedImages);
-      setImages(images);
-    } else {
-      alert('Bạn chỉ được chọn tối đa 4 ảnh!');
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setPreview([...preview, { duongDan: URL.createObjectURL(file) }]);
+      setImages([...images, file]);
     }
+  };
+
+  const handleEditFileUpload = (e) => {
+    const file = e.target.files[0];
+    const previews = [...preview];
+    previews[selectedImageIndex].duongDan = URL.createObjectURL(file);
+    setPreview(previews);
+    setImagesEdit([...imagesEdit, { id: previews[selectedImageIndex]._id, image: file }]);
+    console.log({ id: previews[selectedImageIndex]._id, image: file });
   };
 
   const handleClickOpenDialog = () => {
@@ -102,13 +158,12 @@ export default function InsertChildren() {
   };
   const handleCloseDialog = () => {
     setOpenDialogHocTap(false);
-    // console.log(hocTap);
   };
 
   const handleCickAdd = (hoctap) => {
     console.log(hoctap);
     sethocTap([...hocTap, hoctap]);
-    setTreEm([...treEm.hocTap, hoctap]);
+    setTreEm([...treEm.hocTap, hocTap]);
   };
 
   const handleCickEdit = (hoctap) => {
@@ -182,13 +237,13 @@ export default function InsertChildren() {
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {preview.length > 0 && (
               <img
-                src={preview[selectedImageIndex]}
+                src={preview[selectedImageIndex].duongDan}
                 alt="Preview"
                 style={{
                   maxWidth: '100%',
                   objectFit: 'cover',
                   height: 200,
-                  // border: '2px solid Silver',
+                  border: '2px solid Silver',
                 }}
               />
             )}
@@ -207,38 +262,84 @@ export default function InsertChildren() {
                 preview.map((image, index) => (
                   <Grid key={index} item xs={4}>
                     <Card sx={{ p: 0.5 }} onClick={() => setSelectedImageIndex(index)}>
-                      <img
-                        src={image}
-                        alt="Preview"
-                        style={{
-                          maxWidth: '100%',
-                          borderRadius: '5%',
-                          objectFit: 'cover',
-                          height: 60,
-                          border: '2px solid Silver',
+                      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <img
+                          src={image.duongDan}
+                          alt="Preview"
+                          style={{
+                            maxWidth: '100%',
+                            borderRadius: '5%',
+                            objectFit: 'cover',
+                            height: 60,
+                            border: '2px solid Silver',
+                          }}
+                        />
+                      </div>
+                      <input
+                        accept="image/*"
+                        id="image-edit"
+                        type="file"
+                        style={{ display: 'none' }}
+                        onChange={(e) => {
+                          handleEditFileUpload(e);
                         }}
                       />
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          marginTop: 10,
+                        }}
+                      >
+                        <label
+                          htmlFor="image-edit"
+                          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        >
+                          <button
+                            onClick={(e) => {
+                              // e.stopPropagation();
+                              document.getElementById('image-edit').click();
+                            }}
+                          >
+                            <Iconify style={{ color: 'green', width: '15' }} icon={'eva:edit-2-outline'} />
+                          </button>
+                        </label>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleRemoveImage(index);
+                          }}
+                        >
+                          <Iconify style={{ color: 'red', width: '15' }} icon={'eva:trash-2-outline'} />
+                        </button>
+                      </div>
                     </Card>
                   </Grid>
                 ))}
             </Grid>
           </div>
-          <input
-            accept="image/*"
-            id="image-input"
-            type="file"
-            style={{ display: 'none' }}
-            multiple
-            onChange={handleFileUpload}
-          />
-          <label
-            htmlFor="image-input"
-            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 16 }}
-          >
-            <Button variant="contained" color="primary" component="span">
-              Ảnh đại diện
-            </Button>
-          </label>
+          {preview.length < 4 && (
+            <>
+              <input
+                accept="image/*"
+                id="image-input"
+                type="file"
+                style={{ display: 'none' }}
+                onChange={handleFileUpload}
+              />
+              <label
+                htmlFor="image-input"
+                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 16 }}
+              >
+                <Button variant="contained" color="primary" component="span">
+                  Thêm ảnh
+                </Button>
+              </label>
+            </>
+          )}
+
           <Typography
             variant="caption"
             sx={{
@@ -263,6 +364,7 @@ export default function InsertChildren() {
                 htmlFor="demo-customized-textbox"
                 margin="dense"
                 id="hoTen"
+                value={treEm.hoTen || ''}
                 onChange={(e) => setTreEm({ ...treEm, hoTen: e.target.value })}
                 label="Họ và tên *"
                 type="text"
@@ -271,7 +373,13 @@ export default function InsertChildren() {
             </FormControl>
             <FormControl className="formcontrol__inform" variant="standard" fullWidth>
               <LocalizationProvider adapterLocale="vi" dateAdapter={AdapterMoment}>
-                <DatePicker format="DD/MM/YYYY" label="Ngày sinh" selected={selectedDate} onChange={handleDateChange} />
+                <DatePicker
+                  format="DD/MM/YYYY"
+                  label="Ngày sinh"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
               </LocalizationProvider>
             </FormControl>
           </div>
@@ -280,6 +388,7 @@ export default function InsertChildren() {
               <TextField
                 id="hoanCanh"
                 label="Địa chỉ *"
+                value={treEm.diaChi || ''}
                 onChange={(e) => setTreEm({ ...treEm, diaChi: e.target.value })}
                 type="text"
                 placeholder="Địa chỉ"
@@ -292,6 +401,7 @@ export default function InsertChildren() {
                 htmlFor="demo-customized-textbox"
                 margin="dense"
                 id="SDT"
+                value={treEm.SDT || ''}
                 onChange={(e) => setTreEm({ ...treEm, SDT: e.target.value })}
                 label="Số điện thoại"
                 type="number"
@@ -303,6 +413,7 @@ export default function InsertChildren() {
                 htmlFor="demo-customized-textbox"
                 margin="dense"
                 id="diaChi"
+                value={treEm.truong || ''}
                 onChange={(e) => setTreEm({ ...treEm, truong: e.target.value })}
                 label="Trường *"
                 type="text"
@@ -334,11 +445,13 @@ export default function InsertChildren() {
                     }}
                   />
 
-                  {SPONSERLIST.filter((option) => option.tenDonVi.toLowerCase().includes(search)).map((option) => (
-                    <MenuItem key={option._id} value={option._id} label={option.tenDonVi}>
-                      {option.tenDonVi}
-                    </MenuItem>
-                  ))}
+                  {[{ _id: 'none', tenDonVi: 'Chọn khoa' }, ...SPONSERLIST]
+                    .filter((option) => option.tenDonVi.toLowerCase().includes(search))
+                    .map((option) => (
+                      <MenuItem key={option._id} value={option._id} label={option.tenDonVi}>
+                        {option.tenDonVi}
+                      </MenuItem>
+                    ))}
                 </Select>
               </div>
             </FormControl>
@@ -368,6 +481,7 @@ export default function InsertChildren() {
                 htmlFor="demo-customized-textbox"
                 margin="dense"
                 id="donViBaoTro"
+                value={treEm.namNhan || ''}
                 label="Năm nhận *"
                 onChange={(e) => setTreEm({ ...treEm, namNhan: e.target.value })}
                 type="number"
@@ -380,6 +494,7 @@ export default function InsertChildren() {
                 margin="dense"
                 id="loaiBaoTro"
                 label="Năm hoàn thành *"
+                value={treEm.namHoanThanh || ''}
                 onChange={(e) => setTreEm({ ...treEm, namHoanThanh: e.target.value })}
                 type="number"
                 fullWidth
@@ -393,6 +508,7 @@ export default function InsertChildren() {
                 label="Hoàn Cảnh *"
                 type="text"
                 placeholder="Hoàn cảnh"
+                value={treEm.hoanCanh || ''}
                 onChange={(e) => setTreEm({ ...treEm, hoanCanh: e.target.value })}
               />
             </FormControl>
@@ -420,7 +536,7 @@ export default function InsertChildren() {
                         // console.log(index, hocTap[index]);
                         setSelectedHocTapIndex(index);
                         setIsEdit(true);
-                        setInfoHocTap(hocTap[index])
+                        setInfoHocTap(hocTap[index]);
                         handleClickOpenDialog();
                       }}
                       variant="outlined"
@@ -445,13 +561,24 @@ export default function InsertChildren() {
             isEdit={isEdit}
             infoHocTap={infoHocTap}
             handleCickAdd={handleCickAdd}
-            handleCickEdit={handleCickEdit}   
+            handleCickEdit={handleCickEdit}
             handleClose={handleCloseDialog}
           />
           <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-            <LoadingButton type="submit" variant="contained" onClick={handleSubmit}>
-              Thêm trẻ em
-            </LoadingButton>
+            {quyen === 3 ? (
+              <LoadingButton type="submit" variant="contained" onClick={handleSubmit}>
+                Cập nhật
+              </LoadingButton>
+            ) : (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <LoadingButton style={{marginRight:20, background: 'red'}} type="submit" variant="contained" onClick={handleSubmit}>
+                  Trả Về
+                </LoadingButton>
+                <LoadingButton style={{marginRight:20, background: 'green'}} type="submit" variant="contained" onClick={handleSubmit}>
+                  Duyệt
+                </LoadingButton>
+              </div>
+            )}
           </Stack>
         </Card>
       </Grid>

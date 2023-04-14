@@ -79,7 +79,7 @@ export default function UserPage() {
   };
 
   const [total, setTotal] = useState(0);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [quan, setQuan] = useState('');
   const [phuong, setPhuong] = useState('');
   const [quyen, setQuyen] = useState('');
