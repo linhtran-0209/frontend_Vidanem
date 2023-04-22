@@ -1,88 +1,88 @@
 .Modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: fit-content;
-    min-width: 550px;
-    background-color: var(--color-white);
-    border: 1px solid var(--color-grey-600);
-    box-shadow: 0px 0px 20px var(--color-grey-600);;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: fit-content;
+  min-width: 550px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-grey-600);
+  box-shadow: 0px 0px 20px var(--color-grey-600);
 
-    .Header {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 8px 24px;
+  .Header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 24px;
 
-        .Close {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-        }
-
-        .Logo {
-            img {
-                height: 70px;
-                margin-right: 20px;
-            }
-        }
-
-        .Name {
-            h5 {
-                margin: 0 8px;
-                font-size: 24px;
-                font-weight: 700;
-                color: var(--color-grey-800);
-            }
-        }
+    .Close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
     }
 
-    .Divider {
-        height: 3px;
-        background-image: var(--color-gradient);
+    .Logo {
+      img {
+        height: 70px;
+        margin-right: 20px;
+      }
     }
 
-    .Body {
-        background-color: var(--color-primary-200);
+    .Name {
+      h5 {
+        margin: 0 8px;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--color-grey-800);
+      }
     }
+  }
+
+  .Divider {
+    height: 3px;
+    background-image: var(--color-gradient);
+  }
+
+  .Body {
+    background-color: var(--color-primary-200);
+  }
 }
 
 /* Tablet & mobile */
 @media (max-width: 1024px) {
-    .Modal {
-        min-width: fit-content;
-    }
+  .Modal {
+    min-width: fit-content;
+  }
 }
 
 /* Mobile */
 @media (max-width: 480px) {
-    .Modal {
-        .Header {
-            height: 60px;
-            padding: 8px 24px;
-    
-            .Close {
-                position: absolute;
-                top: 8px;
-                right: 8px;
-            }
-    
-            .Logo {
-                img {
-                    height: 40px;
-                    margin-right: 20px;
-                }
-            }
-    
-            .Name {
-                h5 {
-                    margin: 0 8px;
-                    font-size: 18px;
-                    font-weight: 700;
-                    color: var(--color-grey-800);
-                }
-            }
+  .Modal {
+    .Header {
+      height: 60px;
+      padding: 8px 24px;
+
+      .Close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+      }
+
+      .Logo {
+        img {
+          height: 40px;
+          margin-right: 20px;
         }
+      }
+
+      .Name {
+        h5 {
+          margin: 0 8px;
+          font-size: 18px;
+          font-weight: 700;
+          color: var(--color-grey-800);
+        }
+      }
     }
+  }
 }

@@ -10,6 +10,7 @@ import Editor from '../editor';
 
 RHFEditor.propTypes = {
   name: PropTypes.string,
+  
 };
 
 export default function RHFEditor({ name, ...other }) {

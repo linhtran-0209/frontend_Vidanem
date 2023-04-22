@@ -10,6 +10,7 @@ import Markdown from './preview/Markdown';
 import Scrollbar from './preview/Scrollbar';
 import EmptyContent from './preview/EmptyContent';
 import { DialogAnimate } from './preview/animate';
+import './PreviewNewBlog.css';
 
 // ----------------------------------------------------------------------
 
@@ -32,14 +33,14 @@ export default function BlogNewPostPreview({ values, isValid, isSubmitting, isOp
   const hasHero = title || cover;
 
   return (
-    <DialogAnimate fullScreen open={isOpen} onClose={onClose}>
-      <DialogActions sx={{ py: 2, px: 3 }}>
+    <DialogAnimate className='Container' fullScreen open={isOpen} onClose={onClose}>
+      <DialogActions className='Container__box'  sx={{ py: 2, px: 3 }}>
         <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
-          Preview Post
+          Xem trước tin
         </Typography>
-        <Button onClick={onClose}>Cancel</Button>
-        <LoadingButton type="submit" variant="contained" disabled={!isValid} loading={isSubmitting} onClick={onSubmit}>
-          Post
+        <Button onClick={onClose}>Hủy</Button>
+        <LoadingButton type="submit" variant="contained" disabled={isValid} loading={isSubmitting} onClick={onSubmit}>
+          Đăng
         </LoadingButton>
       </DialogActions>
 

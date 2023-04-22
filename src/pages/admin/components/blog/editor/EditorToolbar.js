@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Quill } from 'react-quill';
 // components
-import { Icon } from '@iconify/react';
+import Iconify from '../preview/Iconify';
 //
 import EditorToolbarStyle from './EditorToolbarStyle';
 
@@ -163,10 +163,10 @@ export default function EditorToolbar({ id, isSimple, ...other }) {
         {!isSimple && (
           <div className="ql-formats">
             <button type="button" className="ql-undo">
-              <Icon icon={'ic:round-undo'} width={18} height={18} />
+              <Iconify icon={'ic:round-undo'} width={18} height={18} />
             </button>
             <button type="button" className="ql-redo">
-              <Icon icon={'ic:round-redo'} width={18} height={18} />
+              <Iconify icon={'ic:round-redo'} width={18} height={18} />
             </button>
           </div>
         )}

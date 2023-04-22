@@ -1,0 +1,23 @@
+.buttonAllchude{
+    border-radius: 0px;
+    border: 2px solid rgb(28, 28, 165);
+    background-color:white ;
+    padding: 4px 12px;
+    color:rgb(28, 28, 165) ;
+    height: 40px;
+    width: 150px;
+    margin-right: -700px;
+    box-shadow: none;
+}
+.buttonAllchude:hover{
+    border-radius: 0px;
+    border: 2px solid rgb(28, 28, 165);
+    background-color:white ;
+    padding: 4px 12px;
+    color:rgb(28, 28, 165) ;
+    height: 40px;
+    width: 150px;
+    margin-right: -700px;
+    box-shadow: none;
+
+}

@@ -44,6 +44,29 @@
     height: 3px;
     background: linear-gradient(blue, 20%, pink);
   }
+.formcontrol__hoancanh >textarea{
+    border-radius: 0px;
+}
+ .capnhat {
+  border-radius: 0px;
+  margin-right: 30px;
+  margin-bottom: 13px;
+  border: 2px solid rgb(28, 28, 165);
+  background-color: rgb(28, 28, 165);
+  padding: 4px 12px;
+  color: #ffff;
+  height: 40px;
+  width: 150px;
+}
+.capnhat:hover {
+  border-radius: 0px;
+  border: 2px solid rgb(34, 34, 139);
+  background-color: rgb(34, 34, 139);
+  padding: 4px 12px;
+  color: #ffff;
+  height: 40px;
+  width: 150px;
+}
   .themnamhoc {
     border-radius: 0px;
     margin-right: 30px;

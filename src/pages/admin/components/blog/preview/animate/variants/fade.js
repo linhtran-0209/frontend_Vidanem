@@ -12,14 +12,14 @@ export const varFade = (props) => {
   return {
     // IN
     in: {
-      initial: { opacity: 0 },
+      // initial: { opacity: 0 },
       animate: { opacity: 1, transition: varTranEnter },
-      exit: { opacity: 0, transition: varTranExit }
+      // exit: { opacity: 0, transition: varTranExit }
     },
     inUp: {
-      initial: { y: distance, opacity: 0 },
+      // initial: { y: distance, opacity: 0 },
       animate: { y: 0, opacity: 1, transition: varTranEnter({ durationIn, easeIn }) },
-      exit: { y: distance, opacity: 0, transition: varTranExit({ durationOut, easeOut }) }
+      // exit: { y: distance, opacity: 0, transition: varTranExit({ durationOut, easeOut }) }
     },
     inDown: {
       initial: { y: -distance, opacity: 0 },

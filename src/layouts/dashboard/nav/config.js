@@ -1,11 +1,23 @@
 // component
+import { Label } from '@mui/icons-material';
+
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import SettingsApplicationsOutlinedIcon from '@mui/icons-material/SettingsApplicationsOutlined';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SvgColor from '../../../components/svg-color';
+
+// constant
+const icons = {
+    PermIdentityIcon,
+    SettingsApplicationsOutlinedIcon,
+}
 
 // ----------------------------------------------------------------------
 
 const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
 const navConfig = [
+  
   {
     title: 'dashboard',
     path: '/dashboard/app',
@@ -41,6 +53,17 @@ const navConfig = [
     path: '/dashboard/blog',
     icon: icon('ic_blog'),
   },
+  // {
+  //   title: 'Tin bài',
+    
+  //   icon: icon('ic_blog'),
+  //   children:[
+  //     {title: 'Tra cứu', url: '/dashboard/blog'},
+
+  //     { name: 'Posts' },
+  //   ]
+    
+  // },
   {
     title: 'Đăng xuất',
     path: '/login',

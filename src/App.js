@@ -23,6 +23,8 @@ import {StyleCreateSponsor} from './pages/admin/components/sponsor/CreateSponsor
 import {StyleEditSponsor} from './pages/admin/components/sponsor/EditModalSponsor.css';
 import {StyleCreateBlog} from './pages/admin/components/blog/CreateBlog.css';
 import {StyleCreateYear} from './pages/admin/components/children/DialogHocTap.css';
+import {StyleBlogPage} from './pages/BlogPage.css'
+import {StylePreviewBlog} from './pages/admin/components/blog/PreviewNewBlog.css'
 // import {Global} from './utils/global.css';
 // import axios from 'axios';
 // import { useEffect, useState } from "react";

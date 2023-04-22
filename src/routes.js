@@ -17,6 +17,7 @@ import YearPage from './pages/Yearpage';
 import InsertChildren from './pages/admin/components/children/CreateChildren';
 import EditChildren from './pages/admin/components/children/EditChildren';
 import InsertBlog from './pages/admin/components/blog/CreateBlog';
+import TitleBlog from './pages/admin/components/blog/TitleBlog'
 
 // import AccountPopover from './layouts/dashboard/header/AccountPopover';
 
@@ -76,6 +77,7 @@ export default function Router() {
       children: [
         { element: <Navigate to="/dashboard/blog" /> },
         { path: '/dashboard/blog/insert', element: <InsertBlog /> },
+        { path: '/dashboard/blog/title', element: <TitleBlog /> },
       ],
     },
     {

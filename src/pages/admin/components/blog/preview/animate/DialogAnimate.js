@@ -5,6 +5,7 @@ import { Dialog, Box, Paper } from '@mui/material';
 //
 import { varFade } from './variants';
 
+
 // ----------------------------------------------------------------------
 
 DialogAnimate.propTypes = {
@@ -17,7 +18,7 @@ DialogAnimate.propTypes = {
 
 export default function DialogAnimate({ open = false, variants, onClose, children, sx, ...other }) {
   return (
-    <AnimatePresence>
+    <AnimatePresence >
       {open && (
         <Dialog
           fullWidth
@@ -39,7 +40,9 @@ export default function DialogAnimate({ open = false, variants, onClose, childre
                 height: '100%',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                
+                
               }}
             >
               <Box onClick={onClose} sx={{ width: '100%', height: '100%', position: 'fixed' }} />

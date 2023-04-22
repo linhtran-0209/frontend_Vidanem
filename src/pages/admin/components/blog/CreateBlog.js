@@ -175,8 +175,8 @@ export default function BlogNewPostForm() {
                     sx={{ mb: 1, mx: 0, width: 1, justifyContent: 'space-between' }}
                   />
                 </div>
-
-                <RHFTextField name="tags" label="Loại" />
+                
+                <RHFTextField name="type" label="Chủ đề" />
 
                 <RHFTextField name="metaTitle" label="Người đăng bài" />
 
@@ -212,6 +212,15 @@ export default function BlogNewPostForm() {
           </Grid>
         </Grid>
       </FormProvider>
+      <BlogNewPostPreview
+        values={values}
+        isOpen={open}
+        isValid={isValid}
+        isSubmitting={isSubmitting}
+        onClose={handleClosePreview}
+        onSubmit={handleSubmit(onSubmit)}
+      />
+    
     </>
   );
 }

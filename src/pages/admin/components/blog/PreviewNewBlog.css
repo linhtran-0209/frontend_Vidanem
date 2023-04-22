@@ -1,0 +1,27 @@
+/* .Container{
+    z-index: 1300;
+}
+
+.Container > div{
+    opacity: 0;
+    transition: none;
+}
+.Container > div > div > div{
+    opacity: 0;
+    transition: none;
+}
+.Container > div > div{
+    opacity: 0;
+    transition: none;
+} */
+.Container > .MuiDialog-container.MuiDialog-scrollPaper.css-hz1bth-MuiDialog-container{
+   opacity: unset;
+   transition: none;
+}
+.Container >div>.MuiBox-root.css-l1tuuh{
+    opacity: unset;
+    transform: translateY(0px) translateZ(0px);
+    z-index: 1350;
+    
+}
+
