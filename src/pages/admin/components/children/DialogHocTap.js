@@ -20,8 +20,9 @@ export function DialogHocTap(props) {
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [hocTap, setHocTap] = useState({});
   const [YearsList, setYearsList] = useState([]);
-  const [selectedNamHoc, setSelectedNamHoc] = useState(null);
+  const [selectedNamHoc, setSelectedNamHoc] = useState(props.infoHocTap.namHoc);
   const [selectedHocKy, setSelectedHocKy] = useState(null);
+  const [selectedHocLuc, setSelectedHocLuc] = useState(null);
 
   const handleSubmit = async () => {
     if (props.isEdit) {
@@ -31,14 +32,29 @@ export function DialogHocTap(props) {
   };
 
   useEffect(() => {
-    getYears();
-  }, []);
+    console.log(props.infoHocTap);
+    if (props.infoHocTap){
+      setHocTap(props.infoHocTap)
+      setSelectedNamHoc(props.infoHocTap.namHoc)
+      setSelectedHocKy(props.infoHocTap.hocKy)
+      setSelectedHocLuc(props.infoHocTap.hocLuc)
+    }
+  }, [props.infoHocTap]);
+
+  useEffect(() => {
+    if (props.openDialogCreate){
+      getYears();
+    }
+  }, [props.openDialogCreate]);
 
   const getYears = async () => {
     try {
       const url = `${process.env.REACT_APP_API_URL}/namhoc/getAll?all=true`;
       const { data } = await axios.get(url, { withCredentials: true });
       setYearsList(data.data);
+      const namHienTai = data.data.find(nam => nam.namHienTai === true)
+      console.log(namHienTai);
+      setSelectedNamHoc(namHienTai.namHoc)
     } catch (err) {
       console.log(err);
     }
@@ -46,14 +62,18 @@ export function DialogHocTap(props) {
 
   const handleChangeNamHoc = (e) => {
     setSelectedNamHoc(e.target.value);
-    // setYear({ ...hocTap, idNamHoc: e.target.value._id });
-    setHocTap({ ...hocTap, namHoc: e.target.value._id });
-    setHocTap({ ...hocTap, maNamHoc: e.target.value.maNamHoc });
+    console.log(e.target.value);
+    setHocTap({ ...hocTap, namHoc: e.target.value });
   };
 
   const handleChangeHocKy = (e) => {
     setSelectedHocKy(e.target.value);
-    setHocTap({ ...hocTap, hocKy: e.target.value._id });
+    setHocTap({ ...hocTap, hocKy: e.target.value });
+  };
+
+  const handleChangeHocLuc = (e) => {
+    setSelectedHocLuc(e.target.value);
+    setHocTap({ ...hocTap, hocLuc: e.target.value });
   };
 
   useEffect(() => {
@@ -88,43 +108,44 @@ export function DialogHocTap(props) {
         {props.isEdit ? (
           <DialogContent className="form_year">
             <div className="form__year__container">
-              <FormControl className="formcontrolcreateyear" variant="standard" fullWidth>
-                {/* <InputLabel id="demo-simple-select-standard-label">Năm học</InputLabel>
-              <TextField
-                margin="dense"
-                label="Năm học"
-                defaultValue={props.infoHocTap.namHoc}
-                onChange={(e) => setHocTap({ ...hocTap, namHoc: e.target.value })}
-                type="text"
-                fullWidth
-              /> */}
+              <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-standard-label">Năm học</InputLabel>
                 <Select onChange={handleChangeNamHoc} label="Năm học" value={selectedNamHoc} fullWidth margin="dense">
                   {YearsList.map((option) => (
-                    <MenuItem key={option._id} value={option} label={option.tenDonVi}>
-                      {option.tenDonVi}
+                    <MenuItem key={option._id} value={option.namHoc} label={option.namHoc}>
+                      {option.namHoc}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
-              <FormControl className="formcontrolcreateyear" variant="standard" fullWidth>
-                <TextField
-                  margin="dense"
-                  label="Học kỳ"
-                  defaultValue={props.infoHocTap.hocKy}
-                  onChange={(e) => setHocTap({ ...hocTap, hocKy: e.target.value })}
-                  type="text"
-                  fullWidth
-                />
+              <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-standard-label">Học kỳ</InputLabel>
+                <Select onChange={handleChangeHocKy} label="Năm học" value={selectedHocKy} fullWidth margin="dense">
+                    <MenuItem key={'HK1'} value={'Học Kỳ 1'} label={'Học Kỳ 1'}>
+                    Học Kỳ 1
+                    </MenuItem>
+                    <MenuItem key={'HK2'} value={'Học Kỳ 2'} label={'Học Kỳ 2'}>
+                    Học Kỳ 2
+                    </MenuItem>
+                </Select>
               </FormControl>
-              <FormControl className="formcontrolcreateyear" variant="standard" fullWidth>
-                <TextField
-                  margin="dense"
-                  label="Học lực"
-                  defaultValue={props.infoHocTap.hocLuc}
-                  onChange={(e) => setHocTap({ ...hocTap, hocLuc: e.target.value })}
-                  type="phone"
-                  fullWidth
-                />
+
+              <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-standard-label">Học lực</InputLabel>
+                <Select onChange={handleChangeHocLuc} label="Năm học" value={selectedHocLuc} fullWidth margin="dense">
+                    <MenuItem key={'gioi'} value={'Giỏi'} label={'Giỏi'}>
+                    Giỏi
+                    </MenuItem>
+                    <MenuItem key={'kha'} value={'Khá'} label={'Khá'}>
+                    Khá
+                    </MenuItem>
+                    <MenuItem key={'tb'} value={'Trung bình'} label={'Trung bình'}>
+                    Trung bình
+                    </MenuItem>
+                    <MenuItem key={'yeu'} value={'Yếu'} label={'Yếu'}>
+                    Yếu
+                    </MenuItem>
+                </Select>
               </FormControl>
               <div className="container__hoancanh">
                 <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
@@ -147,41 +168,44 @@ export function DialogHocTap(props) {
         ) : (
           <DialogContent className="form_year">
             <div className="form__year__container">
-              <FormControl className="formcontrolcreateyear" variant="standard" fullWidth>
-                {/* <TextField
-                  margin="dense"
-                  label="Năm học"
-                  onChange={(e) => setHocTap({ ...hocTap, namHoc: e.target.value })}
-                  type="text"
-                  fullWidth
-                /> */}
+              <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
                 <InputLabel id="demo-simple-select-standard-label">Năm học</InputLabel>
-                <Select onChange={handleChangeNamHoc} label="Năm học" value={selectedNamHoc} fullWidth margin="dense">
+                <Select onChange={handleChangeNamHoc} value={selectedNamHoc} label="Năm học" fullWidth margin="dense">
                   {YearsList.map((option) => (
-                    <MenuItem key={option._id} value={option} label={option.namHoc}>
+                    <MenuItem key={option._id} value={option.namHoc} label={option.namHoc}>
                       {option.namHoc}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
-              <FormControl className="formcontrolcreateyear" variant="standard" fullWidth>
-                <TextField
-                  margin="dense"
-                  label="Học kỳ"
-                  onChange={(e) => setHocTap({ ...hocTap, hocKy: e.target.value })}
-                  type="text"
-                  fullWidth
-                />
+              <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-standard-label">Học kỳ</InputLabel>
+                <Select onChange={handleChangeHocKy} label="Năm học" fullWidth margin="dense">
+                    <MenuItem key={'HK1'} value={'Học Kỳ 1'} label={'Học Kỳ 1'}>
+                    Học Kỳ 1
+                    </MenuItem>
+                    <MenuItem key={'HK2'} value={'Học Kỳ 2'} label={'Học Kỳ 2'}>
+                    Học Kỳ 2
+                    </MenuItem>
+                </Select>
               </FormControl>
 
-              <FormControl className="formcontrolcreateyear" variant="standard" fullWidth>
-                <TextField
-                  margin="dense"
-                  label="Học lực"
-                  onChange={(e) => setHocTap({ ...hocTap, hocLuc: e.target.value })}
-                  type="phone"
-                  fullWidth
-                />
+              <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
+              <InputLabel id="demo-simple-select-standard-label">Học lực</InputLabel>
+                <Select onChange={handleChangeHocLuc} label="Năm học" fullWidth margin="dense">
+                    <MenuItem key={'gioi'} value={'Giỏi'} label={'Giỏi'}>
+                    Giỏi
+                    </MenuItem>
+                    <MenuItem key={'kha'} value={'Khá'} label={'Khá'}>
+                    Khá
+                    </MenuItem>
+                    <MenuItem key={'tb'} value={'Trung bình'} label={'Trung bình'}>
+                    Trung bình
+                    </MenuItem>
+                    <MenuItem key={'yeu'} value={'Yếu'} label={'Yếu'}>
+                    Yếu
+                    </MenuItem>
+                </Select>
               </FormControl>
               <div className="container__hoancanh">
                 <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
