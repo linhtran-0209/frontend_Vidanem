@@ -36,8 +36,8 @@ const navConfig = [
     path: '#',
     icon: icon('ic_child'),
     subNav: [
-      {title: '- Đối tượng', path: '/dashboard/children/doi-tuong'},
-      {title: '- Trẻ em', path: '/dashboard/children/list'}
+      {title: ' Đối tượng', path: '/dashboard/children/doi-tuong'},
+      {title: ' Trẻ em', path: '/dashboard/children/list'}
     ]
   },
   {
