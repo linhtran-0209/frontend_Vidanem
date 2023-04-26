@@ -16,19 +16,50 @@ import {
   AppWebsiteVisits,
   AppWidgetSummary,
 } from '../sections/@dashboard/app';
+import SvgColor from '../components/svg-color';
 
+
+// ----------------------------------------------------------------------
+
+const icons = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
   const theme = useTheme();
   const [user, setUser] = useState(null);
+  const [totaluser, setTotaluser] = useState(0);
+  const [totalsponser, setTotalsponser] = useState(0);
+  const [totalchidren, setTotalchildren] = useState(0);
   useEffect(() => {
     const getUser = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/currentUser`;
+        const url = `${process.env.REACT_APP_API_URL}/account/getAll`;
         const { data } = await axios.get(url, { withCredentials: true });
-        const parse = data.data.email;
-        setUser(parse);
+        setTotaluser(data.total);
+        // console.log((JSON.parse(data)).data.email);
+        console.log(data);
+        // console.log("data empty");
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const getsponser = async () => {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
+        const { data } = await axios.get(url, { withCredentials: true });
+        setTotalsponser(data.total);
+        // console.log((JSON.parse(data)).data.email);
+        console.log(data);
+        // console.log("data empty");
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const getchildren = async () => {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/treem/getAll`;
+        const { data } = await axios.get(url, { withCredentials: true });
+        setTotalchildren(data.total);
         // console.log((JSON.parse(data)).data.email);
         console.log(data);
         // console.log("data empty");
@@ -37,7 +68,11 @@ export default function DashboardAppPage() {
       }
     };
     getUser();
+    getsponser();
+    getchildren();
   }, []);
+  
+
   return (
     <>
       <Helmet>
@@ -46,29 +81,29 @@ export default function DashboardAppPage() {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Hi, Welcome back
+          Thống kê
         </Typography>
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Tài khoản" total={7} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Tài khoản" total={totaluser} icon='carbon:user-avatar-filled' />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Nhà tài trợ" total={3} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title="Nhà tài trợ" total={totalsponser} color="info" icon= {'fa6-solid:people-roof'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Trẻ em" total={1} color="warning" icon={'ant-design:windows-filled'} />
+            <AppWidgetSummary title="Trẻ em" total={totalchidren} color="warning" icon={'solar:people-nearby-bold'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Tin bài" total={1} color="error" icon={'ant-design:bug-filled'} />
+            <AppWidgetSummary title="Tin bài" total={1} color="error" icon={'material-symbols:event-note'} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
             <AppWebsiteVisits
-              title="Lượt truy cập Website"
+              title="Đơn vị bảo trợ"
               subheader="(+43%) hơn một năm"
               chartLabels={[
                 '01/01/2003',
@@ -85,19 +120,19 @@ export default function DashboardAppPage() {
               ]}
               chartData={[
                 {
-                  name: 'Cấp 2',
+                  name: 'Đơn vị 1',
                   type: 'column',
                   fill: 'solid',
                   data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
                 },
                 {
-                  name: 'Cấp 3',
+                  name: 'Đơn vị 2',
                   type: 'area',
                   fill: 'gradient',
                   data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
                 },
                 {
-                  name: 'Guest',
+                  name: 'Đơn vị 3',
                   type: 'line',
                   fill: 'solid',
                   data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
@@ -106,14 +141,14 @@ export default function DashboardAppPage() {
             />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={4}>
+          <Grid className="cap" item xs={12} md={6} lg={4}>
             <AppCurrentVisits
-              title="Truy cập hiện tại"
+              title="Tài khoản"
               chartData={[
-                { label: 'Cấp 1', value: 4344 },
-                { label: 'Cấp 2', value: 5435 },
-                { label: 'Cấp 3', value: 1443 },
-                { label: 'Guest', value: 4443 },
+                { label: 'Hội đồng Đội thành phố', value: 11 },
+                { label: 'Hội đồng Đội quận, huyện', value: 2 },
+                { label: 'Cấp liên đội', value: 2 },
+                { label: 'Khách', value: 1 },
               ]}
               chartColors={[
                 theme.palette.primary.main,
