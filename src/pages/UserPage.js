@@ -100,19 +100,21 @@ export default function UserPage() {
     }
   };
 
-  const handleClickExportExcel = async () =>{
+  const handleClickExportExcel = async () => {
     const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}&export=true`;
-    await axios.get(url, {
-      withCredentials: true,
-      responseType: 'blob', // set the response type to blob
-    }).then(response => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'Danh sách tài khoản.xlsx';
-      a.click();
-    });
-  }
+    await axios
+      .get(url, {
+        withCredentials: true,
+        responseType: 'blob', // set the response type to blob
+      })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Danh sách tài khoản.xlsx';
+        a.click();
+      });
+  };
 
   const handleChangePage = async (event, newPage) => {
     setPage(newPage - 1);
@@ -237,31 +239,30 @@ export default function UserPage() {
             Tất cả tài khoản
           </Typography>
           <div>
-          <Button
-            className="buttondanhsach"
-            variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={handleClickOpenCreateExcelModal}
-          >
-            Nhập từ Excel
-          </Button>
-          <Button
-            className="buttonxuatexcel"
-            startIcon={<Iconify icon="mdi:microsoft-excel" />}
-            onClick={handleClickExportExcel}
-          >
-            Xuất Excel
-          </Button>
-          <Button
-            className="buttonThemMoi"
-            variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={handleClickOpenCreate}
-          >
-            Tài khoản mới
-          </Button>
+            <Button
+              className="buttondanhsach"
+              variant="contained"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+              onClick={handleClickOpenCreateExcelModal}
+            >
+              Nhập từ Excel
+            </Button>
+            <Button
+              className="buttonxuatexcel"
+              startIcon={<Iconify icon="mdi:microsoft-excel" />}
+              onClick={handleClickExportExcel}
+            >
+              Xuất Excel
+            </Button>
+            <Button
+              className="buttonThemMoi"
+              variant="contained"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+              onClick={handleClickOpenCreate}
+            >
+              Tài khoản mới
+            </Button>
           </div>
-
         </Stack>
         <CreateUserExcelModal opencreateExcelModal={openCreateExcelModal} handleClose={handleCloseCreateExcel} />
         <CreateUserModal opendialogcreate={openDialogCreate} handleClose={handleCloseCreate} />
@@ -321,46 +322,37 @@ export default function UserPage() {
                         <TableCell style={{ paddingLeft: 17 }} align="left">
                           {quyen}
                         </TableCell>
-                        <TableCell className='block__container'>
+                        <TableCell className="block__container">
                           {isActive && (
                             <Tooltip title="Khóa tài khoản">
-                              <MenuItem className='block__content'
-                                
-                                onClick={(event) => handleClickOpenChangeActive(event, row)}
-                              >
+                              <MenuItem onClick={(event) => handleClickOpenChangeActive(event, row)}>
                                 <Iconify style={{ color: 'green' }} icon={'eva:unlock-outline'} />
                               </MenuItem>
                             </Tooltip>
                           )}
                           {!isActive && (
                             <Tooltip title="Mở khóa tài khoản">
-                              <MenuItem
-                                className='block__content'
-                                onClick={(event) => handleClickOpenChangeActive(event, row)}
-                              >
+                              <MenuItem onClick={(event) => handleClickOpenChangeActive(event, row)}>
                                 <Iconify style={{ color: 'red' }} icon={'eva:lock-outline'} />
                               </MenuItem>
                             </Tooltip>
                           )}
                         </TableCell>
 
-                        <TableCell
-                          className='icon__container'
-                          
-                        >
+                        <TableCell className="icon__container">
                           <Tooltip title="Cập nhật">
                             <MenuItem className="updateuser" onClick={(event) => handleClickOpenInsert(event, row)}>
                               <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
                             </MenuItem>
                           </Tooltip>
                           <Tooltip title="Xóa">
-                          <MenuItem
-                            className="deleteuser"
-                            sx={{ color: 'error.main' }}
-                            onClick={(event) => handleClickOpenDelete(event, row)}
-                          >
-                            <Iconify icon={'eva:trash-2-outline'} />
-                          </MenuItem>
+                            <MenuItem
+                              className="deleteuser"
+                              sx={{ color: 'error.main' }}
+                              onClick={(event) => handleClickOpenDelete(event, row)}
+                            >
+                              <Iconify icon={'eva:trash-2-outline'} />
+                            </MenuItem>
                           </Tooltip>
                         </TableCell>
 

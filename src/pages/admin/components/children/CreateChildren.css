@@ -88,3 +88,27 @@
     right: 5px;
   } */
 
+.button_show_more{
+    background-color: whitesmoke;
+    color: black;
+    border-radius: 20px;
+    width: 200px;
+    border: 2px solid rgba(180, 180, 180, 0.5);
+}
+
+.button_show_more:hover {
+    background-color: lightgray;
+  }
+
+.button_remove_hoctap{
+    margin-left: auto;
+    margin-right: 0.5rem;
+    width: 40px;
+    height: 40px;
+    margin-top: 13px;
+}
+
+.button_remove_hoctap:hover{
+  color: black;
+  background-color: rgb(241, 84, 84);
+}

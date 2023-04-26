@@ -14,6 +14,7 @@ import DashboardAppPage from './pages/DashboardAppPage';
 import ScholarshipPage from './pages/ScholarshipPage';
 import ChildrenPage from './pages/ChildrenPage';
 import YearPage from './pages/Yearpage';
+import DoiTuongPage from './pages/DoiTuongPage';
 import InsertChildren from './pages/admin/components/children/CreateChildren';
 import EditChildren from './pages/admin/components/children/EditChildren';
 import InsertBlog from './pages/admin/components/blog/CreateBlog';
@@ -52,7 +53,12 @@ export default function Router() {
         { path: 'blog', element: <BlogPage /> },
         {
           path: 'children',
-          element: <ChildrenPage />,
+          children: [
+            { path: '/dashboard/children/doi-tuong', element: <DoiTuongPage /> },
+            { path: '/dashboard/children/list', element: <ChildrenPage /> },
+            { path: '/dashboard/children/insert', element: <InsertChildren /> },
+            { path: '/dashboard/children/edit/:id', element: <EditChildren /> },
+          ],
         },
       ],
     },
@@ -64,14 +70,14 @@ export default function Router() {
     //     {path: 'add'}
     //   ]
     // },
-    {
-      element: <DashboardLayout />,
-      children: [
-        { element: <Navigate to="/dashboard/children" /> },
-        { path: '/dashboard/children/insert', element: <InsertChildren /> },
-        { path: '/dashboard/children/edit/:id', element: <EditChildren /> },
-      ],
-    },
+    // {
+    //   element: <DashboardLayout />,
+    //   children: [
+    //     { element: <Navigate to="/dashboard/children" />, index: true  },
+    //     { path: '/dashboard/children/insert', element: <InsertChildren /> },
+    //     { path: '/dashboard/children/edit/:id', element: <EditChildren /> },
+    //   ],
+    // },
     {
       element: <DashboardLayout />,
       children: [

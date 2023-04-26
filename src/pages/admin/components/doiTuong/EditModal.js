@@ -21,7 +21,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
 export function EditModal(props) {
-  const [year, setYear] = useState({});
+  const [doiTuong, setDoiTuong] = useState({});
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [selectedDateBatDau, setSelectedDateBatDau] = useState(moment());
@@ -29,46 +29,31 @@ export function EditModal(props) {
 
   useEffect(() => {
     if (props.row) {
-      getYear();
+      getDoiTuong();
     }
   }, [props.row]);
 
-  const getYear = async () => {
+  const getDoiTuong = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/byId?id=${props.row._id}`;
+      const url = `${process.env.REACT_APP_API_URL}/doituong/byId?id=${props.row._id}`;
       const { data } = await axios.get(url, { withCredentials: true });
-      setYear(data.data);
-      console.log(moment(data.data.batDau));
-      setSelectedDateBatDau(moment(data.data.batDau));
-      setSelectedDateKetThuc(moment(data.data.ketThuc));
+      setDoiTuong(data.data);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const handleDateBatDauChange = (date) => {
-    console.log(date);
-    setSelectedDateBatDau(date);
-    setYear({ ...year, batDau: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
-  };
-
-  const handleDateKetThucChange = (date) => {
-    console.log(date);
-    setSelectedDateKetThuc(date);
-    setYear({ ...year, ketThuc: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
-  };
-
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/update`;
+      const url = `${process.env.REACT_APP_API_URL}/doituong/update`;
 
       await axios
         .put(
           url,
           {
             id: props.row._id,
-            batDau: year.batDau,
-            ketThuc: year.ketThuc,
+            ma: doiTuong.ma,
+            ten: doiTuong.ten,
           },
           { withCredentials: true }
         )
@@ -104,43 +89,30 @@ export function EditModal(props) {
           </IconButton>
         </div>
         <div className="divider" />
-        <DialogContent className="form__info__createscholarship">
-          <div className="form__info__createscholarship__container">
-            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-              <TextField
-                margin="dense"
-                label="Năm học"
-                value={year.namHoc || ''}
-                disabled
-                // onChange={(e) => setYear({ ...year, maNamHoc: e.target.value })}
-                type="text"
-                fullWidth
-                style={{fontWeight:'bold'}}
-              />
-            </FormControl>
+        <DialogContent className='form__info__createscholarship'>
+        <div className='form__info__createscholarship__container'>
+          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth >
+            <TextField
+              margin="dense"
+              value={doiTuong.ma || ''}
+              label="Mã đối tượng"
+              onChange={(e) => setDoiTuong({ ...doiTuong, ma: e.target.value })}
+              type="text"
+              fullWidth
+            />
+          </FormControl>
+          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth >
+            <TextField
+              margin="dense"
+              label="Tên đối tượng"
+              value={doiTuong.ten || ''}
+              onChange={(e) => setDoiTuong({ ...doiTuong, ten: e.target.value })}
+              type="text"
+              fullWidth
+            />
+          </FormControl>
           </div>
-          <div className="form__info__createscholarship__container">
-            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-              <LocalizationProvider adapterLocale="vi" dateAdapter={AdapterMoment}>
-                <DatePicker
-                  format="DD/MM/YYYY"
-                  label="Ngày bắt đầu"
-                  value={selectedDateBatDau}
-                  onChange={handleDateBatDauChange}
-                />
-              </LocalizationProvider>
-            </FormControl>
-            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-              <LocalizationProvider adapterLocale="vi" dateAdapter={AdapterMoment}>
-                <DatePicker
-                  format="DD/MM/YYYY"
-                  label="Ngày kết thúc"
-                  value={selectedDateKetThuc}
-                  onChange={handleDateKetThucChange}
-                />
-              </LocalizationProvider>
-            </FormControl>
-          </div>
+
         </DialogContent>
         <DialogActions>
           <Button className="huycapnhathocbong" onClick={props.handleClose}>

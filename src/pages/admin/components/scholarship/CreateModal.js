@@ -90,8 +90,8 @@ export function CreateModal(props) {
         </Alert>
       )}
 
-      <Dialog className='dialogcreatescholarship' open={props.openDialogCreate} onClose={props.handleClose}>
-      <div className="titlecreatesholarship">
+      <Dialog className="dialogcreatescholarship" open={props.openDialogCreate} onClose={props.handleClose}>
+        <div className="titlecreatesholarship">
           {' '}
           Thêm học bổng
           <IconButton onClick={props.handleClose}>
@@ -99,26 +99,26 @@ export function CreateModal(props) {
           </IconButton>
         </div>
         <div className="divider" />
-        <DialogContent className='form__info__createscholarship'>
-        <div className='form__info__createscholarship__container'>
-          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Mã học bổng"
-              onChange={(e) => setScholarship({ ...scholarship, maHocBong: e.target.value })}
-              type="text"
-              fullWidth
-            />
-          </FormControl>
-          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Tên học bổng"
-              onChange={(e) => setScholarship({ ...scholarship, tenHocBong: e.target.value })}
-              type="text"
-              fullWidth
-            />
-          </FormControl>
+        <DialogContent className="form__info__createscholarship">
+          <div className="form__info__createscholarship__container">
+            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Mã học bổng"
+                onChange={(e) => setScholarship({ ...scholarship, maHocBong: e.target.value })}
+                type="text"
+                fullWidth
+              />
+            </FormControl>
+            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Tên học bổng"
+                onChange={(e) => setScholarship({ ...scholarship, tenHocBong: e.target.value })}
+                type="text"
+                fullWidth
+              />
+            </FormControl>
           </div>
           <FormControl className="formcontrolcreatesholarship__name" variant="outlined" fullWidth>
             <InputLabel id="demo-simple-select-standard-label">Đơn vị tài trợ</InputLabel>
@@ -142,34 +142,34 @@ export function CreateModal(props) {
               ))}
             </Select>
           </FormControl>
-          <div className='form__info__moneyscholarship__container'>
-          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Số lượng"
-              onChange={(e) => setScholarship({ ...scholarship, soLuong: e.target.value })}
-              type="phone"
-              fullWidth
-            />
-          </FormControl>
-          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Số tiền mỗi suất"
-              onChange={(e) => setScholarship({ ...scholarship, soTien: e.target.value })}
-              type="text"
-              fullWidth
-            />
-          </FormControl>
-          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Hình thức"
-              onChange={(e) => setScholarship({ ...scholarship, hinhThuc: e.target.value })}
-              type="text"
-              fullWidth
-            />
-          </FormControl>
+          <div className="form__info__moneyscholarship__container">
+            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Số lượng"
+                onChange={(e) => setScholarship({ ...scholarship, soLuong: e.target.value })}
+                type="phone"
+                fullWidth
+              />
+            </FormControl>
+            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Số tiền mỗi suất"
+                onChange={(e) => setScholarship({ ...scholarship, soTien: e.target.value })}
+                type="text"
+                fullWidth
+              />
+            </FormControl>
+            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Hình thức"
+                onChange={(e) => setScholarship({ ...scholarship, hinhThuc: e.target.value })}
+                type="text"
+                fullWidth
+              />
+            </FormControl>
           </div>
           <FormControl className="formcontrolcreatesholarship__note" variant="standard" fullWidth>
             <TextField
@@ -182,8 +182,12 @@ export function CreateModal(props) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button className="huythemhocbong" onClick={props.handleClose}>Hủy</Button>
-          <Button className="themhocbong" onClick={handleSubmit}>Thêm học bổng</Button>
+          <Button className="huythemhocbong" onClick={props.handleClose}>
+            Hủy
+          </Button>
+          <Button className="themhocbong" onClick={handleSubmit}>
+            Thêm học bổng
+          </Button>
         </DialogActions>
       </Dialog>
     </>
