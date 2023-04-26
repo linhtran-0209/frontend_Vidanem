@@ -1,10 +1,12 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 // @mui
+import MenuItem from '@mui/material/MenuItem';
 import { styled, alpha } from '@mui/material/styles';
-import { Toolbar, Tooltip, Button, Typography, OutlinedInput, InputAdornment } from '@mui/material';
+import { Toolbar, OutlinedInput, InputAdornment, FormControl, InputLabel, Select, TextField } from '@mui/material';
 // component
 import Iconify from '../../../components/iconify';
-
 
 // ----------------------------------------------------------------------
 
@@ -21,10 +23,10 @@ const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.shorter,
   }),
-  '&.Mui-focused': {
-    width: 320,
-    boxShadow: theme.customShadows.z8,
-  },
+  // '&.Mui-focused': {
+  //   width: 320,
+  //   boxShadow: theme.customShadows.z8,
+  // },
   '& fieldset': {
     borderWidth: `1px !important`,
     borderColor: `${alpha(theme.palette.grey[500], 0.32)} !important`,
@@ -39,36 +41,144 @@ ChildrenToolbar.propTypes = {
   onFilterName: PropTypes.func,
 };
 
-export default function ChildrenToolbar({ filterName, onFilterName, onClickSearch }) {
+export default function ChildrenToolbar({
+  filterName,
+  onFilterName,
+  filterNamNhan,
+  onFilterNamNhan,
+  quan,
+  handleChangeQuan,
+  openWards,
+  phuong,
+  handleChangePhuong,
+  trangThai,
+  handleChangeTrangThai,
+  sponsor,
+  handleChangeSponsor,
+  onClickSearch,
+}) {
+  const [openDistricts, setOpenDistricts] = useState([]);
+  const [SPONSERLIST, setSPONSERLIST] = useState([]);
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    getDistricts();
+  }, []);
+  const getDistricts = async () => {
+    try {
+      const url = `https://provinces.open-api.vn/api/p/79?depth=2`;
+      const { data } = await axios.get(url);
+
+      setOpenDistricts(data.districts);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getSponsor();
+  }, []);
+  const getSponsor = async () => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      setSPONSERLIST(data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <StyledRoot
       sx={{
-        height:50,
+        height: 74,
       }}
     >
+      <StyledSearch
+        sx={{ height: 40, width: 200, marginRight: '16px' }}
+        className="search__user"
+        value={filterName}
+        onChange={onFilterName}
+        onBlur={onClickSearch}
+        onKeyDown={onClickSearch}
+        placeholder="Họ tên..."
+        startAdornment={
+          <InputAdornment position="start">
+            <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
+          </InputAdornment>
+        }
+      />
 
-        <StyledSearch sx={{height:40}}
-        className='search__user'
-          value={filterName}
-          onChange={onFilterName}
-          onBlur={onClickSearch}
-          onKeyDown={onClickSearch}
-          placeholder="Họ tên..."
-          startAdornment={
-            <InputAdornment position="start">
-              <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
-            </InputAdornment>
-          }
-        />
+      <StyledSearch
+        sx={{ height: 40, width: 150, marginRight: '16px' }}
+        className="search__user"
+        value={filterNamNhan}
+        onChange={onFilterNamNhan}
+        onBlur={onClickSearch}
+        onKeyDown={onClickSearch}
+        placeholder="Năm nhận"
+        startAdornment={
+          <InputAdornment position="start">
+            <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
+          </InputAdornment>
+        }
+      />
 
-        <Tooltip title="Tìm kiếm" sx={{marginLeft: 2}}>
-        <Button variant="contained" onClick={onClickSearch}>
-            Tìm kiếm
-        </Button>
-       
-        </Tooltip>
-        
+      <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
+        <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
+        <Select labelId="quan" id="quan" value={quan} onChange={handleChangeQuan} label="Quận" margin="dense">
+          <MenuItem value="">Chọn Quận/Thành phố</MenuItem>
+          {openDistricts.map((item) => (
+            <MenuItem key={item.code} value={item.code}>
+              {item.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
+        <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
+        <Select labelId="phuong" id="phuong" value={phuong} onChange={handleChangePhuong} label="Phường" margin="dense">
+          <MenuItem value="">Chọn Phường/Xã</MenuItem>
+          {openWards.map((item) => (
+            <MenuItem key={item.code} value={item.code}>
+              {item.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
+        <InputLabel id="demo-simple-select-standard-label">Trạng thái</InputLabel>
+        <Select labelId="quyen" id="quyen" value={trangThai} onChange={handleChangeTrangThai} margin="dense">
+          <MenuItem value="">Chọn trạng thái</MenuItem>
+          <MenuItem value={'DeXuat'}>Đề Xuất</MenuItem>
+          <MenuItem value={'ChoDuyet'}>Chờ Duyệt</MenuItem>
+          <MenuItem value={'DaDuyet'}>Đã Duyệt</MenuItem>
+          <MenuItem value={'TuChoi'}>Từ Chối</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
+        <InputLabel id="demo-simple-select-standard-label">Đơn vị tài trợ</InputLabel>
+        <Select onChange={handleChangeSponsor} label="Đơn vị tài trợ" value={sponsor} fullWidth margin="dense">
+          <TextField
+            placeholder="Tên đơn vị tài trợ..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+            fullWidth
+            inputProps={{
+              autoComplete: 'off',
+            }}
+          />
+          {SPONSERLIST.filter((option) => option.tenDonVi.toLowerCase().includes(search)).map((option) => (
+            <MenuItem key={option._id} value={option} label={option.tenDonVi}>
+              {option.tenDonVi}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </StyledRoot>
   );
 }
-

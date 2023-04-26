@@ -25,33 +25,31 @@ import moment from 'moment';
 // components
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-import { EditModal } from './admin/components/year/EditModal';
+import { EditModal } from './admin/components/doiTuong/EditModal';
 // sections
-import YearListHead from '../sections/@dashboard/year/YearListHead';
-import { CreateModal } from './admin/components/year/CreateModal';
-import { DeleteModal } from './admin/components/year/DeleteModal';
+import DoiTuongListHead from '../sections/@dashboard/doituong/DoiTuongListHead';
+import { CreateModal } from './admin/components/doiTuong/CreateModal';
+import { DeleteModal } from './admin/components/doiTuong/DeleteModal';
 
 // mock
 // import USERLIST from '../_mock/us
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'nam_hoc', label: 'Năm học', alignRight: false },
-  // { id: 'nam_hoc', label: 'Năm học', alignRight: false },
-  { id: 'bat_dau', label: 'Bắt đầu', alignRight: false },
-  { id: 'ket_thuc', label: 'Kết thúc', alignRight: false },
-  { id: 'nam_hien_tai', label: 'Năm hiện tại', alignRight: false },
+  { id: 'ma', label: 'Mã', alignRight: false },
+  { id: 'ten', label: 'Tên', alignRight: false },
+  { id: 'so_luong', label: 'Số lượng', alignRight: false },
   { id: 'action', label: '', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
 
-export default function YearPage() {
+export default function DoiTuongPage() {
   const [page, setPage] = useState(0);
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [total, setTotal] = useState(0);
-  const [YearsList, setYearsList] = useState([]);
+  const [doiTuongList, setDoiTuongList] = useState([]);
   const [selectedRow, setSelectedRow] = useState({});
   const [openScholarshipCreate, setOpenScholarshipCreate] = React.useState(false);
   const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
@@ -60,15 +58,15 @@ export default function YearPage() {
   const [openErrMessage, setOpenErrMessage] = useState('');
 
   useEffect(() => {
-    getYears();
+    getDoiTuongs();
   }, []);
 
-  const getYears = async () => {
+  const getDoiTuongs = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/doituong/getAll?curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
-      setYearsList(data.data);
+      setDoiTuongList(data.data);
       setTotal(data.total);
     } catch (err) {
       console.log(err);
@@ -86,10 +84,10 @@ export default function YearPage() {
     setOpenDialogEdit(false);
 
     try {
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/doituong/getAll?curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
-      setYearsList(data.data);
+      setDoiTuongList(data.data);
       setTotal(data.total);
     } catch (err) {
       console.log(err);
@@ -102,7 +100,7 @@ export default function YearPage() {
       const url = `${process.env.REACT_APP_API_URL}/namhoc/getAll?curPage=${newPage}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
-      setYearsList(data.data);
+      setDoiTuongList(data.data);
       setTotal(data.total);
     } catch (err) {
       console.log(err);
@@ -117,7 +115,7 @@ export default function YearPage() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - total) : 0;
 
-  const isNotFound = !YearsList.length && !!filterName;
+  const isNotFound = !doiTuongList.length && !!filterName;
 
   const handleRowClick = (event, row) => {
     setSelectedRow(row);
@@ -166,10 +164,10 @@ export default function YearPage() {
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <YearListHead headLabel={TABLE_HEAD} rowCount={total} />
+                <DoiTuongListHead headLabel={TABLE_HEAD} rowCount={total} />
                 <TableBody>
-                  {YearsList.map((row) => {
-                    const { _id, namHoc, batDau, ketThuc, namHienTai } = row;
+                  {doiTuongList.map((row) => {
+                    const { _id, ma, ten, soLuong } = row;
                     // const selectedUser = selected.indexOf(tenDonVi) !== -1;
 
                     return (
@@ -180,29 +178,15 @@ export default function YearPage() {
                         sx={{ cursor: 'pointer', width: '200px', height: '10px' }}
                       >
                         <TableCell align="center" style={{}}>
-                          {namHoc}
+                          {ma}
                         </TableCell>
 
-                        {/* <TableCell align="left" style={{ width: 350 }}>
-                          {namHoc}
-                        </TableCell> */}
-
-                        <TableCell align="center" style={{}}>
-                          {moment(batDau).format('DD/MM/YYYY')}
+                        <TableCell align="center" style={{ width: 350 }}>
+                          {ten}
                         </TableCell>
 
-                        <TableCell align="center" style={{}}>
-                          {moment(ketThuc).format('DD/MM/YYYY')}
-                        </TableCell>
-
-                        <TableCell style={{ width: '150', justifyContent: 'center' }}>
-                          {namHienTai && (
-                            <Tooltip title="Năm học hiện tại">
-                              <MenuItem style={{ justifyContent: 'center' }}>
-                                <Iconify style={{ color: 'orange' }} icon={'mdi:white-balance-sunny'} />
-                              </MenuItem>
-                            </Tooltip>
-                          )}
+                        <TableCell align="center" style={{ width: 350 }}>
+                          {soLuong}
                         </TableCell>
 
                         <TableCell className="icon__scholarship__container">

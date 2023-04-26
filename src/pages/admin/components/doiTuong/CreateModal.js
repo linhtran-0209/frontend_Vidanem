@@ -17,7 +17,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
 export function CreateModal(props) {
-  const [year, setYear] = useState({});
+  const [doiTuong, setDoiTuong] = useState({});
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [selectedDateBatDau, setSelectedDateBatDau] = useState(moment());
@@ -26,15 +26,14 @@ export function CreateModal(props) {
 
   const handleSubmit = async () => {
     try {
-      console.log(year);
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/insert`;
+      console.log(doiTuong);
+      const url = `${process.env.REACT_APP_API_URL}/doituong/insert`;
       await axios
         .post(
           url,
           {
-            namHoc: year.namHoc,
-            batDau: year.batDau,
-            ketThuc: year.ketThuc
+            ma: doiTuong.ma,
+            ten: doiTuong.ten,
           },
           { withCredentials: true }
         )
@@ -44,18 +43,6 @@ export function CreateModal(props) {
     } catch (err) {
       setOpenErrMessage(err.response.data.message);
     }
-  };
-
-  const handleDateBatDauChange = (date) => {
-    console.log(date);
-    setSelectedDateBatDau(date);
-    setYear({ ...year, batDau: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
-  };
-
-  const handleDateKetThucChange = (date) => {
-    console.log(date);
-    setSelectedDateKetThuc(date);
-    setYear({ ...year, ketThuc: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
   };
 
   useEffect(() => {
@@ -80,7 +67,7 @@ export function CreateModal(props) {
       <Dialog className='dialogcreatescholarship' open={props.openDialogCreate} onClose={props.handleClose}>
       <div className="titlecreatesholarship">
           {' '}
-          Thêm năm học
+          Thêm đối tượng trẻ em
           <IconButton onClick={props.handleClose}>
             <CloseIcon />
           </IconButton>
@@ -91,32 +78,27 @@ export function CreateModal(props) {
           <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth >
             <TextField
               margin="dense"
-              label="Năm học"
-              onChange={(e) => setYear({ ...year, namHoc: e.target.value })}
+              label="Mã đối tượng"
+              onChange={(e) => setDoiTuong({ ...doiTuong, ma: e.target.value })}
               type="text"
               fullWidth
-              style={{background:'white'}}
-              helperText="Ví dụ: 2019-2020"
             />
           </FormControl>
-          </div>
-          <div className='form__info__createscholarship__container' >
-          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-              <LocalizationProvider  adapterLocale="vi" dateAdapter={AdapterMoment}>
-                <DatePicker  format="DD/MM/YYYY" label="Ngày bắt đầu" selected={selectedDateBatDau} onChange={handleDateBatDauChange} />
-              </LocalizationProvider>
-            </FormControl>
-            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-              <LocalizationProvider adapterLocale="vi" dateAdapter={AdapterMoment}>
-                <DatePicker format="DD/MM/YYYY" label="Ngày kết thúc" selected={selectedDateKetThuc} onChange={handleDateKetThucChange} />
-              </LocalizationProvider>
-            </FormControl>
+          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth >
+            <TextField
+              margin="dense"
+              label="Tên đối tượng"
+              onChange={(e) => setDoiTuong({ ...doiTuong, ten: e.target.value })}
+              type="text"
+              fullWidth
+            />
+          </FormControl>
           </div>
 
         </DialogContent>
         <DialogActions>
           <Button className="huythemhocbong" onClick={props.handleClose}>Hủy</Button>
-          <Button className="themhocbong" onClick={handleSubmit}>Thêm năm học</Button>
+          <Button className="themhocbong" onClick={handleSubmit}>Thêm đối tượng</Button>
         </DialogActions>
       </Dialog>
     </>
