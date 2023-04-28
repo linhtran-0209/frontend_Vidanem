@@ -286,9 +286,13 @@ export default function ChildrenPage() {
                       <TableCell className="children__hoancanh" align="left">
                         {hoanCanh.length > 25 ? `${hoanCanh.slice(0, 25)}...` : hoanCanh}
                       </TableCell>
-                      <TableCell align="left">{donViBaoTro[0].tenDonVi}</TableCell>
+                      <TableCell align="left">
+                        {/* {donViBaoTro[0].tenDonVi} */}
+                        </TableCell>
 
-                      <TableCell align="left">{namNhan}</TableCell>
+                      <TableCell align="left">
+                        {/* {namNhan} */}
+                        </TableCell>
 
                       <TableCell align="left">{trangthai}</TableCell>
                       <TableCell className="icon__children__container">

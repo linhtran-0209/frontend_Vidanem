@@ -20,7 +20,7 @@ export function DialogHocTap(props) {
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [hocTap, setHocTap] = useState({});
   const [YearsList, setYearsList] = useState([]);
-  const [selectedNamHoc, setSelectedNamHoc] = useState(props.infoHocTap.namHoc);
+  const [selectedNamHoc, setSelectedNamHoc] = useState(null);
   const [selectedHocKy, setSelectedHocKy] = useState(null);
   const [selectedHocLuc, setSelectedHocLuc] = useState(null);
 
@@ -33,13 +33,13 @@ export function DialogHocTap(props) {
 
   useEffect(() => {
     console.log(props.infoHocTap);
-    if (props.infoHocTap){
+    if (props.infoHocTap.namHoc){
       setHocTap(props.infoHocTap)
       setSelectedNamHoc(props.infoHocTap.namHoc)
       setSelectedHocKy(props.infoHocTap.hocKy)
       setSelectedHocLuc(props.infoHocTap.hocLuc)
     }
-  }, [props.infoHocTap]);
+  }, [props.infoHocTap.namHoc]);
 
   useEffect(() => {
     if (props.openDialogCreate){
@@ -54,6 +54,7 @@ export function DialogHocTap(props) {
       setYearsList(data.data);
       const namHienTai = data.data.find(nam => nam.namHienTai === true)
       console.log(namHienTai);
+      if (!props.isEdit)
       setSelectedNamHoc(namHienTai.namHoc)
     } catch (err) {
       console.log(err);
@@ -110,7 +111,7 @@ export function DialogHocTap(props) {
             <div className="form__year__container">
               <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Năm học</InputLabel>
-                <Select onChange={handleChangeNamHoc} label="Năm học" value={selectedNamHoc} fullWidth margin="dense">
+                <Select onChange={handleChangeNamHoc} label="Năm học" value={selectedNamHoc || ''} fullWidth margin="dense">
                   {YearsList.map((option) => (
                     <MenuItem key={option._id} value={option.namHoc} label={option.namHoc}>
                       {option.namHoc}
@@ -120,7 +121,7 @@ export function DialogHocTap(props) {
               </FormControl>
               <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Học kỳ</InputLabel>
-                <Select onChange={handleChangeHocKy} label="Năm học" value={selectedHocKy} fullWidth margin="dense">
+                <Select onChange={handleChangeHocKy} label="Năm học" value={selectedHocKy || ''} fullWidth margin="dense">
                     <MenuItem key={'HK1'} value={'Học Kỳ 1'} label={'Học Kỳ 1'}>
                     Học Kỳ 1
                     </MenuItem>
@@ -132,7 +133,7 @@ export function DialogHocTap(props) {
 
               <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Học lực</InputLabel>
-                <Select onChange={handleChangeHocLuc} label="Năm học" value={selectedHocLuc} fullWidth margin="dense">
+                <Select onChange={handleChangeHocLuc} label="Năm học" value={selectedHocLuc || ''} fullWidth margin="dense">
                     <MenuItem key={'gioi'} value={'Giỏi'} label={'Giỏi'}>
                     Giỏi
                     </MenuItem>
@@ -170,7 +171,7 @@ export function DialogHocTap(props) {
             <div className="form__year__container">
               <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
                 <InputLabel id="demo-simple-select-standard-label">Năm học</InputLabel>
-                <Select onChange={handleChangeNamHoc} value={selectedNamHoc} label="Năm học" fullWidth margin="dense">
+                <Select onChange={handleChangeNamHoc} value={selectedNamHoc || ''} label="Năm học" fullWidth margin="dense">
                   {YearsList.map((option) => (
                     <MenuItem key={option._id} value={option.namHoc} label={option.namHoc}>
                       {option.namHoc}

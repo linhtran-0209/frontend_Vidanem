@@ -36,12 +36,12 @@ export default function InsertChildren() {
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [preview, setPreview] = useState([]);
   const [images, setImages] = useState([]);
-  const [search, setSearch] = useState('');
-  const [SPONSERLIST, setSPONSERLIST] = useState([]);
-  const [SCHOLARSHIPLIST, setSCHOLARSHIPLIST] = useState([]);
+  // const [search, setSearch] = useState('');
+  // const [SPONSERLIST, setSPONSERLIST] = useState([]);
+  // const [SCHOLARSHIPLIST, setSCHOLARSHIPLIST] = useState([]);
   const [treEm, setTreEm] = useState();
-  const [selectedSponsor, setSelectedSponsor] = useState(null);
-  const [selectedScholarship, setSelectedScholarship] = useState(null);
+  // const [selectedSponsor, setSelectedSponsor] = useState(null);
+  // const [selectedScholarship, setSelectedScholarship] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [hocTap, setHocTap] = useState([]);
   const [hocBong, setHocBong] = useState([]);
@@ -51,6 +51,7 @@ export default function InsertChildren() {
   const [selectedHocBongIndex, setSelectedHocBongIndex] = useState(0);
   const [isEdit, setIsEdit] = useState(false);
   const [infoHocTap, setInfoHocTap] = useState({});
+  const [infoHocBong, setInfoHocBong] = useState({});
   const [selectedDate, setSelectedSponsorDate] = useState(new Date());
 
   useEffect(() => {
@@ -66,31 +67,31 @@ export default function InsertChildren() {
     setTreEm({ ...treEm, ngaySinh: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
   };
 
-  const getSponsorList = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
-    const { data } = await axios.get(url, { withCredentials: true });
-    setSPONSERLIST(data.data);
-  };
-  useEffect(() => {
-    getSponsorList();
-  }, []);
+  // const getSponsorList = async () => {
+  //   const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
+  //   const { data } = await axios.get(url, { withCredentials: true });
+  //   setSPONSERLIST(data.data);
+  // };
+  // useEffect(() => {
+  //   getSponsorList();
+  // }, []);
 
-  const getScholarshipList = async (donViBaoTro) => {
-    const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?donViTaiTro=${donViBaoTro}`;
-    const { data } = await axios.get(url, { withCredentials: true });
-    setSCHOLARSHIPLIST(data.data);
-  };
+  // const getScholarshipList = async (donViBaoTro) => {
+  //   const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?donViTaiTro=${donViBaoTro}`;
+  //   const { data } = await axios.get(url, { withCredentials: true });
+  //   setSCHOLARSHIPLIST(data.data);
+  // };
 
-  const handleChangeSponsor = (e) => {
-    setSelectedSponsor(e.target.value);
-    setTreEm({ ...treEm, donViBaoTro: e.target.value });
-    getScholarshipList(e.target.value);
-  };
+  // const handleChangeSponsor = (e) => {
+  //   setSelectedSponsor(e.target.value);
+  //   setTreEm({ ...treEm, donViBaoTro: e.target.value });
+  //   getScholarshipList(e.target.value);
+  // };
 
-  const handleChangeScholarship = (e) => {
-    setSelectedScholarship(e.target.value);
-    setTreEm({ ...treEm, hocBong: e.target.value });
-  };
+  // const handleChangeScholarship = (e) => {
+  //   setSelectedScholarship(e.target.value);
+  //   setTreEm({ ...treEm, hocBong: e.target.value });
+  // };
 
   const handleFileUpload = (event) => {
     const selectedFiles = event.target.files;
@@ -139,6 +140,14 @@ export default function InsertChildren() {
     });
   };
 
+  const handleRemoveHocBong = (index) => {
+    setHocBong((hocbong) => {
+      const newHocBongs = [...hocbong];
+      newHocBongs.splice(index, 1);
+      return newHocBongs;
+    });
+  };
+
   const handleCickAddHocBong = (hocbong) => {
     console.log(hocbong);
     setHocBong([...hocBong, hocbong]);
@@ -160,15 +169,17 @@ export default function InsertChildren() {
   const handleCickEditHocBong = (hocbong) => {
     console.log(hocbong);
     const hocbongs = [...hocBong];
-    hocbongs[selectedHocTapIndex] = hocbong;
+    hocbongs[selectedHocBongIndex] = hocbong;
     setHocBong(hocbongs);
     // setTreEm(hoctaps);
   };
 
   const handleSubmit = async () => {
-    console.log(treEm);
-    console.log(hocTap);
+    // console.log(treEm);
+    // console.log(hocTap);
+    console.log(hocBong);
     const urlHocTap = `${process.env.REACT_APP_API_URL}/hoctap/insert`;
+    const urlHocBong = `${process.env.REACT_APP_API_URL}/hocbongtreem/insert`;
     const url = `${process.env.REACT_APP_API_URL}/treem/insert`;
 
     const formData = new FormData();
@@ -178,14 +189,15 @@ export default function InsertChildren() {
     formData.append('SDT', treEm.SDT);
     formData.append('diaChi', treEm.diaChi);
     formData.append('hoanCanh', treEm.hoanCanh);
+
     formData.append('donViBaoTro', treEm.donViBaoTro);
     formData.append('hocBong', treEm.hocBong);
     formData.append('namNhan', treEm.namNhan);
     formData.append('namHoanThanh', treEm.namHoanThanh);
 
-    console.log(images);
+    // console.log(images);
     images.forEach((image) => {
-      console.log(image);
+      // console.log(image);
       formData.append('images', image);
     });
 
@@ -200,6 +212,14 @@ export default function InsertChildren() {
       setOpenSuccessMessage(result.data.message);
     } else setOpenErrMessage(result.data.message);
     if (result.data.id && hocTap.length > 0) {
+      await axios.post(
+        urlHocBong,
+        {
+          treEm: result.data.id,
+          hocBongs: hocBong,
+        },
+        { withCredentials: true }
+      );
       await axios.post(
         urlHocTap,
         {
@@ -364,7 +384,7 @@ export default function InsertChildren() {
               </FormControl>
             </div>
 
-            <div className="container__hoctap">
+            {/* <div className="container__hoctap">
               <FormControl className="formcontrol__inform" variant="outlined" fullWidth>
                 <div>
                   <InputLabel id="demo-simple-select-standard-label">Đơn vị tài trợ</InputLabel>
@@ -407,7 +427,6 @@ export default function InsertChildren() {
                     fullWidth
                     margin="dense"
                   >
-                    {/* {SCHOLARSHIPLIST.filter((option) => option.tenHocBong.toLowerCase().includes(search)).map((option) => ( */}
                     {SCHOLARSHIPLIST.map((option) => (
                       <MenuItem key={option._id} value={option._id} label={option.tenHocBong}>
                         {option.tenHocBong}
@@ -416,8 +435,8 @@ export default function InsertChildren() {
                   </Select>
                 </div>
               </FormControl>
-            </div>
-            <div className="container__donvi">
+            </div> */}
+            {/* <div className="container__donvi">
               <FormControl className="formcontrol__inform" variant="standard" fullWidth>
                 <TextField
                   htmlFor="demo-customized-textbox"
@@ -440,7 +459,7 @@ export default function InsertChildren() {
                   fullWidth
                 />
               </FormControl>
-            </div>
+            </div> */}
             <div className="container__hoancanh">
               <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
                 <textarea
@@ -475,11 +494,10 @@ export default function InsertChildren() {
                       <Card
                         fullWidth
                         onDoubleClick={() => {
-                          // console.log(index, hocTap[index]);
                           setSelectedHocBongIndex(index);
                           setIsEdit(true);
-                          setInfoHocTap(hocbong[index]);
-                          handleClickOpenDialogHocTap();
+                          setInfoHocBong(hocbong);
+                          handleClickOpenDialogHocBong();
                         }}
                         variant="outlined"
                         orientation="horizontal"
@@ -488,27 +506,26 @@ export default function InsertChildren() {
                           '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
                         }}
                       >
-                        <div style={{ display: 'flex' }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
                         <img
                               src={hocbong.donViBaoTro.logo}
                               alt="Logo Đơn vị bảo trợ"
                               style={{
-                                maxWidth: '100%',
-                                borderRadius: '5%',
-                                objectFit: 'cover',
-                                height: 60,
-                                border: '2px solid Silver',
+                                marginLeft:20,
+                                width: 80,
+                                borderRadius: '15%',
+                                height: 80,
                               }}
                             />
                           <div>
-                            <h3 style={{ marginLeft: 20 }}>Đơn Vị {hocbong.donViBaoTro.tenDonVi} - {hocbong.hocBong.tenHocBong}</h3>
-                            <p>{hocbong.namNhan} - {hocbong.namHoanThanh}</p>
+                            <h3 style={{ marginLeft: 20 }}> {hocbong.donViBaoTro.tenDonVi} - {hocbong.hocBong.tenHocBong}</h3>
+                            <p style={{ marginLeft: 40 }}>Năm {hocbong.namNhan} - {hocbong.namHoanThanh}</p>
                           </div>
 
                           <IconButton
                             className="button_remove_hoctap"
                             onClick={() => {
-                              handleRemoveHocTap(index);
+                              handleRemoveHocBong(index);
                             }}
                           >
                             <CloseIcon />
@@ -542,7 +559,7 @@ export default function InsertChildren() {
                       <Card
                         fullWidth
                         onDoubleClick={() => {
-                          // console.log(index, hocTap[index]);
+                          console.log(index, hocTap[index]);
                           setSelectedHocTapIndex(index);
                           setIsEdit(true);
                           setInfoHocTap(hocTap[index]);
@@ -577,7 +594,7 @@ export default function InsertChildren() {
             <DialogHocBong
               openDialogCreate={openDialogHocBong}
               isEdit={isEdit}
-              // infoHocTap={infoHocTap}
+              infoHocBong={infoHocBong}
               handleCickAdd={handleCickAddHocBong}
               handleCickEdit={handleCickEditHocBong}
               handleClose={handleCloseDialogHocBong}
