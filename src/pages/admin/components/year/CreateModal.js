@@ -8,6 +8,8 @@ import {
   TextField,
   FormControl,
   IconButton,
+  FormControlLabel,
+  Checkbox,
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
@@ -22,7 +24,7 @@ export function CreateModal(props) {
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [selectedDateBatDau, setSelectedDateBatDau] = useState(moment());
   const [selectedDateKetThuc, setSelectedDateKetThuc] = useState(moment());
-
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleSubmit = async () => {
     try {
@@ -34,7 +36,8 @@ export function CreateModal(props) {
           {
             namHoc: year.namHoc,
             batDau: year.batDau,
-            ketThuc: year.ketThuc
+            ketThuc: year.ketThuc,
+            namHienTai: isChecked,
           },
           { withCredentials: true }
         )
@@ -67,18 +70,18 @@ export function CreateModal(props) {
   return (
     <>
       {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
-          {openSuccessMessage}
-        </Alert>
+        <Alert style={{position: 'fixed', zIndex: 500000, right: 30, top: 60 }} severity="success">
+        {openSuccessMessage}
+      </Alert>
       )}
       {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 30, top: 60 }} severity="error">
           {openErrMessage}
         </Alert>
       )}
 
-      <Dialog className='dialogcreatescholarship' open={props.openDialogCreate} onClose={props.handleClose}>
-      <div className="titlecreatesholarship">
+      <Dialog className="dialogcreatescholarship" open={props.openDialogCreate} onClose={props.handleClose}>
+        <div className="titlecreatesholarship">
           {' '}
           Thêm năm học
           <IconButton onClick={props.handleClose}>
@@ -86,37 +89,56 @@ export function CreateModal(props) {
           </IconButton>
         </div>
         <div className="divider" />
-        <DialogContent className='form__info__createscholarship'>
-        <div className='form__info__createscholarship__container'>
-          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth >
-            <TextField
-              margin="dense"
-              label="Năm học"
-              onChange={(e) => setYear({ ...year, namHoc: e.target.value })}
-              type="text"
-              fullWidth
-              style={{background:'white'}}
-              helperText="Ví dụ: 2019-2020"
-            />
-          </FormControl>
+        <DialogContent className="form__info__createscholarship">
+          <div className="form__info__createscholarship__container">
+            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Năm học"
+                onChange={(e) => setYear({ ...year, namHoc: e.target.value })}
+                type="text"
+                fullWidth
+                style={{ background: 'white' }}
+                helperText="Ví dụ: 2019-2020"
+              />
+            </FormControl>
           </div>
-          <div className='form__info__createscholarship__container' >
-          <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-              <LocalizationProvider  adapterLocale="vi" dateAdapter={AdapterMoment}>
-                <DatePicker  format="DD/MM/YYYY" label="Ngày bắt đầu" selected={selectedDateBatDau} onChange={handleDateBatDauChange} />
+          <div className="form__info__createscholarship__container">
+            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
+              <LocalizationProvider adapterLocale="vi" dateAdapter={AdapterMoment}>
+                <DatePicker
+                  format="DD/MM/YYYY"
+                  label="Ngày bắt đầu"
+                  selected={selectedDateBatDau}
+                  onChange={handleDateBatDauChange}
+                />
               </LocalizationProvider>
             </FormControl>
             <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
               <LocalizationProvider adapterLocale="vi" dateAdapter={AdapterMoment}>
-                <DatePicker format="DD/MM/YYYY" label="Ngày kết thúc" selected={selectedDateKetThuc} onChange={handleDateKetThucChange} />
+                <DatePicker
+                  format="DD/MM/YYYY"
+                  label="Ngày kết thúc"
+                  selected={selectedDateKetThuc}
+                  onChange={handleDateKetThucChange}
+                />
               </LocalizationProvider>
             </FormControl>
           </div>
-
+          <div style={{ marginLeft: '15px' }}>
+            <FormControlLabel
+              control={<Checkbox onChange={(e) => setIsChecked(e.target.checked)} checked={isChecked} />}
+              label="Đây là năm học hiện tại"
+            />
+          </div>
         </DialogContent>
         <DialogActions>
-          <Button className="huythemhocbong" onClick={props.handleClose}>Hủy</Button>
-          <Button className="themhocbong" onClick={handleSubmit}>Thêm năm học</Button>
+          <Button className="huythemhocbong" onClick={props.handleClose}>
+            Hủy
+          </Button>
+          <Button className="themhocbong" onClick={handleSubmit}>
+            Thêm năm học
+          </Button>
         </DialogActions>
       </Dialog>
     </>

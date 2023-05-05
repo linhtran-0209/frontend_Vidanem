@@ -1,4 +1,6 @@
-import { Navigate, useRoutes } from 'react-router-dom';
+import { Navigate, useRoutes, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+
 // layouts
 
 import DashboardLayout from './layouts/dashboard';
@@ -18,11 +20,21 @@ import DoiTuongPage from './pages/DoiTuongPage';
 import InsertChildren from './pages/admin/components/children/CreateChildren';
 import EditChildren from './pages/admin/components/children/EditChildren';
 import InsertBlog from './pages/admin/components/blog/CreateBlog';
-import TitleBlog from './pages/admin/components/blog/TitleBlog'
+import TitleBlog from './pages/TitleBlog';
 
 // import AccountPopover from './layouts/dashboard/header/AccountPopover';
 
 // ----------------------------------------------------------------------
+// ============================|| PROTECTED ||============================== //
+const Protected = ({ roles, children }) => {
+  const checkRole = sessionStorage.getItem('role');
+  console.log(checkRole);
+  // Redirect to home page if the user does not have permission
+  if (!checkRole) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
 
 export default function Router() {
   const routes = useRoutes([
@@ -45,45 +57,115 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/app" /> },
-        { path: 'app', element: <DashboardAppPage /> },
-        { path: 'users', element: <UserPage /> },
-        { path: 'scholarship', element: <ScholarshipPage /> },
-        { path: 'sponser', element: <SponserPage /> },
-        { path: 'year', element: <YearPage /> },
-        { path: 'blog', element: <BlogPage /> },
+        {
+          path: 'app',
+          element: (
+            <Protected>
+              <DashboardAppPage />
+            </Protected>
+          ),
+        },
+        {
+          path: 'users',
+          element: (
+            <Protected>
+              <UserPage />
+            </Protected>
+          ),
+        },
+        {
+          path: 'scholarship',
+          element: (
+            <Protected>
+              <ScholarshipPage />
+            </Protected>
+          ),
+        },
+        {
+          path: 'sponser',
+          element: (
+            <Protected>
+              <SponserPage />
+            </Protected>
+          ),
+        },
+        {
+          path: 'year',
+          element: (
+            <Protected>
+              <YearPage />
+            </Protected>
+          ),
+        },
+        {
+          path: 'blog',
+          element: (
+            <Protected>
+              <BlogPage />
+            </Protected>
+          ),
+        },
         {
           path: 'children',
           children: [
-            { path: '/dashboard/children/doi-tuong', element: <DoiTuongPage /> },
-            { path: '/dashboard/children/list', element: <ChildrenPage /> },
-            { path: '/dashboard/children/insert', element: <InsertChildren /> },
-            { path: '/dashboard/children/edit/:id', element: <EditChildren /> },
+            {
+              path: '/dashboard/children/doi-tuong',
+              element: (
+                <Protected>
+                  {' '}
+                  <DoiTuongPage />
+                </Protected>
+              ),
+            },
+            {
+              path: '/dashboard/children/list',
+              element: (
+                <Protected>
+                  <ChildrenPage />
+                </Protected>
+              ),
+            },
+            {
+              path: '/dashboard/children/insert',
+              element: (
+                <Protected>
+                  <InsertChildren />
+                </Protected>
+              ),
+            },
+            {
+              path: '/dashboard/children/edit/:id',
+              element: (
+                <Protected>
+                  <EditChildren />{' '}
+                </Protected>
+              ),
+            },
           ],
         },
       ],
     },
-    // {
-    //   path :'/user',
-    //   element: <UserPage/>,
-    //   children: [
-    //     { element: <Navigate to="/user" />, index: true},
-    //     {path: 'add'}
-    //   ]
-    // },
-    // {
-    //   element: <DashboardLayout />,
-    //   children: [
-    //     { element: <Navigate to="/dashboard/children" />, index: true  },
-    //     { path: '/dashboard/children/insert', element: <InsertChildren /> },
-    //     { path: '/dashboard/children/edit/:id', element: <EditChildren /> },
-    //   ],
-    // },
+
     {
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/blog" /> },
-        { path: '/dashboard/blog/insert', element: <InsertBlog /> },
-        { path: '/dashboard/blog/title', element: <TitleBlog /> },
+        {
+          path: '/dashboard/blog/insert',
+          element: (
+            <Protected>
+              <InsertBlog />
+            </Protected>
+          ),
+        },
+        {
+          path: '/dashboard/title',
+          element: (
+            <Protected>
+              <TitleBlog />
+            </Protected>
+          ),
+        },
       ],
     },
     {

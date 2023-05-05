@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 // @mui
 import { styled } from '@mui/material/styles';
 //
@@ -34,6 +35,27 @@ const Main = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/currentUser`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      if (data) {
+        sessionStorage.setItem('role', data.quyen);
+        sessionStorage.setItem('name', data.hoTen);
+        sessionStorage.setItem('avatar', data.avatar);
+        navigate(`/dashboard/app`);
+      }
+    } catch (err) {
+      alert('Bạn cần đăng nhập !!!');
+      console.log(err);
+    }
+  };
 
   return (
     <StyledRoot>

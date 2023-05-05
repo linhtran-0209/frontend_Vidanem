@@ -1,106 +1,47 @@
-import PropTypes from 'prop-types';
-import isString from 'lodash/isString';
 // @mui
-import { LoadingButton } from '@mui/lab';
-import { alpha } from '@mui/material/styles';
-import { Box, Button, Container, Typography, DialogActions } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import parse from 'html-react-parser';
 // components
-import Image from './preview/Image';
-import Markdown from './preview/Markdown';
-import Scrollbar from './preview/Scrollbar';
-import EmptyContent from './preview/EmptyContent';
-import { DialogAnimate } from './preview/animate';
+
 import './PreviewNewBlog.css';
+import { useEffect, useState } from 'react';
 
 // ----------------------------------------------------------------------
 
-BlogNewPostPreview.propTypes = {
-  values: PropTypes.object,
-  isValid: PropTypes.bool,
-  isSubmitting: PropTypes.bool,
-  isOpen: PropTypes.bool,
-  onClose: PropTypes.func,
-  onSubmit: PropTypes.func,
-};
-
-export default function BlogNewPostPreview({ values, isValid, isSubmitting, isOpen, onClose, onSubmit }) {
-  const { title, content, description } = values;
-
-  const cover = isString(values.cover) ? values.cover : values.cover?.preview;
-
-  const hasContent = title || description || content || cover;
-
-  const hasHero = title || cover;
+export default function BlogNewPostPreview(props) {
+  const [contentElements, setContentElements] = useState(null)
+  const close = () => {
+    console.log(props.baiViet);
+  };
+  useEffect(() => {
+    if (props.baiViet.content) setContentElements(parse(props.baiViet.content))
+  }, [props.baiViet.content]);
 
   return (
-    <DialogAnimate className='Container' fullScreen open={isOpen} onClose={onClose}>
-      <DialogActions className='Container__box'  sx={{ py: 2, px: 3 }}>
-        <Typography variant="subtitle1" sx={{ flexGrow: 1 }}>
-          Xem trước tin
-        </Typography>
-        <Button onClick={onClose}>Hủy</Button>
-        <LoadingButton type="submit" variant="contained" disabled={isValid} loading={isSubmitting} onClick={onSubmit}>
-          Đăng
-        </LoadingButton>
+    <Dialog fullScreen open={props.isOpen}>
+
+        <div className="previewBlog">
+          {props.baiViet.imgCoverPreview && (
+            <img
+              src={props.baiViet.imgCoverPreview}
+              alt="Preview"
+              style={{
+                width: '100%',
+                objectFit: 'cover',
+                height: '30%',
+              }}
+            />
+          )}
+          {props.baiViet.title && <h2>{props.baiViet.title}</h2>}
+          {props.baiViet.moTa && <p>{props.baiViet.moTa}</p>}
+          {props.baiViet.content && <div className="image-container">{contentElements}</div>}
+        </div>
+
+      <DialogActions>
+        <Button onClick={props.onClose}>Đóng</Button>
       </DialogActions>
-
-      {hasContent ? (
-        <Scrollbar>
-          {hasHero && <PreviewHero title={title || ''} cover={cover} />}
-          <Container>
-            <Box sx={{ mt: 5, mb: 10 }}>
-              <Typography variant="h6" sx={{ mb: 5 }}>
-                {description}
-              </Typography>
-              <Markdown children={content || ''} />
-            </Box>
-          </Container>
-        </Scrollbar>
-      ) : (
-        <EmptyContent title="Empty content" />
-      )}
-    </DialogAnimate>
+    </Dialog>
   );
 }
 
 // ----------------------------------------------------------------------
-
-PreviewHero.propTypes = {
-  cover: PropTypes.string,
-  title: PropTypes.string,
-};
-
-function PreviewHero({ title, cover }) {
-  return (
-    <Box sx={{ position: 'relative' }}>
-      <Container
-        sx={{
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 9,
-          position: 'absolute',
-          color: 'common.white',
-          pt: { xs: 3, lg: 10 },
-        }}
-      >
-        <Typography variant="h2" component="h1">
-          {title}
-        </Typography>
-      </Container>
-
-      <Box
-        sx={{
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 8,
-          position: 'absolute',
-          bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
-        }}
-      />
-      <Image alt="cover" src={cover} ratio="16/9" />
-    </Box>
-  );
-}

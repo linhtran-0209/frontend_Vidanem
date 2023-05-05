@@ -112,3 +112,16 @@
   color: black;
   background-color: rgb(241, 84, 84);
 }
+
+.button_remove_doituong{
+    margin-top: -2px;
+    margin-left: 5px;
+    width: 30px;
+    height: 30px;
+    color: rgb(222, 158, 158);
+}
+
+.button_remove_doituong:hover{
+  color: black;
+  background-color: rgb(241, 84, 84);
+}

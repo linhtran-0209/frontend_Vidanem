@@ -6,12 +6,11 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   TextField,
   FormControl,
-  MenuItem,
-  Select,
   IconButton,
+  FormControlLabel,
+  Checkbox,
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
@@ -26,6 +25,7 @@ export function EditModal(props) {
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [selectedDateBatDau, setSelectedDateBatDau] = useState(moment());
   const [selectedDateKetThuc, setSelectedDateKetThuc] = useState(moment());
+  const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
     if (props.row) {
@@ -41,6 +41,7 @@ export function EditModal(props) {
       console.log(moment(data.data.batDau));
       setSelectedDateBatDau(moment(data.data.batDau));
       setSelectedDateKetThuc(moment(data.data.ketThuc));
+      setIsChecked(data.data.namHienTai)
     } catch (err) {
       console.log(err);
     }
@@ -69,6 +70,7 @@ export function EditModal(props) {
             id: props.row._id,
             batDau: year.batDau,
             ketThuc: year.ketThuc,
+            namHienTai: isChecked,
           },
           { withCredentials: true }
         )
@@ -82,15 +84,22 @@ export function EditModal(props) {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setOpenSuccessMessage('');
+      setOpenErrMessage('');
+    }, 3000);
+  }, [openErrMessage, openSuccessMessage]);
   return (
     <>
       {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
-          {openSuccessMessage}
-        </Alert>
+        <Alert style={{position: 'fixed', zIndex: 500000, right: 30, top: 60 }} severity="success">
+        {openSuccessMessage}
+      </Alert>
       )}
       {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 30, top: 60 }} severity="error">
           {openErrMessage}
         </Alert>
       )}
@@ -115,7 +124,7 @@ export function EditModal(props) {
                 // onChange={(e) => setYear({ ...year, maNamHoc: e.target.value })}
                 type="text"
                 fullWidth
-                style={{fontWeight:'bold'}}
+                style={{ fontWeight: 'bold' }}
               />
             </FormControl>
           </div>
@@ -140,6 +149,12 @@ export function EditModal(props) {
                 />
               </LocalizationProvider>
             </FormControl>
+          </div>
+          <div style={{ marginLeft: '15px' }}>
+            <FormControlLabel
+              control={<Checkbox onChange={(e) => setIsChecked(e.target.checked)} checked={isChecked} />}
+              label="Đây là năm học hiện tại"
+            />
           </div>
         </DialogContent>
         <DialogActions>

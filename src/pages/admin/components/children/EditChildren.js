@@ -31,6 +31,7 @@ import { DialogHocTap } from './DialogHocTap';
 import { DialogListHocTap } from './DialogListHocTap';
 import { DialogReasonReject } from './DialogReasonReject';
 import { DialogHocBong } from './DialogHocBong';
+import { DialogListDoiTuong } from './DialogListDoiTuong';
 
 export default function EditChildren() {
   const { id } = useParams();
@@ -41,13 +42,11 @@ export default function EditChildren() {
   const [images, setImages] = useState([]);
   const [imagesEdit, setImagesEdit] = useState([]);
   const [imagesDelete, setImagesDelete] = useState([]);
-  const [search, setSearch] = useState('');
-  const [SPONSERLIST, setSPONSERLIST] = useState([]);
-  const [SCHOLARSHIPLIST, setSCHOLARSHIPLIST] = useState([]);
   const [treEm, setTreEm] = useState({});
-  const [selectedSponsor, setSelectedSponsor] = useState('');
-  const [selectedScholarship, setSelectedScholarship] = useState('');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [oldDoiTuong, setOldDoiTuong] = useState([]);
+  const [newDoiTuong, setNewDoiTuong] = useState([]);
+
   const [hocTap, setHocTap] = useState([]);
   const [hocBong, setHocBong] = useState([]);
   const [hocBongNew, sethocBongNew] = useState([]);
@@ -56,6 +55,7 @@ export default function EditChildren() {
   const [hocTapNew, sethocTapNew] = useState([]);
   const [hocTapEdit, setHocTapEdit] = useState([]);
   const [hocTapDelete, setHocTapDelete] = useState([]);
+  const [openDialogListDoiTuong, setOpenDialogListDoiTuong] = useState(false);
   const [openDialogHocBong, setOpenDialogHocBong] = useState(false);
   const [infoHocBong, setInfoHocBong] = useState({});
   const [selectedHocBongIndex, setSelectedHocBongIndex] = useState(0);
@@ -81,19 +81,8 @@ export default function EditChildren() {
     setTreEm({ ...treEm, ngaySinh: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
   };
 
-  const getUser = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/currentUser`;
-      const { data } = await axios.get(url, { withCredentials: true });
-      console.log(data.quyen);
-      setQuyen(data.quyen);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
-    getUser();
+    setQuyen(+sessionStorage.getItem('role'));
   }, []);
 
   const getChild = async () => {
@@ -101,33 +90,24 @@ export default function EditChildren() {
     const { data } = await axios.get(url, { withCredentials: true });
     setTreEm(data.data);
     setSelectedDate(moment(data.data.ngaySinh));
-    // setSelectedSponsor(data.data.donViBaoTro[0]);
-    // getScholarshipList(data.data.donViBaoTro[0]);
-    // setSelectedScholarship(data.data.hocBong[0]);
     setPreview(data.data.hinhAnh);
     getHocTap(data.data._id);
     getHocBong(data.data._id);
+    setOldDoiTuong(data.data.doiTuong);
+    setNewDoiTuong(data.data.doiTuong);
   };
 
   useEffect(() => {
     getChild();
   }, []);
 
-  // const getSponsorList = async () => {
-  //   const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
-  //   const { data } = await axios.get(url, { withCredentials: true });
-  //   setSPONSERLIST(data.data);
-  // };
-
-  // useEffect(() => {
-  //   getSponsorList();
-  // }, []);
-
-  // const getScholarshipList = async (donViBaoTro) => {
-  //   const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?donViTaiTro=${donViBaoTro}`;
-  //   const { data } = await axios.get(url, { withCredentials: true });
-  //   setSCHOLARSHIPLIST(data.data);
-  // };
+  const handleRemoveDoiTuong = (index) => {
+    setNewDoiTuong((doituong) => {
+      const newDoiTuongs = [...doituong];
+      newDoiTuongs.splice(index, 1);
+      return newDoiTuongs;
+    });
+  };
 
   const getHocBong = async (treem) => {
     const url = `${process.env.REACT_APP_API_URL}/hocbongtreem/bytreem?treem=${treem}`;
@@ -287,6 +267,18 @@ export default function EditChildren() {
     console.log({ id: previews[selectedImageIndex]._id, image: file });
   };
 
+  const handleClickOpenDialogListDoiTuong = () => {
+    setOpenDialogListDoiTuong(true);
+  };
+  const handleCloseDialogListDoiTuong = () => {
+    setOpenDialogListDoiTuong(false);
+  };
+
+  const handleAddDoiTuong = (doituongs) => {
+    console.log(doituongs);
+    setNewDoiTuong(doituongs);
+  };
+
   const handleClickOpenDialog = () => {
     setOpenDialogHocTap(true);
   };
@@ -383,6 +375,7 @@ export default function EditChildren() {
             namNhan: treEm.namNhan,
             namHoanThanh: treEm.namHoanThanh,
             hoanCanh: treEm.hoanCanh,
+            doiTuong: newDoiTuong.map(doituong => doituong._id)
           },
           { withCredentials: true }
         )
@@ -390,8 +383,40 @@ export default function EditChildren() {
           if (result.status === 200) {
             setOpenSuccessMessage(result.data.message);
           } else setOpenErrMessage(result.data.message);
+          console.log(result.data.message);
         });
     }
+    // Cập nhật nếu thêm đối tượng mới
+    newDoiTuong.forEach(async(doituong) => {
+      if (!oldDoiTuong.find((item) => item._id === doituong._id)) {
+        const url = `${process.env.REACT_APP_API_URL}/doituong/updateQuantity`;
+        await axios
+        .put(
+          url,
+          {
+            id: doituong._id,
+            change: 'increase'
+          },
+          { withCredentials: true }
+        )
+      }
+    }) 
+
+        // Cập nhật nếu xóa đối tượng cũ
+        oldDoiTuong.forEach(async(doituong) => {
+          if (!newDoiTuong.find((item) => item._id === doituong._id)) {
+            const url = `${process.env.REACT_APP_API_URL}/doituong/updateQuantity`;
+            await axios
+            .put(
+              url,
+              {
+                id: doituong._id,
+                change: 'decrease'
+              },
+              { withCredentials: true }
+            )
+          }
+        }) 
 
     // Lưu hình ảnh
     if (images.length > 0) {
@@ -445,9 +470,7 @@ export default function EditChildren() {
       imagesDelete.forEach(async (image) => {
         if (!image._id.includes('temp')) {
           const urlHinhAnh = `${process.env.REACT_APP_API_URL}/hinhanh/delete?id=${image._id}`;
-          const formData = new FormData();
-          formData.append('image', image.image);
-          await axios.put(urlHinhAnh, formData, {
+          await axios.put(urlHinhAnh, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -503,10 +526,7 @@ export default function EditChildren() {
       hocTapDelete.forEach(async (hoctap) => {
         if (!hoctap._id.includes('temp')) {
           const urlHocTap = `${process.env.REACT_APP_API_URL}/hoctap/delete?id=${hoctap._id}`;
-          await axios.delete(
-            urlHocTap,
-            { withCredentials: true }
-          );
+          await axios.delete(urlHocTap, { withCredentials: true });
         }
       });
     }
@@ -557,18 +577,13 @@ export default function EditChildren() {
       hocBongDelete.forEach(async (hocbong) => {
         if (!hocbong._id.includes('temp')) {
           const urlHocBong = `${process.env.REACT_APP_API_URL}/hocbongtreem/delete?id=${hocbong._id}`;
-          await axios.delete(
-            urlHocBong,
-            { withCredentials: true }
-          );
+          await axios.delete(urlHocBong, { withCredentials: true });
         }
       });
     }
     console.log(hocBongNew);
     console.log(hocBongEdit);
     console.log(hocBongDelete);
-
-
   };
 
   const handleCloseDialogReason = () => {
@@ -612,7 +627,7 @@ export default function EditChildren() {
   return (
     <>
       {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 100, top: 200 }} severity="success">
+        <Alert style={{ position: 'fixed', zIndex: 500000, right: 30, top: 60 }} severity="success">
           {openSuccessMessage}
         </Alert>
       )}
@@ -910,6 +925,53 @@ export default function EditChildren() {
                 />
               </FormControl>
             </div> */}
+
+            <div className="container__hoancanh">
+              <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
+                <div style={{ paddingTop: 15, mt: 3, paddingBottom: 15 }}>
+                  <label style={{ paddingTop: 10, mt: 3, paddingBottom: 15 }}>
+                    <b style={{ fontSize: 20 }}>Thuộc diện đối tượng</b>
+                  </label>
+
+                  <Button
+                    style={{ marginLeft: 5, paddingBottom: 10, paddingTop: 6 }}
+                    onClick={() => {
+                      handleClickOpenDialogListDoiTuong();
+                    }}
+                  >
+                    <Iconify style={{ color: 'green', padding: 0 }} icon={'material-symbols:add-circle-outline'} />
+                  </Button>
+                </div>
+              </FormControl>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', marginLeft: '20px', marginBottom: '10px' }}>
+              {newDoiTuong.length > 0 &&
+                newDoiTuong.map((doituong, index) => {
+                  return (
+                    <span
+                      style={{
+                        borderRadius: '16px',
+                        backgroundColor: '#EEEEEE',
+                        padding: '8px 1px 8px 12px',
+                        marginLeft: '10px',
+                        marginBottom: '5px',
+                      }}
+                    >
+                      {' '}
+                      {doituong.ten}
+                      <IconButton
+                        className="button_remove_doituong"
+                        onClick={() => {
+                          handleRemoveDoiTuong(index);
+                        }}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    </span>
+                  );
+                })}
+            </div>
+
             <div className="container__hoancanh">
               <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
                 <textarea
@@ -1054,6 +1116,12 @@ export default function EditChildren() {
                 )}
               </FormControl>
             </div>
+            <DialogListDoiTuong
+              openDialog={openDialogListDoiTuong}
+              addDoiTuong={handleAddDoiTuong}
+              listDoiTuong={newDoiTuong}
+              handleClose={handleCloseDialogListDoiTuong}
+            />
             <DialogHocBong
               openDialogCreate={openDialogHocBong}
               isEdit={isEdit}

@@ -52,12 +52,8 @@
     position: relative;
     background-color: rgba(145, 158, 171, 0.08);
     width: 40px;
-    
-    
-    
 }
 .icon__container{
-   
     display: flex;
     justify-content: center;
     align-items: center;

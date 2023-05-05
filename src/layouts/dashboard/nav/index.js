@@ -8,7 +8,7 @@ import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/mater
 import { Image } from 'mui-image';
 import { userReducer } from '../../../reducer/useReducer';
 // mock
-import account from '../../../_mock/account';
+// import account from '../../../_mock/account';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 // components
@@ -45,24 +45,16 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const isDesktop = useResponsive('up', 'lg');
   const [user, setUser] = useState(null);
+  const [avatar, setAvatar] = useState(null);
+  const [role, setRole] = useState(null);
   const img = logo.default;
 
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        const url = `${process.env.REACT_APP_API_URL}/currentUser`;
-        const { data } = await axios.get(url, { withCredentials: true });
-        // const  parse=data.data.email;
-        const parse = data.hoTen;
-        setUser(parse);
-        // console.log((JSON.parse(data)).data.email);
-        console.log(data);
-        // console.log("data empty");
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getUser();
+    setTimeout(() => {
+      setUser(sessionStorage.getItem('name'));
+      setAvatar(sessionStorage.getItem('avatar'));
+      setRole(+sessionStorage.getItem('role'));
+    }, 1000);
   }, []);
 
   useEffect(() => {
@@ -83,10 +75,10 @@ export default function Nav({ openNav, onCloseNav }) {
         <img src={img} alt="ima" />
       </div>
 
-      {/* <Box sx={{ mb: 5, mx: 2.5 }}>
+      <Box sx={{ mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
-            <Avatar src={account.photoURL} alt="photoURL" />
+            <Avatar src={avatar} alt="avatar" />
 
             <Box sx={{ ml: 1 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
@@ -94,15 +86,14 @@ export default function Nav({ openNav, onCloseNav }) {
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
+                {role === 3 ? 'Cấp Liên Đội' : (role === 2 ? 'Hội đồng Đội quận, huyện' : (role ===1 ? 'Hội đồng Đội Thành phố' : '')) }
               </Typography>
             </Box>
           </StyledAccount>
         </Link>
-      </Box> */}
-      <NavSection sx={{ m: 1.8 }}
-       data={navConfig} />
-       
+      </Box>
+      <NavSection sx={{ m: 1.8 }} data={navConfig} />
+
       <Box sx={{ flexGrow: 1 }} />
       <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
         {/* <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>

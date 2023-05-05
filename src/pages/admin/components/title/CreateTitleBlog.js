@@ -8,27 +8,26 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
 export function CreateTitleModal(props) {
-  const [year, setYear] = useState({});
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
-  const [selectedDateBatDau, setSelectedDateBatDau] = useState(moment());
-  const [selectedDateKetThuc, setSelectedDateKetThuc] = useState(moment());
+  const [title, setTitle] = useState({});
+  const [preview, setPreview] = useState(null);
 
   const handleSubmit = async () => {
     try {
-      console.log(year);
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/insert`;
+      const url = `${process.env.REACT_APP_API_URL}/chude/insert`;
+
+      const formData = new FormData();
+      formData.append('image', title.hinhAnh);
+      formData.append('tenChuDe', title.tenChuDe);
+
       await axios
-        .post(
-          url,
-          {
-            maNamHoc: year.maNamHoc,
-            namHoc: year.namHoc,
-            batDau: year.batDau,
-            ketThuc: year.ketThuc,
+        .post(url, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
           },
-          { withCredentials: true }
-        )
+          withCredentials: true,
+        })
         .then((data) => {
           setOpenSuccessMessage(data.data.message);
         });
@@ -37,16 +36,12 @@ export function CreateTitleModal(props) {
     }
   };
 
-  const handleDateBatDauChange = (date) => {
-    console.log(date);
-    setSelectedDateBatDau(date);
-    setYear({ ...year, batDau: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
-  };
-
-  const handleDateKetThucChange = (date) => {
-    console.log(date);
-    setSelectedDateKetThuc(date);
-    setYear({ ...year, ketThuc: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+      setTitle({ ...title, hinhAnh: file });
+    }
   };
 
   useEffect(() => {
@@ -78,48 +73,44 @@ export function CreateTitleModal(props) {
         </div>
         <div className="divider" />
         <DialogContent className="form__info__createscholarship">
-          <div className="form__info__createscholarship__container">
-            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-              <TextField
-                margin="dense"
-                label="Mã chủ đề"
-                onChange={(e) => setYear({ ...year, maNamHoc: e.target.value })}
-                type="text"
-                fullWidth
-                style={{ background: 'white' }}
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                style={{
+                  maxWidth: 300,
+                  // borderRadius: '30%',
+                  objectFit: 'cover',
+                  height: 300,
+                }}
               />
-            </FormControl>
+            )}
+          </div>
+          <input
+            accept="image/*"
+            id="image-input"
+            type="file"
+            style={{ display: 'none' }}
+            onChange={handleImageChange}
+          />
+          <label
+            htmlFor="image-input"
+            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 16 }}
+          >
+            <Button variant="contained" color="primary" component="span">
+              Chọn Hình ảnh
+            </Button>
+          </label>
+          <div className="form__info__createscholarship__container">
             <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
               <TextField
                 margin="dense"
                 label="Chủ đề"
-                style={{ background: 'white' }}
-                onChange={(e) => setYear({ ...year, namHoc: e.target.value })}
+                onChange={(e) => setTitle({ ...title, tenChuDe: e.target.value })}
                 type="text"
                 fullWidth
               />
-            </FormControl>
-          </div>
-          <div className="form__info__createscholarship__container">
-            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-              <TextField
-                placeholder="Ghi chú"
-                
-                fullWidth
-                inputProps={{
-                  autoComplete: 'off',
-                }}
-              />
-            </FormControl>
-            <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
-              <LocalizationProvider adapterLocale="vi" dateAdapter={AdapterMoment}>
-                <DatePicker
-                  format="DD/MM/YYYY"
-                  label="Ngày bắt đầu"
-                  selected={selectedDateBatDau}
-                  onChange={handleDateBatDauChange}
-                />
-              </LocalizationProvider>
             </FormControl>
           </div>
         </DialogContent>
@@ -128,7 +119,7 @@ export function CreateTitleModal(props) {
             Hủy
           </Button>
           <Button className="themhocbong" onClick={handleSubmit}>
-            Thêm năm học
+            Thêm chủ đề
           </Button>
         </DialogActions>
       </Dialog>

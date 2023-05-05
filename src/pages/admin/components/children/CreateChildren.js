@@ -29,6 +29,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { fData } from '../../../../utils/formatNumber';
 import { DialogHocTap } from './DialogHocTap';
 import { DialogHocBong } from './DialogHocBong';
+import { DialogListDoiTuong } from './DialogListDoiTuong';
 
 export default function InsertChildren() {
   const navigate = useNavigate();
@@ -36,15 +37,12 @@ export default function InsertChildren() {
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [preview, setPreview] = useState([]);
   const [images, setImages] = useState([]);
-  // const [search, setSearch] = useState('');
-  // const [SPONSERLIST, setSPONSERLIST] = useState([]);
-  // const [SCHOLARSHIPLIST, setSCHOLARSHIPLIST] = useState([]);
   const [treEm, setTreEm] = useState();
-  // const [selectedSponsor, setSelectedSponsor] = useState(null);
-  // const [selectedScholarship, setSelectedScholarship] = useState(null);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [hocTap, setHocTap] = useState([]);
   const [hocBong, setHocBong] = useState([]);
+  const [doiTuong, setDoiTuong] = useState([]);
+  const [openDialogListDoiTuong, setOpenDialogListDoiTuong] = useState(false);
   const [openDialogHocTap, setOpenDialogHocTap] = useState(false);
   const [selectedHocTapIndex, setSelectedHocTapIndex] = useState(0);
   const [openDialogHocBong, setOpenDialogHocBong] = useState(false);
@@ -66,32 +64,6 @@ export default function InsertChildren() {
     setSelectedSponsorDate(date);
     setTreEm({ ...treEm, ngaySinh: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
   };
-
-  // const getSponsorList = async () => {
-  //   const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
-  //   const { data } = await axios.get(url, { withCredentials: true });
-  //   setSPONSERLIST(data.data);
-  // };
-  // useEffect(() => {
-  //   getSponsorList();
-  // }, []);
-
-  // const getScholarshipList = async (donViBaoTro) => {
-  //   const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?donViTaiTro=${donViBaoTro}`;
-  //   const { data } = await axios.get(url, { withCredentials: true });
-  //   setSCHOLARSHIPLIST(data.data);
-  // };
-
-  // const handleChangeSponsor = (e) => {
-  //   setSelectedSponsor(e.target.value);
-  //   setTreEm({ ...treEm, donViBaoTro: e.target.value });
-  //   getScholarshipList(e.target.value);
-  // };
-
-  // const handleChangeScholarship = (e) => {
-  //   setSelectedScholarship(e.target.value);
-  //   setTreEm({ ...treEm, hocBong: e.target.value });
-  // };
 
   const handleFileUpload = (event) => {
     const selectedFiles = event.target.files;
@@ -118,18 +90,24 @@ export default function InsertChildren() {
     setOpenDialogHocTap(true);
   };
 
+  const handleClickOpenDialogListDoiTuong = () => {
+    setOpenDialogListDoiTuong(true);
+  };
+
   const handleClickOpenDialogHocBong = () => {
     setOpenDialogHocBong(true);
   };
 
+  const handleCloseDialogListDoiTuong = () => {
+    setOpenDialogListDoiTuong(false);
+  };
+
   const handleCloseDialog = () => {
     setOpenDialogHocTap(false);
-    // console.log(hocTap);
   };
 
   const handleCloseDialogHocBong = () => {
     setOpenDialogHocBong(false);
-    // console.log(hocTap);
   };
 
   const handleRemoveHocTap = (index) => {
@@ -145,6 +123,19 @@ export default function InsertChildren() {
       const newHocBongs = [...hocbong];
       newHocBongs.splice(index, 1);
       return newHocBongs;
+    });
+  };
+
+  const handleAddDoiTuong = (doituongs) => {
+    console.log(doituongs);
+    setDoiTuong(doituongs);
+  };
+
+  const handleRemoveDoiTuong = (index) => {
+    setDoiTuong((doituong) => {
+      const newDoiTuongs = [...doituong];
+      newDoiTuongs.splice(index, 1);
+      return newDoiTuongs;
     });
   };
 
@@ -180,54 +171,62 @@ export default function InsertChildren() {
     console.log(hocBong);
     const urlHocTap = `${process.env.REACT_APP_API_URL}/hoctap/insert`;
     const urlHocBong = `${process.env.REACT_APP_API_URL}/hocbongtreem/insert`;
+    const urlHinhAnh = `${process.env.REACT_APP_API_URL}/hinhanh/insert`;
     const url = `${process.env.REACT_APP_API_URL}/treem/insert`;
 
-    const formData = new FormData();
-    formData.append('hoTen', treEm.hoTen);
-    formData.append('ngaySinh', treEm.ngaySinh);
-    formData.append('truong', treEm.truong);
-    formData.append('SDT', treEm.SDT);
-    formData.append('diaChi', treEm.diaChi);
-    formData.append('hoanCanh', treEm.hoanCanh);
-
-    formData.append('donViBaoTro', treEm.donViBaoTro);
-    formData.append('hocBong', treEm.hocBong);
-    formData.append('namNhan', treEm.namNhan);
-    formData.append('namHoanThanh', treEm.namHoanThanh);
-
-    // console.log(images);
-    images.forEach((image) => {
-      // console.log(image);
-      formData.append('images', image);
-    });
-
-    const result = await axios.post(url, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      withCredentials: true,
-    });
+    const result = await axios.post(url, {
+      hoTen: treEm.hoTen,
+      ngaySinh: treEm.ngaySinh,
+      truong: treEm.truong,
+      SDT: treEm.SDT,
+      diaChi: treEm.diaChi,
+      hoanCanh: treEm.hoanCanh,
+      doiTuong: doiTuong.map(doituong => doituong._id)
+    }, { withCredentials: true });
 
     if (result.status === 200) {
       setOpenSuccessMessage(result.data.message);
     } else setOpenErrMessage(result.data.message);
-    if (result.data.id && hocTap.length > 0) {
-      await axios.post(
-        urlHocBong,
-        {
-          treEm: result.data.id,
-          hocBongs: hocBong,
-        },
-        { withCredentials: true }
-      );
-      await axios.post(
-        urlHocTap,
-        {
-          treEm: result.data.id,
-          hocTaps: hocTap,
-        },
-        { withCredentials: true }
-      );
+    if (result.data.id ) {
+      // Insert ảnh
+      if (images.length > 0) {
+        images.forEach(async (image) => {
+          const formData = new FormData();
+          // console.log(image);
+          formData.append('image', image);
+          formData.append('refId', result.data.id);
+          await axios.post(urlHinhAnh, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+            withCredentials: true,
+          });
+        });
+      }
+      // Insert thông tin học tập
+      if (hocTap.length > 0) {
+        await axios.post(
+          urlHocTap,
+          {
+            treEm: result.data.id,
+            hocTaps: hocTap,
+          },
+          { withCredentials: true }
+        );
+      }
+      // Insert thông tin học bổng
+      if (hocBong.length > 0) {
+        await axios.post(
+          urlHocBong,
+          {
+            treEm: result.data.id,
+            hocBongs: hocBong,
+          },
+          { withCredentials: true }
+        );
+      }
+
+
     }
     navigate(`/dashboard/children/edit/${result.data.id}`);
   };
@@ -235,12 +234,12 @@ export default function InsertChildren() {
   return (
     <>
       {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 100, top: 200 }} severity="success">
-          {openSuccessMessage}
-        </Alert>
+        <Alert style={{position: 'fixed', zIndex: 500000, right: 30, top: 60 }} severity="success">
+        {openSuccessMessage}
+      </Alert>
       )}
       {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 500000, right: 100 }} severity="error">
+        <Alert style={{ position: 'fixed', zIndex: 500000, right: 30, top: 60  }} severity="error">
           {openErrMessage}
         </Alert>
       )}
@@ -383,83 +382,46 @@ export default function InsertChildren() {
                 />
               </FormControl>
             </div>
+            <div className="container__hoancanh">
+              <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
+                <div style={{ paddingTop: 15, mt: 3, paddingBottom: 15 }}>
+                  <label style={{ paddingTop: 10, mt: 3, paddingBottom: 15 }}>
+                    <b style={{ fontSize: 20 }}>Thuộc diện đối tượng</b>
+                  </label>
 
-            {/* <div className="container__hoctap">
-              <FormControl className="formcontrol__inform" variant="outlined" fullWidth>
-                <div>
-                  <InputLabel id="demo-simple-select-standard-label">Đơn vị tài trợ</InputLabel>
-                  <Select
-                    onChange={handleChangeSponsor}
-                    label="Đơn vị tài trợ"
-                    value={selectedSponsor}
-                    fullWidth
-                    margin="dense"
+                  <Button
+                    style={{ marginLeft: 5, paddingBottom: 10, paddingTop: 6 }}
+                    onClick={() => {
+                      handleClickOpenDialogListDoiTuong();
+                    }}
                   >
-                    <TextField
-                      placeholder="Tên đơn vị tài trợ..."
-                      value={search}
-                      onChange={(e) => {
-                        setSearch(e.target.value);
-                      }}
-                      fullWidth
-                      inputProps={{
-                        autoComplete: 'off',
-                      }}
-                    />
-
-                    {[{ _id: 'none', tenDonVi: 'Chọn đơn vị' }, ...SPONSERLIST]
-                      .filter((option) => option.tenDonVi.toLowerCase().includes(search))
-                      .map((option) => (
-                        <MenuItem key={option._id} value={option._id} label={option.tenDonVi}>
-                          {option.tenDonVi}
-                        </MenuItem>
-                      ))}
-                  </Select>
+                    <Iconify style={{ color: 'green', padding: 0 }} icon={'material-symbols:add-circle-outline'} />
+                  </Button>
                 </div>
               </FormControl>
-              <FormControl className="formcontrol__inform" variant="outlined" fullWidth>
-                <div>
-                  <InputLabel id="demo-simple-select-standard-label">Học bổng</InputLabel>
-                  <Select
-                    onChange={handleChangeScholarship}
-                    label="Học bổng"
-                    value={selectedScholarship}
-                    fullWidth
-                    margin="dense"
-                  >
-                    {SCHOLARSHIPLIST.map((option) => (
-                      <MenuItem key={option._id} value={option._id} label={option.tenHocBong}>
-                        {option.tenHocBong}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </div>
-              </FormControl>
-            </div> */}
-            {/* <div className="container__donvi">
-              <FormControl className="formcontrol__inform" variant="standard" fullWidth>
-                <TextField
-                  htmlFor="demo-customized-textbox"
-                  margin="dense"
-                  id="donViBaoTro"
-                  label="Năm nhận *"
-                  onChange={(e) => setTreEm({ ...treEm, namNhan: e.target.value })}
-                  type="number"
-                  fullWidth
-                />
-              </FormControl>
-              <FormControl className="formcontrol__inform" variant="standard" fullWidth>
-                <TextField
-                  htmlFor="demo-customized-textbox"
-                  margin="dense"
-                  id="loaiBaoTro"
-                  label="Năm hoàn thành *"
-                  onChange={(e) => setTreEm({ ...treEm, namHoanThanh: e.target.value })}
-                  type="number"
-                  fullWidth
-                />
-              </FormControl>
-            </div> */}
+            </div>
+            <div style={{display: 'flex', flexWrap: 'wrap', marginLeft: '20px', marginBottom: '10px' }}>
+              {doiTuong.length > 0 &&
+                doiTuong.map((doituong, index) => {
+                  return (
+                    <span
+                      style={{ borderRadius: '16px', backgroundColor: '#EEEEEE', padding: '8px 1px 8px 12px', marginLeft: '10px', marginBottom:'5px' }}
+                    >
+                      {' '}
+                      {doituong.ten}
+                      <IconButton
+                        className="button_remove_doituong"
+                        onClick={() => {
+                          handleRemoveDoiTuong(index);
+                        }}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    </span>
+                  );
+                })}
+            </div>
+
             <div className="container__hoancanh">
               <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
                 <textarea
@@ -507,19 +469,24 @@ export default function InsertChildren() {
                         }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <img
-                              src={hocbong.donViBaoTro.logo}
-                              alt="Logo Đơn vị bảo trợ"
-                              style={{
-                                marginLeft:20,
-                                width: 80,
-                                borderRadius: '15%',
-                                height: 80,
-                              }}
-                            />
+                          <img
+                            src={hocbong.donViBaoTro.logo}
+                            alt="Logo Đơn vị bảo trợ"
+                            style={{
+                              marginLeft: 20,
+                              width: 80,
+                              borderRadius: '15%',
+                              height: 80,
+                            }}
+                          />
                           <div>
-                            <h3 style={{ marginLeft: 20 }}> {hocbong.donViBaoTro.tenDonVi} - {hocbong.hocBong.tenHocBong}</h3>
-                            <p style={{ marginLeft: 40 }}>Năm {hocbong.namNhan} - {hocbong.namHoanThanh}</p>
+                            <h3 style={{ marginLeft: 20 }}>
+                              {' '}
+                              {hocbong.donViBaoTro.tenDonVi} - {hocbong.hocBong.tenHocBong}
+                            </h3>
+                            <p style={{ marginLeft: 40 }}>
+                              Năm {hocbong.namNhan} - {hocbong.namHoanThanh}
+                            </p>
                           </div>
 
                           <IconButton
@@ -591,6 +558,11 @@ export default function InsertChildren() {
                   })}
               </FormControl>
             </div>
+            <DialogListDoiTuong
+              openDialog={openDialogListDoiTuong}
+              addDoiTuong={handleAddDoiTuong}
+              handleClose={handleCloseDialogListDoiTuong}
+            />
             <DialogHocBong
               openDialogCreate={openDialogHocBong}
               isEdit={isEdit}

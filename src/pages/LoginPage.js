@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
@@ -6,24 +6,30 @@ import axios from 'axios';
 import styles from '../layouts/simple/styles.module.css';
 
 function Login() {
-  useEffect(() => {
-    getUser();
-  }, []);
+  // const navigate = useNavigate();
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
   console.log(process.env.REACT_APP_API_URL);
   const googleAuth = () => {
     window.open(`${process.env.REACT_APP_API_URL}/auth/google`, '_self');
   };
 
-  const getUser = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/currentUser`;
-      const { data } = await axios.get(url, { withCredentials: true });
-      if (data.status !== 200) await axios.get(`${process.env.REACT_APP_API_URL}/logout`, { withCredentials: true });
-      console.log(JSON.parse(data).data.email);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const getUser = async () => {
+  //   try {
+  //     const url = `${process.env.REACT_APP_API_URL}/currentUser`;
+  //     const { data } = await axios.get(url, { withCredentials: true });
+  //     if (data)
+  //     {
+  //       sessionStorage.setItem('role', data.quyen);
+  //       sessionStorage.setItem('name', data.hoTen);
+  //       sessionStorage.setItem('avatar', data.avatar);
+  //       navigate(`/dashboard/app`);
+  //     } 
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <>
