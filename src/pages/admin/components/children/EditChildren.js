@@ -30,6 +30,8 @@ import { fData } from '../../../../utils/formatNumber';
 import { DialogHocTap } from './DialogHocTap';
 import { DialogListHocTap } from './DialogListHocTap';
 import { DialogReasonReject } from './DialogReasonReject';
+import { DialogHocBong } from './DialogHocBong';
+import { DialogListDoiTuong } from './DialogListDoiTuong';
 
 export default function EditChildren() {
   const { id } = useParams();
@@ -40,18 +42,23 @@ export default function EditChildren() {
   const [images, setImages] = useState([]);
   const [imagesEdit, setImagesEdit] = useState([]);
   const [imagesDelete, setImagesDelete] = useState([]);
-  const [search, setSearch] = useState('');
-  const [SPONSERLIST, setSPONSERLIST] = useState([]);
-  const [SCHOLARSHIPLIST, setSCHOLARSHIPLIST] = useState([]);
   const [treEm, setTreEm] = useState({});
-  const [selectedSponsor, setSelectedSponsor] = useState('');
-  const [selectedScholarship, setSelectedScholarship] = useState('');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [oldDoiTuong, setOldDoiTuong] = useState([]);
+  const [newDoiTuong, setNewDoiTuong] = useState([]);
+
   const [hocTap, setHocTap] = useState([]);
+  const [hocBong, setHocBong] = useState([]);
+  const [hocBongNew, sethocBongNew] = useState([]);
+  const [hocBongEdit, setHocBongEdit] = useState([]);
+  const [hocBongDelete, setHocBongDelete] = useState([]);
   const [hocTapNew, sethocTapNew] = useState([]);
   const [hocTapEdit, setHocTapEdit] = useState([]);
   const [hocTapDelete, setHocTapDelete] = useState([]);
-
+  const [openDialogListDoiTuong, setOpenDialogListDoiTuong] = useState(false);
+  const [openDialogHocBong, setOpenDialogHocBong] = useState(false);
+  const [infoHocBong, setInfoHocBong] = useState({});
+  const [selectedHocBongIndex, setSelectedHocBongIndex] = useState(0);
   const [openDialogHocTap, setOpenDialogHocTap] = useState(false);
   const [openDialogList, setOpenDialogList] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -74,19 +81,8 @@ export default function EditChildren() {
     setTreEm({ ...treEm, ngaySinh: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
   };
 
-  const getUser = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/currentUser`;
-      const { data } = await axios.get(url, { withCredentials: true });
-      console.log(data.quyen);
-      setQuyen(data.quyen);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
-    getUser();
+    setQuyen(+sessionStorage.getItem('role'));
   }, []);
 
   const getChild = async () => {
@@ -94,31 +90,97 @@ export default function EditChildren() {
     const { data } = await axios.get(url, { withCredentials: true });
     setTreEm(data.data);
     setSelectedDate(moment(data.data.ngaySinh));
-    setSelectedSponsor(data.data.donViBaoTro[0]);
-    getScholarshipList(data.data.donViBaoTro[0]);
-    setSelectedScholarship(data.data.hocBong[0]);
     setPreview(data.data.hinhAnh);
     getHocTap(data.data._id);
+    getHocBong(data.data._id);
+    setOldDoiTuong(data.data.doiTuong);
+    setNewDoiTuong(data.data.doiTuong);
   };
 
   useEffect(() => {
     getChild();
   }, []);
 
-  const getSponsorList = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
-    const { data } = await axios.get(url, { withCredentials: true });
-    setSPONSERLIST(data.data);
+  const handleRemoveDoiTuong = (index) => {
+    setNewDoiTuong((doituong) => {
+      const newDoiTuongs = [...doituong];
+      newDoiTuongs.splice(index, 1);
+      return newDoiTuongs;
+    });
   };
 
-  useEffect(() => {
-    getSponsorList();
-  }, []);
-
-  const getScholarshipList = async (donViBaoTro) => {
-    const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?donViTaiTro=${donViBaoTro}`;
+  const getHocBong = async (treem) => {
+    const url = `${process.env.REACT_APP_API_URL}/hocbongtreem/bytreem?treem=${treem}`;
     const { data } = await axios.get(url, { withCredentials: true });
-    setSCHOLARSHIPLIST(data.data);
+    setHocBong(data.data);
+  };
+
+  const handleCickAddHocBong = (hocbong) => {
+    console.log(hocbong);
+    const newId = uuidv4();
+    setHocBong([{ ...hocbong, _id: `temp${newId}` }, ...hocBong]);
+    sethocBongNew([...hocBongNew, { ...hocbong, _id: `temp${newId}` }]);
+  };
+
+  const handleRemoveHocBong = (index) => {
+    const indexHocBongNew = hocBongNew.findIndex((hocbong) => hocbong._id === hocBong[index]._id);
+    if (indexHocBongNew !== -1) {
+      sethocBongNew((hocbong) => {
+        const newHocBong = [...hocbong];
+        newHocBong.splice(indexHocBongNew, 1);
+        return newHocBong;
+      });
+    }
+
+    const indexHocBongEdit = hocBongEdit.findIndex((hocbong) => hocbong._id === hocBong[index]._id);
+    if (indexHocBongEdit !== -1) {
+      setHocBongEdit((hocbong) => {
+        const editHocBong = [...hocbong];
+        editHocBong.splice(indexHocBongEdit, 1);
+        return editHocBong;
+      });
+    }
+
+    setHocBongDelete([...hocBongDelete, hocBong[index]]);
+    setHocBong((hocbong) => {
+      const newHocBongs = [...hocbong];
+      newHocBongs.splice(index, 1);
+      return newHocBongs;
+    });
+  };
+
+  const handleCickEditHocBong = (hocbong) => {
+    console.log(hocbong);
+
+    const hocbongs = [...hocBong];
+    hocbongs[selectedHocBongIndex] = hocbong;
+    setHocBong(hocbongs);
+
+    const indexHocBongNew = hocBongNew.findIndex((hocbong) => hocbong._id === hocbongs[selectedHocBongIndex]._id);
+    if (indexHocBongNew !== -1) {
+      sethocBongNew((hocbong) => {
+        const newHocBong = [...hocbong];
+        newHocBong.splice(indexHocBongNew, 1);
+        return newHocBong;
+      });
+    }
+
+    const indexEdit = hocBongEdit.findIndex((hocbong) => hocbong._id === hocbongs[selectedHocBongIndex]._id);
+    if (indexEdit !== -1) {
+      // Phần tử có id đã tồn tại trong mảng
+      // Chỉ mục của phần tử đó là index
+      const hocbongEdits = [...hocBongEdit];
+      hocbongEdits[indexEdit] = hocbong;
+      setHocBongEdit(hocbongEdits);
+    } else {
+      // Phần tử không tồn tại trong mảng
+      setHocBongEdit([...hocBongEdit, hocbong]);
+    }
+  };
+
+  const handleCloseDialogHocBong = () => {
+    setOpenDialogHocBong(false);
+    // console.log(hocTap);
   };
 
   const getHocTap = async (treem) => {
@@ -127,15 +189,19 @@ export default function EditChildren() {
     setHocTap(data.data);
   };
 
-  const handleChangeSponsor = (e) => {
-    setSelectedSponsor(e.target.value);
-    setTreEm({ ...treEm, donViBaoTro: e.target.value });
-    getScholarshipList(e.target.value);
-  };
+  // const handleChangeSponsor = (e) => {
+  //   setSelectedSponsor(e.target.value);
+  //   setTreEm({ ...treEm, donViBaoTro: e.target.value });
+  //   getScholarshipList(e.target.value);
+  // };
 
-  const handleChangeScholarship = (e) => {
-    setSelectedScholarship(e.target.value);
-    setTreEm({ ...treEm, hocBong: e.target.value });
+  // const handleChangeScholarship = (e) => {
+  //   setSelectedScholarship(e.target.value);
+  //   setTreEm({ ...treEm, hocBong: e.target.value });
+  // };
+
+  const handleClickOpenDialogHocBong = () => {
+    setOpenDialogHocBong(true);
   };
 
   const handleRemoveImage = (index) => {
@@ -199,6 +265,18 @@ export default function EditChildren() {
       setImagesEdit([...imagesEdit, { _id: previews[selectedImageIndex]._id, image: file }]);
     }
     console.log({ id: previews[selectedImageIndex]._id, image: file });
+  };
+
+  const handleClickOpenDialogListDoiTuong = () => {
+    setOpenDialogListDoiTuong(true);
+  };
+  const handleCloseDialogListDoiTuong = () => {
+    setOpenDialogListDoiTuong(false);
+  };
+
+  const handleAddDoiTuong = (doituongs) => {
+    console.log(doituongs);
+    setNewDoiTuong(doituongs);
   };
 
   const handleClickOpenDialog = () => {
@@ -297,6 +375,7 @@ export default function EditChildren() {
             namNhan: treEm.namNhan,
             namHoanThanh: treEm.namHoanThanh,
             hoanCanh: treEm.hoanCanh,
+            doiTuong: newDoiTuong.map(doituong => doituong._id)
           },
           { withCredentials: true }
         )
@@ -304,8 +383,40 @@ export default function EditChildren() {
           if (result.status === 200) {
             setOpenSuccessMessage(result.data.message);
           } else setOpenErrMessage(result.data.message);
+          console.log(result.data.message);
         });
     }
+    // Cập nhật nếu thêm đối tượng mới
+    newDoiTuong.forEach(async(doituong) => {
+      if (!oldDoiTuong.find((item) => item._id === doituong._id)) {
+        const url = `${process.env.REACT_APP_API_URL}/doituong/updateQuantity`;
+        await axios
+        .put(
+          url,
+          {
+            id: doituong._id,
+            change: 'increase'
+          },
+          { withCredentials: true }
+        )
+      }
+    }) 
+
+        // Cập nhật nếu xóa đối tượng cũ
+        oldDoiTuong.forEach(async(doituong) => {
+          if (!newDoiTuong.find((item) => item._id === doituong._id)) {
+            const url = `${process.env.REACT_APP_API_URL}/doituong/updateQuantity`;
+            await axios
+            .put(
+              url,
+              {
+                id: doituong._id,
+                change: 'decrease'
+              },
+              { withCredentials: true }
+            )
+          }
+        }) 
 
     // Lưu hình ảnh
     if (images.length > 0) {
@@ -359,9 +470,7 @@ export default function EditChildren() {
       imagesDelete.forEach(async (image) => {
         if (!image._id.includes('temp')) {
           const urlHinhAnh = `${process.env.REACT_APP_API_URL}/hinhanh/delete?id=${image._id}`;
-          const formData = new FormData();
-          formData.append('image', image.image);
-          await axios.put(urlHinhAnh, formData, {
+          await axios.put(urlHinhAnh, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -416,17 +525,65 @@ export default function EditChildren() {
     if (hocTapDelete.length > 0) {
       hocTapDelete.forEach(async (hoctap) => {
         if (!hoctap._id.includes('temp')) {
-          const urlHocTap = `${process.env.REACT_APP_API_URL}/hoctap/delete`;
+          const urlHocTap = `${process.env.REACT_APP_API_URL}/hoctap/delete?id=${hoctap._id}`;
+          await axios.delete(urlHocTap, { withCredentials: true });
+        }
+      });
+    }
+
+    // Lưu thành tích học bổng
+    if (hocBongNew.length > 0) {
+      const urlHocBong = `${process.env.REACT_APP_API_URL}/hocbongtreem/insert`;
+      await axios.post(
+        urlHocBong,
+        {
+          treEm: treEm._id,
+          hocBongs: hocBongNew,
+        },
+        { withCredentials: true }
+      );
+    }
+
+    if (hocBongEdit.length > 0) {
+      hocBongEdit.forEach(async (hocbong) => {
+        if (hocbong._id.includes('temp')) {
+          const urlHocBong = `${process.env.REACT_APP_API_URL}/hocbongtreem/insert`;
           await axios.post(
-            urlHocTap,
+            urlHocBong,
             {
-              id: hoctap._id,
+              treEm: treEm._id,
+              hocBongs: [hocbong],
+            },
+            { withCredentials: true }
+          );
+        } else {
+          const urlHocBong = `${process.env.REACT_APP_API_URL}/hocbongtreem/update`;
+          await axios.put(
+            urlHocBong,
+            {
+              id: hocbong._id,
+              donViBaoTro: hocbong.donViBaoTro._id,
+              hocBong: hocbong.hocBong._id,
+              namNhan: hocbong.namNhan,
+              namHoanThanh: hocbong.namHoanThanh,
             },
             { withCredentials: true }
           );
         }
       });
     }
+
+    if (hocBongDelete.length > 0) {
+      hocBongDelete.forEach(async (hocbong) => {
+        if (!hocbong._id.includes('temp')) {
+          const urlHocBong = `${process.env.REACT_APP_API_URL}/hocbongtreem/delete?id=${hocbong._id}`;
+          await axios.delete(urlHocBong, { withCredentials: true });
+        }
+      });
+    }
+    console.log(hocBongNew);
+    console.log(hocBongEdit);
+    console.log(hocBongDelete);
   };
 
   const handleCloseDialogReason = () => {
@@ -470,7 +627,7 @@ export default function EditChildren() {
   return (
     <>
       {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 100, top: 200 }} severity="success">
+        <Alert style={{ position: 'fixed', zIndex: 500000, right: 30, top: 60 }} severity="success">
           {openSuccessMessage}
         </Alert>
       )}
@@ -482,9 +639,15 @@ export default function EditChildren() {
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
           <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
-            {treEm.authStatus === 'TuChoi' && <p style={{ marginTop: -50, marginBottom: 60, color: 'red', fontSize: 20 }}>❌ Từ chối</p>}
-            {treEm.authStatus === 'ChoDuyet' && <p style={{ marginTop: -50, marginBottom: 60, color: 'yellow', fontSize: 20 }}>⌛ Chờ Duyệt</p>}
-            {treEm.authStatus === 'DaDuyet' && <p style={{ marginTop: -50, marginBottom: 60, color: 'green', fontSize: 20 }}>✔ Đã Duyệt</p>}
+            {treEm.authStatus === 'TuChoi' && (
+              <p style={{ marginTop: -50, marginBottom: 60, color: 'red', fontSize: 20 }}>❌ Từ chối</p>
+            )}
+            {treEm.authStatus === 'ChoDuyet' && (
+              <p style={{ marginTop: -50, marginBottom: 60, color: 'yellow', fontSize: 20 }}>⌛ Chờ Duyệt</p>
+            )}
+            {treEm.authStatus === 'DaDuyet' && (
+              <p style={{ marginTop: -50, marginBottom: 60, color: 'green', fontSize: 20 }}>✔ Đã Duyệt</p>
+            )}
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               {preview.length > 0 && (
                 <img
@@ -684,7 +847,7 @@ export default function EditChildren() {
               </FormControl>
             </div>
 
-            <div className="container__hoctap">
+            {/* <div className="container__hoctap">
               <FormControl className="formcontrol__inform" variant="outlined" fullWidth>
                 <div>
                   <InputLabel id="demo-simple-select-standard-label">Đơn vị tài trợ</InputLabel>
@@ -727,7 +890,6 @@ export default function EditChildren() {
                     fullWidth
                     margin="dense"
                   >
-                    {/* {SCHOLARSHIPLIST.filter((option) => option.tenHocBong.toLowerCase().includes(search)).map((option) => ( */}
                     {SCHOLARSHIPLIST.map((option) => (
                       <MenuItem key={option._id} value={option._id} label={option.tenHocBong}>
                         {option.tenHocBong}
@@ -736,8 +898,8 @@ export default function EditChildren() {
                   </Select>
                 </div>
               </FormControl>
-            </div>
-            <div className="container__donvi">
+            </div> */}
+            {/* <div className="container__donvi">
               <FormControl className="formcontrol__inform" variant="standard" fullWidth>
                 <TextField
                   htmlFor="demo-customized-textbox"
@@ -762,7 +924,54 @@ export default function EditChildren() {
                   fullWidth
                 />
               </FormControl>
+            </div> */}
+
+            <div className="container__hoancanh">
+              <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
+                <div style={{ paddingTop: 15, mt: 3, paddingBottom: 15 }}>
+                  <label style={{ paddingTop: 10, mt: 3, paddingBottom: 15 }}>
+                    <b style={{ fontSize: 20 }}>Thuộc diện đối tượng</b>
+                  </label>
+
+                  <Button
+                    style={{ marginLeft: 5, paddingBottom: 10, paddingTop: 6 }}
+                    onClick={() => {
+                      handleClickOpenDialogListDoiTuong();
+                    }}
+                  >
+                    <Iconify style={{ color: 'green', padding: 0 }} icon={'material-symbols:add-circle-outline'} />
+                  </Button>
+                </div>
+              </FormControl>
             </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', marginLeft: '20px', marginBottom: '10px' }}>
+              {newDoiTuong.length > 0 &&
+                newDoiTuong.map((doituong, index) => {
+                  return (
+                    <span
+                      style={{
+                        borderRadius: '16px',
+                        backgroundColor: '#EEEEEE',
+                        padding: '8px 1px 8px 12px',
+                        marginLeft: '10px',
+                        marginBottom: '5px',
+                      }}
+                    >
+                      {' '}
+                      {doituong.ten}
+                      <IconButton
+                        className="button_remove_doituong"
+                        onClick={() => {
+                          handleRemoveDoiTuong(index);
+                        }}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    </span>
+                  );
+                })}
+            </div>
+
             <div className="container__hoancanh">
               <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
                 <textarea
@@ -773,6 +982,76 @@ export default function EditChildren() {
                   value={treEm.hoanCanh || ''}
                   onChange={(e) => setTreEm({ ...treEm, hoanCanh: e.target.value })}
                 />
+              </FormControl>
+            </div>
+            <div className="container__hoancanh">
+              <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
+                <div style={{ paddingTop: 15, mt: 3, paddingBottom: 15 }}>
+                  <label style={{ paddingTop: 10, mt: 3, paddingBottom: 15 }}>
+                    <b style={{ fontSize: 20 }}>Học bổng</b>
+                  </label>
+
+                  <Button
+                    style={{ marginLeft: 5, paddingBottom: 10, paddingTop: 6 }}
+                    onClick={() => {
+                      setIsEdit(false);
+                      handleClickOpenDialogHocBong();
+                    }}
+                  >
+                    <Iconify style={{ color: 'green', padding: 0 }} icon={'material-symbols:add-circle-outline'} />
+                  </Button>
+                </div>
+                {hocBong.length > 0 &&
+                  hocBong.map((hocbong, index) => {
+                    return (
+                      <Card
+                        fullWidth
+                        onDoubleClick={() => {
+                          setSelectedHocBongIndex(index);
+                          setIsEdit(true);
+                          setInfoHocBong(hocbong);
+                          handleClickOpenDialogHocBong();
+                        }}
+                        variant="outlined"
+                        orientation="horizontal"
+                        sx={{
+                          marginBottom: 2,
+                          '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <img
+                            src={hocbong.donViBaoTro.logo}
+                            alt="Logo Đơn vị bảo trợ"
+                            style={{
+                              marginLeft: 20,
+                              width: 80,
+                              borderRadius: '15%',
+                              height: 80,
+                            }}
+                          />
+                          <div>
+                            <h3 style={{ marginLeft: 20 }}>
+                              {' '}
+                              {hocbong.donViBaoTro.tenDonVi} - {hocbong.hocBong.tenHocBong}
+                            </h3>
+                            <p style={{ marginLeft: 40 }}>
+                              Năm {hocbong.namNhan} - {hocbong.namHoanThanh}
+                            </p>
+                          </div>
+
+                          <IconButton
+                            className="button_remove_hoctap"
+                            onClick={() => {
+                              handleRemoveHocBong(index);
+                            }}
+                          >
+                            <CloseIcon />
+                          </IconButton>
+                        </div>
+                      </Card>
+                    );
+                  })}
               </FormControl>
             </div>
             <div className="container__hoancanh">
@@ -828,14 +1107,30 @@ export default function EditChildren() {
                       </Card>
                     );
                   })}
+                {hocTap.length > 2 && (
                 <div style={{ textAlign: 'center' }}>
                   
-                  <Button variant="contained" color="primary" component="span" onClick={handleClickOpenDialogList}>
-                    Xem tất cả
-                  </Button>
-                </div>
+                <Button variant="contained" color="primary" component="span" onClick={handleClickOpenDialogList}>
+                  Xem tất cả
+                </Button>
+              </div>
+                )}
               </FormControl>
             </div>
+            <DialogListDoiTuong
+              openDialog={openDialogListDoiTuong}
+              addDoiTuong={handleAddDoiTuong}
+              listDoiTuong={newDoiTuong}
+              handleClose={handleCloseDialogListDoiTuong}
+            />
+            <DialogHocBong
+              openDialogCreate={openDialogHocBong}
+              isEdit={isEdit}
+              infoHocBong={infoHocBong}
+              handleCickAdd={handleCickAddHocBong}
+              handleCickEdit={handleCickEditHocBong}
+              handleClose={handleCloseDialogHocBong}
+            />
             <DialogHocTap
               openDialogCreate={openDialogHocTap}
               isEdit={isEdit}

@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  TextField,
   FormControl,
   MenuItem,
   Select,
@@ -16,15 +15,14 @@ import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 
 export function DialogHocTap(props) {
-  const [openSuccessMessage, setOpenSuccessMessage] = useState('');
-  const [openErrMessage, setOpenErrMessage] = useState('');
   const [hocTap, setHocTap] = useState({});
   const [YearsList, setYearsList] = useState([]);
-  const [selectedNamHoc, setSelectedNamHoc] = useState(props.infoHocTap.namHoc);
+  const [selectedNamHoc, setSelectedNamHoc] = useState(null);
   const [selectedHocKy, setSelectedHocKy] = useState(null);
   const [selectedHocLuc, setSelectedHocLuc] = useState(null);
 
   const handleSubmit = async () => {
+    console.log(hocTap);
     if (props.isEdit) {
       props.handleCickEdit(hocTap);
     } else props.handleCickAdd(hocTap);
@@ -32,17 +30,12 @@ export function DialogHocTap(props) {
   };
 
   useEffect(() => {
-    console.log(props.infoHocTap);
-    if (props.infoHocTap){
-      setHocTap(props.infoHocTap)
-      setSelectedNamHoc(props.infoHocTap.namHoc)
-      setSelectedHocKy(props.infoHocTap.hocKy)
-      setSelectedHocLuc(props.infoHocTap.hocLuc)
-    }
-  }, [props.infoHocTap]);
-
-  useEffect(() => {
-    if (props.openDialogCreate){
+    if (props.isEdit) {
+      setHocTap(props.infoHocTap);
+      setSelectedNamHoc(props.infoHocTap.namHoc);
+      setSelectedHocKy(props.infoHocTap.hocKy);
+      setSelectedHocLuc(props.infoHocTap.hocLuc);
+    } else {
       getYears();
     }
   }, [props.openDialogCreate]);
@@ -52,9 +45,9 @@ export function DialogHocTap(props) {
       const url = `${process.env.REACT_APP_API_URL}/namhoc/getAll?all=true`;
       const { data } = await axios.get(url, { withCredentials: true });
       setYearsList(data.data);
-      const namHienTai = data.data.find(nam => nam.namHienTai === true)
+      const namHienTai = data.data.find((nam) => nam.namHienTai === true);
       console.log(namHienTai);
-      setSelectedNamHoc(namHienTai.namHoc)
+      if (!props.isEdit) setSelectedNamHoc(namHienTai.namHoc);
     } catch (err) {
       console.log(err);
     }
@@ -76,24 +69,8 @@ export function DialogHocTap(props) {
     setHocTap({ ...hocTap, hocLuc: e.target.value });
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setOpenSuccessMessage('');
-      setOpenErrMessage('');
-    }, 3000);
-  }, [openErrMessage, openSuccessMessage]);
   return (
     <>
-      {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
-          {openSuccessMessage}
-        </Alert>
-      )}
-      {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
-          {openErrMessage}
-        </Alert>
-      )}
 
       <Dialog className="dialogcreatehoctap" open={props.openDialogCreate} onClose={props.handleClose}>
         <div className="titlecreatehoctap">
@@ -111,6 +88,7 @@ export function DialogHocTap(props) {
               <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Năm học</InputLabel>
                 <Select onChange={handleChangeNamHoc} label="Năm học" value={selectedNamHoc} fullWidth margin="dense">
+
                   {YearsList.map((option) => (
                     <MenuItem key={option._id} value={option.namHoc} label={option.namHoc}>
                       {option.namHoc}
@@ -118,33 +96,34 @@ export function DialogHocTap(props) {
                   ))}
                 </Select>
               </FormControl>
+
               <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Học kỳ</InputLabel>
-                <Select onChange={handleChangeHocKy} label="Năm học" value={selectedHocKy} fullWidth margin="dense">
+                <Select onChange={handleChangeHocKy} label="Năm học" value={selectedHocKy || ''} fullWidth margin="dense">
                     <MenuItem key={'HK1'} value={'Học Kỳ 1'} label={'Học Kỳ 1'}>
                     Học Kỳ 1
-                    </MenuItem>
-                    <MenuItem key={'HK2'} value={'Học Kỳ 2'} label={'Học Kỳ 2'}>
+                  </MenuItem>
+                  <MenuItem key={'HK2'} value={'Học Kỳ 2'} label={'Học Kỳ 2'}>
                     Học Kỳ 2
-                    </MenuItem>
+                  </MenuItem>
                 </Select>
               </FormControl>
 
               <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Học lực</InputLabel>
-                <Select onChange={handleChangeHocLuc} label="Năm học" value={selectedHocLuc} fullWidth margin="dense">
+                <Select onChange={handleChangeHocLuc} label="Năm học" value={selectedHocLuc || ''} fullWidth margin="dense">
                     <MenuItem key={'gioi'} value={'Giỏi'} label={'Giỏi'}>
                     Giỏi
-                    </MenuItem>
-                    <MenuItem key={'kha'} value={'Khá'} label={'Khá'}>
+                  </MenuItem>
+                  <MenuItem key={'kha'} value={'Khá'} label={'Khá'}>
                     Khá
-                    </MenuItem>
-                    <MenuItem key={'tb'} value={'Trung bình'} label={'Trung bình'}>
+                  </MenuItem>
+                  <MenuItem key={'tb'} value={'Trung bình'} label={'Trung bình'}>
                     Trung bình
-                    </MenuItem>
-                    <MenuItem key={'yeu'} value={'Yếu'} label={'Yếu'}>
+                  </MenuItem>
+                  <MenuItem key={'yeu'} value={'Yếu'} label={'Yếu'}>
                     Yếu
-                    </MenuItem>
+                  </MenuItem>
                 </Select>
               </FormControl>
               </div>
@@ -171,7 +150,13 @@ export function DialogHocTap(props) {
             <div className="form__info__hoctap__container">
               <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
                 <InputLabel id="demo-simple-select-standard-label">Năm học</InputLabel>
-                <Select onChange={handleChangeNamHoc} value={selectedNamHoc} label="Năm học" fullWidth margin="dense">
+                <Select
+                  onChange={handleChangeNamHoc}
+                  value={selectedNamHoc || ''}
+                  label="Năm học"
+                  fullWidth
+                  margin="dense"
+                >
                   {YearsList.map((option) => (
                     <MenuItem key={option._id} value={option.namHoc} label={option.namHoc}>
                       {option.namHoc}
@@ -179,33 +164,34 @@ export function DialogHocTap(props) {
                   ))}
                 </Select>
               </FormControl>
+
               <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Học kỳ</InputLabel>
                 <Select onChange={handleChangeHocKy} label="Năm học" fullWidth margin="dense">
-                    <MenuItem key={'HK1'} value={'Học Kỳ 1'} label={'Học Kỳ 1'}>
+                  <MenuItem key={'HK1'} value={'Học Kỳ 1'} label={'Học Kỳ 1'}>
                     Học Kỳ 1
-                    </MenuItem>
-                    <MenuItem key={'HK2'} value={'Học Kỳ 2'} label={'Học Kỳ 2'}>
+                  </MenuItem>
+                  <MenuItem key={'HK2'} value={'Học Kỳ 2'} label={'Học Kỳ 2'}>
                     Học Kỳ 2
-                    </MenuItem>
+                  </MenuItem>
                 </Select>
               </FormControl>
 
               <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Học lực</InputLabel>
                 <Select onChange={handleChangeHocLuc} label="Năm học" fullWidth margin="dense">
-                    <MenuItem key={'gioi'} value={'Giỏi'} label={'Giỏi'}>
+                  <MenuItem key={'gioi'} value={'Giỏi'} label={'Giỏi'}>
                     Giỏi
-                    </MenuItem>
-                    <MenuItem key={'kha'} value={'Khá'} label={'Khá'}>
+                  </MenuItem>
+                  <MenuItem key={'kha'} value={'Khá'} label={'Khá'}>
                     Khá
-                    </MenuItem>
-                    <MenuItem key={'tb'} value={'Trung bình'} label={'Trung bình'}>
+                  </MenuItem>
+                  <MenuItem key={'tb'} value={'Trung bình'} label={'Trung bình'}>
                     Trung bình
-                    </MenuItem>
-                    <MenuItem key={'yeu'} value={'Yếu'} label={'Yếu'}>
+                  </MenuItem>
+                  <MenuItem key={'yeu'} value={'Yếu'} label={'Yếu'}>
                     Yếu
-                    </MenuItem>
+                  </MenuItem>
                 </Select>
               </FormControl>
               </div>

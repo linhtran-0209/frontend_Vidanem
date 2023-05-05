@@ -1,18 +1,13 @@
 import {
-  Alert,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
-  IconButton,
   DialogTitle,
-  Card,
-  TextField,
   FormControl
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import CloseIcon from '@mui/icons-material/Close';
-import { DialogHocTap } from './DialogHocTap';
+
 
 export function DialogReasonReject(props) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');

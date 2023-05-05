@@ -1,13 +1,10 @@
 import { Helmet } from 'react-helmet-async';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 // @mui
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+
 import {
   Alert,
   Card,
@@ -30,9 +27,6 @@ import moment from 'moment';
 import { UserListHead } from '../sections/@dashboard/user';
 import Iconify from '../components/iconify';
 
-import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../sections/@dashboard/blog';
-
-import Scrollbar from './admin/components/blog/preview/Scrollbar';
 // mock
 
 // ----------------------------------------------------------------------
@@ -48,6 +42,8 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 export default function BlogPage() {
+  const navigate = useNavigate();
+
   const [opendialog, setOpenDialog] = React.useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -56,6 +52,10 @@ export default function BlogPage() {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - total) : 0;
   const [filterName, setFilterName] = useState('');
   const isNotFound = !TitleList.length && !!filterName;
+
+  const handleClickAddNew = () => {
+    navigate(`/dashboard/blog/insert`);
+  };
 
   const handleClickOpen = () => {
     setOpenDialog(true);
@@ -75,20 +75,16 @@ export default function BlogPage() {
           <Typography variant="h4" gutterBottom>
             Tin bài
           </Typography>
-          <Button className="buttonAllchude" variant="contained" href="/dashboard/blog/title">
-            Tất cả chủ đề
-          </Button>
           <Button
             className="buttonThemMoi"
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
-            href="/dashboard/blog/insert"
+            onClick={handleClickAddNew}
           >
             Bài viết mới
           </Button>
         </Stack>
         <Card>
-          <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <UserListHead headLabel={TABLE_HEAD} rowCount={total} />
@@ -169,7 +165,6 @@ export default function BlogPage() {
                 )}
               </Table>
             </TableContainer>
-          </Scrollbar>
 
           <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
             <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} />

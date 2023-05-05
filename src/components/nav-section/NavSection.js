@@ -107,15 +107,15 @@ function SubNavItem({ item, handleActiveNav }) {
         to={item.path}
         sx={{
           '&.active': {
-            color: 'text.primary',
-            bgcolor: 'action.selected',
+            color: '#0066FF',
+            // bgcolor: 'action.selected',
             fontWeight: 'fontWeightBold',
           },
         }}
       >
         <StyledNavItemIcon>{item.icon && item.icon}</StyledNavItemIcon>
 
-        <ListItemText disableTypography primary={item.title} />
+        <ListItemText style={{marginLeft:'15px'}} disableTypography primary={item.title} />
       </StyledNavItem>
     </>
   );

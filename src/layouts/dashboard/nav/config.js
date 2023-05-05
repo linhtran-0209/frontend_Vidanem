@@ -54,8 +54,12 @@ const navConfig = [
   },
   {
     title: 'Tin bài',
-    path: '/dashboard/blog',
+    path: '#',
     icon: icon('ic_blog'),
+    subNav: [
+      {title: ' Chủ đề', path: '/dashboard/title'},
+      {title: ' Bài viết', path: '/dashboard/blog'}
+    ]
   },
   // {
   //   title: 'Tin bài',
@@ -68,11 +72,11 @@ const navConfig = [
   //   ]
     
   // },
-  {
-    title: 'Đăng xuất',
-    path: '/login',
-    icon: icon('ic_lock'),
-  },
+  // {
+  //   title: 'Đăng xuất',
+  //   path: '/login',
+  //   icon: icon('ic_lock'),
+  // },
   // {
   //   title: 'Not found',
   //   path: '/404',

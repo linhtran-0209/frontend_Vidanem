@@ -25,7 +25,6 @@ import {
   Tooltip,
 } from '@mui/material';
 // components
-import Label from '../components/label';
 import Iconify from '../components/iconify';
 
 import { UserListHead } from '../sections/@dashboard/user';
@@ -41,8 +40,6 @@ const TABLE_HEAD = [
   { id: 'date', label: 'Ngày sinh', alignRight: false },
   { id: 'school', label: 'Trường', alignRight: false },
   { id: 'hoancanh', label: 'Hoàn cảnh', alignRight: false },
-  { id: 'nhataitro', label: 'Đơn vị bảo trợ', alignRight: false },
-  { id: 'namnhan', label: 'Năm nhận', alignRight: false },
   { id: 'trangthai', label: 'Trạng thái', alignRight: false },
   { id: 'status', label: 'Hành động', alignRight: false },
 ];
@@ -294,9 +291,6 @@ export default function ChildrenPage() {
                       <TableCell className="children__hoancanh" align="left">
                         {hoanCanh.length > 25 ? `${hoanCanh.slice(0, 25)}...` : hoanCanh}
                       </TableCell>
-                      <TableCell align="left">{}</TableCell>
-
-                      <TableCell align="left">{namNhan}</TableCell>
 
                       <TableCell align="left">{trangthai}</TableCell>
                       <TableCell className="icon__children__container">

@@ -1,13 +1,9 @@
 import { Helmet } from 'react-helmet-async';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 // @mui
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+
 import {
   Alert,
   Card,
@@ -27,21 +23,18 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 // components
-import { UserListHead } from '../../../../sections/@dashboard/user';
-import Iconify from './preview/Iconify';
+import Iconify from '../components/iconify';
+import { UserListHead } from '../sections/@dashboard/user';
 
-import {CreateTitleModal } from './CreateTitleBlog';
+import { CreateTitleModal } from './admin/components/title/CreateTitleBlog';
 
-import Scrollbar from './preview/Scrollbar';
 // mock
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'ma_chu_de', label: 'Mã chủ đề', alignRight: false },
+  { id: 'hinh_anh', label: 'Ảnh chủ đề', alignRight: false },
   { id: 'ten_chu_de', label: 'Tên chủ đề', alignRight: false },
-  { id: 'ghi_chu', label: 'Ghi chú', alignRight: false },
-  { id: 'bat_dau', label: 'Bắt đầu', alignRight: false },
   { id: 'action', label: 'Hành động', alignRight: false },
 ];
 
@@ -72,6 +65,22 @@ export default function BlogPage() {
   const handleCloseCreate = () => {
     setOpenTitleBlogCreate(false);
   };
+
+  useEffect(() => {
+    getTitles();
+  }, []);
+
+  const getTitles = async () => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/chude/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setTitleList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       <Helmet>
@@ -83,7 +92,7 @@ export default function BlogPage() {
           <Typography variant="h4" gutterBottom>
             Chủ đề
           </Typography>
-          
+
           <Button
             className="buttonThemMoi"
             variant="contained"
@@ -95,34 +104,25 @@ export default function BlogPage() {
         </Stack>
         <CreateTitleModal openDialogCreate={openTitleBlogCreate} handleClose={handleCloseCreate} />
         <Card>
-          <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 <UserListHead headLabel={TABLE_HEAD} rowCount={total} />
                 <TableBody>
                   {TitleList.map((row) => {
-                    const { _id, maChuDe, tenChuDe, batDau, ketThuc } = row;
+                    const { _id, hinhAnh, tenChuDe} = row;
                     // const selectedUser = selected.indexOf(tenDonVi) !== -1;
 
                     return (
                       <TableRow hover key={_id} sx={{ cursor: 'pointer', width: '200px', height: '10px' }}>
-                        <TableCell align="left" style={{ width: 180 }}>
-                          {maChuDe}
+                        <TableCell align="center" style={{ width: 250, height: 60 }}>
+                          <img src={`${process.env.REACT_APP_API_URL}${hinhAnh}`} alt="Ảnh chủ đề" width="60" height="60" />
                         </TableCell>
 
-                        <TableCell align="left" style={{ width: 350 }}>
+                        <TableCell align="left" style={{ width: 550, height: 60 }}>
                           {tenChuDe}
                         </TableCell>
 
-                        <TableCell align="left" style={{ width: 180 }}>
-                          {moment(batDau).format('DD/MM/YYYY')}
-                        </TableCell>
-
-                        <TableCell align="left" style={{ width: 250 }}>
-                          {moment(ketThuc).format('DD/MM/YYYY')}
-                        </TableCell>
-
-                        <TableCell className="icon__scholarship__container">
+                        <TableCell className="icon__container" style={{justifyContent:'left', alignItems: 'center', height:100}}>
                           <Tooltip title="Cập nhật">
                             <MenuItem className="scholarship__update">
                               <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
@@ -176,7 +176,6 @@ export default function BlogPage() {
                 )}
               </Table>
             </TableContainer>
-          </Scrollbar>
 
           <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
             <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} />
