@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import MUIRichTextEditor from 'mui-text-editor';
 import { useCallback, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
@@ -123,8 +124,11 @@ export default function BlogNewPostForm() {
                 <RHFTextField name="description" label="Mô tả" multiline rows={3} />
 
                 <div>
-                  <LabelStyle>Content</LabelStyle>
-                  <RHFTextField name="content" label="Nội dung" multiline rows={5} />
+                  <LabelStyle>Nội dung</LabelStyle>
+                  
+                  
+                  <MUIRichTextEditor label='Nhập nội dung' type="text" multiline rows={5} />
+                  
                 </div>
 
                 <div className="cover">
@@ -175,7 +179,7 @@ export default function BlogNewPostForm() {
                     sx={{ mb: 1, mx: 0, width: 1, justifyContent: 'space-between' }}
                   />
                 </div>
-                
+
                 <RHFTextField name="type" label="Chủ đề" />
 
                 <RHFTextField name="metaTitle" label="Người đăng bài" />
@@ -220,7 +224,6 @@ export default function BlogNewPostForm() {
         onClose={handleClosePreview}
         onSubmit={handleSubmit(onSubmit)}
       />
-    
     </>
   );
 }

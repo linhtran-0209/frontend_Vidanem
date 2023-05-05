@@ -2,3 +2,24 @@
     width: 100%;
     height: 160px;
 }
+#mui-rte-root{
+    
+    
+}
+.MUIRichTextEditor-container-2 {
+    border: 1px solid #252c34;
+}
+#mui-rte-toolbar{
+    border-bottom:  1px solid #252c34;
+}
+#mui-rte-container > div{
+    
+    
+    position: unset;
+   
+
+}
+.MUIRichTextEditor-editorContainer-5{
+position: unset;
+
+}

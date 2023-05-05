@@ -16,6 +16,7 @@ import {StyleSponsorPage} from './pages/SponserPage.css';
 // import {StylesCreateSponsor} from './pages/admin/components/sponsor/CreateSponsor.css'
 import {styleSearchSponser} from './sections/@dashboard/user/UserListToolbar.css';
 import {StyleChildrenPages} from './pages/ChildrenPage.css';
+import {StyleDoiTuongPages} from './pages/DoiTuongPage.css';
 import {styleCreateChildren} from './pages/admin/components/children/CreateChildren.css';
 import {StyleCreateScholarship} from './pages/admin/components/scholarship/CreateScholarship.css';
 import {StyleUpdateScholarship} from './pages/admin/components/scholarship/EditModal.css';
@@ -23,8 +24,10 @@ import {StyleCreateSponsor} from './pages/admin/components/sponsor/CreateSponsor
 import {StyleEditSponsor} from './pages/admin/components/sponsor/EditModalSponsor.css';
 import {StyleCreateBlog} from './pages/admin/components/blog/CreateBlog.css';
 import {StyleCreateYear} from './pages/admin/components/children/DialogHocTap.css';
-import {StyleBlogPage} from './pages/BlogPage.css'
-import {StylePreviewBlog} from './pages/admin/components/blog/PreviewNewBlog.css'
+import {StyleBlogPage} from './pages/BlogPage.css';
+import {StylePreviewBlog} from './pages/admin/components/blog/PreviewNewBlog.css';
+
+
 // import {Global} from './utils/global.css';
 // import axios from 'axios';
 // import { useEffect, useState } from "react";

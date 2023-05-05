@@ -43,7 +43,7 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar style={{ background: '#F9FAFB' }} position="static">
+    <AppBar style={{ background: 'rgb(255,255,255)' , boxShadow: 'none' }} position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           
@@ -52,9 +52,9 @@ function ResponsiveAppBar() {
             </div>
           
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }}}>
             <IconButton
-              mr="20"
+              mr="10"
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -83,7 +83,7 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={handleCloseNavMenu} >
                   <Typography style={{ color: '#103996' }} textAlign="center">
                     {page}
                   </Typography>
@@ -110,9 +110,9 @@ function ResponsiveAppBar() {
           >
             LOGO
           </Typography>
-          <Box style={{ color: '#103996' }} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box style={{ color: '#103996' }} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } , mx:'10'}}>
             {pages.map((page) => (
-              <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: '#103996', display: 'block' }}>
+              <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: '#103996', display: 'block', mx:'10' }}>
                 {page}
               </Button>
             ))}
@@ -130,7 +130,9 @@ function ResponsiveAppBar() {
           </Box>
         </Toolbar>
       </Container>
+      
     </AppBar>
+    
   );
 }
 export default ResponsiveAppBar;

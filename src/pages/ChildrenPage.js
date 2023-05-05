@@ -64,7 +64,11 @@ export default function ChildrenPage() {
       const url = `${process.env.REACT_APP_API_URL}/treem/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
+      console.log(data.data);
+      
       setChildrenList(data.data);
+      
+
       setTotal(data.total);
     } catch (err) {
       console.log(err);
@@ -90,7 +94,9 @@ export default function ChildrenPage() {
       try {
         const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}`;
         const { data } = await axios.get(url, { withCredentials: true });
+        
         setChildrenList(data.data);
+        
         setTotal(data.total);
       } catch (err) {
         console.log(err);
@@ -170,6 +176,7 @@ export default function ChildrenPage() {
       const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
+      
       setChildrenList(data.data);
       setTotal(data.total);
     } catch (err) {
@@ -222,14 +229,14 @@ export default function ChildrenPage() {
             Tất cả trẻ em
           </Typography>
           <div>
-          <Button
+            <Button
               className="buttonxuatexcel"
               startIcon={<Iconify icon="mdi:microsoft-excel" />}
               onClick={handleClickExportExcel}
             >
               Xuất Excel
             </Button>
-            
+
             <Button
               className="buttonthemtreem"
               variant="contained"
@@ -238,7 +245,6 @@ export default function ChildrenPage() {
             >
               Thêm mới
             </Button>
-
           </div>
         </Stack>
 
@@ -265,6 +271,8 @@ export default function ChildrenPage() {
                 {childrenList.map((row) => {
                   const { _id, hoTen, ngaySinh, truong, hoanCanh, donViBaoTro, namNhan, namHoanThanh, authStatus } =
                     row;
+                    
+                    
                   let trangthai = '';
                   console.log(hoanCanh);
                   if (authStatus === 'DeXuat') trangthai = 'Đề Xuất';
@@ -278,7 +286,7 @@ export default function ChildrenPage() {
                       onDoubleClick={(event) => handleRowClick(event, row)}
                       sx={{ cursor: 'pointer', width: '200px', height: '60px' }}
                     >
-                      <TableCell align="left">{hoTen}</TableCell>
+                      <TableCell align="left" >{hoTen}</TableCell>
 
                       <TableCell align="left">{moment(ngaySinh).format('DD/MM/YYYY')}</TableCell>
 
@@ -286,7 +294,7 @@ export default function ChildrenPage() {
                       <TableCell className="children__hoancanh" align="left">
                         {hoanCanh.length > 25 ? `${hoanCanh.slice(0, 25)}...` : hoanCanh}
                       </TableCell>
-                      <TableCell align="left">{donViBaoTro[0].tenDonVi}</TableCell>
+                      <TableCell align="left">{}</TableCell>
 
                       <TableCell align="left">{namNhan}</TableCell>
 
@@ -317,10 +325,10 @@ export default function ChildrenPage() {
                 )}
               </TableBody>
               <DeleteChildrenModal
-                  openDialogDelete={openDialogDelete}
-                  handleClose={handleCloseDelete}
-                  row={selectedRow}
-                />
+                openDialogDelete={openDialogDelete}
+                handleClose={handleCloseDelete}
+                row={selectedRow}
+              />
               {isNotFound && (
                 <TableBody>
                   <TableRow>

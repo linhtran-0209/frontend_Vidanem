@@ -1,0 +1,38 @@
+.title__hompage__one{
+    color: rgb(32,101,209);
+    margin-top: 80px;
+    padding-left: 80px;
+}
+.title__hompage__two{
+    color: rgb(32,101,209);
+    margin-top: 40px;
+    padding-left: 80px;
+}
+.divider__hompage{
+    height:1.5px;
+    background-color: black;
+    margin: 0px 80px;
+}
+.card{
+    display: flex;
+    justify-content: center;
+}
+.card__container{
+    margin: 40px 15px 25px 15px;
+    max-width: 300px;
+}
+.card__content{
+    min-height: 200px;
+}
+.card__container img{
+    width: 100%;
+    object-fit: cover;
+    height:140px;
+}
+.card__content h4{
+    color: rgb(32,101,209);;
+    margin: 5px;
+}
+.card__content h4:hover{
+    color: rgb(16,57,150)
+}

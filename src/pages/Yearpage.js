@@ -41,7 +41,7 @@ const TABLE_HEAD = [
   { id: 'bat_dau', label: 'Bắt đầu', alignRight: false },
   { id: 'ket_thuc', label: 'Kết thúc', alignRight: false },
   { id: 'nam_hien_tai', label: 'Năm hiện tại', alignRight: false },
-  { id: 'action', label: '', alignRight: false },
+  { id: 'action', label: 'Hành động', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------

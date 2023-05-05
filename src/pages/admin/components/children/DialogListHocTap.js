@@ -1,12 +1,4 @@
-import {
-  Alert,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  IconButton,
-  Card,
-} from '@mui/material';
+import { Alert, Button, Dialog, DialogActions, DialogContent, IconButton, Card } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { DialogHocTap } from './DialogHocTap';
@@ -54,8 +46,8 @@ export function DialogListHocTap(props) {
         </Alert>
       )}
 
-      <Dialog className="dialogcreateyear" open={props.openDialog} onClose={props.handleClose}>
-        <div className="titlecreateyear">
+      <Dialog className="dialogcreatehoctap" open={props.openDialog} onClose={props.handleClose}>
+        <div className="titlecreatehoctap">
           {' '}
           Thông tin học tập
           <IconButton onClick={props.handleClose}>
@@ -110,14 +102,15 @@ export function DialogListHocTap(props) {
         />
         <DialogActions>
           <Button
+            className="huythemhoctap"
             onClick={() => {
               setIsEdit(false);
               handleClickOpenDialog();
             }}
           >
-            Thêm
+            Hủy
           </Button>
-          <Button onClick={props.handleClose}>Đóng</Button>
+          <Button className="themhoctap" onClick={props.handleClose}>Cập nhật</Button>
         </DialogActions>
       </Dialog>
     </>

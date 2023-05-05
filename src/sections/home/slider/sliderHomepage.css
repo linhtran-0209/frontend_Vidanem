@@ -1,0 +1,33 @@
+.slider_one{
+    background-image: url(../../../assets/images/home/Slider1.png);
+   
+    width: 100%;
+    height: 500px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.slider_two{
+    background-image: url(../../../assets/images/home/Slider2.png);
+    width: 100%;
+    height: 500px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    object-fit: cover;
+}
+.slider_three{
+    background-image: url(../../../assets/images/home/Slider3.png);
+    width: 100%;
+    height: 500px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    object-fit: cover;
+}
+
+/* .slick-dots li{
+    height: 30px;
+    width: 30px;
+}
+.slick-dots li button::before{
+    height: 50px;
+    width: 50px;
+} */

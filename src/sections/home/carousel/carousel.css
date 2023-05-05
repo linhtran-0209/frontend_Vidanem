@@ -1,0 +1,10 @@
+.title__hompage{
+    color: rgb(32,101,209);
+    margin-top: 50px;
+    padding-left: 80px;
+}
+.divider__hompage{
+    height:1.5px;
+    background-color: black;
+    margin: 0px 80px;
+}

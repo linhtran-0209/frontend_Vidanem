@@ -1,42 +1,43 @@
-.dialogcreateyear{
+.dialogcreatehoctap{
     margin-top: 80px;
 }
-.dialogcreateyear > div > div{
+.dialogcreatehoctap> div > div{
     border-radius: 0px;
   max-width: 600px;
   min-width: 600px;
 }
-.titlecreateyear{
+.titlecreatehoctap{
     display: flex;
     margin: 1rem 0rem 1rem 2.5rem;
     font-weight: 700;
     padding-top: 10px;
     font-size: 20px;
 }
-.titlecreateyear > button{
-    margin-left: 20rem;
+.titlecreatehoctap > button{
+    margin-left: 20.5rem;
 }
-.titlecreateyear > button:hover{
-    margin-left: 20rem;
+.titlecreatehoctap > button:hover{
+    margin-left: 20.5rem;
   color: black;
   background-color: rgb(241, 84, 84);
 }
-.form__year{
+.form_info_hoctap{
     padding: 20px 15px;
 }
-.form__year__container{
+.form__info__hoctap__container{
+  display: flex;
     
 }
-.form__year__container> .formcontrolcreateyear{
-    margin: 1rem 0 0rem 0rem;
-  min-width: 240px;
-  margin:5px 0px;
+.form__info__hoctap__container> .formcontrolcreatehoctap{
+    /* margin: 0rem 0 0rem 3rem; */
+  min-width: 160px;
+  margin:5px 10px 0px 10px;
 
 }
-.formcontrolcreateyear > div > div{
+.formcontrolcreatehoctap > div > div{
     border-radius: 0px;
 }
-.formcontrolcreateyear > div{
+.formcontrolcreatehoctap > div{
     border-radius: 0px;
   background-color: aliceblue;
 }
@@ -44,46 +45,84 @@
     height: 3px;
     background: linear-gradient(blue, 20%, pink);
   }
-.formcontrol__hoancanh >textarea{
-    border-radius: 0px;
+  .container__hoctap__hoancanh{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
- .capnhat {
+
+
+.formcontrol__hoctap__hoancanh{
+    width: 660px;
+    margin: 0px 10px;
+}
+.formcontrol__hoctap__hoancanh >textarea{
+    padding: 10px 15px;
+    height:92px;
+    line-height: 1.4375em;
+    font-size: 1rem;
+    font-family: Public Sans,sans-serif;
+    font-weight: 400;
+    /* margin-top: 18px;
+    margin-bottom: 4px; */
+   
+    width: 100%;
+    color: #637381;
+    box-sizing: border-box;
+    cursor: text;
+    border-color: rgba(145, 158, 171, 0.32);
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    
+}
+.formcontrol__hoctap__hoancanh >textarea:hover{
+    border-color: black;
+}
+.formcontrol__hoctap__hoancanh >textarea:focus-visible{
+  outline-color : rgb(4, 103, 210);
+}
+
+
+.huythemhoctap {
   border-radius: 0px;
-  margin-right: 30px;
+  margin-right: 15px;
   margin-bottom: 13px;
   border: 2px solid rgb(28, 28, 165);
   background-color: rgb(28, 28, 165);
   padding: 4px 12px;
   color: #ffff;
   height: 40px;
-  width: 150px;
+  width: 80px;
 }
-.capnhat:hover {
+.huythemhoctap:hover {
+  border-radius: 0px;
+  margin-right: 15px;
+  margin-bottom: 13px;
+  border: 2px solid rgb(230, 41, 41);
+  background-color: rgb(230, 41, 41);
+  padding: 4px 12px;
+  color: #ffff;
+  height: 40px;
+  width: 80px;
+}
+.themhoctap {
+  border-radius: 0px;
+  margin-right: 20px;
+  margin-bottom: 13px;
+  border: 2px solid rgb(28, 28, 165);
+  background-color: rgb(28, 28, 165);
+  padding: 4px 12px;
+  color: #ffff;
+  height: 40px;
+  width: 160px;
+}
+.themhoctap:hover {
   border-radius: 0px;
   border: 2px solid rgb(34, 34, 139);
   background-color: rgb(34, 34, 139);
   padding: 4px 12px;
   color: #ffff;
   height: 40px;
-  width: 150px;
+  width: 160px;
 }
-  .themnamhoc {
-    border-radius: 0px;
-    margin-right: 30px;
-    margin-bottom: 13px;
-    border: 2px solid rgb(28, 28, 165);
-    background-color: rgb(28, 28, 165);
-    padding: 4px 12px;
-    color: #ffff;
-    height: 40px;
-    width: 150px;
-  }
-  .themnamhoc:hover {
-    border-radius: 0px;
-    border: 2px solid rgb(34, 34, 139);
-    background-color: rgb(34, 34, 139);
-    padding: 4px 12px;
-    color: #ffff;
-    height: 40px;
-    width: 150px;
-  }

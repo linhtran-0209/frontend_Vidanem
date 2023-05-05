@@ -1,0 +1,37 @@
+
+.counter{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 40px;
+    background-color: rgb(44,49,146);
+    min-height: 180px;
+
+}
+.counter__container{
+    text-align: center;
+    padding: 10px 40px;
+    font-size: 2rem;
+    color: aliceblue;
+}
+.counter__content{
+    font-size: 4rem;
+    display: flex;
+    justify-content: center;
+   
+    /* padding: 40px; */
+    margin: 40px 50px 10px 50px;
+    color: aliceblue;
+}
+.title__count{
+    margin: 20px 0px;
+}
+.icon{
+    font-size: 5.5rem;
+    color: aliceblue;
+    margin-right: 10px;
+}
+

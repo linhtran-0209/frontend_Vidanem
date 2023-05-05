@@ -829,9 +829,10 @@ export default function EditChildren() {
                     );
                   })}
                 <div style={{ textAlign: 'center' }}>
-                  <button className="button_show_more" onClick={handleClickOpenDialogList}>
+                  
+                  <Button variant="contained" color="primary" component="span" onClick={handleClickOpenDialogList}>
                     Xem tất cả
-                  </button>
+                  </Button>
                 </div>
               </FormControl>
             </div>

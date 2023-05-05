@@ -50,7 +50,7 @@
 }
 
 .formcontrol__hoancanh{
-    width: 670px;
+    width: 665px;
 }
 .formcontrol__hoancanh >textarea{
     padding: 10px 15px;
@@ -71,11 +71,11 @@
     border-width: 1px;
     
 }
-.formcontrol__hoancanh >textarea::after{
-    border-color: blue;
+.formcontrol__hoancanh >textarea:hover{
+    border-color: black;
 }
-.formcontrol__hoancanh >textarea::before{
-    border-color: blue;
+.formcontrol__hoancanh >textarea:focus-visible{
+    outline-color : rgb(4, 103, 210);
 }
 
 .Card {

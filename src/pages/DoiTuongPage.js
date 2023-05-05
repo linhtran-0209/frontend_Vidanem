@@ -37,9 +37,9 @@ import { DeleteModal } from './admin/components/doiTuong/DeleteModal';
 
 const TABLE_HEAD = [
   { id: 'ma', label: 'Mã', alignRight: false },
-  { id: 'ten', label: 'Tên', alignRight: false },
+  { id: 'ten', label: 'Đối tượng', alignRight: false },
   { id: 'so_luong', label: 'Số lượng', alignRight: false },
-  { id: 'action', label: '', alignRight: false },
+  { id: 'action', label: 'Hành động', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -145,7 +145,7 @@ export default function DoiTuongPage() {
       <Container style={{ marginTop: -10 }}>
         <Stack style={{ marginBottom: 16 }} direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Năm học
+            Diện hỗ trợ học tập
           </Typography>
           <Button
             className="buttonThemMoi"
@@ -177,27 +177,27 @@ export default function DoiTuongPage() {
                         onDoubleClick={(event) => handleRowClick(event, row)}
                         sx={{ cursor: 'pointer', width: '200px', height: '10px' }}
                       >
-                        <TableCell align="center" style={{}}>
+                        <TableCell align="left"  style={{ width: 180 }} sx={{ pl: 7 }}>
                           {ma}
                         </TableCell>
 
-                        <TableCell align="center" style={{ width: 350 }}>
+                        <TableCell align="left" style={{ width: 350 }} sx={{ pl:8 }} >
                           {ten}
                         </TableCell>
 
-                        <TableCell align="center" style={{ width: 350 }}>
+                        <TableCell align="left" style={{ width: 180 }} sx={{ px: 10 }}>
                           {soLuong}
                         </TableCell>
 
-                        <TableCell className="icon__scholarship__container">
+                        <TableCell className="icon__doituong__container">
                           <Tooltip title="Cập nhật">
-                            <MenuItem className="scholarship__update" onClick={(event) => handleRowClick(event, row)}>
+                            <MenuItem className="doituong__update" onClick={(event) => handleRowClick(event, row)}>
                               <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
                             </MenuItem>
                           </Tooltip>
                           <Tooltip title="Xóa">
                             <MenuItem
-                              className="scholarship__delete"
+                              className="doituong__delete"
                               sx={{ color: 'error.main' }}
                               onClick={(event) => handleDeleteClick(row)}
                             >

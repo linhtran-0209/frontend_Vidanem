@@ -95,8 +95,8 @@ export function DialogHocTap(props) {
         </Alert>
       )}
 
-      <Dialog className="dialogcreateyear" open={props.openDialogCreate} onClose={props.handleClose}>
-        <div className="titlecreateyear">
+      <Dialog className="dialogcreatehoctap" open={props.openDialogCreate} onClose={props.handleClose}>
+        <div className="titlecreatehoctap">
           {' '}
           Thông tin học tập
           <IconButton onClick={props.handleClose}>
@@ -106,9 +106,9 @@ export function DialogHocTap(props) {
         <div className="divider" />
 
         {props.isEdit ? (
-          <DialogContent className="form_year">
-            <div className="form__year__container">
-              <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
+          <DialogContent className="form_info_hoctap">
+            <div className="form__info__hoctap__container">
+              <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Năm học</InputLabel>
                 <Select onChange={handleChangeNamHoc} label="Năm học" value={selectedNamHoc} fullWidth margin="dense">
                   {YearsList.map((option) => (
@@ -118,7 +118,7 @@ export function DialogHocTap(props) {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
+              <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Học kỳ</InputLabel>
                 <Select onChange={handleChangeHocKy} label="Năm học" value={selectedHocKy} fullWidth margin="dense">
                     <MenuItem key={'HK1'} value={'Học Kỳ 1'} label={'Học Kỳ 1'}>
@@ -130,7 +130,7 @@ export function DialogHocTap(props) {
                 </Select>
               </FormControl>
 
-              <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
+              <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Học lực</InputLabel>
                 <Select onChange={handleChangeHocLuc} label="Năm học" value={selectedHocLuc} fullWidth margin="dense">
                     <MenuItem key={'gioi'} value={'Giỏi'} label={'Giỏi'}>
@@ -147,8 +147,9 @@ export function DialogHocTap(props) {
                     </MenuItem>
                 </Select>
               </FormControl>
-              <div className="container__hoancanh">
-                <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
+              </div>
+              <div className="container__hoctap__hoancanh">
+                <FormControl className="formcontrol__hoctap__hoancanh" variant="standard" fullWidth>
                   <label label="Thành tích *" htmlFor="thanh-tich" style={{ marginTop: 15 }}>
                     Thành tích
                   </label>
@@ -163,12 +164,12 @@ export function DialogHocTap(props) {
                   />
                 </FormControl>
               </div>
-            </div>
+            
           </DialogContent>
         ) : (
-          <DialogContent className="form_year">
-            <div className="form__year__container">
-              <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
+          <DialogContent className="form_info_hoctap">
+            <div className="form__info__hoctap__container">
+              <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
                 <InputLabel id="demo-simple-select-standard-label">Năm học</InputLabel>
                 <Select onChange={handleChangeNamHoc} value={selectedNamHoc} label="Năm học" fullWidth margin="dense">
                   {YearsList.map((option) => (
@@ -178,7 +179,7 @@ export function DialogHocTap(props) {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
+              <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Học kỳ</InputLabel>
                 <Select onChange={handleChangeHocKy} label="Năm học" fullWidth margin="dense">
                     <MenuItem key={'HK1'} value={'Học Kỳ 1'} label={'Học Kỳ 1'}>
@@ -190,7 +191,7 @@ export function DialogHocTap(props) {
                 </Select>
               </FormControl>
 
-              <FormControl className="formcontrolcreateyear" variant="outlined" fullWidth>
+              <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
               <InputLabel id="demo-simple-select-standard-label">Học lực</InputLabel>
                 <Select onChange={handleChangeHocLuc} label="Năm học" fullWidth margin="dense">
                     <MenuItem key={'gioi'} value={'Giỏi'} label={'Giỏi'}>
@@ -207,8 +208,9 @@ export function DialogHocTap(props) {
                     </MenuItem>
                 </Select>
               </FormControl>
-              <div className="container__hoancanh">
-                <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
+              </div>
+              <div className="container__hoctap__hoancanh">
+                <FormControl className="formcontrol__hoctap__hoancanh" variant="standard" fullWidth>
                   <label label="Thành tích *" htmlFor="thanh-tich" style={{ marginTop: 15 }}>
                     Thành tích
                   </label>
@@ -222,12 +224,12 @@ export function DialogHocTap(props) {
                   />
                 </FormControl>
               </div>
-            </div>
+            
           </DialogContent>
         )}
         <DialogActions>
-          <Button onClick={props.handleClose}>Hủy</Button>
-          <Button onClick={handleSubmit}>{props.isEdit ? 'Cập nhật' : 'Thêm'}</Button>
+          <Button className="huythemhoctap" onClick={props.handleClose}>Hủy</Button>
+          <Button className="themhoctap" onClick={handleSubmit}>{props.isEdit ? 'Cập nhật' : 'Thêm'}</Button>
         </DialogActions>
       </Dialog>
     </>
