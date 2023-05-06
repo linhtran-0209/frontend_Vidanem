@@ -62,9 +62,8 @@ export default function ChildrenPage() {
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       console.log(data.data);
-      
+
       setChildrenList(data.data);
-      
 
       setTotal(data.total);
     } catch (err) {
@@ -83,21 +82,36 @@ export default function ChildrenPage() {
   const [childrenList, setChildrenList] = useState([]);
   const [trangThai, setTrangThai] = useState('');
   const [quan, setQuan] = useState('');
+  const [doiTuong, setDoiTuong] = useState('');
   const [phuong, setPhuong] = useState('');
   const [openWards, setOpenWards] = useState([]);
 
   const handleSearch = async (event) => {
     if (event.key === 'Enter' || !event.key) {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}`;
+        const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&doituong=${doiTuong}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}`;
         const { data } = await axios.get(url, { withCredentials: true });
-        
+
         setChildrenList(data.data);
-        
+
         setTotal(data.total);
       } catch (err) {
         console.log(err);
       }
+    }
+  };
+
+  const handleChangeDoiTuong = async (event) => {
+    console.log(event.target.value);
+    setDoiTuong(event.target.value);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&doituong=${event.target.value}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setChildrenList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -113,7 +127,7 @@ export default function ChildrenPage() {
       }
     } else setPhuong('');
     try {
-      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${event.target.value}&trang_thai=${trangThai}`;
+      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&doituong=${doiTuong}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${event.target.value}&trang_thai=${trangThai}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setChildrenList(data.data);
@@ -173,7 +187,7 @@ export default function ChildrenPage() {
       const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
-      
+
       setChildrenList(data.data);
       setTotal(data.total);
     } catch (err) {
@@ -196,10 +210,6 @@ export default function ChildrenPage() {
 
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
-  };
-
-  const handleFilterNamNhan = (event) => {
-    setFilterNamNhan(event.target.value);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - childrenList.length) : 0;
@@ -248,9 +258,9 @@ export default function ChildrenPage() {
         <Card sx={{ boxShadow: 3 }}>
           <ChildrenToolbar
             filterName={filterName}
-            filterNamNhan={filterNamNhan}
+            doiTuong={doiTuong}
             onFilterName={handleFilterByName}
-            onFilterNamNhan={handleFilterNamNhan}
+            handleChangeDoiTuong={handleChangeDoiTuong}
             quan={quan}
             handleChangeQuan={handleChangeQuan}
             openWards={openWards}
@@ -268,8 +278,7 @@ export default function ChildrenPage() {
                 {childrenList.map((row) => {
                   const { _id, hoTen, ngaySinh, truong, hoanCanh, donViBaoTro, namNhan, namHoanThanh, authStatus } =
                     row;
-                    
-                    
+
                   let trangthai = '';
                   console.log(hoanCanh);
                   if (authStatus === 'DeXuat') trangthai = 'Đề Xuất';
@@ -283,7 +292,7 @@ export default function ChildrenPage() {
                       onDoubleClick={(event) => handleRowClick(event, row)}
                       sx={{ cursor: 'pointer', width: '200px', height: '60px' }}
                     >
-                      <TableCell align="left" >{hoTen}</TableCell>
+                      <TableCell align="left">{hoTen}</TableCell>
 
                       <TableCell align="left">{moment(ngaySinh).format('DD/MM/YYYY')}</TableCell>
 

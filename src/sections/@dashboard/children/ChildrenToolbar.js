@@ -44,8 +44,8 @@ ChildrenToolbar.propTypes = {
 export default function ChildrenToolbar({
   filterName,
   onFilterName,
-  filterNamNhan,
-  onFilterNamNhan,
+  doiTuong,
+  handleChangeDoiTuong,
   quan,
   handleChangeQuan,
   openWards,
@@ -59,6 +59,7 @@ export default function ChildrenToolbar({
 }) {
   const [openDistricts, setOpenDistricts] = useState([]);
   const [SPONSERLIST, setSPONSERLIST] = useState([]);
+  const [listDoiTuong, setListDoiTuong] = useState([]);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
@@ -81,9 +82,22 @@ export default function ChildrenToolbar({
   }, []);
   const getSponsor = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
+      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?all=true`;
       const { data } = await axios.get(url, { withCredentials: true });
       setSPONSERLIST(data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getDoiTuong();
+  }, []);
+  const getDoiTuong = async () => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/doituong/getAll?all=true`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      setListDoiTuong(data.data);
     } catch (err) {
       console.log(err);
     }
@@ -109,7 +123,7 @@ export default function ChildrenToolbar({
         }
       />
 
-      <StyledSearch
+      {/* <StyledSearch
         sx={{ height: 40, width: 150, marginRight: '16px' }}
         className="search__user"
         value={filterNamNhan}
@@ -122,7 +136,19 @@ export default function ChildrenToolbar({
             <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
           </InputAdornment>
         }
-      />
+      /> */}
+
+      <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
+        <InputLabel id="demo-simple-select-standard-label">Đối tượng</InputLabel>
+        <Select labelId="doituong" id="doituong" value={doiTuong} onChange={handleChangeDoiTuong} label="Đối tượng" margin="dense">
+          <MenuItem value="">--------------Chọn Đối tượng-----------------</MenuItem>
+          {listDoiTuong.map((item) => (
+            <MenuItem key={item._id} value={item._id}>
+              {item.ten}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
       <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
         <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>

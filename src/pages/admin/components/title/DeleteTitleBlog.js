@@ -9,14 +9,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
 import { Alert, IconButton } from '@mui/material';
 
-export function DeleteModal(props) {
+export function DeleteTitleBlog(props) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
 
   const handleSubmit = async () => {
     try {
       console.log(props.row._id);
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/delete`;
+      const url = `${process.env.REACT_APP_API_URL}/chude/delete`;
 
       axios
         .put(
@@ -63,7 +63,7 @@ export function DeleteModal(props) {
       >
         <div className="titledeleteuser">
           {' '}
-          Xóa đối tượng nhận bảo trợ
+          Xóa chủ đề
           <IconButton className onClick={props.handleClose}>
             <CloseIcon />
           </IconButton>
@@ -71,7 +71,7 @@ export function DeleteModal(props) {
         <div className="divider" />
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            <p>Bạn có thật sự muốn xóa đối tượng <b>{props.row.ten}</b>? </p>
+            <p>Bạn có thật sự muốn xóa chủ đề <b>{props.row.tenChuDe}</b>? </p>
             <p>
               Nếu bạn muốn xóa chọn <b>"Đồng ý"</b> và ngược lại.
             </p>
