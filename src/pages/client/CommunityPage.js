@@ -9,13 +9,9 @@ import { bgBlur } from '../../utils/cssStyles';
 import Navbar from '../../sections/home/nav/navbar';
 
 import Slider from '../../sections/home/slider/sliderHomepage';
-import {StyleSlider} from '../../sections/home/slider/sliderHomepage.css'
-// import Carousel from '../../sections/home/carousel/carousel'
-// import {StyleCarousel} from'../../sections/home/carousel/carousel.css';
-import Card from '../../sections/home/card/card';
-import {StyleCard} from'../../sections/home/card/card.css';
-import Couter from '../../sections/home/count/count';
-import {StyleCount} from '../../sections/home/count/count.css'
+import {StyleSlider} from '../../sections/home/slider/sliderHomepage.css';
+import InformChildren from "../../sections/community/informChildren/informchildren";
+import {StyleInformChildren} from '../../sections/community/informChildren/informchildren.css';
 import Contact from '../../sections/home/contact/contact';
 import {StyleContact} from "../../sections/home/contact/contact.css";
 import Footer from '../../sections/home/footer/footer';
@@ -50,8 +46,7 @@ export default function Homepage() {
       </StyledToolbar>
       <Slider />
       {/* <Carousel /> */}
-      <Card />
-      <Couter />
+      <InformChildren />
       <Contact />
       <Footer />
       </>

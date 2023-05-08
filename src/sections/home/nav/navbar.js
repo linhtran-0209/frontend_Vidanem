@@ -20,8 +20,10 @@ import * as logo from '../../../assets/images/home/header_logo_lg.png';
 // import Login from 'src/pages/LoginPage';
 
 const pages = ['Home', 'Giới thiệu', 'Vì Đàn Em', 'Cộng đồng', 'Bản đồ'];
+const pagess=['/homepage', '/communitypage', '/communitypage','/communitypage','/communitypage'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
+console.log(pagess);
 function ResponsiveAppBar() {
   const img = logo.default;
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -52,7 +54,7 @@ function ResponsiveAppBar() {
             </div>
           
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }}}>
+          {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }}}>
             <IconButton
               mr="10"
               size="large"
@@ -90,7 +92,7 @@ function ResponsiveAppBar() {
                 </MenuItem>
               ))}
             </Menu>
-          </Box>
+          </Box> */}
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
@@ -110,10 +112,13 @@ function ResponsiveAppBar() {
           >
             LOGO
           </Typography>
+          
           <Box style={{ color: '#103996' }} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } , mx:'10'}}>
             {pages.map((page) => (
-              <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: '#103996', display: 'block', mx:'10' }}>
+              <Button key={page}  onClick={handleCloseNavMenu} sx={{ my: 2, color: '#103996', display: 'block', mx:'10' }}>
+                
                 {page}
+                
               </Button>
             ))}
           </Box>

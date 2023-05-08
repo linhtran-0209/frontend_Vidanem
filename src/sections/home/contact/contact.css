@@ -1,0 +1,81 @@
+.contact {
+  display: flex;
+}
+.contact__left {
+  width: 400px;
+  margin: 60px 20px 60px 130px;
+ 
+}
+.contact__left img {
+  width: 250px;
+  height: 100px;
+}
+.contact__left h3 {
+  font-size: 30px;
+  font-weight: 700;
+  color: rgb(32, 101, 209);
+  margin-bottom: 0px;
+  margin-top: 16px;
+}
+.contact__left p {
+  color: rgb(32, 101, 209);
+  margin-top: 0px;
+  
+}
+.contact__center {
+  margin: 50px;
+  width: 350px;
+}
+.contact__center h3 {
+  font-size: 30px;
+  font-weight: 700;
+  color: rgb(32, 101, 209);
+  margin-bottom: 40px;
+}
+.contact__center span {
+  margin-left: 40px;
+}
+
+.contact__container {
+  display: flex;
+  margin-top: 20px;
+  /* justify-content:space-between; */
+}
+.contact__container p {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.contact__container .icon {
+  background-color: blue;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 3px;
+}
+.contact__right {
+  width: 350px;
+  margin: 40px;
+}
+.contact__right h3 {
+  font-size: 30px;
+  font-weight: 700;
+  color: rgb(32, 101, 209);
+  margin-bottom: 0px;
+}
+.contact__icon__social {
+  display: flex;
+}
+
+.contact__icon__social ul {
+  display: flex;
+  justify-content: flex-start;
+  list-style: none;
+}
+.contact__icon__social ul li{
+    margin: 5px;
+}
+.icon_contact{
+    height: 40px;
+    width: 40px;
+    color: rgb(32, 101, 209) ;
+}

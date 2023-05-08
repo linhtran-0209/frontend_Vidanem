@@ -1,14 +1,23 @@
-import React from 'react';
 
-// import logo from '../../../assets/images/home/header_logo_lg.png';
+import React from "react";
 
-import { BsFacebook, BsMessenger, BsLinkedin, BsTwitter, BsGlobe } from 'react-icons/bs';
+import { Grid } from "@mui/material";
 
-import { Grid } from '@mui/material';
-import PlaceIcon from '@mui/icons-material/Place';
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import CallIcon from '@mui/icons-material/Call';
-
-export default function Contact() {
-  return <div id="contact">..</div>;
+export default function Footer() {
+  return (
+    <div>
+      <Grid container className="footer">
+        <Grid className="footer__container" item xs={12} >
+        <div>
+            © Copyright <b>Thành đoàn thành phố Hồ Chí Minh</b>. All Rights Reserved
+          </div>
+          <div>
+            Designed by <b>Thành đoàn thành phố Hồ Chí Minh</b>
+          </div>
+        </Grid>
+      </Grid>
+    </div>
+  );
 }
+
+
