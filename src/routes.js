@@ -21,6 +21,7 @@ import DoiTuongPage from './pages/DoiTuongPage';
 import InsertChildren from './pages/admin/components/children/CreateChildren';
 import EditChildren from './pages/admin/components/children/EditChildren';
 import InsertBlog from './pages/admin/components/blog/CreateBlog';
+import EditBlog from './pages/admin/components/blog/EditBlog';
 import TitleBlog from './pages/TitleBlog';
 
 // import AccountPopover from './layouts/dashboard/header/AccountPopover';
@@ -29,7 +30,7 @@ import TitleBlog from './pages/TitleBlog';
 // ============================|| PROTECTED ||============================== //
 const Protected = ({ roles, children }) => {
   const checkRole = sessionStorage.getItem('role');
-  console.log(checkRole);
+
   // Redirect to home page if the user does not have permission
   if (!checkRole) {
     return <Navigate to="/login" replace />;
@@ -163,6 +164,14 @@ export default function Router() {
           element: (
             <Protected>
               <InsertBlog />
+            </Protected>
+          ),
+        },
+        {
+          path: '/dashboard/blog/edit/:id',
+          element: (
+            <Protected>
+              <EditBlog />
             </Protected>
           ),
         },

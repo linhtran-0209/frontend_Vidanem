@@ -77,7 +77,6 @@ export default function BlogPage() {
 
   const handleClickOpenCreate = () => {
     setOpenTitleBlogCreate(true);
-    console.log(openTitleBlogCreate);
   };
 
   const handleClose = () => {

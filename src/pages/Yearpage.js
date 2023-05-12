@@ -112,7 +112,6 @@ export default function YearPage() {
   const handleDeleteClick = (row) => {
     setSelectedRow(row);
     setOpenDialogDelete(true);
-    console.log(selectedRow);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - total) : 0;

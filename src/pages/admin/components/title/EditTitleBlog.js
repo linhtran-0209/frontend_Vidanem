@@ -17,7 +17,6 @@ export function EditTitleBlog(props) {
 
   const getTilte = async () => {
     try {
-      console.log(props.row);
       const url = `${process.env.REACT_APP_API_URL}/chude/byId?id=${props.row._id}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setTitle(data.data);

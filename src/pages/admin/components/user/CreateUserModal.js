@@ -54,7 +54,6 @@ export function CreateUserModal(props) {
       const { data } = await axios.get(url);
 
       setOpenDistricts(data.districts);
-      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -72,7 +71,6 @@ export function CreateUserModal(props) {
   };
 
   const handleChangePhuong = async (event) => {
-    console.log(openWards);
     setOpenPhuong(event.target.value);
   };
 
@@ -92,9 +90,9 @@ export function CreateUserModal(props) {
           { withCredentials: true }
         )
         .then((data) => {
-          console.log(data.data.message);
           setOpenSuccessMessage(data.data.message);
         });
+        props.handleClose();
     } catch (err) {
       console.log(err);
       setOpenErrMessage(err.response.data.message);
@@ -111,12 +109,12 @@ export function CreateUserModal(props) {
   return (
     <>
       {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
+        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 50, top: 150 }} severity="success">
           {openSuccessMessage}
         </Alert>
       )}
       {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
+        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 50, top: 150 }} severity="error">
           {openErrMessage}
         </Alert>
       )}

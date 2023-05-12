@@ -10,7 +10,6 @@ function Login() {
   // useEffect(() => {
   //   getUser();
   // }, []);
-  console.log(process.env.REACT_APP_API_URL);
   const googleAuth = () => {
     window.open(`${process.env.REACT_APP_API_URL}/auth/google`, '_self');
   };
@@ -49,9 +48,7 @@ function Login() {
               />
               <span>Đăng nhập với Google</span>
             </button>
-            <p className={styles.text}>
-              <Link to="">Bạn là quản trị viên ?</Link>
-            </p>
+
           </div>
         </div>
       </div>

@@ -14,7 +14,6 @@ export function ChangeActiveUserModal(props) {
   const [openErrMessage, setOpenErrMessage] = useState('');
 
   const handleSubmit = async () => {
-    console.log(props.row);
     try {
       const url = `${process.env.REACT_APP_API_URL}/account/changeActive`;
 
@@ -28,7 +27,6 @@ export function ChangeActiveUserModal(props) {
           { withCredentials: true }
         )
         .then((data) => {
-          console.log(data);
           setOpenSuccessMessage(data.data.message);
         });
       props.handleClose();

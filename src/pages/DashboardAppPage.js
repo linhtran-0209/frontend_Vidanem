@@ -36,9 +36,6 @@ export default function DashboardAppPage() {
         const url = `${process.env.REACT_APP_API_URL}/account/getAll`;
         const { data } = await axios.get(url, { withCredentials: true });
         setTotaluser(data.total);
-        // console.log((JSON.parse(data)).data.email);
-        console.log(data);
-        // console.log("data empty");
       } catch (err) {
         console.log(err);
       }
@@ -48,9 +45,6 @@ export default function DashboardAppPage() {
         const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
         const { data } = await axios.get(url, { withCredentials: true });
         setTotalsponser(data.total);
-        // console.log((JSON.parse(data)).data.email);
-        console.log(data);
-        // console.log("data empty");
       } catch (err) {
         console.log(err);
       }
@@ -60,9 +54,6 @@ export default function DashboardAppPage() {
         const url = `${process.env.REACT_APP_API_URL}/treem/getAll`;
         const { data } = await axios.get(url, { withCredentials: true });
         setTotalchildren(data.total);
-        // console.log((JSON.parse(data)).data.email);
-        console.log(data);
-        // console.log("data empty");
       } catch (err) {
         console.log(err);
       }

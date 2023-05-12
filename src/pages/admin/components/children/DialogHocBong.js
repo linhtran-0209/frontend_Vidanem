@@ -36,7 +36,6 @@ export function DialogHocBong(props) {
   }, []);
 
   useEffect(() => {
-    console.log(props.infoHocBong);
     const fetchData = async () => {
       if (Object.keys(props.infoHocBong).length > 0) {
         setHocBong(props.infoHocBong);
@@ -68,7 +67,6 @@ export function DialogHocBong(props) {
   };
 
   const handleSubmit = async () => {
-    console.log(props.isEdit);
     if (props.isEdit) {
       props.handleCickEdit(hocBong);
     } else props.handleCickAdd(hocBong);

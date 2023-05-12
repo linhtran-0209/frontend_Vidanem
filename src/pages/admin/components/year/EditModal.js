@@ -38,7 +38,6 @@ export function EditModal(props) {
       const url = `${process.env.REACT_APP_API_URL}/namhoc/byId?id=${props.row._id}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setYear(data.data);
-      console.log(moment(data.data.batDau));
       setSelectedDateBatDau(moment(data.data.batDau));
       setSelectedDateKetThuc(moment(data.data.ketThuc));
       setIsChecked(data.data.namHienTai)
@@ -48,13 +47,11 @@ export function EditModal(props) {
   };
 
   const handleDateBatDauChange = (date) => {
-    console.log(date);
     setSelectedDateBatDau(date);
     setYear({ ...year, batDau: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
   };
 
   const handleDateKetThucChange = (date) => {
-    console.log(date);
     setSelectedDateKetThuc(date);
     setYear({ ...year, ketThuc: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
   };

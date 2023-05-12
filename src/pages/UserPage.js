@@ -69,8 +69,6 @@ export default function UserPage() {
     try {
       const url = `${process.env.REACT_APP_API_URL}/account/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
-      // const  parse=data.data.email;
-      // console.log(data.data);
       setUSERLIST(data.data);
       setTotal(data.total);
     } catch (err) {

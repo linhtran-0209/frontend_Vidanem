@@ -54,35 +54,34 @@ export function EditModal(props) {
   const handleChange = (e) => {
     setSelected(e.target.value);
     setScholarship({ ...scholarship, donViTaiTro: e.target.value });
-    console.log(selected);
   };
 
   const defaultSelectedValue = selected;
 
   const handleSubmit = async () => {
     try {
-      console.log(selected);
-      const url = `${process.env.REACT_APP_API_URL}/scholarship/update?id=${props.row._id}`;
+      const url = `${process.env.REACT_APP_API_URL}/scholarship/update`;
 
-      // await axios
-      //   .post(
-      //     url,
-      //     {
-      //       maHocBong: scholarship.maHocBong,
-      //       tenHocBong: scholarship.tenHocBong,
-      //       donViTaiTro: scholarship.donViTaiTro,
-      //       soLuong: scholarship.soLuong,
-      //       soTien: scholarship.soTien,
-      //       hinhThuc: scholarship.hinhThuc,
-      //       ghiChu: scholarship.ghiChu,
-      //     },
-      //     { withCredentials: true }
-      //   )
-      //   .then((res) => {
-      //     if (res.status === 200) {
-      //       setOpenSuccessMessage(res.data.message);
-      //     } else setOpenErrMessage(res.data.message);
-      //   });
+      await axios
+        .put(
+          url,
+          {
+            id: props.row._id,
+            maHocBong: scholarship.maHocBong,
+            tenHocBong: scholarship.tenHocBong,
+            donViTaiTro: scholarship.donViTaiTro,
+            soLuong: scholarship.soLuong,
+            soTien: scholarship.soTien,
+            hinhThuc: scholarship.hinhThuc,
+            ghiChu: scholarship.ghiChu,
+          },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            setOpenSuccessMessage(res.data.message);
+          } else setOpenErrMessage(res.data.message);
+        });
       // props.handleClose();
     } catch (err) {
       console.log(err);
@@ -90,18 +89,17 @@ export function EditModal(props) {
   };
   return (
     <>
+      <Dialog className='dialogupdatescholarship' open={props.setOpenDialogEdit} onClose={props.handleClose}>
       {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
+        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 50, top: 150 }} severity="success">
           {openSuccessMessage}
         </Alert>
       )}
       {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
+        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 50, top: 150 }} severity="error">
           {openErrMessage}
         </Alert>
       )}
-
-      <Dialog className='dialogupdatescholarship' open={props.setOpenDialogEdit} onClose={props.handleClose}>
       <div className="titleupdatescholarship">
           {' '}
           Cập nhật học bổng

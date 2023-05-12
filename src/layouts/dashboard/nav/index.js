@@ -72,7 +72,9 @@ export default function Nav({ openNav, onCloseNav }) {
       }}
     >
       <div style={{ margin: 10 }}>
-        <img src={img} alt="ima" />
+        <a href="/">
+          <img src={img} alt="ima" />
+        </a>
       </div>
 
       <Box sx={{ mx: 2.5 }}>
@@ -86,7 +88,13 @@ export default function Nav({ openNav, onCloseNav }) {
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {role === 3 ? 'Cấp Liên Đội' : (role === 2 ? 'Hội đồng Đội quận, huyện' : (role ===1 ? 'Hội đồng Đội Thành phố' : '')) }
+                {role === 3
+                  ? 'Cấp Liên Đội'
+                  : role === 2
+                  ? 'Hội đồng Đội quận, huyện'
+                  : role === 1
+                  ? 'Hội đồng Đội Thành phố'
+                  : ''}
               </Typography>
             </Box>
           </StyledAccount>

@@ -60,7 +60,6 @@ export function DialogListHocTap(props) {
             return (
               <Card
                 onDoubleClick={() => {
-                  // console.log(index, hocTap[index]);
                   setIsEdit(true);
                   setInfoHocTap(hocTap[index]);
                   handleClickOpenDialog();

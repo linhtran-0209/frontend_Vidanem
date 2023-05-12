@@ -26,7 +26,6 @@ export function DeleteUserModal(props) {
           { withCredentials: true }
         )
         .then((data) => {
-          console.log(data);
           setOpenSuccessMessage(data.data.message);
         });
       props.handleClose();
@@ -44,12 +43,12 @@ export function DeleteUserModal(props) {
   return (
     <>
       {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 100, top: 150 }} severity="success">
+        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 50, top: 150 }} severity="success">
           {openSuccessMessage}
         </Alert>
       )}
       {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 500000, right: 100 }} severity="error">
+        <Alert style={{ position: 'fixed', zIndex: 500000, right: 80 }} severity="error">
           {openErrMessage}
         </Alert>
       )}

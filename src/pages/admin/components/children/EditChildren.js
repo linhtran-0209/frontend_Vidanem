@@ -76,7 +76,6 @@ export default function EditChildren() {
   }, [openErrMessage, openSuccessMessage]);
 
   const handleDateChange = (date) => {
-    console.log(date);
     setSelectedDate(date);
     setTreEm({ ...treEm, ngaySinh: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
   };
@@ -116,7 +115,6 @@ export default function EditChildren() {
   };
 
   const handleCickAddHocBong = (hocbong) => {
-    console.log(hocbong);
     const newId = uuidv4();
     setHocBong([{ ...hocbong, _id: `temp${newId}` }, ...hocBong]);
     sethocBongNew([...hocBongNew, { ...hocbong, _id: `temp${newId}` }]);
@@ -150,8 +148,6 @@ export default function EditChildren() {
   };
 
   const handleCickEditHocBong = (hocbong) => {
-    console.log(hocbong);
-
     const hocbongs = [...hocBong];
     hocbongs[selectedHocBongIndex] = hocbong;
     setHocBong(hocbongs);
@@ -180,7 +176,6 @@ export default function EditChildren() {
 
   const handleCloseDialogHocBong = () => {
     setOpenDialogHocBong(false);
-    // console.log(hocTap);
   };
 
   const getHocTap = async (treem) => {
@@ -264,7 +259,6 @@ export default function EditChildren() {
       // Phần tử không tồn tại trong mảng
       setImagesEdit([...imagesEdit, { _id: previews[selectedImageIndex]._id, image: file }]);
     }
-    console.log({ id: previews[selectedImageIndex]._id, image: file });
   };
 
   const handleClickOpenDialogListDoiTuong = () => {
@@ -275,7 +269,6 @@ export default function EditChildren() {
   };
 
   const handleAddDoiTuong = (doituongs) => {
-    console.log(doituongs);
     setNewDoiTuong(doituongs);
   };
 
@@ -294,7 +287,6 @@ export default function EditChildren() {
   };
 
   const handleCickAdd = (hoctap) => {
-    console.log(hoctap);
     const newId = uuidv4();
     setHocTap([{ ...hoctap, _id: `temp${newId}` }, ...hocTap]);
     sethocTapNew([...hocTapNew, { ...hoctap, _id: `temp${newId}` }]);
@@ -310,7 +302,6 @@ export default function EditChildren() {
       });
     }
 
-    console.log(hocTapEdit);
     const indexHocTapEdit = hocTapEdit.findIndex((hoctap) => hoctap._id === hocTap[index]._id);
     if (indexHocTapEdit !== -1) {
       setHocTapEdit((hoctap) => {
@@ -329,7 +320,6 @@ export default function EditChildren() {
   };
 
   const handleCickEditHocTap = (hoctap) => {
-    console.log(hoctap);
     const hoctaps = [...hocTap];
     hoctaps[selectedHocTapIndex] = hoctap;
     setHocTap(hoctaps);
@@ -375,7 +365,7 @@ export default function EditChildren() {
             namNhan: treEm.namNhan,
             namHoanThanh: treEm.namHoanThanh,
             hoanCanh: treEm.hoanCanh,
-            doiTuong: newDoiTuong.map(doituong => doituong._id)
+            doiTuong: newDoiTuong.map((doituong) => doituong._id),
           },
           { withCredentials: true }
         )
@@ -383,40 +373,37 @@ export default function EditChildren() {
           if (result.status === 200) {
             setOpenSuccessMessage(result.data.message);
           } else setOpenErrMessage(result.data.message);
-          console.log(result.data.message);
         });
     }
     // Cập nhật nếu thêm đối tượng mới
-    newDoiTuong.forEach(async(doituong) => {
+    newDoiTuong.forEach(async (doituong) => {
       if (!oldDoiTuong.find((item) => item._id === doituong._id)) {
         const url = `${process.env.REACT_APP_API_URL}/doituong/updateQuantity`;
-        await axios
-        .put(
+        await axios.put(
           url,
           {
             id: doituong._id,
-            change: 'increase'
+            change: 'increase',
           },
           { withCredentials: true }
-        )
+        );
       }
-    }) 
+    });
 
-        // Cập nhật nếu xóa đối tượng cũ
-        oldDoiTuong.forEach(async(doituong) => {
-          if (!newDoiTuong.find((item) => item._id === doituong._id)) {
-            const url = `${process.env.REACT_APP_API_URL}/doituong/updateQuantity`;
-            await axios
-            .put(
-              url,
-              {
-                id: doituong._id,
-                change: 'decrease'
-              },
-              { withCredentials: true }
-            )
-          }
-        }) 
+    // Cập nhật nếu xóa đối tượng cũ
+    oldDoiTuong.forEach(async (doituong) => {
+      if (!newDoiTuong.find((item) => item._id === doituong._id)) {
+        const url = `${process.env.REACT_APP_API_URL}/doituong/updateQuantity`;
+        await axios.put(
+          url,
+          {
+            id: doituong._id,
+            change: 'decrease',
+          },
+          { withCredentials: true }
+        );
+      }
+    });
 
     // Lưu hình ảnh
     if (images.length > 0) {
@@ -433,13 +420,9 @@ export default function EditChildren() {
         });
       });
     }
-    console.log(imagesEdit.length);
     if (imagesEdit.length > 0) {
-      console.log(1);
       imagesEdit.forEach(async (image) => {
-        console.log(2);
         if (image._id.includes('temp')) {
-          console.log(3);
           const urlHinhAnh = `${process.env.REACT_APP_API_URL}/hinhanh/insert`;
           const formData = new FormData();
           formData.append('image', image.image);
@@ -451,7 +434,6 @@ export default function EditChildren() {
             withCredentials: true,
           });
         } else {
-          console.log(image.image);
           const urlHinhAnh = `${process.env.REACT_APP_API_URL}/hinhanh/update`;
           const formData = new FormData();
           formData.append('image', image.image);
@@ -581,9 +563,6 @@ export default function EditChildren() {
         }
       });
     }
-    console.log(hocBongNew);
-    console.log(hocBongEdit);
-    console.log(hocBongDelete);
   };
 
   const handleCloseDialogReason = () => {
@@ -592,35 +571,56 @@ export default function EditChildren() {
 
   const handleReject = async (reason) => {
     const url = `${process.env.REACT_APP_API_URL}/treem/reject`;
-    await axios.put(
-      url,
-      {
-        id: treEm._id,
-        reasonReject: reason,
-      },
-      { withCredentials: true }
-    );
+    await axios
+      .put(
+        url,
+        {
+          id: treEm._id,
+          reasonReject: reason,
+        },
+        { withCredentials: true }
+      )
+      .then((result) => {
+        if (result.status === 200) {
+          setOpenSuccessMessage(result.data.message);
+        } else setOpenErrMessage(result.data.message);
+        setTreEm({ ...treEm, authStatus: 'TuChoi' });
+      });
   };
 
   const handleAccept = async () => {
     if (quyen === 2) {
       const url = `${process.env.REACT_APP_API_URL}/treem/approveLv2`;
-      await axios.put(
-        url,
-        {
-          id: treEm._id,
-        },
-        { withCredentials: true }
-      );
+      await axios
+        .put(
+          url,
+          {
+            id: treEm._id,
+          },
+          { withCredentials: true }
+        )
+        .then((result) => {
+          if (result.status === 200) {
+            setOpenSuccessMessage(result.data.message);
+          } else setOpenErrMessage(result.data.message);
+        });
+      setTreEm({ ...treEm, authStatus: 'ChoDuyet' });
     } else if (quyen === 1) {
       const url = `${process.env.REACT_APP_API_URL}/treem/approveLv1`;
-      await axios.put(
-        url,
-        {
-          id: treEm._id,
-        },
-        { withCredentials: true }
-      );
+      await axios
+        .put(
+          url,
+          {
+            id: treEm._id,
+          },
+          { withCredentials: true }
+        )
+        .then((result) => {
+          if (result.status === 200) {
+            setOpenSuccessMessage(result.data.message);
+          } else setOpenErrMessage(result.data.message);
+        });
+      setTreEm({ ...treEm, authStatus: 'DaDuyet' });
     } else alert('Không thể thực hiện chức năng này');
   };
 
@@ -847,85 +847,6 @@ export default function EditChildren() {
               </FormControl>
             </div>
 
-            {/* <div className="container__hoctap">
-              <FormControl className="formcontrol__inform" variant="outlined" fullWidth>
-                <div>
-                  <InputLabel id="demo-simple-select-standard-label">Đơn vị tài trợ</InputLabel>
-                  <Select
-                    onChange={handleChangeSponsor}
-                    label="Đơn vị tài trợ"
-                    value={selectedSponsor}
-                    fullWidth
-                    margin="dense"
-                  >
-                    <TextField
-                      placeholder="Tên đơn vị tài trợ..."
-                      value={search}
-                      onChange={(e) => {
-                        setSearch(e.target.value);
-                      }}
-                      fullWidth
-                      inputProps={{
-                        autoComplete: 'off',
-                      }}
-                    />
-
-                    {[{ _id: 'none', tenDonVi: 'Chọn đơn vị' }, ...SPONSERLIST]
-                      .filter((option) => option.tenDonVi.toLowerCase().includes(search))
-                      .map((option) => (
-                        <MenuItem key={option._id} value={option._id} label={option.tenDonVi}>
-                          {option.tenDonVi}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                </div>
-              </FormControl>
-              <FormControl className="formcontrol__inform" variant="outlined" fullWidth>
-                <div>
-                  <InputLabel id="demo-simple-select-standard-label">Học bổng</InputLabel>
-                  <Select
-                    onChange={handleChangeScholarship}
-                    label="Học bổng"
-                    value={selectedScholarship}
-                    fullWidth
-                    margin="dense"
-                  >
-                    {SCHOLARSHIPLIST.map((option) => (
-                      <MenuItem key={option._id} value={option._id} label={option.tenHocBong}>
-                        {option.tenHocBong}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </div>
-              </FormControl>
-            </div> */}
-            {/* <div className="container__donvi">
-              <FormControl className="formcontrol__inform" variant="standard" fullWidth>
-                <TextField
-                  htmlFor="demo-customized-textbox"
-                  margin="dense"
-                  id="donViBaoTro"
-                  value={treEm.namNhan || ''}
-                  label="Năm nhận *"
-                  onChange={(e) => setTreEm({ ...treEm, namNhan: e.target.value })}
-                  type="number"
-                  fullWidth
-                />
-              </FormControl>
-              <FormControl className="formcontrol__inform" variant="standard" fullWidth>
-                <TextField
-                  htmlFor="demo-customized-textbox"
-                  margin="dense"
-                  id="loaiBaoTro"
-                  label="Năm hoàn thành *"
-                  value={treEm.namHoanThanh || ''}
-                  onChange={(e) => setTreEm({ ...treEm, namHoanThanh: e.target.value })}
-                  type="number"
-                  fullWidth
-                />
-              </FormControl>
-            </div> */}
-
             <div className="container__hoancanh">
               <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
                 <div style={{ paddingTop: 15, mt: 3, paddingBottom: 15 }}>
@@ -1076,7 +997,6 @@ export default function EditChildren() {
                       <Card
                         fullWidth
                         onDoubleClick={() => {
-                          // console.log(index, hocTap[index]);
                           setSelectedHocTapIndex(index);
                           setIsEdit(true);
                           setInfoHocTap(hocTap[index]);
@@ -1108,12 +1028,11 @@ export default function EditChildren() {
                     );
                   })}
                 {hocTap.length > 2 && (
-                <div style={{ textAlign: 'center' }}>
-                  
-                <Button variant="contained" color="primary" component="span" onClick={handleClickOpenDialogList}>
-                  Xem tất cả
-                </Button>
-              </div>
+                  <div style={{ textAlign: 'center' }}>
+                    <Button variant="contained" color="primary" component="span" onClick={handleClickOpenDialogList}>
+                      Xem tất cả
+                    </Button>
+                  </div>
                 )}
               </FormControl>
             </div>
@@ -1149,15 +1068,22 @@ export default function EditChildren() {
             />
             <DialogReasonReject
               openDialog={openDialogReasonReject}
-              listHocTap={hocTap}
               handleReject={handleReject}
               handleClose={handleCloseDialogReason}
             />
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
               {quyen === 3 ? (
-                <LoadingButton type="submit" variant="contained" onClick={handleSubmit}>
-                  Cập nhật
-                </LoadingButton>
+                <>
+                  {treEm.authStatus === 'DaDuyet' ? (
+                    <LoadingButton type="submit" color='error' variant="contained" >
+                      Yêu cầu chỉnh sửa
+                    </LoadingButton>
+                  ) : (
+                    <LoadingButton type="submit" variant="contained" onClick={handleSubmit}>
+                      Cập nhật
+                    </LoadingButton>
+                  )}
+                </>
               ) : (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   {(treEm.authStatus === 'DeXuat' || (treEm.authStatus === 'ChoDuyet' && quyen === 1)) && (

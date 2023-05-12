@@ -26,7 +26,6 @@ export function DeleteChildrenModal(props) {
           { withCredentials: true }
         )
         .then((data) => {
-          console.log(data);
           setOpenSuccessMessage(data.data.message);
         });
       props.handleClose();

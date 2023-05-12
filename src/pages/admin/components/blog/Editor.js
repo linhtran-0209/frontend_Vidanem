@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ImageUploader from 'quill-image-uploader';
@@ -28,31 +29,27 @@ const modules = {
 
         // Handle selected image file
         input.onchange = async () => {
-            const file = input.files[0];
-            if (/^image\//.test(file.type)) {
-              const range = this.quill.getSelection(true);
-              const formData = new FormData();
-              formData.append('image', file);
-              try {
-                const response = await axios.post(
-                  `${process.env.REACT_APP_API_URL}/tintuc/hinhanh`,
-                  formData,
-                  {
-                    headers: {
-                      'Content-Type': 'multipart/form-data',
-                    },
-                    withCredentials: true,
-                  }
-                );
-                const imageUrl = response.data.data.duongDan;
-                this.quill.insertEmbed(range.index, 'image', imageUrl, 'user');
-              } catch (error) {
-                console.error('Error during file upload:', error);
-              }
-            } else {
-              console.warn('You could only upload images.');
+          const file = input.files[0];
+          if (/^image\//.test(file.type)) {
+            const range = this.quill.getSelection(true);
+            const formData = new FormData();
+            formData.append('image', file);
+            try {
+              const response = await axios.post(`${process.env.REACT_APP_API_URL}/tintuc/hinhanh`, formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+                withCredentials: true,
+              });
+              const imageUrl = response.data.data.duongDan;
+              this.quill.insertEmbed(range.index, 'image', imageUrl, 'user');
+            } catch (error) {
+              console.error('Error during file upload:', error);
             }
-          };
+          } else {
+            console.warn('You could only upload images.');
+          }
+        };
       },
     },
   },
@@ -69,14 +66,13 @@ const modules = {
             withCredentials: true,
           })
           .then((response) => {
-            console.log(response.data);
             if (response.status === 200) {
-              return response.data
+              return response.data;
             }
             throw new Error('Network response was not ok.');
           })
           .then((result) => {
-            console.log(result.data.duongDan);
+            localStorage.setItem('imageUrls', result.data.duongDan);
             resolve(`${process.env.REACT_APP_API_URL}${result.data.duongDan}`);
           })
           .catch((error) => {
@@ -86,10 +82,23 @@ const modules = {
       });
     },
   },
+
 };
 
-function Editor({ value, onChange }) {
-  return <ReactQuill theme="snow" value={value} onChange={onChange} modules={modules} />;
+function Editor({ value, onChange, handleImg }) {
+
+  useEffect(() => {
+    handleImg(localStorage.getItem('imageUrls'))
+  }, [localStorage.getItem('imageUrls')]);
+  
+  return (
+    <ReactQuill
+      theme="snow"
+      value={value}
+      onChange={onChange}
+      modules={modules}
+    />
+  );
 }
 
 export default Editor;

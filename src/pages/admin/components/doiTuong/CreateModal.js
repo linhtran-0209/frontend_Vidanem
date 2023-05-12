@@ -26,7 +26,6 @@ export function CreateModal(props) {
 
   const handleSubmit = async () => {
     try {
-      console.log(doiTuong);
       const url = `${process.env.REACT_APP_API_URL}/doituong/insert`;
       await axios
         .post(

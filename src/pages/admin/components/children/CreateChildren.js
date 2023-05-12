@@ -60,7 +60,6 @@ export default function InsertChildren() {
   }, [openErrMessage, openSuccessMessage]);
 
   const handleDateChange = (date) => {
-    console.log(date);
     setSelectedSponsorDate(date);
     setTreEm({ ...treEm, ngaySinh: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
   };
@@ -80,7 +79,6 @@ export default function InsertChildren() {
       }
       setPreview(selectedImages);
       setImages(images);
-      console.log(images);
     } else {
       alert('Bạn chỉ được chọn tối đa 4 ảnh!');
     }
@@ -127,7 +125,6 @@ export default function InsertChildren() {
   };
 
   const handleAddDoiTuong = (doituongs) => {
-    console.log(doituongs);
     setDoiTuong(doituongs);
   };
 
@@ -140,17 +137,14 @@ export default function InsertChildren() {
   };
 
   const handleCickAddHocBong = (hocbong) => {
-    console.log(hocbong);
     setHocBong([...hocBong, hocbong]);
   };
 
   const handleCickAddHocTap = (hoctap) => {
-    console.log(hoctap);
     setHocTap([...hocTap, hoctap]);
   };
 
   const handleCickEditHocTap = (hoctap) => {
-    console.log(hoctap);
     const hoctaps = [...hocTap];
     hoctaps[selectedHocTapIndex] = hoctap;
     setHocTap(hoctaps);
@@ -158,7 +152,6 @@ export default function InsertChildren() {
   };
 
   const handleCickEditHocBong = (hocbong) => {
-    console.log(hocbong);
     const hocbongs = [...hocBong];
     hocbongs[selectedHocBongIndex] = hocbong;
     setHocBong(hocbongs);
@@ -166,9 +159,6 @@ export default function InsertChildren() {
   };
 
   const handleSubmit = async () => {
-    // console.log(treEm);
-    // console.log(hocTap);
-    console.log(hocBong);
     const urlHocTap = `${process.env.REACT_APP_API_URL}/hoctap/insert`;
     const urlHocBong = `${process.env.REACT_APP_API_URL}/hocbongtreem/insert`;
     const urlHinhAnh = `${process.env.REACT_APP_API_URL}/hinhanh/insert`;
@@ -192,7 +182,6 @@ export default function InsertChildren() {
       if (images.length > 0) {
         images.forEach(async (image) => {
           const formData = new FormData();
-          // console.log(image);
           formData.append('image', image);
           formData.append('refId', result.data.id);
           await axios.post(urlHinhAnh, formData, {
@@ -526,7 +515,6 @@ export default function InsertChildren() {
                       <Card
                         fullWidth
                         onDoubleClick={() => {
-                          console.log(index, hocTap[index]);
                           setSelectedHocTapIndex(index);
                           setIsEdit(true);
                           setInfoHocTap(hocTap[index]);
