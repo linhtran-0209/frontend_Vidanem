@@ -52,18 +52,17 @@ export function CreateTitleModal(props) {
   }, [openErrMessage, openSuccessMessage]);
   return (
     <>
-      {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
-          {openSuccessMessage}
-        </Alert>
-      )}
-      {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
-          {openErrMessage}
-        </Alert>
-      )}
-
       <Dialog className="dialogcreatescholarship" open={props.openDialogCreate} onClose={props.handleClose}>
+        {openSuccessMessage && (
+          <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
+            {openSuccessMessage}
+          </Alert>
+        )}
+        {openErrMessage && (
+          <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
+            {openErrMessage}
+          </Alert>
+        )}
         <div className="titlecreatesholarship">
           {' '}
           Thêm chủ đề

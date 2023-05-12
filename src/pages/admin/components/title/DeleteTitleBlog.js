@@ -15,7 +15,6 @@ export function DeleteTitleBlog(props) {
 
   const handleSubmit = async () => {
     try {
-      console.log(props.row._id);
       const url = `${process.env.REACT_APP_API_URL}/chude/delete`;
 
       axios
@@ -27,7 +26,6 @@ export function DeleteTitleBlog(props) {
           { withCredentials: true }
         )
         .then((data) => {
-          console.log(data);
           setOpenSuccessMessage(data.data.message);
         });
       props.handleClose();

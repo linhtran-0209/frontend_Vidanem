@@ -56,14 +56,12 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar style={{ background: 'rgb(255,255,255)' , boxShadow: 'none' }} position="static">
+    <AppBar style={{ background: 'rgb(255,255,255)', boxShadow: 'none' }} position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          
-            <div style={{marginRight: 250}}>
-              <img style={{width: 200}} src={img} alt="ima" href="/"/>
-            </div>
-          
+          <div style={{ marginRight: 250 }}>
+            <img style={{ width: 200 }} src={img} alt="ima" href="/" />
+          </div>
 
           {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }}}>
             <IconButton
@@ -126,10 +124,12 @@ function ResponsiveAppBar() {
           
           {/* <Box style={{ color: '#103996' }} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } , mx:'10'}}>
             {pages.map((page) => (
-              <Button key={page}  onClick={handleCloseNavMenu} sx={{ my: 2, color: '#103996', display: 'block', mx:'10' }}>
-                
+              <Button
+                key={page}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: '#103996', display: 'block', mx: '10' }}
+              >
                 {page}
-                
               </Button>
             ))}
           </Box> */}
@@ -144,20 +144,23 @@ function ResponsiveAppBar() {
             </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Stack direction="row" spacing={2}>
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Stack direction="row" spacing={2}>
+                {sessionStorage.getItem('name') ? (
+                  <Button variant="contained" href="/dashboard/app">
+                    Quản lý
+                  </Button>
+                ) : (
                   <Button variant="contained" href="/login">
                     Đăng nhập
                   </Button>
-                </Stack>
-                
-              </IconButton>
+                )}
+              </Stack>
+            </IconButton>
           </Box>
         </Toolbar>
       </Container>
-      
     </AppBar>
-    
   );
 }
 export default ResponsiveAppBar;

@@ -29,7 +29,6 @@ export function DialogListDoiTuong(props) {
   useEffect(() => {
     if (props.listDoiTuong){
       const checked = [...props.listDoiTuong]
-      console.log(checked);
       const indexes = checked.map((checkedItem) => {
         return listDoiTuong.findIndex((listItem) => {
           return listItem._id === checkedItem._id;

@@ -61,7 +61,6 @@ export default function ChildrenPage() {
       const url = `${process.env.REACT_APP_API_URL}/treem/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
-      console.log(data.data);
 
       setChildrenList(data.data);
 
@@ -102,7 +101,6 @@ export default function ChildrenPage() {
   };
 
   const handleChangeDoiTuong = async (event) => {
-    console.log(event.target.value);
     setDoiTuong(event.target.value);
     try {
       const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&doituong=${event.target.value}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}`;
@@ -138,7 +136,6 @@ export default function ChildrenPage() {
   };
 
   const handleChangePhuong = async (event) => {
-    console.log(event.target.value);
     setPhuong(event.target.value);
     try {
       const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${event.target.value}&trang_thai=${trangThai}`;
@@ -280,7 +277,6 @@ export default function ChildrenPage() {
                     row;
 
                   let trangthai = '';
-                  console.log(hoanCanh);
                   if (authStatus === 'DeXuat') trangthai = 'Đề Xuất';
                   else if (authStatus === 'ChoDuyet') trangthai = 'Chờ Duyệt';
                   else if (authStatus === 'TuChoi') trangthai = 'Từ Chối';

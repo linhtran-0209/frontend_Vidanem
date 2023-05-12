@@ -152,7 +152,6 @@ export default function ScholarshipPage() {
   const handleDeleteClick = (row) => {
     setSelectedRow(row);
     setOpenDialogDelete(true);
-    console.log(selectedRow);
   };
 
   const handleFilterByName = (event) => {

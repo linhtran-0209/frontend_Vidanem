@@ -28,7 +28,6 @@ export function CreateModal(props) {
 
   const handleSubmit = async () => {
     try {
-      console.log(year);
       const url = `${process.env.REACT_APP_API_URL}/namhoc/insert`;
       await axios
         .post(
@@ -44,19 +43,18 @@ export function CreateModal(props) {
         .then((data) => {
           setOpenSuccessMessage(data.data.message);
         });
+        props.handleClose();
     } catch (err) {
       setOpenErrMessage(err.response.data.message);
     }
   };
 
   const handleDateBatDauChange = (date) => {
-    console.log(date);
     setSelectedDateBatDau(date);
     setYear({ ...year, batDau: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
   };
 
   const handleDateKetThucChange = (date) => {
-    console.log(date);
     setSelectedDateKetThuc(date);
     setYear({ ...year, ketThuc: moment(date).format('YYYY-MM-DDTHH:mm:ss.sssZ') });
   };

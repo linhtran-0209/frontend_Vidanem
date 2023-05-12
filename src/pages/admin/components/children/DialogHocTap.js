@@ -22,7 +22,6 @@ export function DialogHocTap(props) {
   const [selectedHocLuc, setSelectedHocLuc] = useState(null);
 
   const handleSubmit = async () => {
-    console.log(hocTap);
     if (props.isEdit) {
       props.handleCickEdit(hocTap);
     } else props.handleCickAdd(hocTap);
@@ -46,7 +45,6 @@ export function DialogHocTap(props) {
       const { data } = await axios.get(url, { withCredentials: true });
       setYearsList(data.data);
       const namHienTai = data.data.find((nam) => nam.namHienTai === true);
-      console.log(namHienTai);
       if (!props.isEdit) setSelectedNamHoc(namHienTai.namHoc);
     } catch (err) {
       console.log(err);
@@ -55,7 +53,6 @@ export function DialogHocTap(props) {
 
   const handleChangeNamHoc = (e) => {
     setSelectedNamHoc(e.target.value);
-    console.log(e.target.value);
     setHocTap({ ...hocTap, namHoc: e.target.value });
   };
 

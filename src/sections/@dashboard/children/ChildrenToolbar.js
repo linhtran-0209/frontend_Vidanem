@@ -71,7 +71,6 @@ export default function ChildrenToolbar({
       const { data } = await axios.get(url);
 
       setOpenDistricts(data.districts);
-      console.log(data);
     } catch (err) {
       console.log(err);
     }

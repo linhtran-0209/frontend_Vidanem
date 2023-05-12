@@ -1,14 +1,5 @@
 import axios from 'axios';
-import {
-  Alert,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  TextField,
-  FormControl,
-  IconButton,
-} from '@mui/material';
+import { Alert, Button, Dialog, DialogActions, DialogContent, TextField, FormControl, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
 
@@ -62,19 +53,18 @@ export function CreateModal(props) {
   }, [openErrMessage, openSuccessMessage]);
   return (
     <>
-      {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
-          {openSuccessMessage}
-        </Alert>
-      )}
-      {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
-          {openErrMessage}
-        </Alert>
-      )}
-
-      <Dialog className='dialogcreatesponsor' open={props.openDialogCreate} onClose={props.handleClose}>
-      <div className="titlecreatesponsor">
+      <Dialog className="dialogcreatesponsor" open={props.openDialogCreate} onClose={props.handleClose}>
+        {openSuccessMessage && (
+          <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
+            {openSuccessMessage}
+          </Alert>
+        )}
+        {openErrMessage && (
+          <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
+            {openErrMessage}
+          </Alert>
+        )}
+        <div className="titlecreatesponsor">
           {' '}
           Thêm nhà tài trợ mới
           <IconButton onClick={props.handleClose}>
@@ -82,7 +72,7 @@ export function CreateModal(props) {
           </IconButton>
         </div>
         <div className="divider" />
-        <DialogContent className='form__info__createsponsor'>
+        <DialogContent className="form__info__createsponsor">
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {preview && (
               <img
@@ -155,8 +145,12 @@ export function CreateModal(props) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button className="huythemnhataitro" onClick={props.handleClose}>Hủy</Button>
-          <Button className="themnhataitro" onClick={handleSubmit}>Thêm nhà tài trợ</Button>
+          <Button className="huythemnhataitro" onClick={props.handleClose}>
+            Hủy
+          </Button>
+          <Button className="themnhataitro" onClick={handleSubmit}>
+            Thêm nhà tài trợ
+          </Button>
         </DialogActions>
       </Dialog>
     </>
