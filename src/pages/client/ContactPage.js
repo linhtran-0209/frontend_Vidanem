@@ -15,6 +15,8 @@ import { StyleInformChildren } from '../../sections/community/informChildren/inf
 
 import Contact from '../../sections/home/contact/contact';
 import { StyleContact } from '../../sections/home/contact/contact.css';
+import Contactform from '../../sections/contactform/contact';
+import { StyleContactform } from '../../sections/contactform/contact.css';
 import Footer from '../../sections/home/footer/footer';
 import { StyleFooter } from '../../sections/home/footer/footer.css';
 
@@ -39,15 +41,13 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     padding: theme.spacing(0, 0),
   },
 }));
-export default function Communitypage() {
+export default function Contactpage() {
   return (
     <>
       <StyledToolbar style={{ background: 'rgb(255,255,255)' }}>
         <Navbar />
       </StyledToolbar>
-      <Slider />
-      {/* <Carousel /> */}
-      <InformChildren />
+      <Contactform />
       <Contact />
       <Footer />
     </>

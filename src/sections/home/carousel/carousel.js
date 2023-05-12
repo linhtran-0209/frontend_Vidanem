@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Grid } from '@mui/material';
 
-export default function carousel ()  {
+export default function Carousel ()  {
 
  return(
     <div>

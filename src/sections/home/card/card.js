@@ -1,14 +1,48 @@
 import * as React from 'react';
+import axios from 'axios';
+
+import { useEffect, useCallback, useState } from 'react';
+// @mui
+
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
+import { Grid, Container, Stack } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
+import { BlogPostCard } from '../../@dashboard/blog';
 import * as imageOne from '../../../assets/images/home/treem.png';
 
+
 export default function ImgMediaCard() {
+  const navigate = useNavigate();
   const img = imageOne.default;
+  
+  
+  const [datalist,setDataList] = useState({});
+  const [posts, setPosts] = useState([]);
+
+
+
+  
+  useEffect(() => {
+  const getAllPosts = async () => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/tintuc/getAll`;
+      const {data}= await axios.get(url, { withCredentials: true });
+      setDataList(data);
+      console.log(data)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+    getAllPosts();
+  }, []);
+
+  
+  
   return (
     <div>
       <h3 className="title__hompage__one">Thông tin trẻ em có hoàn cảnh khó khăn</h3>
@@ -131,7 +165,9 @@ export default function ImgMediaCard() {
           </CardContent>
           <CardActions>
             <Button size="small">Quan tâm</Button>
-            <Button size="small">Xem chi tiết</Button>
+            <Button size="small"  >
+              Xem chi tiết
+            </Button>
           </CardActions>
         </Card>
         <Card className="card__container">
@@ -171,6 +207,16 @@ export default function ImgMediaCard() {
           </CardActions>
         </Card>
       </div>
+      {/* <Grid container spacing={3}>
+          {(!datalist.length ).map((post, index) =>
+            
+              <Grid key={datalist.id} item xs={12} sm={6} md={(index === 0 && 6) || 3}>
+                <BlogPostCard post={post} index={index} />
+              </Grid>
+            ) 
+          }
+        </Grid> */}
+      
     </div>
   );
 }

@@ -9,10 +9,11 @@ export default function Footer() {
       <Grid container className="footer">
         <Grid className="footer__container" item xs={12} >
         <div>
-            © Copyright <b>Thành đoàn thành phố Hồ Chí Minh</b>. All Rights Reserved
+            {/* © Copyright <b>Thành đoàn thành phố Hồ Chí Minh</b>. All Rights Reserved */}
+          CỔNG THÔNG TIN "Vì Đàn Em Thành Phố Hồ Chí Minh"
           </div>
           <div>
-            Designed by <b>Thành đoàn thành phố Hồ Chí Minh</b>
+            Đơn vị quản lí Ban Thiếu Nhi, Thành Đoàn Thành Phố Hồ Chí Minh
           </div>
         </Grid>
       </Grid>

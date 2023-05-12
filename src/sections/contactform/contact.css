@@ -1,0 +1,83 @@
+/* 
+.form__informchildren__container{
+display: flex;
+
+} */
+.form__contact {
+  margin-top: 80px;
+  margin-bottom: 80px;
+  margin-left: 80px;
+  margin-right: 80px;
+  text-align: center;
+  background-color: rgb(44, 49, 146);
+}
+.form__contact__container {
+  display: flex;
+  justify-content: center;
+}
+.form__contact__container__two {
+  margin-left: 40px;
+}
+.form__informchildren fieldset {
+  border: none;
+}
+.form__contact h2 {
+  color: yellow;
+}
+.form__contact p {
+  color: #fff;
+}
+
+.divider__contactform {
+  height: 1.5px;
+  background-color: #fff;
+  width: 550px;
+  margin: 0px 0px 0px 380px;
+  text-align: center;
+}
+/* .form__informchildren__control{
+    text-align: center;
+  
+  } */
+.title__form__informchildren {
+  text-align: left;
+  margin-left: 130px;
+}
+.form__contact__content {
+  width: 450px;
+  border-radius: 5px;
+  height: 50px;
+  line-height: 2px;
+  border: 1px solid rgb(164, 164, 164);
+  margin: 8px 0px;
+  background-color: rgb(226, 225, 225);
+}
+.form__contact__content:focus-visible {
+  outline-color: #1b3c9e;
+  border: 0.5px;
+  background-color: rgb(240, 248, 255);
+}
+.form__mota {
+  width: 450px;
+  border-radius: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid rgb(164, 164, 164);
+  margin: 8px 0px;
+  background-color: rgb(226, 225, 225);
+}
+.form__mota:focus-visible {
+  outline-color: #1b3c9e;
+  border: 0.5px;
+  background-color: rgb(240, 248, 255);
+}
+.form__contact button {
+  width: 90px;
+  height: 40px;
+  background-color: #3366ff;
+  color: #fff;
+  border-radius: 5px;
+  border: none;
+  margin-top: 20px;
+  margin-left: 850px;
+  margin-bottom: 30px;
+}

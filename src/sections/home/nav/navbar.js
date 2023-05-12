@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-
+import { Link } from "react-router-dom";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,23 +16,34 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Stack from '@mui/material/Stack';
 import { bgBlur } from '../../../utils/cssStyles';
+import menuItems from "./menuitem";
 import * as logo from '../../../assets/images/home/header_logo_lg.png';
 // import Login from 'src/pages/LoginPage';
 
-const pages = ['Home', 'Giới thiệu', 'Vì Đàn Em', 'Cộng đồng', 'Bản đồ'];
-const pagess=['/homepage', '/communitypage', '/communitypage','/communitypage','/communitypage'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+// const pages = ['Home',  'Vì Đàn Em', 'Cộng đồng', 'Liên hệ','Bản đồ'];
+// // 
+// const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-console.log(pagess);
+// const Menu={
+//   "/homepage":"Home",
+//   "/homepage":'Giới thiệu',
+//   "/communitypage":"Vì đàn em",
+//   "/communitypage":"Cộng đồng",
+//   "/contactpage": "Liên hệ",
+//   "/contactpage":"Bản đồ"
+// };
+
 function ResponsiveAppBar() {
   const img = logo.default;
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
+    console.log(event.currentTarget);
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
+    console.log(event.currentTarget);
     setAnchorElUser(event.currentTarget);
   };
 
@@ -113,7 +124,7 @@ function ResponsiveAppBar() {
             LOGO
           </Typography>
           
-          <Box style={{ color: '#103996' }} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } , mx:'10'}}>
+          {/* <Box style={{ color: '#103996' }} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } , mx:'10'}}>
             {pages.map((page) => (
               <Button key={page}  onClick={handleCloseNavMenu} sx={{ my: 2, color: '#103996', display: 'block', mx:'10' }}>
                 
@@ -121,7 +132,16 @@ function ResponsiveAppBar() {
                 
               </Button>
             ))}
-          </Box>
+          </Box> */}
+
+          <Box style={{ color: '#103996' }} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } , mx:'10'}}>
+            {menuItems.map((item, index) => (
+              <Button key={index} href={item.url} className={item.cName} onClick={handleCloseNavMenu} sx={{ my: 2, color: '#103996', display: 'block', mx:'10' }}>
+                
+                {item.title}
+              </Button>
+            ))}
+            </Box>
 
           <Box sx={{ flexGrow: 0 }}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

@@ -8,6 +8,7 @@ import SimpleLayout from './layouts/simple';
 import Hompage from './pages/client/HomePage';
 //
 import CommunityPage from './pages/client/CommunityPage';
+import ContactPage from './pages/client/ContactPage';
 import BlogPage from './pages/BlogPage';
 import UserPage from './pages/UserPage';
 import LoginPage from './pages/LoginPage';
@@ -22,6 +23,7 @@ import InsertChildren from './pages/admin/components/children/CreateChildren';
 import EditChildren from './pages/admin/components/children/EditChildren';
 import InsertBlog from './pages/admin/components/blog/CreateBlog';
 import TitleBlog from './pages/TitleBlog';
+import DetailNews from './sections/home/tinbai/DetailNews';
 
 // import AccountPopover from './layouts/dashboard/header/AccountPopover';
 
@@ -40,6 +42,8 @@ const Protected = ({ roles, children }) => {
 export default function Router() {
   const routes = useRoutes([
     {
+      
+      
       element: <Hompage />,
       children: [
         { element: <Navigate to="/homepage" />, index: true },
@@ -48,10 +52,16 @@ export default function Router() {
     },
     {
       element: <CommunityPage />,
-      children: [
-        { element: <Navigate to="/communitypage" />, index: true },
-        { path: '/communitypage' },
-      ],
+      children: [{ element: <Navigate to="/communitypage" />, index: true }, { path: '/communitypage' }],
+    },
+    {
+      element: <DetailNews />,
+      children: [{ element: <Navigate to="/homepage/detail" />, index: true }, { path: '/communitypage' }],
+    },
+   
+    {
+      element: <ContactPage />,
+      children: [{ element: <Navigate to="/contactpage" />, index: true }, { path: '/contactpage' }],
     },
     {
       element: <LoginPage />,
