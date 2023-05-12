@@ -72,6 +72,7 @@ export default function InformChildren() {
           <img key={index} src={item.logo} alt="item" />
         ))}
       </div>
+      {/*  */}
       {/* <div>
         <img src='../../../assets/images/home/header_logo_lg.png' alt='hihi' />
       </div> */}
