@@ -27,6 +27,7 @@ import moment from 'moment';
 // components
 import { UserListHead } from '../sections/@dashboard/user';
 import Iconify from '../components/iconify';
+import { DeleteModal } from './admin/components/blog/DeleteModal';
 
 // mock
 
@@ -88,6 +89,9 @@ export default function BlogPage() {
     setOpenDialogDelete(true);
   };
 
+  const handleCloseDelete = () => {
+    setOpenDialogDelete(false);
+  };
 
   const handleClickOpen = () => {
     setOpenDialog(true);
@@ -180,6 +184,10 @@ export default function BlogPage() {
                     </TableRow>
                   )}
                 </TableBody>
+
+                {openDialogDelete && (
+                  <DeleteModal openDialogDelete={openDialogDelete} handleClose={handleCloseDelete} row={selectedRow} />
+                )}
 
                 {isNotFound && (
                   <TableBody>
