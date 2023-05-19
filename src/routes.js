@@ -44,21 +44,42 @@ export default function Router() {
   const routes = useRoutes([
     {
       
-      
+      path: '/homepage',
       element: <Hompage />,
       children: [
-        { element: <Navigate to="/homepage" />, index: true },
+        { element: <Navigate to="/homepage/" />, index: true },
         { path: '/homepage', element: <LoginPage /> },
-      ],
+        {
+          // path: '/homepage/new',
+          // children: [
+          //   {
+          //     path: '/homepage/new/detail',
+          //     element: (
+                
+          //         <DetailNews />
+                
+          //     ),
+          //   }
+          // ]
+          
+            path: 'news',
+            element: (
+              <DetailNews />
+            ),
+           
+          }
+      ]
+        
+      
     },
     {
       element: <CommunityPage />,
       children: [{ element: <Navigate to="/communitypage" />, index: true }, { path: '/communitypage' }],
     },
-    {
-      element: <DetailNews />,
-      children: [{ element: <Navigate to="/homepage/detail" />, index: true }, { path: '/communitypage' }],
-    },
+    // {
+    //   element: <DetailNews />,
+    //   children: [{ element: <Navigate to="/detail" />, index: true }, { path: '/communitypage' }],
+    // },
    
     {
       element: <ContactPage />,

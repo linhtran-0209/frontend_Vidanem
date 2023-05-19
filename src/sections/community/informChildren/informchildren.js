@@ -69,7 +69,11 @@ export default function InformChildren() {
       </div>
       <div className="image__NhaTaiTro">
         {listimage.map((item, index) => (
+          <>
           <img key={index} src={item.logo} alt="item" />
+          <h4 key={index}>{item.tenDonVi}</h4>
+          </>
+          
         ))}
       </div>
       {/*  */}

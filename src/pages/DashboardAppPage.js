@@ -30,6 +30,7 @@ export default function DashboardAppPage() {
   const [totaluser, setTotaluser] = useState(0);
   const [totalsponser, setTotalsponser] = useState(0);
   const [totalchidren, setTotalchildren] = useState(0);
+  const [totalnews, setTotalnews] = useState(0);
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -58,9 +59,19 @@ export default function DashboardAppPage() {
         console.log(err);
       }
     };
+    const getnews = async () => {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/tintuc/getAll`;
+        const { data } = await axios.get(url, { withCredentials: true });
+        setTotalnews(data.total);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     getUser();
     getsponser();
     getchildren();
+    getnews();
   }, []);
   
 
@@ -89,7 +100,7 @@ export default function DashboardAppPage() {
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Tin bài" total={1} color="error" icon={'material-symbols:event-note'} />
+            <AppWidgetSummary title="Tin bài" total={totalnews} color="error" icon={'material-symbols:event-note'} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
