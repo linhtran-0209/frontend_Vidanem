@@ -125,14 +125,12 @@ export function DialogHocBong(props) {
                         autoComplete: 'off',
                       }}
                     />
-
-                    {[{ _id: 'none', tenDonVi: 'Chọn đơn vị' }, ...SPONSERLIST]
-                      .filter((option) => option.tenDonVi.toLowerCase().includes(search))
-                      .map((option) => (
-                        <MenuItem key={option._id} value={option._id} label={option.tenDonVi}>
-                          {option.tenDonVi}
-                        </MenuItem>
-                      ))}
+                    <MenuItem value="">--------------Chọn đơn vị---------------</MenuItem>
+                    {SPONSERLIST.filter((option) => option.tenDonVi.toLowerCase().includes(search)).map((option) => (
+                      <MenuItem key={option._id} value={option._id} label={option.tenDonVi}>
+                        {option.tenDonVi}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </div>
               </FormControl>
@@ -197,14 +195,12 @@ export function DialogHocBong(props) {
                         autoComplete: 'off',
                       }}
                     />
-
-                    {[{ _id: 'none', tenDonVi: 'Chọn đơn vị' }, ...SPONSERLIST]
-                      .filter((option) => option.tenDonVi.toLowerCase().includes(search))
-                      .map((option) => (
-                        <MenuItem key={option._id} value={option._id} label={option.tenDonVi}>
-                          {option.tenDonVi}
-                        </MenuItem>
-                      ))}
+                    <MenuItem value="">--------------Chọn đơn vị---------------</MenuItem>
+                    {SPONSERLIST.filter((option) => option.tenDonVi.toLowerCase().includes(search)).map((option) => (
+                      <MenuItem key={option._id} value={option._id} label={option.tenDonVi}>
+                        {option.tenDonVi}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </div>
               </FormControl>

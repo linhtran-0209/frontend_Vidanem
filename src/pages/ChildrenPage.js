@@ -83,12 +83,14 @@ export default function ChildrenPage() {
   const [quan, setQuan] = useState('');
   const [doiTuong, setDoiTuong] = useState('');
   const [phuong, setPhuong] = useState('');
+  const [sponsor, setSponsor] = useState('');
   const [openWards, setOpenWards] = useState([]);
 
   const handleSearch = async (event) => {
     if (event.key === 'Enter' || !event.key) {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&doituong=${doiTuong}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}`;
+        const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&doituong=${doiTuong}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}&don_vi_tai_tro=${sponsor}`;
+
         const { data } = await axios.get(url, { withCredentials: true });
 
         setChildrenList(data.data);
@@ -103,7 +105,8 @@ export default function ChildrenPage() {
   const handleChangeDoiTuong = async (event) => {
     setDoiTuong(event.target.value);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&doituong=${event.target.value}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&doituong=${event.target.value}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}&don_vi_tai_tro=${sponsor}`;
+
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setChildrenList(data.data);
@@ -125,7 +128,8 @@ export default function ChildrenPage() {
       }
     } else setPhuong('');
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&doituong=${doiTuong}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${event.target.value}&trang_thai=${trangThai}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&doituong=${doiTuong}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${event.target.value}&trang_thai=${trangThai}&don_vi_tai_tro=${sponsor}`;
+
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setChildrenList(data.data);
@@ -138,7 +142,8 @@ export default function ChildrenPage() {
   const handleChangePhuong = async (event) => {
     setPhuong(event.target.value);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${event.target.value}&trang_thai=${trangThai}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${event.target.value}&trang_thai=${trangThai}&don_vi_tai_tro=${sponsor}`;
+
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setChildrenList(data.data);
@@ -149,7 +154,8 @@ export default function ChildrenPage() {
   };
 
   const handleClickExportExcel = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}&export=true`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}&don_vi_tai_tro=${sponsor}&export=true`;
+
     await axios
       .get(url, {
         withCredentials: true,
@@ -181,7 +187,9 @@ export default function ChildrenPage() {
   const handleChangePage = async (event, newPage) => {
     setPage(newPage - 1);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}`;
+
+      const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}&don_vi_tai_tro=${sponsor}`;
+
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
 
@@ -195,7 +203,21 @@ export default function ChildrenPage() {
   const handleChangeTrangThai = async (event) => {
     setTrangThai(event.target.value);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${event.target.value}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${event.target.value}&don_vi_tai_tro=${sponsor}`;
+
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setChildrenList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleChangeSponsor = async (event) => {
+    setSponsor(event.target.value);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}&don_vi_tai_tro=${event.target.value}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setChildrenList(data.data);
@@ -265,6 +287,8 @@ export default function ChildrenPage() {
             handleChangePhuong={handleChangePhuong}
             trangThai={trangThai}
             handleChangeTrangThai={handleChangeTrangThai}
+            sponsor={sponsor}
+            handleChangeSponsor={handleChangeSponsor}
             onClickSearch={handleSearch}
           />
 

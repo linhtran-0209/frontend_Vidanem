@@ -14,6 +14,7 @@ const modules = {
       ['bold', 'italic', 'underline', 'strike'],
       [{ list: 'ordered' }, { list: 'bullet' }],
       ['link', 'image', 'video'],
+      [{ size: ['small', false, 'large', 'huge'] }],
       ['clean'],
     ],
     handlers: {
@@ -82,22 +83,17 @@ const modules = {
       });
     },
   },
-
 };
 
 function Editor({ value, onChange, handleImg }) {
-
   useEffect(() => {
-    handleImg(localStorage.getItem('imageUrls'))
+    handleImg(localStorage.getItem('imageUrls'));
   }, [localStorage.getItem('imageUrls')]);
-  
+
   return (
-    <ReactQuill
-      theme="snow"
-      value={value}
-      onChange={onChange}
-      modules={modules}
-    />
+    <div style={{height: '300px'}}>
+      <ReactQuill style={{height: '250px'}} theme="snow" value={value} onChange={onChange} modules={modules} />
+    </div>
   );
 }
 

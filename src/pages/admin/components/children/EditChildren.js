@@ -360,12 +360,12 @@ export default function EditChildren() {
             diaChi: treEm.diaChi,
             SDT: treEm.SDT,
             truong: treEm.truong,
-            donViBaoTro: treEm.donViBaoTro,
             hocBong: treEm.hocBong,
             namNhan: treEm.namNhan,
             namHoanThanh: treEm.namHoanThanh,
             hoanCanh: treEm.hoanCanh,
             doiTuong: newDoiTuong.map((doituong) => doituong._id),
+            donViBaoTro: hocBong.map(hocbong => hocbong.donViBaoTro._id)
           },
           { withCredentials: true }
         )

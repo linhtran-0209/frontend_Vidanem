@@ -18,7 +18,6 @@ import {
 } from '../sections/@dashboard/app';
 import SvgColor from '../components/svg-color';
 
-
 // ----------------------------------------------------------------------
 
 const icons = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
@@ -26,54 +25,33 @@ const icons = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{
 
 export default function DashboardAppPage() {
   const theme = useTheme();
-  const [user, setUser] = useState(null);
-  const [totaluser, setTotaluser] = useState(0);
-  const [totalsponser, setTotalsponser] = useState(0);
-  const [totalchidren, setTotalchildren] = useState(0);
-  const [totalnews, setTotalnews] = useState(0);
+
+  const [total, setTotal] = useState({});
+  const [treEm, setTreEm] = useState({});
+
   useEffect(() => {
-    const getUser = async () => {
+    const thongKeSoLuong = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll`;
+        const url = `${process.env.REACT_APP_API_URL}/admin/dashboard/soLuong`;
         const { data } = await axios.get(url, { withCredentials: true });
-        setTotaluser(data.total);
+        setTotal(data);
       } catch (err) {
         console.log(err);
       }
     };
-    const getsponser = async () => {
+    const thongKeTreEm = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll`;
+        const url = `${process.env.REACT_APP_API_URL}/admin/dashboard/treem`;
         const { data } = await axios.get(url, { withCredentials: true });
-        setTotalsponser(data.total);
+        setTreEm(data);
       } catch (err) {
         console.log(err);
       }
     };
-    const getchildren = async () => {
-      try {
-        const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll`;
-        const { data } = await axios.get(url, { withCredentials: true });
-        setTotalchildren(data.total);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    const getnews = async () => {
-      try {
-        const url = `${process.env.REACT_APP_API_URL}/admin/tintuc/getAll`;
-        const { data } = await axios.get(url, { withCredentials: true });
-        setTotalnews(data.total);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getUser();
-    getsponser();
-    getchildren();
-    getnews();
+
+    thongKeSoLuong();
+    thongKeTreEm();
   }, []);
-  
 
   return (
     <>
@@ -88,19 +66,24 @@ export default function DashboardAppPage() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Tài khoản" total={totaluser} icon='carbon:user-avatar-filled' />
+            <AppWidgetSummary title="Tài khoản" total={total.taiKhoan} icon="carbon:user-avatar-filled" />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Nhà tài trợ" total={totalsponser} color="info" icon= {'fa6-solid:people-roof'} />
+            <AppWidgetSummary
+              title="Nhà tài trợ"
+              total={total.donViBaoTro}
+              color="info"
+              icon={'fa6-solid:people-roof'}
+            />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Trẻ em" total={totalchidren} color="warning" icon={'solar:people-nearby-bold'} />
+            <AppWidgetSummary title="Trẻ em" total={total.treEm} color="warning" icon={'solar:people-nearby-bold'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Tin bài" total={totalnews} color="error" icon={'material-symbols:event-note'} />
+            <AppWidgetSummary title="Tin bài" total={total.tinTuc} color="error" icon={'material-symbols:event-note'} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>
@@ -145,12 +128,12 @@ export default function DashboardAppPage() {
 
           <Grid className="cap" item xs={12} md={6} lg={4}>
             <AppCurrentVisits
-              title="Tài khoản"
+              title="Hồ sơ trẻ em"
               chartData={[
-                { label: 'Hội đồng Đội thành phố', value: 11 },
-                { label: 'Hội đồng Đội quận, huyện', value: 2 },
-                { label: 'Cấp liên đội', value: 2 },
-                { label: 'Khách', value: 1 },
+                { label: 'Đã duyệt', value: treEm.daDuyet },
+                { label: 'Chờ Duyệt', value: treEm.choDuyet },
+                { label: 'Đề Xuất', value: treEm.deXuat },
+                { label: 'Từ chối', value: treEm.tuChoi },
               ]}
               chartColors={[
                 theme.palette.primary.main,

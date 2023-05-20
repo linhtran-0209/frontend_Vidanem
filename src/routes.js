@@ -29,13 +29,24 @@ import DetailNews from './sections/home/tinbai/DetailNews';
 // import AccountPopover from './layouts/dashboard/header/AccountPopover';
 
 // ----------------------------------------------------------------------
+const role = {
+  THANH_PHO: 1,
+  QUAN_HUYEN: 2,
+  PHUONG_XA: 3,
+};
 // ============================|| PROTECTED ||============================== //
 const Protected = ({ roles, children }) => {
-  const checkRole = sessionStorage.getItem('role');
+  const checkRole = +sessionStorage.getItem('role');
 
   // Redirect to home page if the user does not have permission
   if (!checkRole) {
     return <Navigate to="/login" replace />;
+  }
+
+  const index = roles.findIndex((i) => i === checkRole);
+
+  if (index === -1) {
+    return <Navigate to="/dashboard/app" replace />;
   }
   return children;
 };
@@ -43,7 +54,6 @@ const Protected = ({ roles, children }) => {
 export default function Router() {
   const routes = useRoutes([
     {
-      
       path: '/homepage',
       element: <Hompage />,
       children: [
@@ -78,9 +88,8 @@ export default function Router() {
     },
     // {
     //   element: <DetailNews />,
-    //   children: [{ element: <Navigate to="/detail" />, index: true }, { path: '/communitypage' }],
+    //   children: [{ element: <Navigate to="/homepage/detail" />, index: true }, { path: '/communitypage' }],
     // },
-   
     {
       element: <ContactPage />,
       children: [{ element: <Navigate to="/contactpage" />, index: true }, { path: '/contactpage' }],
@@ -100,7 +109,7 @@ export default function Router() {
         {
           path: 'app',
           element: (
-            <Protected>
+            <Protected roles={[role.THANH_PHO, role.QUAN_HUYEN, role.PHUONG_XA]}>
               <DashboardAppPage />
             </Protected>
           ),
@@ -108,7 +117,7 @@ export default function Router() {
         {
           path: 'users',
           element: (
-            <Protected>
+            <Protected roles={[role.THANH_PHO, role.QUAN_HUYEN]}>
               <UserPage />
             </Protected>
           ),
@@ -116,7 +125,7 @@ export default function Router() {
         {
           path: 'scholarship',
           element: (
-            <Protected>
+            <Protected roles={[role.THANH_PHO]}>
               <ScholarshipPage />
             </Protected>
           ),
@@ -124,7 +133,7 @@ export default function Router() {
         {
           path: 'sponser',
           element: (
-            <Protected>
+            <Protected roles={[role.THANH_PHO]}>
               <SponserPage />
             </Protected>
           ),
@@ -132,7 +141,7 @@ export default function Router() {
         {
           path: 'year',
           element: (
-            <Protected>
+            <Protected roles={[role.THANH_PHO]}>
               <YearPage />
             </Protected>
           ),
@@ -140,7 +149,7 @@ export default function Router() {
         {
           path: 'blog',
           element: (
-            <Protected>
+            <Protected roles={[role.THANH_PHO, role.QUAN_HUYEN]}>
               <BlogPage />
             </Protected>
           ),
@@ -151,7 +160,7 @@ export default function Router() {
             {
               path: '/dashboard/children/doi-tuong',
               element: (
-                <Protected>
+                <Protected roles={[role.THANH_PHO, role.QUAN_HUYEN, role.PHUONG_XA]}>
                   {' '}
                   <DoiTuongPage />
                 </Protected>
@@ -160,7 +169,7 @@ export default function Router() {
             {
               path: '/dashboard/children/list',
               element: (
-                <Protected>
+                <Protected roles={[role.THANH_PHO, role.QUAN_HUYEN, role.PHUONG_XA]}>
                   <ChildrenPage />
                 </Protected>
               ),
@@ -168,7 +177,7 @@ export default function Router() {
             {
               path: '/dashboard/children/insert',
               element: (
-                <Protected>
+                <Protected roles={[role.THANH_PHO, role.QUAN_HUYEN, role.PHUONG_XA]}>
                   <InsertChildren />
                 </Protected>
               ),
@@ -176,7 +185,7 @@ export default function Router() {
             {
               path: '/dashboard/children/edit/:id',
               element: (
-                <Protected>
+                <Protected roles={[role.THANH_PHO, role.QUAN_HUYEN, role.PHUONG_XA]}>
                   <EditChildren />{' '}
                 </Protected>
               ),
@@ -193,7 +202,7 @@ export default function Router() {
         {
           path: '/dashboard/blog/insert',
           element: (
-            <Protected>
+            <Protected roles={[role.THANH_PHO, role.QUAN_HUYEN]}>
               <InsertBlog />
             </Protected>
           ),
@@ -201,7 +210,7 @@ export default function Router() {
         {
           path: '/dashboard/blog/edit/:id',
           element: (
-            <Protected>
+            <Protected roles={[role.THANH_PHO, role.QUAN_HUYEN]}>
               <EditBlog />
             </Protected>
           ),
@@ -209,7 +218,7 @@ export default function Router() {
         {
           path: '/dashboard/title',
           element: (
-            <Protected>
+            <Protected roles={[role.THANH_PHO, role.QUAN_HUYEN]}>
               <TitleBlog />
             </Protected>
           ),

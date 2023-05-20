@@ -189,12 +189,12 @@ export default function BlogNewPostForm() {
               />
 
               <div>
-                <LabelStyle>Content</LabelStyle>
+                <LabelStyle>Nội dung</LabelStyle>
                 <Editor theme="snow" value={content} onChange={handleContentChange} handleImg={handleListImg} />
               </div>
             </Stack>
           </Card>
-        </Grid>
+        </Grid> 
 
         <Grid item xs={12} md={4}>
           <Card sx={{ p: 3 }}>

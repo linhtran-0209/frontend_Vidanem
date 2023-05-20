@@ -171,7 +171,8 @@ export default function InsertChildren() {
       SDT: treEm.SDT,
       diaChi: treEm.diaChi,
       hoanCanh: treEm.hoanCanh,
-      doiTuong: doiTuong.map(doituong => doituong._id)
+      doiTuong: doiTuong.map(doituong => doituong._id),
+      donViBaoTro: hocBong.map(hocbong => hocbong.donViBaoTro._id)
     }, { withCredentials: true });
 
     if (result.status === 200) {

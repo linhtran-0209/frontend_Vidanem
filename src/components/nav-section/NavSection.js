@@ -40,7 +40,7 @@ NavItem.propTypes = {
 
 function NavItem({ item, curentTitle, handleTitle }) {
   const [openSubNav, setOpenSubNav] = useState(false);
-  const { title, path, icon, info, subNav } = item;
+  const { title, path, icon, info, subNav, role } = item;
 
   const handleOpenSubNav = () => {
     // handleTitle(item.title);
@@ -53,45 +53,51 @@ function NavItem({ item, curentTitle, handleTitle }) {
 
   return (
     <>
-      {item.subNav ? (
-        <StyledNavItem
-          onClick={handleOpenSubNav}
-          component={RouterLink}
-          to={path}
-          sx={{
-            color: item.title === curentTitle && 'text.primary',
-            bgcolor: item.title === curentTitle && 'action.selected',
-            fontWeight: item.title === curentTitle && 'fontWeightBold',
-          }}
-        >
-          <StyledNavItemIcon>{icon && icon}</StyledNavItemIcon>
-          <ListItemText disableTypography primary={title} />
-          {info && info}
-        </StyledNavItem>
+      {role.findIndex((i) => i === +sessionStorage.getItem('role')) === -1 ? (
+        <></>
       ) : (
-        <StyledNavItem
-          onClick={handleActiveNav}
-          component={RouterLink}
-          to={path}
-          sx={{
-            color: item.title === curentTitle && 'text.primary',
-            bgcolor: item.title === curentTitle && 'action.selected',
-            fontWeight: item.title === curentTitle && 'fontWeightBold',
-          }}
-        >
-          <StyledNavItemIcon>{icon && icon}</StyledNavItemIcon>
-          <ListItemText disableTypography primary={title} />
-          {info && info}
-        </StyledNavItem>
-      )}
-
-      {subNav && openSubNav && (
         <>
-          <List sx={{ p: 0 }}>
-            {subNav.map((subNavItem) => (
-              <SubNavItem key={subNavItem.title} item={subNavItem} handleActiveNav={handleActiveNav} />
-            ))}
-          </List>
+          {' '}
+          {item.subNav ? (
+            <StyledNavItem
+              onClick={handleOpenSubNav}
+              component={RouterLink}
+              to={path}
+              sx={{
+                color: item.title === curentTitle && 'text.primary',
+                bgcolor: item.title === curentTitle && 'action.selected',
+                fontWeight: item.title === curentTitle && 'fontWeightBold',
+              }}
+            >
+              <StyledNavItemIcon>{icon && icon}</StyledNavItemIcon>
+              <ListItemText disableTypography primary={title} />
+              {info && info}
+            </StyledNavItem>
+          ) : (
+            <StyledNavItem
+              onClick={handleActiveNav}
+              component={RouterLink}
+              to={path}
+              sx={{
+                color: item.title === curentTitle && 'text.primary',
+                bgcolor: item.title === curentTitle && 'action.selected',
+                fontWeight: item.title === curentTitle && 'fontWeightBold',
+              }}
+            >
+              <StyledNavItemIcon>{icon && icon}</StyledNavItemIcon>
+              <ListItemText disableTypography primary={title} />
+              {info && info}
+            </StyledNavItem>
+          )}
+          {subNav && openSubNav && (
+            <>
+              <List sx={{ p: 0 }}>
+                {subNav.map((subNavItem) => (
+                  <SubNavItem key={subNavItem.title} item={subNavItem} handleActiveNav={handleActiveNav} />
+                ))}
+              </List>
+            </>
+          )}
         </>
       )}
     </>
@@ -115,7 +121,7 @@ function SubNavItem({ item, handleActiveNav }) {
       >
         <StyledNavItemIcon>{item.icon && item.icon}</StyledNavItemIcon>
 
-        <ListItemText style={{marginLeft:'15px'}} disableTypography primary={item.title} />
+        <ListItemText style={{ marginLeft: '15px' }} disableTypography primary={item.title} />
       </StyledNavItem>
     </>
   );

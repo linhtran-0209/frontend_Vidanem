@@ -92,7 +92,7 @@ export default function UserListToolbar({
       <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
         <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
         <Select labelId="quan" id="quan" value={quan} onChange={handleChangeQuan} label="Quận" margin="dense">
-          <MenuItem value="">------------------------</MenuItem>
+          <MenuItem value="">-------Quận/Huyện-------</MenuItem>
           {openDistricts.map((item) => (
             <MenuItem key={item.code} value={item.code}>
               {item.name}
@@ -104,7 +104,7 @@ export default function UserListToolbar({
       <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
         <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
         <Select labelId="phuong" id="phuong" value={phuong} onChange={handleChangePhuong} label="Phường" margin="dense">
-              <MenuItem value="">------------------------</MenuItem>
+              <MenuItem value="">-------Chọn Phường/Xã-------</MenuItem>
               {openWards.map((item) => (
                 <MenuItem key={item.code} value={item.code}>
                   {item.name}
