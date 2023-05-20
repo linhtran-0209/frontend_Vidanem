@@ -15,7 +15,7 @@ export function DeleteSponsorModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/sponsor/delete`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/delete`;
 
       axios
         .put(

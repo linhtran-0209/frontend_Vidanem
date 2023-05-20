@@ -159,10 +159,10 @@ export default function InsertChildren() {
   };
 
   const handleSubmit = async () => {
-    const urlHocTap = `${process.env.REACT_APP_API_URL}/hoctap/insert`;
-    const urlHocBong = `${process.env.REACT_APP_API_URL}/hocbongtreem/insert`;
-    const urlHinhAnh = `${process.env.REACT_APP_API_URL}/hinhanh/insert`;
-    const url = `${process.env.REACT_APP_API_URL}/treem/insert`;
+    const urlHocTap = `${process.env.REACT_APP_API_URL}/admin/hoctap/insert`;
+    const urlHocBong = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/insert`;
+    const urlHinhAnh = `${process.env.REACT_APP_API_URL}/admin/hinhanh/insert`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/treem/insert`;
 
     const result = await axios.post(url, {
       hoTen: treEm.hoTen,

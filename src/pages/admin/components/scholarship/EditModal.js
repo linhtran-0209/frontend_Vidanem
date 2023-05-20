@@ -25,7 +25,7 @@ export function EditModal(props) {
   const [openErrMessage, setOpenErrMessage] = useState('');
 
   const getSponsorList = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll`;
     const { data } = await axios.get(url, { withCredentials: true });
     setSPONSERLIST(data.data);
   };
@@ -42,7 +42,7 @@ export function EditModal(props) {
 
   const getScholarship = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/scholarship/byId?id=${props.row._id}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/byId?id=${props.row._id}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setScholarship(data.data);
       setSelected(data.data.donViTaiTro);
@@ -60,7 +60,7 @@ export function EditModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/scholarship/update`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/update`;
 
       await axios
         .put(

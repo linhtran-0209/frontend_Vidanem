@@ -64,7 +64,7 @@ export default function BlogPage() {
 
   const getTinTuc = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/tintuc/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/tintuc/getAll?curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setListTinTuc(data.data);

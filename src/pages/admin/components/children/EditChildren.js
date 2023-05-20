@@ -85,7 +85,7 @@ export default function EditChildren() {
   }, []);
 
   const getChild = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/treem/byId?id=${id}`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/treem/byId?id=${id}`;
     const { data } = await axios.get(url, { withCredentials: true });
     setTreEm(data.data);
     setSelectedDate(moment(data.data.ngaySinh));
@@ -109,7 +109,7 @@ export default function EditChildren() {
   };
 
   const getHocBong = async (treem) => {
-    const url = `${process.env.REACT_APP_API_URL}/hocbongtreem/bytreem?treem=${treem}`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/bytreem?treem=${treem}`;
     const { data } = await axios.get(url, { withCredentials: true });
     setHocBong(data.data);
   };
@@ -179,7 +179,7 @@ export default function EditChildren() {
   };
 
   const getHocTap = async (treem) => {
-    const url = `${process.env.REACT_APP_API_URL}/hoctap/bytreem?treem=${treem}`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/hoctap/bytreem?treem=${treem}`;
     const { data } = await axios.get(url, { withCredentials: true });
     setHocTap(data.data);
   };
@@ -378,7 +378,7 @@ export default function EditChildren() {
     // Cập nhật nếu thêm đối tượng mới
     newDoiTuong.forEach(async (doituong) => {
       if (!oldDoiTuong.find((item) => item._id === doituong._id)) {
-        const url = `${process.env.REACT_APP_API_URL}/doituong/updateQuantity`;
+        const url = `${process.env.REACT_APP_API_URL}/admin/doituong/updateQuantity`;
         await axios.put(
           url,
           {
@@ -393,7 +393,7 @@ export default function EditChildren() {
     // Cập nhật nếu xóa đối tượng cũ
     oldDoiTuong.forEach(async (doituong) => {
       if (!newDoiTuong.find((item) => item._id === doituong._id)) {
-        const url = `${process.env.REACT_APP_API_URL}/doituong/updateQuantity`;
+        const url = `${process.env.REACT_APP_API_URL}/admin/doituong/updateQuantity`;
         await axios.put(
           url,
           {
@@ -408,7 +408,7 @@ export default function EditChildren() {
     // Lưu hình ảnh
     if (images.length > 0) {
       images.forEach(async (image) => {
-        const urlHinhAnh = `${process.env.REACT_APP_API_URL}/hinhanh/insert`;
+        const urlHinhAnh = `${process.env.REACT_APP_API_URL}/admin/hinhanh/insert`;
         const formData = new FormData();
         formData.append('image', image.image);
         formData.append('refId', treEm._id);
@@ -423,7 +423,7 @@ export default function EditChildren() {
     if (imagesEdit.length > 0) {
       imagesEdit.forEach(async (image) => {
         if (image._id.includes('temp')) {
-          const urlHinhAnh = `${process.env.REACT_APP_API_URL}/hinhanh/insert`;
+          const urlHinhAnh = `${process.env.REACT_APP_API_URL}/admin/hinhanh/insert`;
           const formData = new FormData();
           formData.append('image', image.image);
           formData.append('refId', treEm._id);
@@ -434,7 +434,7 @@ export default function EditChildren() {
             withCredentials: true,
           });
         } else {
-          const urlHinhAnh = `${process.env.REACT_APP_API_URL}/hinhanh/update`;
+          const urlHinhAnh = `${process.env.REACT_APP_API_URL}/admin/hinhanh/update`;
           const formData = new FormData();
           formData.append('image', image.image);
           formData.append('id', image._id);
@@ -451,7 +451,7 @@ export default function EditChildren() {
     if (imagesDelete.length > 0) {
       imagesDelete.forEach(async (image) => {
         if (!image._id.includes('temp')) {
-          const urlHinhAnh = `${process.env.REACT_APP_API_URL}/hinhanh/delete?id=${image._id}`;
+          const urlHinhAnh = `${process.env.REACT_APP_API_URL}/admin/hinhanh/delete?id=${image._id}`;
           await axios.put(urlHinhAnh, {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -464,7 +464,7 @@ export default function EditChildren() {
 
     // Lưu thành tích học tập
     if (hocTapNew.length > 0) {
-      const urlHocTap = `${process.env.REACT_APP_API_URL}/hoctap/insert`;
+      const urlHocTap = `${process.env.REACT_APP_API_URL}/admin/hoctap/insert`;
       await axios.post(
         urlHocTap,
         {
@@ -478,7 +478,7 @@ export default function EditChildren() {
     if (hocTapEdit.length > 0) {
       hocTapEdit.forEach(async (hoctap) => {
         if (hoctap._id.includes('temp')) {
-          const urlHocTap = `${process.env.REACT_APP_API_URL}/hoctap/insert`;
+          const urlHocTap = `${process.env.REACT_APP_API_URL}/admin/hoctap/insert`;
           await axios.post(
             urlHocTap,
             {
@@ -488,7 +488,7 @@ export default function EditChildren() {
             { withCredentials: true }
           );
         } else {
-          const urlHocTap = `${process.env.REACT_APP_API_URL}/hoctap/update`;
+          const urlHocTap = `${process.env.REACT_APP_API_URL}/admin/hoctap/update`;
           await axios.put(
             urlHocTap,
             {
@@ -507,7 +507,7 @@ export default function EditChildren() {
     if (hocTapDelete.length > 0) {
       hocTapDelete.forEach(async (hoctap) => {
         if (!hoctap._id.includes('temp')) {
-          const urlHocTap = `${process.env.REACT_APP_API_URL}/hoctap/delete?id=${hoctap._id}`;
+          const urlHocTap = `${process.env.REACT_APP_API_URL}/admin/hoctap/delete?id=${hoctap._id}`;
           await axios.delete(urlHocTap, { withCredentials: true });
         }
       });
@@ -515,7 +515,7 @@ export default function EditChildren() {
 
     // Lưu thành tích học bổng
     if (hocBongNew.length > 0) {
-      const urlHocBong = `${process.env.REACT_APP_API_URL}/hocbongtreem/insert`;
+      const urlHocBong = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/insert`;
       await axios.post(
         urlHocBong,
         {
@@ -529,7 +529,7 @@ export default function EditChildren() {
     if (hocBongEdit.length > 0) {
       hocBongEdit.forEach(async (hocbong) => {
         if (hocbong._id.includes('temp')) {
-          const urlHocBong = `${process.env.REACT_APP_API_URL}/hocbongtreem/insert`;
+          const urlHocBong = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/insert`;
           await axios.post(
             urlHocBong,
             {
@@ -539,7 +539,7 @@ export default function EditChildren() {
             { withCredentials: true }
           );
         } else {
-          const urlHocBong = `${process.env.REACT_APP_API_URL}/hocbongtreem/update`;
+          const urlHocBong = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/update`;
           await axios.put(
             urlHocBong,
             {
@@ -558,7 +558,7 @@ export default function EditChildren() {
     if (hocBongDelete.length > 0) {
       hocBongDelete.forEach(async (hocbong) => {
         if (!hocbong._id.includes('temp')) {
-          const urlHocBong = `${process.env.REACT_APP_API_URL}/hocbongtreem/delete?id=${hocbong._id}`;
+          const urlHocBong = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/delete?id=${hocbong._id}`;
           await axios.delete(urlHocBong, { withCredentials: true });
         }
       });
@@ -570,7 +570,7 @@ export default function EditChildren() {
   };
 
   const handleReject = async (reason) => {
-    const url = `${process.env.REACT_APP_API_URL}/treem/reject`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/treem/reject`;
     await axios
       .put(
         url,
@@ -590,7 +590,7 @@ export default function EditChildren() {
 
   const handleAccept = async () => {
     if (quyen === 2) {
-      const url = `${process.env.REACT_APP_API_URL}/treem/approveLv2`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/treem/approveLv2`;
       await axios
         .put(
           url,
@@ -606,7 +606,7 @@ export default function EditChildren() {
         });
       setTreEm({ ...treEm, authStatus: 'ChoDuyet' });
     } else if (quyen === 1) {
-      const url = `${process.env.REACT_APP_API_URL}/treem/approveLv1`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/treem/approveLv1`;
       await axios
         .put(
           url,

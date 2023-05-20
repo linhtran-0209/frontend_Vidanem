@@ -15,7 +15,7 @@ export function DeleteChildrenModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/treem/delete`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/treem/delete`;
 
       axios
         .put(

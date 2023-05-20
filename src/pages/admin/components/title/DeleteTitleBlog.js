@@ -15,7 +15,7 @@ export function DeleteTitleBlog(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/chude/delete`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/chude/delete`;
 
       axios
         .put(

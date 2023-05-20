@@ -41,7 +41,7 @@ export function DialogHocTap(props) {
 
   const getYears = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/getAll?all=true`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/getAll?all=true`;
       const { data } = await axios.get(url, { withCredentials: true });
       setYearsList(data.data);
       const namHienTai = data.data.find((nam) => nam.namHienTai === true);

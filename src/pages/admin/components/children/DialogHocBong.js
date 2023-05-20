@@ -26,7 +26,7 @@ export function DialogHocBong(props) {
   const [hocBong, setHocBong] = useState({});
 
   const getSponsorList = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll`;
     const { data } = await axios.get(url, { withCredentials: true });
     setSPONSERLIST(data.data);
   };
@@ -61,7 +61,7 @@ export function DialogHocBong(props) {
   };
 
   const getScholarshipList = async (donViBaoTro) => {
-    const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?donViTaiTro=${donViBaoTro}`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?donViTaiTro=${donViBaoTro}`;
     const { data } = await axios.get(url, { withCredentials: true });
     setSCHOLARSHIPLIST(data.data);
   };

@@ -76,7 +76,7 @@ export function CreateUserModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/account/insert`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/insert`;
       await axios
         .post(
           url,

@@ -67,7 +67,7 @@ export default function ScholarshipPage() {
 
   const getScholarship = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setScholarshipList(data.data);
@@ -80,7 +80,7 @@ export default function ScholarshipPage() {
   const handleSearch = async (event) => {
     if (event.key === 'Enter' || !event.key) {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
+        const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
         const { data } = await axios.get(url, { withCredentials: true });
         // const  parse=data.data.email;
         setScholarshipList(data.data);
@@ -92,7 +92,7 @@ export default function ScholarshipPage() {
   };
 
   const handleClickExportExcel = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}&export=true`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}&export=true`;
     await axios
       .get(url, {
         withCredentials: true,
@@ -126,7 +126,7 @@ export default function ScholarshipPage() {
     setOpenDialogEdit(false);
 
     try {
-      const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setScholarshipList(data.data);
@@ -139,7 +139,7 @@ export default function ScholarshipPage() {
   const handleChangePage = async (event, newPage) => {
     setPage(newPage - 1);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?keyword=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setScholarshipList(data.data);

@@ -67,7 +67,7 @@ export default function UserPage() {
 
   const getUser = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/account/getAll`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll`;
       const { data } = await axios.get(url, { withCredentials: true });
       setUSERLIST(data.data);
       setTotal(data.total);
@@ -88,7 +88,7 @@ export default function UserPage() {
   const handleSearch = async (event) => {
     if (event.key === 'Enter' || !event.key) {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}`;
+        const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}`;
         const { data } = await axios.get(url, { withCredentials: true });
         setUSERLIST(data.data);
         setTotal(data.total);
@@ -99,7 +99,7 @@ export default function UserPage() {
   };
 
   const handleClickExportExcel = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}&export=true`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}&export=true`;
     await axios
       .get(url, {
         withCredentials: true,
@@ -117,7 +117,7 @@ export default function UserPage() {
   const handleChangePage = async (event, newPage) => {
     setPage(newPage - 1);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll?email=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setUSERLIST(data.data);
@@ -139,7 +139,7 @@ export default function UserPage() {
       }
     } else setPhuong('');
     try {
-      const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${event.target.value}&quyen=${quyen}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${event.target.value}&quyen=${quyen}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setUSERLIST(data.data);
@@ -152,7 +152,7 @@ export default function UserPage() {
   const handleChangePhuong = async (event) => {
     setPhuong(event.target.value);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${event.target.value}&quyen=${quyen}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${event.target.value}&quyen=${quyen}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setUSERLIST(data.data);
@@ -165,7 +165,7 @@ export default function UserPage() {
   const handleChangeQuyen = async (event) => {
     setQuyen(event.target.value);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${event.target.value}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${event.target.value}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setUSERLIST(data.data);

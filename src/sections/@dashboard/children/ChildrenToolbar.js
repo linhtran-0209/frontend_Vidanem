@@ -81,7 +81,7 @@ export default function ChildrenToolbar({
   }, []);
   const getSponsor = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?all=true`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll?all=true`;
       const { data } = await axios.get(url, { withCredentials: true });
       setSPONSERLIST(data.data);
     } catch (err) {
@@ -94,7 +94,7 @@ export default function ChildrenToolbar({
   }, []);
   const getDoiTuong = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/doituong/getAll?all=true`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/doituong/getAll?all=true`;
       const { data } = await axios.get(url, { withCredentials: true });
       setListDoiTuong(data.data);
     } catch (err) {

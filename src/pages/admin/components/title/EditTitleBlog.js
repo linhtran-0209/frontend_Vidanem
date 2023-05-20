@@ -17,7 +17,7 @@ export function EditTitleBlog(props) {
 
   const getTilte = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/chude/byId?id=${props.row._id}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/chude/byId?id=${props.row._id}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setTitle(data.data);
       setPreview(`${process.env.REACT_APP_API_URL}${data.data.hinhAnh}`);
@@ -28,7 +28,7 @@ export function EditTitleBlog(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/chude/update`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/chude/update`;
 
       const formData = new FormData();
       formData.append('id', title._id);

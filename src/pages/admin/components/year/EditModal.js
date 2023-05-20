@@ -35,7 +35,7 @@ export function EditModal(props) {
 
   const getYear = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/byId?id=${props.row._id}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/byId?id=${props.row._id}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setYear(data.data);
       setSelectedDateBatDau(moment(data.data.batDau));
@@ -58,7 +58,7 @@ export function EditModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/update`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/update`;
 
       await axios
         .put(

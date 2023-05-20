@@ -20,7 +20,7 @@ export function CreateModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/sponsor/insert`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/insert`;
 
       const formData = new FormData();
       formData.append('logo', SPONSER.logo);

@@ -28,7 +28,7 @@ export function CreateModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/insert`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/insert`;
       await axios
         .post(
           url,

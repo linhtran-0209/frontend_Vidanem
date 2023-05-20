@@ -15,7 +15,7 @@ export function CreateTitleModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/chude/insert`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/chude/insert`;
 
       const formData = new FormData();
       formData.append('image', title.hinhAnh);

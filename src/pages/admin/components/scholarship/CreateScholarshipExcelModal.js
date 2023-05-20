@@ -26,7 +26,7 @@ export function CreateScholarshipExcelModal(props) {
 
   const handleDownloadTemplate = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/scholarship/getTemplate`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getTemplate`;
       const response = await axios.get(url, {
         withCredentials: true,
         responseType: 'blob', // set the response type to blob
@@ -55,7 +55,7 @@ export function CreateScholarshipExcelModal(props) {
     setDetail([]);
   };
   const handleSubmitFile = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/scholarship/importExcel`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/importExcel`;
     const formData = new FormData();
     formData.append('excel', file);
     await axios

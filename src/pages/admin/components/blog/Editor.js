@@ -35,7 +35,7 @@ const modules = {
             const formData = new FormData();
             formData.append('image', file);
             try {
-              const response = await axios.post(`${process.env.REACT_APP_API_URL}/tintuc/hinhanh`, formData, {
+              const response = await axios.post(`${process.env.REACT_APP_API_URL}/admin/tintuc/hinhanh`, formData, {
                 headers: {
                   'Content-Type': 'multipart/form-data',
                 },

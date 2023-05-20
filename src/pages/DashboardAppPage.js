@@ -34,7 +34,7 @@ export default function DashboardAppPage() {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/account/getAll`;
+        const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll`;
         const { data } = await axios.get(url, { withCredentials: true });
         setTotaluser(data.total);
       } catch (err) {
@@ -43,7 +43,7 @@ export default function DashboardAppPage() {
     };
     const getsponser = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
+        const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll`;
         const { data } = await axios.get(url, { withCredentials: true });
         setTotalsponser(data.total);
       } catch (err) {
@@ -52,7 +52,7 @@ export default function DashboardAppPage() {
     };
     const getchildren = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/treem/getAll`;
+        const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll`;
         const { data } = await axios.get(url, { withCredentials: true });
         setTotalchildren(data.total);
       } catch (err) {
@@ -61,7 +61,7 @@ export default function DashboardAppPage() {
     };
     const getnews = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/tintuc/getAll`;
+        const url = `${process.env.REACT_APP_API_URL}/admin/tintuc/getAll`;
         const { data } = await axios.get(url, { withCredentials: true });
         setTotalnews(data.total);
       } catch (err) {

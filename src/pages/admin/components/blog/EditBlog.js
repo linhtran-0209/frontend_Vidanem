@@ -50,7 +50,7 @@ export default function BlogNewPostForm() {
   };
 
   const getTinTuc = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/tintuc/byId?id=${id}`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/tintuc/byId?id=${id}`;
     const { data } = await axios.get(url, { withCredentials: true });
     setBaiViet(data.data);
     console.log(data.data);
@@ -67,7 +67,7 @@ export default function BlogNewPostForm() {
   }, []);
 
   const getListTitle = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/chude/getAll?all=true`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/chude/getAll?all=true`;
     const { data } = await axios.get(url, { withCredentials: true });
     setListTitle(data.data);
   };
@@ -107,7 +107,7 @@ export default function BlogNewPostForm() {
   };
 
   const handleSubmit = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/tintuc/update`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/tintuc/update`;
     const formData = new FormData();
     formData.append('id', baiViet._id);
     formData.append('image', imgCover);
@@ -122,7 +122,7 @@ export default function BlogNewPostForm() {
       withCredentials: true,
     });
 
-    const urlMove = `${process.env.REACT_APP_API_URL}/tintuc/move`;
+    const urlMove = `${process.env.REACT_APP_API_URL}/admin/tintuc/move`;
     if (listImgContent.length > 0) {
       listImgContent.forEach(async (img) => {
         await axios.put(
@@ -144,7 +144,7 @@ export default function BlogNewPostForm() {
 
   const handleAccept = async () => {
     if (+sessionStorage.getItem('role') === 1) {
-      const url = `${process.env.REACT_APP_API_URL}/tintuc/accpet`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/tintuc/accpet`;
       await axios
         .put(
           url,
@@ -163,7 +163,7 @@ export default function BlogNewPostForm() {
   };
 
   const handleReject = async (reason) => {
-    const url = `${process.env.REACT_APP_API_URL}/tintuc/reject`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/tintuc/reject`;
     await axios
       .put(
         url,

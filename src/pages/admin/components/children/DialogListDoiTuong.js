@@ -21,7 +21,7 @@ export function DialogListDoiTuong(props) {
   }, []);
 
   const getListDoiTuong = async() => {
-    const url = `${process.env.REACT_APP_API_URL}/doituong/getAll?all=true`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/doituong/getAll?all=true`;
     const { data } = await axios.get(url, { withCredentials: true });
     setListDoiTuong(data.data);
   }

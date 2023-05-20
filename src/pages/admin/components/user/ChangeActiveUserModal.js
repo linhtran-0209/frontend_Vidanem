@@ -15,7 +15,7 @@ export function ChangeActiveUserModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/account/changeActive`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/changeActive`;
 
       axios
         .put(

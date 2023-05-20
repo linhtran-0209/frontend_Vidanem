@@ -51,7 +51,7 @@ export default function InformChildren() {
   useEffect(() => {
     const getlistimage = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
+        const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll`;
         const { data } = await axios.get(url, { withCredentials: true });
         setListimage(data.data);
         console.log(data.data);

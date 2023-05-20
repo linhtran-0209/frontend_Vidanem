@@ -31,7 +31,7 @@ export function InsertUserModal(props) {
   const getUser = async () => {
     try {
       const email = props.row.email || '';
-      const url = `${process.env.REACT_APP_API_URL}/account/byEmail?email=${email}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/byEmail?email=${email}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setAccount(data.data);
       setOpenQuyen(data.data.quyen);
@@ -123,7 +123,7 @@ export function InsertUserModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/account/update`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/update`;
 
       axios
         .put(

@@ -15,7 +15,7 @@ export function CreateSponsorExcelModal(props) {
 
   const handleDownloadTemplate = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/sponsor/getTemplate`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getTemplate`;
       const response = await axios.get(url, {
         withCredentials: true,
         responseType: 'blob', // set the response type to blob
@@ -44,7 +44,7 @@ export function CreateSponsorExcelModal(props) {
     setDetail([])
   };
   const handleSubmitFile = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/sponsor/importExcel`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/importExcel`;
     const formData = new FormData();
     formData.append('excel', file);
     await axios

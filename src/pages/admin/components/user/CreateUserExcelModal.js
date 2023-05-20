@@ -15,7 +15,7 @@ export function CreateUserExcelModal(props) {
 
   const handleDownloadTemplate = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/account/getTemplate`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/getTemplate`;
       const response = await axios.get(url, {
         withCredentials: true,
         responseType: 'blob', // set the response type to blob
@@ -44,7 +44,7 @@ export function CreateUserExcelModal(props) {
     setDetail([])
   };
   const handleSubmitFile = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/account/importExcel`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/account/importExcel`;
     const formData = new FormData();
     formData.append('excel', file);
     await axios

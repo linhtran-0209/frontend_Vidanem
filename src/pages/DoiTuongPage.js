@@ -63,7 +63,7 @@ export default function DoiTuongPage() {
 
   const getDoiTuongs = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/doituong/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/doituong/getAll?curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setDoiTuongList(data.data);
@@ -84,7 +84,7 @@ export default function DoiTuongPage() {
     setOpenDialogEdit(false);
 
     try {
-      const url = `${process.env.REACT_APP_API_URL}/doituong/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/doituong/getAll?curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setDoiTuongList(data.data);
@@ -97,7 +97,7 @@ export default function DoiTuongPage() {
   const handleChangePage = async (event, newPage) => {
     setPage(newPage - 1);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/namhoc/getAll?curPage=${newPage}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/getAll?curPage=${newPage}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setDoiTuongList(data.data);

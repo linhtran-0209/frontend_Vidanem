@@ -72,7 +72,7 @@ export default function SponserPage() {
 
   const getSponser = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll?curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setSPONSERLIST(data.data);
@@ -84,7 +84,7 @@ export default function SponserPage() {
 
   const handleSearch = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setSPONSERLIST(data.data);
@@ -105,7 +105,7 @@ export default function SponserPage() {
     setOpenDialogEdit(false);
 
     try {
-      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setSPONSERLIST(data.data);
@@ -118,7 +118,7 @@ export default function SponserPage() {
   const handleChangePage = async (event, newPage) => {
     setPage(newPage - 1);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll?keyword=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll?keyword=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setSPONSERLIST(data.data);
@@ -152,7 +152,7 @@ export default function SponserPage() {
   };
 
   const handleDelete = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/sponsor/delete?id=${selectedRow._id}`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/delete?id=${selectedRow._id}`;
     await axios.delete(url, { withCredentials: true });
     // setShowDeleteDialog(false);
   };

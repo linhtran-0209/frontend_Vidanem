@@ -37,7 +37,7 @@ export function CreateModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/scholarship/insert`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/insert`;
       await axios
         .post(
           url,
@@ -61,7 +61,7 @@ export function CreateModal(props) {
   };
 
   const getSponsorList = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll`;
     const { data } = await axios.get(url, { withCredentials: true });
     setSPONSERLIST(data.data);
   };

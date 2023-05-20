@@ -37,7 +37,7 @@ export function EditModal(props) {
 
   const getSponser = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/sponsor/byId?id=${props.row._id}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/byId?id=${props.row._id}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setSPONSER(data.data);
       setPreview(data.data.logo);
@@ -48,7 +48,7 @@ export function EditModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/sponsor/update?id=${props.row._id}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/update?id=${props.row._id}`;
 
       const formData = new FormData();
       formData.append('logo', SPONSER.logo);

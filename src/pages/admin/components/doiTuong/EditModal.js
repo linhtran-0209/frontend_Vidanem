@@ -35,7 +35,7 @@ export function EditModal(props) {
 
   const getDoiTuong = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/doituong/byId?id=${props.row._id}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/doituong/byId?id=${props.row._id}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setDoiTuong(data.data);
     } catch (err) {
@@ -45,7 +45,7 @@ export function EditModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/doituong/update`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/doituong/update`;
 
       await axios
         .put(

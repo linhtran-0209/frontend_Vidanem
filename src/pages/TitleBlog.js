@@ -96,7 +96,7 @@ export default function BlogPage() {
 
   const getTitles = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/chude/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/chude/getAll?curPage=${page}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setTitleList(data.data);

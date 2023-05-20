@@ -45,7 +45,7 @@ export default function BlogNewPostForm() {
   };
 
   const getListTitle = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/chude/getAll?all=true`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/chude/getAll?all=true`;
     const { data } = await axios.get(url, { withCredentials: true });
     setListTitle(data.data);
   };
@@ -84,7 +84,7 @@ export default function BlogNewPostForm() {
   };
 
   const handleSubmit = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/tintuc/insert`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/tintuc/insert`;
     const formData = new FormData();
     formData.append('image', imgCover);
     formData.append('chuDe', selected);
@@ -99,7 +99,7 @@ export default function BlogNewPostForm() {
     });
 
     if (result.data.id) {
-      const urlMove = `${process.env.REACT_APP_API_URL}/tintuc/move`;
+      const urlMove = `${process.env.REACT_APP_API_URL}/admin/tintuc/move`;
       if (listImgContent.length > 0) {
         listImgContent.forEach(async (img) => {
           await axios.put(
