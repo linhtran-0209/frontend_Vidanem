@@ -1,9 +1,9 @@
 const menuItems = [
-    {
-      title: "Home",
-      url: "/homepage",
-      cName: "nav-links"
-    },
+    // {
+    //   title: "Home",
+    //   url: "/homepage",
+    //   cName: "nav-links"
+    // },
     {
       title: "Giới thiệu",
       url: "/homepage",

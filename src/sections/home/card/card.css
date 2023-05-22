@@ -40,6 +40,10 @@
 .card__content p{
     height: 90px;
 }
+.card__content .card__p{
+    margin-top: 20px;
+    height:45px;
+}
 .card__action .card__button{
     background-color: rgb(32,101,209);
     color: #fff;

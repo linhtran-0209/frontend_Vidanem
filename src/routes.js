@@ -25,6 +25,7 @@ import InsertBlog from './pages/admin/components/blog/CreateBlog';
 import EditBlog from './pages/admin/components/blog/EditBlog';
 import TitleBlog from './pages/TitleBlog';
 import DetailNews from './sections/home/tinbai/DetailNews';
+import DetailChildren from './sections/home/children/DetailChildren';
 
 // import AccountPopover from './layouts/dashboard/header/AccountPopover';
 
@@ -57,39 +58,28 @@ export default function Router() {
       path: '/homepage',
       element: <Hompage />,
       children: [
-        { element: <Navigate to="/homepage/" />, index: true },
+        { element: <Navigate to="/homepage" />, index: true },
         { path: '/homepage', element: <LoginPage /> },
-        {
-          // path: '/homepage/new',
-          // children: [
-          //   {
-          //     path: '/homepage/new/detail',
-          //     element: (
-                
-          //         <DetailNews />
-                
-          //     ),
-          //   }
-          // ]
-          
-            path: 'news',
-            element: (
-              <DetailNews />
-            ),
-           
-          }
-      ]
-        
-      
+        // {
+        //   path: 'news',
+
+        //   element: <DetailNews />,
+        //   children: [{ element: <Navigate to="/news" />, index: true }],
+        // },
+      ],
     },
     {
       element: <CommunityPage />,
       children: [{ element: <Navigate to="/communitypage" />, index: true }, { path: '/communitypage' }],
     },
-    // {
-    //   element: <DetailNews />,
-    //   children: [{ element: <Navigate to="/homepage/detail" />, index: true }, { path: '/communitypage' }],
-    // },
+    {
+      element: <DetailNews />,
+      children: [{ element: <Navigate to="/news/:id" />, index: true }, { path: '/news/:id' }],
+    },
+    {
+      element: <DetailChildren />,
+      children: [{ element: <Navigate to="/children/:id" />, index: true }, { path: '/children/:id' }],
+    },
     {
       element: <ContactPage />,
       children: [{ element: <Navigate to="/contactpage" />, index: true }, { path: '/contactpage' }],
