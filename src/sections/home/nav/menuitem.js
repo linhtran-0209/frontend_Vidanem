@@ -11,7 +11,7 @@ const menuItems = [
     },
     {
       title: "Vì đàn em",
-      url: "/communitypage",
+      url: "/homepage",
       cName: "nav-links"
     },
     {

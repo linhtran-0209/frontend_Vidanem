@@ -55,18 +55,8 @@ const Protected = ({ roles, children }) => {
 export default function Router() {
   const routes = useRoutes([
     {
-      path: '/homepage',
       element: <Hompage />,
-      children: [
-        { element: <Navigate to="/homepage" />, index: true },
-        { path: '/homepage', element: <LoginPage /> },
-        // {
-        //   path: 'news',
-
-        //   element: <DetailNews />,
-        //   children: [{ element: <Navigate to="/news" />, index: true }],
-        // },
-      ],
+      children: [{ element: <Navigate to="/homepage" />, index: true }, { path: '/homepage' }],
     },
     {
       element: <CommunityPage />,
