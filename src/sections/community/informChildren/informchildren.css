@@ -1,17 +1,29 @@
+.sponsor {
+  margin-top: 50px;
+  text-align: center;
+}
+.marquee{
+  background-color: rgb(192,215,240);
+}
+.image_wrapper {
+  margin: 10px 30px;
+}
 
+.image_wrapper img {
+  width: 80%;
+  height: 60px;
+}
 .image__NhaTaiTro{
   display: flex;
   justify-content: center;
   width: 100%;
-  background-color: rgb(192,215,240);
-  padding: 30px 0px;
+  padding: 30px 80px;
 }
 .image__NhaTaiTro img{
-  width: 160px;
-  height: 160px;
+  width: 100%;
+  height: 150px;
   padding: 10px 15px;
-  
-  box-shadow: 5px 3px 3px 5px rgb(253, 253, 253);
+
 }
 .title__form__informchildrens{
   width: 100%;

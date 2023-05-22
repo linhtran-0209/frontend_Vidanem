@@ -347,7 +347,7 @@ export default function EditChildren() {
   };
 
   const handleSubmit = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/treem/update`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/treem/update`;
 
     if (treEm.authStatus === 'DeXuat' || treEm.authStatus === 'TuChoi') {
       await axios
@@ -371,6 +371,7 @@ export default function EditChildren() {
         )
         .then((result) => {
           if (result.status === 200) {
+            console.log(result.status);
             setOpenSuccessMessage(result.data.message);
           } else setOpenErrMessage(result.data.message);
         });
