@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 
 // @mui
 import {
+  Alert,
   Card,
   Table,
   Stack,
@@ -50,6 +51,7 @@ export default function ChildrenPage() {
   const [total, setTotal] = useState(0);
   const [selectedRow, setSelectedRow] = useState({});
   const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
+  const [openErrMessage, setOpenErrMessage] = useState('');
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -187,7 +189,6 @@ export default function ChildrenPage() {
   const handleChangePage = async (event, newPage) => {
     setPage(newPage - 1);
     try {
-
       const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}&don_vi_tai_tro=${sponsor}`;
 
       const { data } = await axios.get(url, { withCredentials: true });
@@ -237,15 +238,27 @@ export default function ChildrenPage() {
   const [opendialog, setOpenDialog] = React.useState(false);
 
   const handleClickOpen = () => {
-    navigate(`/dashboard/children/insert`);
+    if (+sessionStorage.getItem('role') !== 3) setOpenErrMessage('Tài khoản không thể thực hiện chức năng này');
+    else navigate(`/dashboard/children/insert`);
   };
 
   const handleClose = () => {
     setOpenDialog(false);
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setOpenErrMessage('');
+    }, 3000);
+  }, [openErrMessage]);
+
   return (
     <>
+      {openErrMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 500000, right: 100 }} severity="error">
+          {openErrMessage}
+        </Alert>
+      )}
       <Helmet>
         <title> Trẻ Em </title>
       </Helmet>
