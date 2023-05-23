@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet-async';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 
-
 // @mui
 import {
   Alert,
@@ -230,7 +229,7 @@ export default function ScholarshipPage() {
                 <UserListHead headLabel={TABLE_HEAD} rowCount={total} />
                 <TableBody>
                   {ScholarshipList.map((row) => {
-                    const { _id, maHocBong, tenHocBong, soLuong, ghiChu, donViTaiTro } = row;
+                    const { _id, maHocBong, tenHocBong, soLuong, ghiChu, donViBaoTro } = row;
                     // const selectedUser = selected.indexOf(tenDonVi) !== -1;
 
                     return (
@@ -256,22 +255,20 @@ export default function ScholarshipPage() {
                           {ghiChu}
                         </TableCell>
 
-                        <TableCell
-                          className='icon__scholarship__container'  
-                        >
+                        <TableCell className="icon__scholarship__container">
                           <Tooltip title="Cập nhật">
                             <MenuItem className="scholarship__update" onClick={(event) => handleRowClick(event, row)}>
                               <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
                             </MenuItem>
                           </Tooltip>
                           <Tooltip title="Xóa">
-                          <MenuItem
-                            className="scholarship__delete"
-                            sx={{ color: 'error.main' }}
-                            onClick={(event) => handleDeleteClick(row)}
-                          >
-                            <Iconify icon={'eva:trash-2-outline'} />
-                          </MenuItem>
+                            <MenuItem
+                              className="scholarship__delete"
+                              sx={{ color: 'error.main' }}
+                              onClick={(event) => handleDeleteClick(row)}
+                            >
+                              <Iconify icon={'eva:trash-2-outline'} />
+                            </MenuItem>
                           </Tooltip>
                         </TableCell>
                       </TableRow>

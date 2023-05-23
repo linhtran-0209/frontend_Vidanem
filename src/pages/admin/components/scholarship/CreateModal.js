@@ -32,7 +32,7 @@ export function CreateModal(props) {
 
   const handleChange = (e) => {
     setSelected(e.target.value);
-    setScholarship({ ...scholarship, donViTaiTro: e.target.value._id });
+    setScholarship({ ...scholarship, donViBaoTro: e.target.value._id });
   };
 
   const handleSubmit = async () => {
@@ -44,7 +44,7 @@ export function CreateModal(props) {
           {
             maHocBong: scholarship.maHocBong,
             tenHocBong: scholarship.tenHocBong,
-            donViTaiTro: scholarship.donViTaiTro,
+            donViBaoTro: scholarship.donViBaoTro,
             soLuong: scholarship.soLuong,
             soTien: scholarship.soTien,
             hinhThuc: scholarship.hinhThuc,

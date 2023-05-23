@@ -26,7 +26,8 @@ import {StyleCreateBlog} from './pages/admin/components/blog/CreateBlog.css';
 import {StyleCreateYear} from './pages/admin/components/children/DialogHocTap.css';
 import {StyleBlogPage} from './pages/BlogPage.css';
 import {StylePreviewBlog} from './pages/admin/components/blog/PreviewNewBlog.css';
-
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 // import {Global} from './utils/global.css';
 // import axios from 'axios';

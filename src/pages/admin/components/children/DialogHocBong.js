@@ -61,7 +61,7 @@ export function DialogHocBong(props) {
   };
 
   const getScholarshipList = async (donViBaoTro) => {
-    const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?donViTaiTro=${donViBaoTro}`;
+    const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?donViBaoTro=${donViBaoTro}`;
     const { data } = await axios.get(url, { withCredentials: true });
     setSCHOLARSHIPLIST(data.data);
   };

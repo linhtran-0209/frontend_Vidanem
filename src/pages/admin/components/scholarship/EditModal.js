@@ -45,7 +45,7 @@ export function EditModal(props) {
       const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/byId?id=${props.row._id}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setScholarship(data.data);
-      setSelected(data.data.donViTaiTro);
+      setSelected(data.data.donViBaoTro);
     } catch (err) {
       console.log(err);
     }
@@ -53,7 +53,7 @@ export function EditModal(props) {
 
   const handleChange = (e) => {
     setSelected(e.target.value);
-    setScholarship({ ...scholarship, donViTaiTro: e.target.value });
+    setScholarship({ ...scholarship, donViBaoTro: e.target.value });
   };
 
   const defaultSelectedValue = selected;
@@ -69,7 +69,7 @@ export function EditModal(props) {
             id: props.row._id,
             maHocBong: scholarship.maHocBong,
             tenHocBong: scholarship.tenHocBong,
-            donViTaiTro: scholarship.donViTaiTro,
+            donViBaoTro: scholarship.donViBaoTro,
             soLuong: scholarship.soLuong,
             soTien: scholarship.soTien,
             hinhThuc: scholarship.hinhThuc,
@@ -89,18 +89,18 @@ export function EditModal(props) {
   };
   return (
     <>
-      <Dialog className='dialogupdatescholarship' open={props.setOpenDialogEdit} onClose={props.handleClose}>
-      {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 50, top: 150 }} severity="success">
-          {openSuccessMessage}
-        </Alert>
-      )}
-      {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 50, top: 150 }} severity="error">
-          {openErrMessage}
-        </Alert>
-      )}
-      <div className="titleupdatescholarship">
+      <Dialog className="dialogupdatescholarship" open={props.setOpenDialogEdit} onClose={props.handleClose}>
+        {openSuccessMessage && (
+          <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 50, top: 150 }} severity="success">
+            {openSuccessMessage}
+          </Alert>
+        )}
+        {openErrMessage && (
+          <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 50, top: 150 }} severity="error">
+            {openErrMessage}
+          </Alert>
+        )}
+        <div className="titleupdatescholarship">
           {' '}
           Cập nhật học bổng
           <IconButton className onClick={props.handleClose}>
@@ -108,37 +108,31 @@ export function EditModal(props) {
           </IconButton>
         </div>
         <div className="divider" />
-        <DialogContent className='form__info__updatescholarship'>
-        <div className='form__info__updatescholarship__container'>
-          <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Mã học bổng"
-              value={scholarship.maHocBong || ''}
-              onChange={(e) => setScholarship({ ...scholarship, maHocBong: e.target.value })}
-              type="text"
-              fullWidth
-            />
-          </FormControl>
-          <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Tên học bổng"
-              value={scholarship.tenHocBong || ''}
-              onChange={(e) => setScholarship({ ...scholarship, tenHocBong: e.target.value })}
-              type="text"
-              fullWidth
-            />
-          </FormControl>
+        <DialogContent className="form__info__updatescholarship">
+          <div className="form__info__updatescholarship__container">
+            <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Mã học bổng"
+                value={scholarship.maHocBong || ''}
+                onChange={(e) => setScholarship({ ...scholarship, maHocBong: e.target.value })}
+                type="text"
+                fullWidth
+              />
+            </FormControl>
+            <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Tên học bổng"
+                value={scholarship.tenHocBong || ''}
+                onChange={(e) => setScholarship({ ...scholarship, tenHocBong: e.target.value })}
+                type="text"
+                fullWidth
+              />
+            </FormControl>
           </div>
           <FormControl className="formcontrolupdatesholarship__name" variant="outlined" fullWidth>
-            <Select
-              onChange={handleChange}
-              label="Đơn vị tài trợ"
-              value={selected}
-              fullWidth
-              margin="dense"
-            >
+            <Select onChange={handleChange} label="Đơn vị tài trợ" value={selected} fullWidth margin="dense">
               <TextField
                 autoFocus
                 placeholder="Tên đơn vị tài trợ..."
@@ -157,37 +151,37 @@ export function EditModal(props) {
               ))}
             </Select>
           </FormControl>
-          <div className='form__info__moneyupdatescholarship__container'>
-          <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Số lượng"
-              value={scholarship.soLuong || ''}
-              onChange={(e) => setScholarship({ ...scholarship, soLuong: e.target.value })}
-              type="phone"
-              fullWidth
-            />
-          </FormControl>
-          <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Số tiền mỗi suất"
-              value={scholarship.soTien || ''}
-              onChange={(e) => setScholarship({ ...scholarship, soTien: e.target.value })}
-              type="text"
-              fullWidth
-            />
-          </FormControl>
-          <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Hình thức"
-              value={scholarship.hinhThuc || ''}
-              onChange={(e) => setScholarship({ ...scholarship, hinhThuc: e.target.value })}
-              type="text"
-              fullWidth
-            />
-          </FormControl>
+          <div className="form__info__moneyupdatescholarship__container">
+            <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Số lượng"
+                value={scholarship.soLuong || ''}
+                onChange={(e) => setScholarship({ ...scholarship, soLuong: e.target.value })}
+                type="phone"
+                fullWidth
+              />
+            </FormControl>
+            <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Số tiền mỗi suất"
+                value={scholarship.soTien || ''}
+                onChange={(e) => setScholarship({ ...scholarship, soTien: e.target.value })}
+                type="text"
+                fullWidth
+              />
+            </FormControl>
+            <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
+              <TextField
+                margin="dense"
+                label="Hình thức"
+                value={scholarship.hinhThuc || ''}
+                onChange={(e) => setScholarship({ ...scholarship, hinhThuc: e.target.value })}
+                type="text"
+                fullWidth
+              />
+            </FormControl>
           </div>
           <FormControl className="formcontrolupdatesholarship__note" variant="standard" fullWidth>
             <TextField
@@ -201,8 +195,12 @@ export function EditModal(props) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button className="huycapnhathocbong" onClick={props.handleClose}>Hủy</Button>
-          <Button className="capnhathocbong" onClick={handleSubmit}>Cập nhật học bổng</Button>
+          <Button className="huycapnhathocbong" onClick={props.handleClose}>
+            Hủy
+          </Button>
+          <Button className="capnhathocbong" onClick={handleSubmit}>
+            Cập nhật học bổng
+          </Button>
         </DialogActions>
       </Dialog>
     </>

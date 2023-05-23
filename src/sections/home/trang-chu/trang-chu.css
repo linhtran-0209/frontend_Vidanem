@@ -16,6 +16,7 @@
 .card{
     display: flex;
     justify-content: center;
+    padding: 30px 120px;
 }
 .card__container{
     margin: 40px 15px 25px 15px;
