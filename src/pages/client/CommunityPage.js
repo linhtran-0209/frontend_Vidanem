@@ -3,15 +3,14 @@ import PropTypes from 'prop-types';
 import { styled, useTheme } from '@mui/material/styles';
 
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
-
+import CongDong from '../../sections/cong-dong/cong-dong';
 import { bgBlur } from '../../utils/cssStyles';
 //
 import Navbar from '../../sections/home/nav/navbar';
 
 import Slider from '../../sections/home/slider/sliderHomepage';
 import { StyleSlider } from '../../sections/home/slider/sliderHomepage.css';
-import InformChildren from '../../sections/community/informChildren/informchildren';
-import { StyleInformChildren } from '../../sections/community/informChildren/informchildren.css';
+
 
 import Contact from '../../sections/home/contact/contact';
 import { StyleContact } from '../../sections/home/contact/contact.css';
@@ -47,7 +46,7 @@ export default function Communitypage() {
       </StyledToolbar>
       <Slider />
       {/* <Carousel /> */}
-      <InformChildren />
+      <CongDong />
       <Contact />
       <Footer />
     </>

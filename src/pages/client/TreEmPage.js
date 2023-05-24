@@ -3,17 +3,18 @@ import PropTypes from 'prop-types';
 import { styled, useTheme } from '@mui/material/styles';
 
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
-
+import TreEm from '../../sections/children/tre-em'; 
 import { bgBlur } from '../../utils/cssStyles';
 //
 import Navbar from '../../sections/home/nav/navbar';
 
 import '../../sections/home/slider/sliderHomepage.css';
 import '../../sections/cong-dong/cong-dong.css';
+import Slider from '../../sections/home/slider/sliderHomepage';
 
 import Contact from '../../sections/home/contact/contact';
 import '../../sections/home/contact/contact.css';
-import Contactform from '../../sections/contactform/contact';
+
 import '../../sections/contactform/contact.css';
 import Footer from '../../sections/home/footer/footer';
 import '../../sections/home/footer/footer.css';
@@ -39,13 +40,14 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     padding: theme.spacing(0, 0),
   },
 }));
-export default function Contactpage() {
+export default function TreEmpage() {
   return (
     <>
       <StyledToolbar style={{ background: 'rgb(255,255,255)' }}>
         <Navbar />
       </StyledToolbar>
-      <Contactform />
+      <Slider />
+      <TreEm />
       <Contact />
       <Footer />
     </>

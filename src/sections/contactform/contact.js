@@ -3,9 +3,6 @@ import ReactDOM from 'react-dom';
 
 export default function Contact() {
   const [name, setName] = useState('');
-  const [ngaysinh, setNgaysinh] = useState('');
-  const [diachi, setDiachi] = useState('');
-  const [hoancanh, setHoancanh] = useState('');
 
   const dataCollection = async (event) => {
     event.preventDefault();

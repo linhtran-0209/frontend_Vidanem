@@ -65,7 +65,7 @@ export default function ImgMediaCard() {
 
   const navigate = useNavigate();
   const img = imageOne.default;
-  const [selectedTreEm, setSelectedTreEm] = useState({});
+  const [selectedTreEm, setSelectedTreEm] = useState();
   const [baiViet, setBaiViet] = useState({});
   const [baiVietList, setBaiVietList] = useState([]);
   const [chuDeList, setChuDeList] = useState([]);
@@ -160,7 +160,7 @@ export default function ImgMediaCard() {
           })}
         </Slider>
         <div style={{ marginTop: '30px', textAlign: 'center' }}>
-          <Link>
+          <Link to={'/tre-em'}>
             <Typography variant="subtitle2" noWrap>
               Xem thêm
             </Typography>

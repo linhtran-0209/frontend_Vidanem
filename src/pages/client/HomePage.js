@@ -9,18 +9,18 @@ import { bgBlur } from '../../utils/cssStyles';
 import Navbar from '../../sections/home/nav/navbar';
 
 import Slider from '../../sections/home/slider/sliderHomepage';
-import {StyleSlider} from '../../sections/home/slider/sliderHomepage.css'
+import { StyleSlider } from '../../sections/home/slider/sliderHomepage.css';
 // import Carousel from '../../sections/home/carousel/carousel'
 // import {StyleCarousel} from'../../sections/home/carousel/carousel.css';
 import Card from '../../sections/home/trang-chu/trang-chu';
-import {StyleCard} from'../../sections/home/trang-chu/trang-chu.css';
+import { StyleCard } from '../../sections/home/trang-chu/trang-chu.css';
 import '../../sections/home/dialog/tre-em-dialog.css';
 import Couter from '../../sections/home/count/count';
-import {StyleCount} from '../../sections/home/count/count.css'
+import { StyleCount } from '../../sections/home/count/count.css';
 import Contact from '../../sections/home/contact/contact';
-import {StyleContact} from "../../sections/home/contact/contact.css";
+import { StyleContact } from '../../sections/home/contact/contact.css';
 import Footer from '../../sections/home/footer/footer';
-import {StyleFooter} from "../../sections/home/footer/footer.css";
+import { StyleFooter } from '../../sections/home/footer/footer.css';
 
 const NAV_WIDTH = 400;
 
@@ -55,6 +55,6 @@ export default function Homepage() {
       <Couter />
       <Contact />
       <Footer />
-      </>
+    </>
   );
 }
