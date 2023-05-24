@@ -14,6 +14,7 @@ import {StyleSlider} from '../../sections/home/slider/sliderHomepage.css'
 // import {StyleCarousel} from'../../sections/home/carousel/carousel.css';
 import Card from '../../sections/home/trang-chu/trang-chu';
 import {StyleCard} from'../../sections/home/trang-chu/trang-chu.css';
+import '../../sections/home/dialog/tre-em-dialog.css';
 import Couter from '../../sections/home/count/count';
 import {StyleCount} from '../../sections/home/count/count.css'
 import Contact from '../../sections/home/contact/contact';

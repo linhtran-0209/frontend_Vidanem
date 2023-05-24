@@ -4,6 +4,7 @@ import { useEffect, useCallback, useState } from 'react';
 import moment from 'moment';
 import Slider from 'react-slick';
 import Marquee from 'react-fast-marquee';
+import ShowMoreText from 'react-show-more-text';
 
 // @mui
 
@@ -21,6 +22,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import { Link, useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { BlogPostCard } from '../../@dashboard/blog';
+import { TreEmDialog } from '../dialog/tre-em-dialog';
 import * as imageOne from '../../../assets/images/home/treem.png';
 
 export default function ImgMediaCard() {
@@ -28,9 +30,11 @@ export default function ImgMediaCard() {
     dots: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
+    slidesToShow: 3,
+    slidesToScroll: 3,
     initialSlide: 0,
+    autoplaySpeed: 2000,
+    autoplay: true,
     responsive: [
       {
         breakpoint: 1024,
@@ -61,12 +65,14 @@ export default function ImgMediaCard() {
 
   const navigate = useNavigate();
   const img = imageOne.default;
-  const [selectedCard, setSelectedCard] = useState({});
+  const [selectedTreEm, setSelectedTreEm] = useState({});
   const [baiViet, setBaiViet] = useState({});
   const [baiVietList, setBaiVietList] = useState([]);
   const [chuDeList, setChuDeList] = useState([]);
   const [childrenlist, setChildrenList] = useState([]);
   const [listImgContent, setListImgContent] = useState([]);
+  const [openDialogTreEm, setOpenDialogTreEm] = useState(false);
+
 
   const getAllNews = async () => {
     try {
@@ -108,43 +114,41 @@ export default function ImgMediaCard() {
     getAllChildren();
   }, []);
 
-  const handleClickDetailChildren = (event, childrenlist) => {
-    setSelectedCard(childrenlist._id);
-    navigate(`/children/${childrenlist._id}`);
+  const handleClickDetailChildren = (id) => {
+    setSelectedTreEm(id)
+    setOpenDialogTreEm(true);
   };
 
+  const handleCloseDialogTreEm = () => {
+    setOpenDialogTreEm(false);
+  };
   return (
     <div>
       <h3 className="title__hompage__one">Trẻ em</h3>
       <div className="divider__hompage" />
-      <div style={{ marginTop: '30px', textAlign: 'center' }}>
+      <div style={{ marginTop: '30px', textAlign: 'center', width: '80%', marginLeft: 'auto', marginRight: 'auto' }}>
         <Slider {...settings}>
           {childrenlist.map((children, index) => {
             const { _id, hoTen, ngaySinh, hinhAnh, doiTuong, truong, hoanCanh } = children;
 
             return (
-              <Card sx={{ maxWidth: 345, height: 420 }}>
+              <Card sx={{ maxWidth: 345, height: 450 }}>
                 <CardHeader
                   style={{ textAlign: 'center' }}
                   title={`${hoTen} - ${moment(ngaySinh).format('DD/MM/YYYY')}`}
                   subheader={truong}
                 />
                 <CardMedia component="img" height="194" image={hinhAnh[0].url} alt="Paella dish" />
-                <CardContent style={{ textAlign: 'justify', height: '90px' }}>
+                <CardContent style={{ textAlign: 'justify', height: 131, overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   <Typography variant="body2" color="text.secondary">
-                    {hoanCanh.split('\n').map((item, index) => (
-                      <React.Fragment key={index}>
-                        {item}
-                        <br />
-                      </React.Fragment>
-                    ))}
+                    {hoanCanh}
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing style={{ justifyContent: 'center' }}>
                   <IconButton aria-label="add to favorites">
                     <FavoriteIcon />
                   </IconButton>
-                  <IconButton aria-label="show detail">
+                  <IconButton aria-label="show detail" onClick={(e) => handleClickDetailChildren(_id)}>
                     <VisibilityIcon />
                   </IconButton>
                   <IconButton aria-label="share">
@@ -155,7 +159,7 @@ export default function ImgMediaCard() {
             );
           })}
         </Slider>
-        <div style={{marginTop:'30px', textAlign: 'center' }}>
+        <div style={{ marginTop: '30px', textAlign: 'center' }}>
           <Link>
             <Typography variant="subtitle2" noWrap>
               Xem thêm
@@ -163,6 +167,7 @@ export default function ImgMediaCard() {
           </Link>
         </div>
       </div>
+      <TreEmDialog openDialog={openDialogTreEm} _id={selectedTreEm} handleClose={handleCloseDialogTreEm} />
 
       <h3 className="title__hompage__two">Tin tức</h3>
       <div className="divider__hompage" />
@@ -182,7 +187,7 @@ export default function ImgMediaCard() {
         </Marquee>
       </div>
 
-      <div>
+      <div style={{ marginTop: '20px', width: '75%', marginLeft: 'auto', marginRight: 'auto' }}>
         <Slider {...settings}>
           {baiVietList.map((data, index) => {
             return <BlogPostCard post={data} index={index} />;

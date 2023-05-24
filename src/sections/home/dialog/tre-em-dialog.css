@@ -1,0 +1,79 @@
+.dialogtreem {
+    border-radius: 10px;
+  }
+
+  .dialogtreem::-webkit-scrollbar {
+    width: 0; /* Biến mất thanh cuộn trên trình duyệt Chrome, Safari */
+  }
+  
+  .scrollable-area {
+    scrollbar-width: none; /* Biến mất thanh cuộn trên trình duyệt Firefox */
+    -ms-overflow-style: none; /* Biến mất thanh cuộn trên trình duyệt Edge */
+  }
+  
+  .dialogtreem .MuiPaper-root {
+    border-radius: 40px;
+  }
+  
+  .dialogtreem .MuiDialog-paper {
+    height: 100%;
+    width: 70%;
+  }
+
+  .info-treem{
+    height: 400px;
+  }
+
+  .img-slider-treem{
+    margin: 15px;
+    border-radius: 15px;
+    height: 320px;
+  }
+
+  .img-slider-treem img {
+    border-radius: 15px;
+    height: 350px;
+    max-width: 100%,
+
+  }
+
+  .spaced {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 200px; 
+  }
+
+  .thanhtich{
+    margin: 0 15px;
+  }
+
+  .dialog-container {
+    overflow: auto;
+    height: 100%; /* Đảm bảo kích thước đầy đủ cho container */
+  }
+  
+  .content-container {
+    padding-right: 16px; /* Đảm bảo không che khuất nội dung bởi thanh cuộn */
+  }
+  
+  .dialog-container::-webkit-scrollbar {
+    width: 6px; /* Độ rộng thanh cuộn */
+  }
+  
+  .dialog-container::-webkit-scrollbar-track {
+    background-color: transparent; /* Màu nền của thanh cuộn */
+  }
+  
+  .dialog-container::-webkit-scrollbar-thumb {
+    background-color: #888; /* Màu của thanh cuộn */
+    border-radius: 3px; /* Bo tròn góc của thanh cuộn */
+  }
+  
+  .dialog-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Màu của thanh cuộn khi di chuột qua */
+  }
+  
+  .dialog-container::-webkit-scrollbar-thumb:active {
+    background-color: #333; /* Màu của thanh cuộn khi đang di chuyển */
+  }

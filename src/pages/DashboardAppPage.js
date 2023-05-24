@@ -34,8 +34,8 @@ export default function DashboardAppPage() {
       try {
         const url = `${process.env.REACT_APP_API_URL}/admin/dashboard/soLuong`;
         const  data  = await axios.get(url, { withCredentials: true });
-        console.log(data.data);
-        setTotal(data.data);
+        console.log(data);
+        setTotal({...data.data});
       } catch (err) {
         console.log(err);
       }
