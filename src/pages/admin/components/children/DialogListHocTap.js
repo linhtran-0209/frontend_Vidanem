@@ -10,9 +10,6 @@ export function DialogListHocTap(props) {
   const [openDialogHocTap, setOpenDialogHocTap] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [infoHocTap, setInfoHocTap] = useState({});
-  const [hocTapNew, sethocTapNew] = useState([]);
-  const [hocTapEdit, setHocTapEdit] = useState([]);
-  const [hocTapDelete, setHocTapDelete] = useState([]);
 
   const handleClickOpenDialog = () => {
     setOpenDialogHocTap(true);

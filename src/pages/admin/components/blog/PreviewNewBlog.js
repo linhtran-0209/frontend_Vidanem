@@ -1,5 +1,5 @@
 // @mui
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions } from '@mui/material';
 import parse from 'html-react-parser';
 // components
 

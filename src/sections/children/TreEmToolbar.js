@@ -51,8 +51,6 @@ export default function TreEmToolbar({
   openWards,
   phuong,
   handleChangePhuong,
-  trangThai,
-  handleChangeTrangThai,
   sponsor,
   handleChangeSponsor,
   onClickSearch,

@@ -15,8 +15,9 @@ import {
   ListItemAvatar,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+
 // utils
-import { fDateTime } from '../../../utils/formatTime';
+import { fDateTime } from '../../utils/formatTime';
 
 // ----------------------------------------------------------------------
 
@@ -212,7 +213,7 @@ export function CommentItem({ _id, name, avatarUrl, email, postedAt, comment, ha
       <Divider
         sx={{
           ml: 'auto',
-          width: (theme) => `calc(100% - ${theme.spacing(7)})`,
+          width: (theme) => `calc(100% - ${theme.spacing(0)})`,
         }}
       />
     </>

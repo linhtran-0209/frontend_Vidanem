@@ -59,7 +59,6 @@ export default function SponserPage() {
   const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
   const [openCreateExcelModal, setOpenCreateExcelModal] = React.useState(false);
 
-
   useEffect(() => {
     getSponser();
   }, []);
@@ -77,7 +76,7 @@ export default function SponserPage() {
   };
 
   const handleSearch = async (event) => {
-    if (event.key === 'Enter' || !event.key){
+    if (event.key === 'Enter' || !event.key) {
       try {
         const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
         const { data } = await axios.get(url, { withCredentials: true });
@@ -90,19 +89,21 @@ export default function SponserPage() {
     }
   };
 
-  const handleClickExportExcel = async () =>{
+  const handleClickExportExcel = async () => {
     const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}&export=true`;
-    await axios.get(url, {
-      withCredentials: true,
-      responseType: 'blob', // set the response type to blob
-    }).then(response => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'Danh sách đơn vị tài trợ.xlsx';
-      a.click();
-    });
-  }
+    await axios
+      .get(url, {
+        withCredentials: true,
+        responseType: 'blob', // set the response type to blob
+      })
+      .then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Danh sách đơn vị tài trợ.xlsx';
+        a.click();
+      });
+  };
 
   const handleClickOpenCreateExcelModal = () => {
     setOpenCreateExcelModal(true);
@@ -180,29 +181,29 @@ export default function SponserPage() {
             Đơn vị bảo trợ
           </Typography>
           <div>
-          <Button
-            className="buttondanhsach"
-            variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={handleClickOpenCreateExcelModal}
-          >
-            Nhập từ Excel
-          </Button>
-          <Button
-            className="buttonxuatexcel"
-            startIcon={<Iconify icon="mdi:microsoft-excel" />}
-            onClick={handleClickExportExcel}
-          >
-            Xuất Excel
-          </Button>
-          <Button
-            className="buttonthemdonvi"
-            variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={handleClickOpenCreate}
-          >
-            Thêm mới
-          </Button>
+            <Button
+              className="buttondanhsach"
+              variant="contained"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+              onClick={handleClickOpenCreateExcelModal}
+            >
+              Nhập từ Excel
+            </Button>
+            <Button
+              className="buttonxuatexcel"
+              startIcon={<Iconify icon="mdi:microsoft-excel" />}
+              onClick={handleClickExportExcel}
+            >
+              Xuất Excel
+            </Button>
+            <Button
+              className="buttonthemdonvi"
+              variant="contained"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+              onClick={handleClickOpenCreate}
+            >
+              Thêm mới
+            </Button>
           </div>
           {/* <Button
             // className="buttonThemMoi"
@@ -247,22 +248,20 @@ export default function SponserPage() {
 
                         <TableCell align="left">{soLuongDaTrao}</TableCell>
 
-                        <TableCell
-                          className='icon__sponser__container'  
-                        >
+                        <TableCell className="icon__container" style={{ justifyContent: 'left', alignItems: 'center' }}>
                           <Tooltip title="Cập nhật">
                             <MenuItem className="sponser__update" onClick={(event) => handleRowClick(event, row)}>
                               <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
                             </MenuItem>
                           </Tooltip>
                           <Tooltip title="Xóa">
-                          <MenuItem
-                            className="sponser__delete"
-                            sx={{ color: 'error.main' }}
-                            onClick={(event) => handleDeleteClick(row)}
-                          >
-                            <Iconify icon={'eva:trash-2-outline'} />
-                          </MenuItem>
+                            <MenuItem
+                              className="sponser__delete"
+                              sx={{ color: 'error.main' }}
+                              onClick={(event) => handleDeleteClick(row)}
+                            >
+                              <Iconify icon={'eva:trash-2-outline'} />
+                            </MenuItem>
                           </Tooltip>
                         </TableCell>
                       </TableRow>

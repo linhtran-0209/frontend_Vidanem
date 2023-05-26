@@ -14,7 +14,7 @@ import '../../sections/home/slider/sliderHomepage.css';
 // import {StyleCarousel} from'../../sections/home/carousel/carousel.css';
 import HomePage from '../../sections/home/trang-chu/trang-chu';
 import '../../sections/home/trang-chu/trang-chu.css';
-import '../../sections/home/dialog/tre-em-dialog.css';
+import '../../sections/children/tre-em-dialog.css';
 import '../../sections/home/tinbai/detail-new.css';
 import Couter from '../../sections/home/count/count';
 import '../../sections/home/count/count.css';
@@ -29,14 +29,6 @@ const HEADER_MOBILE = 64;
 
 const HEADER_DESKTOP = 92;
 
-const StyledRoot = styled(AppBar)(({ theme }) => ({
-  ...bgBlur({ color: theme.palette.grey[100] }),
-  boxShadow: 'none',
-  [theme.breakpoints.up('lg')]: {
-    width: `calc(100% )`,
-  },
-}));
-
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   minHeight: HEADER_MOBILE,
   [theme.breakpoints.up('lg')]: {
@@ -46,8 +38,8 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 }));
 export default function Homepage() {
   return (
-    <>
-      <StyledToolbar style={{ background: 'rgb(255,255,255)' }}>
+    <div>
+      <StyledToolbar style={{ background: 'rgb(255,255,255)', position: 'sticky', top: '0px', zIndex: 10000 }}>
         <Navbar />
       </StyledToolbar>
       <Slider />
@@ -56,6 +48,6 @@ export default function Homepage() {
       <Couter />
       <Contact />
       <Footer />
-    </>
+    </div>
   );
 }

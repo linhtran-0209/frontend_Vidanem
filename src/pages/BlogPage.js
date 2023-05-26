@@ -46,7 +46,6 @@ const TABLE_HEAD = [
 export default function BlogPage() {
   const navigate = useNavigate();
 
-  const [opendialog, setOpenDialog] = React.useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [total, setTotal] = useState(0);
@@ -54,7 +53,6 @@ export default function BlogPage() {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - total) : 0;
   const [filterName, setFilterName] = useState('');
   const [selectedRow, setSelectedRow] = useState({});
-  const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
   const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
 
   const isNotFound = !listTinTuc.length && !!filterName;
@@ -93,13 +91,6 @@ export default function BlogPage() {
     setOpenDialogDelete(false);
   };
 
-  const handleClickOpen = () => {
-    setOpenDialog(true);
-  };
-
-  const handleClose = () => {
-    setOpenDialog(false);
-  };
   return (
     <>
       <Helmet>

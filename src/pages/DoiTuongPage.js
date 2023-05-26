@@ -21,7 +21,6 @@ import {
   Pagination,
   Tooltip,
 } from '@mui/material';
-import moment from 'moment';
 // components
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
@@ -30,10 +29,6 @@ import { EditModal } from './admin/components/doiTuong/EditModal';
 import DoiTuongListHead from '../sections/@dashboard/doituong/DoiTuongListHead';
 import { CreateModal } from './admin/components/doiTuong/CreateModal';
 import { DeleteModal } from './admin/components/doiTuong/DeleteModal';
-
-// mock
-// import USERLIST from '../_mock/us
-// ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'ma', label: 'Mã', alignRight: false },
@@ -176,11 +171,11 @@ export default function DoiTuongPage() {
                         onDoubleClick={(event) => handleRowClick(event, row)}
                         sx={{ cursor: 'pointer', width: '200px', height: '10px' }}
                       >
-                        <TableCell align="left"  style={{ width: 180 }} sx={{ pl: 7 }}>
+                        <TableCell align="left" style={{ width: 180 }} sx={{ pl: 7 }}>
                           {ma}
                         </TableCell>
 
-                        <TableCell align="left" style={{ width: 350 }} sx={{ pl:8 }} >
+                        <TableCell align="left" style={{ width: 350 }} sx={{ pl: 8 }}>
                           {ten}
                         </TableCell>
 
@@ -188,7 +183,7 @@ export default function DoiTuongPage() {
                           {soLuong}
                         </TableCell>
 
-                        <TableCell className="icon__doituong__container">
+                        <TableCell className="icon__container" style={{ alignItems: 'center' }}>
                           <Tooltip title="Cập nhật">
                             <MenuItem className="doituong__update" onClick={(event) => handleRowClick(event, row)}>
                               <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />

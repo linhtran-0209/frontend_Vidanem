@@ -31,6 +31,7 @@ export default function BlogNewPostForm() {
   const { id } = useParams();
 
   const [baiViet, setBaiViet] = useState({});
+  const [authStatus, setAuthStatus] = useState('');
   const [nguoiTao, setNguoiTao] = useState('');
   const [nguoiDuyet, setNguoiDuyet] = useState('');
   const [listTitle, setListTitle] = useState([]);
@@ -58,6 +59,7 @@ export default function BlogNewPostForm() {
     setPreview(`${process.env.REACT_APP_API_URL}${data.data.anhTieuDe}`);
     setContent(data.data.noiDung);
     setSelected(data.data.chuDe._id);
+    setAuthStatus(data.data.authStatus)
     if (data.data.nguoiDuyet) setNguoiDuyet(data.data.nguoiDuyet.hoTen);
     console.log(data.data.authStatus);
   };
@@ -121,6 +123,8 @@ export default function BlogNewPostForm() {
       },
       withCredentials: true,
     });
+
+    setAuthStatus('ChoDuyet')
 
     const urlMove = `${process.env.REACT_APP_API_URL}/admin/tintuc/move`;
     if (listImgContent.length > 0) {
@@ -268,12 +272,12 @@ export default function BlogNewPostForm() {
         <Grid item xs={12} md={4}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
-              {baiViet.authStatus === 'TuChoi' && (
+              {authStatus === 'TuChoi' && (
                 <>
                   <div style={{ textAlign: 'center' }}>
                     <p style={{ color: 'red', fontSize: 20 }}>❌ Từ chối</p>{' '}
                   </div>
-                  {baiViet.authStatus === 'TuChoi' && (
+                  {authStatus === 'TuChoi' && (
                     <>
                       <p style={{ backgroundColor: '#FF6A6A', color: 'white', paddingLeft: 5, fontSize: 15 }}>
                         <b>
@@ -287,7 +291,7 @@ export default function BlogNewPostForm() {
                 </>
               )}
 
-              {baiViet.authStatus === 'DaDuyet' && (
+              {authStatus === 'DaDuyet' && (
                 <div style={{ textAlign: 'center' }}>
                   <p style={{ color: 'green', fontSize: 20 }}>✔ Đã Duyệt</p>
                 </div>
@@ -315,20 +319,20 @@ export default function BlogNewPostForm() {
             <Button fullWidth color="inherit" variant="outlined" size="large" onClick={handleOpenPreview}>
               Xem trước
             </Button>
-            {+sessionStorage.getItem('role') === 2 && baiViet.authStatus !== 'DaDuyet' && (
+            {+sessionStorage.getItem('role') === 2 && authStatus !== 'DaDuyet' && (
               <LoadingButton fullWidth type="submit" variant="contained" size="large" onClick={handleSubmit}>
                 Cập nhật
               </LoadingButton>
             )}
           </Stack>
-          {+sessionStorage.getItem('role') === 2 && baiViet.authStatus === 'DaDuyet' && (
+          {+sessionStorage.getItem('role') === 2 && authStatus === 'DaDuyet' && (
             <Stack direction="row" spacing={1.5} sx={{ mt: 3 }}>
               <Button fullWidth color="error" variant="outlined" size="large">
                 Gửi yêu cầu chỉnh sửa
               </Button>
             </Stack>
           )}
-          {+sessionStorage.getItem('role') === 1 && baiViet.authStatus === 'ChoDuyet' && (
+          {+sessionStorage.getItem('role') === 1 && authStatus === 'ChoDuyet' && (
             <Stack direction="row" spacing={1.5} sx={{ mt: 3 }}>
               <Button
                 fullWidth

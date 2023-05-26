@@ -41,13 +41,13 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 }));
 export default function Contactpage() {
   return (
-    <>
-      <StyledToolbar style={{ background: 'rgb(255,255,255)' }}>
+    <div>
+      <StyledToolbar style={{ background: 'rgb(255,255,255)', position: 'sticky', top: '0px', zIndex: 10000  }}>
         <Navbar />
       </StyledToolbar>
       <Contactform />
       <Contact />
       <Footer />
-    </>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import moment from 'moment';
 import Slider from 'react-slick';
 import Marquee from 'react-fast-marquee';
@@ -12,18 +12,14 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import { Grid, Container, Stack, CardHeader, Avatar, IconButton, Collapse } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { CardHeader, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ShareIcon from '@mui/icons-material/Share';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { BlogPostCard } from '../../@dashboard/blog';
-import { TreEmDialog } from '../dialog/tre-em-dialog';
-import * as imageOne from '../../../assets/images/home/treem.png';
+import { TreEmDialog } from '../../children/tre-em-dialog';
 
 export default function ImgMediaCard() {
   const settings = {
@@ -63,14 +59,10 @@ export default function ImgMediaCard() {
     ],
   };
 
-  const navigate = useNavigate();
-  const img = imageOne.default;
   const [selectedTreEm, setSelectedTreEm] = useState();
-  const [baiViet, setBaiViet] = useState({});
   const [baiVietList, setBaiVietList] = useState([]);
   const [chuDeList, setChuDeList] = useState([]);
   const [childrenlist, setChildrenList] = useState([]);
-  const [listImgContent, setListImgContent] = useState([]);
   const [openDialogTreEm, setOpenDialogTreEm] = useState(false);
 
   const getAllNews = async () => {
@@ -127,8 +119,8 @@ export default function ImgMediaCard() {
       <div className="divider__hompage" />
       <div style={{ marginTop: '30px', textAlign: 'center', width: '80%', marginLeft: 'auto', marginRight: 'auto' }}>
         <Slider {...settings}>
-          {childrenlist.map((children, index) => {
-            const { _id, hoTen, ngaySinh, hinhAnh, doiTuong, truong, hoanCanh } = children;
+          {childrenlist.map((children) => {
+            const { _id, hoTen, ngaySinh, hinhAnh, truong, hoanCanh } = children;
 
             return (
               <Card
@@ -176,7 +168,12 @@ export default function ImgMediaCard() {
           </Link>
         </div>
       </div>
-      <TreEmDialog openDialog={openDialogTreEm} _id={selectedTreEm} handleClose={handleCloseDialogTreEm} />
+      {openDialogTreEm && (
+        <div style={{zIndex: 20000}}>
+          {' '}
+          <TreEmDialog openDialog={openDialogTreEm} _id={selectedTreEm} handleClose={handleCloseDialogTreEm} />
+        </div>
+      )}
 
       <h3 className="title__hompage__two">Tin mới</h3>
       <div className="divider__hompage" />
@@ -199,11 +196,11 @@ export default function ImgMediaCard() {
       <div style={{ marginTop: '20px', width: '75%', marginLeft: 'auto', marginRight: 'auto' }}>
         <Slider {...settings}>
           {baiVietList.map((data, index) => {
-            return <BlogPostCard post={data} index={index} trangchu='true' />;
+            return <BlogPostCard post={data} index={index} trangchu="true" />;
           })}
         </Slider>
         <div style={{ marginTop: '30px', textAlign: 'center' }}>
-          <Link to={'/news'}> 
+          <Link to={'/news'}>
             <Typography variant="subtitle2" noWrap>
               Xem thêm
             </Typography>

@@ -71,7 +71,6 @@ export default function ChildrenPage() {
       console.log(err);
     }
   };
-  const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
 
@@ -335,7 +334,10 @@ export default function ChildrenPage() {
                       </TableCell>
 
                       <TableCell align="left">{trangthai}</TableCell>
-                      <TableCell className="icon__children__container">
+                      <TableCell
+                        className="icon__container"
+                        style={{ justifyContent: 'left', alignItems: 'center' }}
+                      >
                         <Tooltip title="Cập nhật">
                           <MenuItem className="children__update" onClick={(event) => handleRowClick(event, row)}>
                             <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
@@ -395,34 +397,6 @@ export default function ChildrenPage() {
           </Box>
         </Card>
       </Container>
-
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
     </>
   );
 }

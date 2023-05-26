@@ -48,7 +48,6 @@ const TABLE_HEAD = [
 
 export default function YearPage() {
   const [page, setPage] = useState(0);
-  const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [total, setTotal] = useState(0);
   const [YearsList, setYearsList] = useState([]);
@@ -116,7 +115,7 @@ export default function YearPage() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - total) : 0;
 
-  const isNotFound = !YearsList.length && !!filterName;
+  const isNotFound = !YearsList.length;
 
   const handleRowClick = (event, row) => {
     setSelectedRow(row);
@@ -160,8 +159,6 @@ export default function YearPage() {
 
         <CreateModal openDialogCreate={openScholarshipCreate} handleClose={handleCloseCreate} />
         <Card>
-          {/* <ScholarshipToolbar filterName={filterName} onFilterName={handleFilterByName} onClickSearch={handleSearch} /> */}
-
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -204,7 +201,7 @@ export default function YearPage() {
                           )}
                         </TableCell>
 
-                        <TableCell className="icon__scholarship__container">
+                        <TableCell className="icon__container" style={{ alignItems: 'center' }}>
                           <Tooltip title="Cập nhật">
                             <MenuItem className="scholarship__update" onClick={(event) => handleRowClick(event, row)}>
                               <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
@@ -248,12 +245,6 @@ export default function YearPage() {
                         >
                           <Typography variant="h6" paragraph>
                             Không tìm thấy
-                          </Typography>
-
-                          <Typography variant="body2">
-                            Không tìm thấy đơn vị bảo trợ có tên là &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Hãy thử kiểm tra lỗi chính tả hoặc sử dụng các từ hoàn chỉnh.
                           </Typography>
                         </Paper>
                       </TableCell>

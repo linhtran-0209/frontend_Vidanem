@@ -35,7 +35,7 @@ BlogPostCard.propTypes = {
 export default function BlogPostCard({ post, index, trangchu }) {
   const isDesktop = useResponsive('up', 'md');
   const latestPost = index === 0 || index === 1 || index === 2;
-  const { _id, chuDe, tieuDe, moTa, noiDung, anhTieuDe, nguoiTao, createdAt } = post;
+  const { _id, tieuDe, anhTieuDe, nguoiTao, createdAt } = post;
   if (!trangchu && isDesktop && latestPost) {
     return (
       <Card>
@@ -115,7 +115,6 @@ PostContent.propTypes = {
 
 export function PostContent({ id, title, view, comment, share, createdAt, index }) {
   const isDesktop = useResponsive('up', 'md');
-  // const linkTo = PATH_DASHBOARD.blog.view(paramCase(title));
 
   const latestPostLarge = index === 0;
   const latestPostSmall = index === 1 || index === 2;

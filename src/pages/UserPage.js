@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
-import { filter } from 'lodash';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 
@@ -178,8 +177,6 @@ export default function UserPage() {
   const handleFilterByName = (event) => {
     setFilterName(event.target.value);
   };
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   const isNotFound = !USERLIST.length;
   const [selectedRow, setSelectedRow] = useState({});

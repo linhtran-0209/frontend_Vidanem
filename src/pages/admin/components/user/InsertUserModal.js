@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
-import styles from './InsertUserModal.css';
+import './InsertUserModal.css';
 
 export function InsertUserModal(props) {
   const [account, setAccount] = useState({ email: '', hoTen: '' });

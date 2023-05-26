@@ -6,16 +6,10 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   TextField,
   FormControl,
-  MenuItem,
-  Select,
   IconButton,
 } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import CloseIcon from '@mui/icons-material/Close';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -24,8 +18,6 @@ export function EditModal(props) {
   const [doiTuong, setDoiTuong] = useState({});
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
-  const [selectedDateBatDau, setSelectedDateBatDau] = useState(moment());
-  const [selectedDateKetThuc, setSelectedDateKetThuc] = useState(moment());
 
   useEffect(() => {
     if (props.row) {

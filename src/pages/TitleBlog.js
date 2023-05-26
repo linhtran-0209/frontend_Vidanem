@@ -43,7 +43,6 @@ const TABLE_HEAD = [
 // ----------------------------------------------------------------------
 
 export default function BlogPage() {
-  const [opendialog, setOpenDialog] = React.useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openTitleBlogCreate, setOpenTitleBlogCreate] = React.useState(false);
@@ -56,10 +55,6 @@ export default function BlogPage() {
   const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
 
   const isNotFound = !TitleList.length && !!filterName;
-
-  const handleClickOpen = () => {
-    setOpenDialog(true);
-  };
 
   const handleDeleteClick = (row) => {
     setSelectedRow(row);
@@ -79,9 +74,6 @@ export default function BlogPage() {
     setOpenTitleBlogCreate(true);
   };
 
-  const handleClose = () => {
-    setOpenDialog(false);
-  };
   const handleCloseCreate = () => {
     setOpenTitleBlogCreate(false);
   };
@@ -229,3 +221,4 @@ export default function BlogPage() {
     </>
   );
 }
+ 

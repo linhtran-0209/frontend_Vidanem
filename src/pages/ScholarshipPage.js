@@ -255,7 +255,7 @@ export default function ScholarshipPage() {
                           {ghiChu}
                         </TableCell>
 
-                        <TableCell className="icon__scholarship__container">
+                        <TableCell className="icon__container" style={{ justifyContent: 'left', alignItems: 'center' }}>
                           <Tooltip title="Cập nhật">
                             <MenuItem className="scholarship__update" onClick={(event) => handleRowClick(event, row)}>
                               <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />

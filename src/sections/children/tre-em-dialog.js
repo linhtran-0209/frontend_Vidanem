@@ -6,6 +6,7 @@ import TabList from '@mui/lab/TabList';
 import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import moment from 'moment';
+import { CommentList } from './CommentList';
 
 export function TreEmDialog(props) {
   const settings = {
@@ -20,6 +21,7 @@ export function TreEmDialog(props) {
   const [images, setImages] = useState([]);
   const [hocTaps, setHocTaps] = useState([]);
   const [hocBongs, setHocBongs] = useState([]);
+  const [comments, setComments] = useState([]);
   const [tab, setTab] = React.useState('1');
 
   useEffect(() => {
@@ -30,6 +32,7 @@ export function TreEmDialog(props) {
       setImages(data.data.hinhAnh);
       getHocTap(props._id);
       getHocBong(props._id);
+      getBinhLuan(props._id);
     };
     const getHocTap = async (id) => {
       const url = `${process.env.REACT_APP_API_URL}/hoctap/bytreem?treem=${id}`;
@@ -41,6 +44,11 @@ export function TreEmDialog(props) {
       const { data } = await axios.get(url, { withCredentials: true });
       setHocBongs(data.data);
     };
+    const getBinhLuan = async (id) => {
+      const url = `${process.env.REACT_APP_API_URL}/binhluan/getAllByTreEm?treEm=${id}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      setComments(data.data);
+    };
     getTreEm();
   }, [props._id]);
 
@@ -49,7 +57,7 @@ export function TreEmDialog(props) {
   };
   return (
     <>
-      <Dialog className="dialogtreem" open={props.openDialog} onClose={props.handleClose}>
+      <Dialog className="dialogtreem" open={props.openDialog} onClose={props.handleClose} style={{ zIndex: 20000 }}>
         <div className="info-treem">
           <Grid container spacing={1}>
             <Grid item xs={6}>
@@ -97,6 +105,7 @@ export function TreEmDialog(props) {
                   <Tab label="Hoàn cảnh" value="1" />
                   <Tab label="Thành tích" value="2" />
                   <Tab label="Học bổng" value="3" />
+                  <Tab label="Lời chúc" value="4" />
                 </TabList>
               </Box>
               <TabPanel value="1" style={{ height: '250px' }}>
@@ -168,6 +177,13 @@ export function TreEmDialog(props) {
                         </Grid>
                       ))}
                     </Grid>
+                  </div>
+                </div>
+              </TabPanel>
+              <TabPanel value="4" style={{ height: '250px' }}>
+                <div className="dialog-container">
+                  <div className="content-container">
+                    <CommentList treEm={treEm._id} comments={comments} />
                   </div>
                 </div>
               </TabPanel>

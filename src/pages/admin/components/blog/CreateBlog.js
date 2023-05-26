@@ -15,8 +15,6 @@ import Editor from './Editor';
 
 // ----------------------------------------------------------------------
 
-const TAGS_OPTION = ['Đỗ Minh Quân', 'Admin', 'Trần Thị Khánh Linh'];
-
 const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
   color: theme.palette.text.secondary,
@@ -26,7 +24,6 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function BlogNewPostForm() {
-  const navigate = useNavigate();
 
   const [baiViet, setBaiViet] = useState({});
   const [listTitle, setListTitle] = useState([]);

@@ -1,9 +1,4 @@
 const menuItems = [
-    // {
-    //   title: "Home",
-    //   url: "/homepage",
-    //   cName: "nav-links"
-    // },
     {
       title: "Giới thiệu",
       url: "/homepage",
@@ -17,6 +12,11 @@ const menuItems = [
     {
       title: "Cộng đồng",
       url: "/communitypage",
+      cName: "nav-links"
+    },
+    {
+      title: "Tin tức",
+      url: "/news",
       cName: "nav-links"
     },
     {

@@ -6,11 +6,20 @@ import { CommentItem } from './CommentItem';
 
 // ----------------------------------------------------------------------
 
-export function CommentList({ baiViet, comments }) {
+export function CommentList({ treEm, comments }) {
   return (
     <>
-      <PostComment id={baiViet} />
-      <div style={{ marginLeft: '10%', marginRight: '10%' }}>
+      <PostComment id={treEm} />
+      <div>
+        {comments.length > 0 ? (
+          <h3 style={{ color: '#FF3030' }}>Lời chúc</h3>
+        ) : (
+          <p style={{ textAlign: 'center' }}>
+            <span style={{ color: '#DF0029' }}>❤</span> 
+            Bạn hãy là người đầu tiên gửi lời chúc đến em{' '}
+            <span style={{ color: '#DF0029' }}>❤</span>
+          </p>
+        )}
         <List disablePadding>
           {comments.map((comment) => {
             const { _id, email, hoTen, child, createdAt } = comment;

@@ -1,12 +1,10 @@
 import axios from 'axios';
 import { Box, Dialog, Grid, Card, Tab, Typography, Tooltip, Pagination } from '@mui/material';
-import parse from 'html-react-parser';
 // components
-import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 import TreEmToolbar from './TreEmToolbar';
-import { TreEmDialog } from '../home/dialog/tre-em-dialog';
+import { TreEmDialog } from './tre-em-dialog';
 
 export default function TreEm() {
   const [filterName, setFilterName] = useState('');
@@ -173,7 +171,7 @@ export default function TreEm() {
       </div>
       <div style={{ margin: '20px 50px' }}>
         <Grid container spacing={3}>
-          {childrenList?.map((child, index) => (
+          {childrenList?.map((child) => (
             <Grid key={child._id} item xs={4}>
               <Card
                 sx={{

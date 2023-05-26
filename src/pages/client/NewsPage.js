@@ -25,14 +25,6 @@ const HEADER_MOBILE = 64;
 
 const HEADER_DESKTOP = 92;
 
-const StyledRoot = styled(AppBar)(({ theme }) => ({
-  ...bgBlur({ color: theme.palette.grey[100] }),
-  boxShadow: 'none',
-  [theme.breakpoints.up('lg')]: {
-    width: `calc(100% )`,
-  },
-}));
-
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   minHeight: HEADER_MOBILE,
   [theme.breakpoints.up('lg')]: {
@@ -42,14 +34,14 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 }));
 export default function NewsPage() {
   return (
-    <>
-      <StyledToolbar style={{ background: 'rgb(255,255,255)' }}>
+    <div>
+      <StyledToolbar style={{ background: 'rgb(255,255,255)', position: 'sticky', top: '0px', zIndex: 10000  }}>
         <Navbar />
       </StyledToolbar>
       <Slider />
       <News />
       <Contact />
       <Footer />
-    </>
+    </div>
   );
 }

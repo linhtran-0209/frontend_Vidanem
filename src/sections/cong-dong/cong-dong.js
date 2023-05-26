@@ -41,31 +41,10 @@ export default function CongDong() {
     },
   }));
 
-  const [name, setName] = useState('');
   const [listSponsor, setListSponsor] = useState([]);
   const [imageList, setImageList] = useState([]);
   const [visibleItems, setVisibleItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-
-  const dataCollection = async (event) => {
-    event.preventDefault();
-    setName(event.currentTarget);
-    // setNgaysinh((ngaysinh) => event.currentTarget);
-    console.log(setName);
-  };
-  // useEffect(() => {
-  //   const getlistimage = async () => {
-  //     try {
-  //       const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
-  //       const { data } = await axios.get(url, { withCredentials: true });
-  //       setListSponsor(data.data);
-  //       console.log(data.data);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-  //   getlistimage();
-  // }, []);
 
   useEffect(() => {
     const updateImageList = async () => {

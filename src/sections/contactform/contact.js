@@ -2,14 +2,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 export default function Contact() {
-  const [name, setName] = useState('');
 
-  const dataCollection = async (event) => {
-    event.preventDefault();
-    setName(event.currentTarget);
-    // setNgaysinh((ngaysinh) => event.currentTarget);
-    console.log(setName);
-  };
   return (
     <>
       <div className="divider" />
@@ -52,7 +45,7 @@ export default function Contact() {
                 </div>
               </div>
             </div>
-            <button type="submit" value="submit" onSubmit={dataCollection}>
+            <button type="submit" value="submit" >
               Gửi
             </button>
           </fieldset>
