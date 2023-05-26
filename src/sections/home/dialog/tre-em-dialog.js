@@ -62,7 +62,7 @@ export function TreEmDialog(props) {
               </div>
             </Grid>
 
-            <Grid item xs={6} sx={{ overflowY: 'auto', height: 600 }}>
+            <Grid item xs={6} sx={{ overflowY: 'auto', height: 500 }}>
               <div className="spaced">
                 <p>
                   <b>Họ tên:</b> {treEm.hoTen}
@@ -94,31 +94,48 @@ export function TreEmDialog(props) {
             <TabContext value={tab}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <TabList onChange={handleChangeTab} aria-label="lab API tabs example">
-                  <Tab label="Thành tích" value="1" />
-                  <Tab label="Học bổng" value="2" />
+                  <Tab label="Hoàn cảnh" value="1" />
+                  <Tab label="Thành tích" value="2" />
+                  <Tab label="Học bổng" value="3" />
                 </TabList>
               </Box>
-              <TabPanel value="1" style={{ height: '200px' }}>
+              <TabPanel value="1" style={{ height: '250px' }}>
                 <div className="dialog-container">
                   <div className="content-container">
-                    {hocTaps.map((hoctap, index) => (
-                      <div>
-                        <p>
-                          <b>
-                            {hoctap.hocKy} - Năm học {hoctap.namHoc}
-                          </b>
-                        </p>
-                        {hoctap.thanhTich.split('\n').map((item, index) => (
-                          <React.Fragment key={index}>
-                            <p style={{ marginLeft: '10px' }}>{item}</p>
-                          </React.Fragment>
-                        ))}
-                      </div>
+                    {treEm.hoanCanh?.split('\n').map((item, index) => (
+                      <React.Fragment key={index}>
+                        {item}
+                        <br />
+                      </React.Fragment>
                     ))}
                   </div>
                 </div>
               </TabPanel>
-              <TabPanel value="2">
+              <TabPanel value="2" style={{ height: '250px' }}>
+                <div className="dialog-container">
+                  <div className="content-container">
+                    {hocTaps.map((hoctap, index) => (
+                      <>
+                        {hoctap.thanhTich && (
+                          <div>
+                            <p>
+                              <b>
+                                {hoctap.hocKy} - Năm học {hoctap.namHoc}
+                              </b>
+                            </p>
+                            {hoctap.thanhTich.split('\n').map((item, index) => (
+                              <React.Fragment key={index}>
+                                <p style={{ marginLeft: '10px' }}>{item}</p>
+                              </React.Fragment>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    ))}
+                  </div>
+                </div>
+              </TabPanel>
+              <TabPanel value="3" style={{ height: '250px' }}>
                 <div className="dialog-container">
                   <div className="content-container">
                     <Grid container spacing={1}>

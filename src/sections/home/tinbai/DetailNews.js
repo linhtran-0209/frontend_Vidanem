@@ -2,62 +2,53 @@ import axios from 'axios';
 import parse from 'html-react-parser';
 // components
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled, useTheme } from '@mui/material/styles';
 
-import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
-
+import { Box, Stack, AppBar, Toolbar, IconButton, Grid, Card, Typography, Tooltip, Link } from '@mui/material';
+import { CommentList } from './CommentList';
 import { bgBlur } from '../../../utils/cssStyles';
 //
 import Navbar from '../nav/navbar';
 
 export default function DetailNews() {
   const [baiViet, setBaiViet] = useState({});
+  const [comments, setComments] = useState([]);
 
   const [preview, setPreview] = useState(null);
-  const [imgCover, setImgCover] = useState(null);
   const [content, setContent] = useState(null);
-  const [listImgContent, setListImgContent] = useState([]);
+  const [baiVietList, setBaiVietList] = useState([]);
 
-  const navigate = useNavigate();
   const { id } = useParams();
 
   const getTinTuc = async () => {
     const url = `${process.env.REACT_APP_API_URL}/tintuc/byId?id=${id}`;
     const { data } = await axios.get(url, { withCredentials: true });
     setBaiViet(data.data);
-    console.log(data.data.anhTieuDe, data.data);
-
     setPreview(`${process.env.REACT_APP_API_URL}${data.data.anhTieuDe}`);
     setContent(data.data.noiDung);
     if (data.data.noiDung) {
       setContent(parse(data.data.noiDung));
     }
+    getAllNews(data.data.chuDe._id);
+    getBinhLuan(id);
+  };
+
+  const getBinhLuan = async (id) => {
+    const url = `${process.env.REACT_APP_API_URL}/binhluan/getAllByTinTuc?baiViet=${id}`;
+    const { data } = await axios.get(url, { withCredentials: true });
+    setComments(data.data);
   };
 
   useEffect(() => {
     getTinTuc();
   }, []);
 
-  const handleListImg = (imgPath) => {
-    if (content.includes(imgPath)) {
-      setListImgContent([...listImgContent, imgPath]);
-    }
-  };
-  const NAV_WIDTH = 400;
-
   const HEADER_MOBILE = 64;
 
   const HEADER_DESKTOP = 92;
 
-  const StyledRoot = styled(AppBar)(({ theme }) => ({
-    ...bgBlur({ color: theme.palette.grey[100] }),
-    boxShadow: 'none',
-    [theme.breakpoints.up('lg')]: {
-      width: `calc(100% )`,
-    },
-  }));
   const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     minHeight: HEADER_MOBILE,
     [theme.breakpoints.up('lg')]: {
@@ -66,34 +57,75 @@ export default function DetailNews() {
     },
   }));
 
+  const getAllNews = async (idChuDe) => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/tintuc/getRelate?chuDe=${idChuDe}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      setBaiVietList(data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <StyledToolbar style={{ background: 'rgb(255,255,255)' }}>
         <Navbar />
       </StyledToolbar>
+      <Grid container spacing={3}>
+        <Grid item xs={1}>
+          {''}
+        </Grid>
+        <Grid item xs={8}>
+          <div className="grid-noi-dung">
+            <h2>{baiViet?.tieuDe}</h2>
 
-      <div className="previewBlog">
-        {baiViet.tieuDe && <h2>{baiViet.tieuDe}</h2>}
+            {baiViet?.anhTieuDe && (
+              <img
+                src={`${process.env.REACT_APP_API_URL}${baiViet?.anhTieuDe}`}
+                alt="Preview"
+                style={{
+                  width: '100%',
+                  objectFit: 'cover',
+                  height: '30%',
+                }}
+              />
+            )}
 
-        {preview && (
-          <img
-            src={preview}
-            alt="Preview"
-            style={{
-              width: '100%',
-              objectFit: 'cover',
-              height: '30%',
-            }}
-          />
-        )}
+            <p>{baiViet?.moTa}</p>
+            {baiViet.noiDung && <div className="noi-dung">{content}</div>}
+          </div>
+          <div style={{ width: '100%', margin: '60px 0', height: 1, background: 'gray' }} />
 
-        {baiViet.moTa && <p>{baiViet.moTa}</p>}
-        {baiViet.noiDung && <div className="image-container">{content}</div>}
-      </div>
-
-      {/* <DialogActions>
-        <Button onClick={props.onClose}>Đóng</Button>
-      </DialogActions> */}
+          <CommentList baiViet={baiViet._id} comments={comments} />
+        </Grid>
+        <Grid item xs={3}>
+          <div style={{ position: 'sticky', top: '10px' }}>
+            <h3 style={{ marginTop: '20px' }}>Tin tương tự</h3>
+            {baiVietList.map((baiviet, index) => {
+              return (
+                <>
+                  <Card sx={{ display: 'flex', alignItems: 'center', p: 2, width: '95%', background: 'none' }}>
+                    <img
+                      src={`${process.env.REACT_APP_API_URL}${baiviet.anhTieuDe}`}
+                      alt=""
+                      style={{ width: 90, height: 90 }}
+                    />
+                    <Box sx={{ flexGrow: 1, minWidth: 0, pl: 2, pr: 1 }}>
+                      <a href={`/news/${baiviet._id}`}>
+                        {' '}
+                        {baiviet.tieuDe.length > 70 ? `${baiviet.tieuDe.slice(0, 70)}...` : baiviet.tieuDe}{' '}
+                      </a>
+                    </Box>
+                  </Card>
+                  <div style={{ width: '100%', margin: 0, height: 1, background: 'gray' }} />
+                </>
+              );
+              // <img src={`${process.env.REACT_APP_API_URL}${baiviet.anhTieuDe}`} alt=''/>
+            })}
+          </div>
+        </Grid>
+      </Grid>
     </>
   );
 }

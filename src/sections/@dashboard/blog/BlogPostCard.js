@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { Box, Link, Card, Grid, Avatar, Typography, CardContent, Stack } from '@mui/material';
+import { styled, alpha } from '@mui/material/styles';
+
 // utils
 import { fDate } from '../../../utils/formatTime';
 import { fShortenNumber } from '../../../utils/formatNumber';
@@ -15,42 +17,58 @@ import TextIconLabel from '../../../components/TextIconLabel';
 import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
-
+const OverlayStyle = styled('div')(({ theme }) => ({
+  top: 0,
+  zIndex: 1,
+  width: '100%',
+  height: '100%',
+  position: 'absolute',
+  backgroundColor: alpha(theme.palette.grey[900], 0.8),
+}));
 
 BlogPostCard.propTypes = {
   post: PropTypes.object.isRequired,
   index: PropTypes.number,
+  trangChu: PropTypes.bool
 };
 
-export default function BlogPostCard({ post, index }) {
-
-
-  const {_id, chuDe, tieuDe, moTa, noiDung, anhTieuDe, nguoiTao, createdAt } = post;
-
-  // if (isDesktop && latestPost) {
-  //   return (
-  //     <Card>
-  //       <Avatar
-  //         alt={nguoiTao.hoTen}
-  //         // src={nguoiTao.avatarUrl}
-  //         sx={{
-  //           zIndex: 9,
-  //           top: 24,
-  //           left: 24,
-  //           width: 40,
-  //           height: 40,
-  //           position: 'absolute',
-  //         }}
-  //       />
-  //       <PostContent title={tieuDe} createdAt={createdAt} index={index} />
-  //       <OverlayStyle />
-  //       <Image alt="cover" src={`${process.env.REACT_APP_API_URL}${anhTieuDe}`} sx={{ height: 360 }} />
-  //     </Card>
-  //   );
-  // }
+export default function BlogPostCard({ post, index, trangchu }) {
+  const isDesktop = useResponsive('up', 'md');
+  const latestPost = index === 0 || index === 1 || index === 2;
+  const { _id, chuDe, tieuDe, moTa, noiDung, anhTieuDe, nguoiTao, createdAt } = post;
+  if (!trangchu && isDesktop && latestPost) {
+    return (
+      <Card>
+        <Avatar
+          alt={nguoiTao.hoTen}
+          // src={nguoiTao.avatarUrl}
+          sx={{
+            zIndex: 9,
+            top: 24,
+            left: 24,
+            width: 40,
+            height: 40,
+            position: 'absolute',
+          }}
+        />
+        <PostContent id={_id} title={tieuDe} createdAt={createdAt} index={index} />
+        <OverlayStyle />
+        <Image alt="cover" src={`${process.env.REACT_APP_API_URL}${anhTieuDe}`} sx={{ height: 360 }} />
+      </Card>
+    );
+  }
 
   return (
-    <Card  sx={{ maxWidth: 345, height: 420, margin: '40px 15px 25px 15px' }}>
+    <Card
+      sx={{
+        maxWidth: 345,
+        height: 420,
+        margin: '40px 15px 25px 15px',
+        '&:hover': {
+          border: '1px solid black',
+        },
+      }}
+    >
       <Box sx={{ position: 'relative' }}>
         <SvgIconStyle
           src="https://minimal-assets-api.vercel.app/assets/icons/shape-avatar.svg"
@@ -92,11 +110,11 @@ PostContent.propTypes = {
   share: PropTypes.number,
   title: PropTypes.string,
   view: PropTypes.number,
+  id: PropTypes.string,
 };
 
-export function PostContent({id, title, view, comment, share, createdAt, index }) {
+export function PostContent({ id, title, view, comment, share, createdAt, index }) {
   const isDesktop = useResponsive('up', 'md');
-
   // const linkTo = PATH_DASHBOARD.blog.view(paramCase(title));
 
   const latestPostLarge = index === 0;

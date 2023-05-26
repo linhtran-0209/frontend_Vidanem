@@ -73,7 +73,6 @@ export default function ImgMediaCard() {
   const [listImgContent, setListImgContent] = useState([]);
   const [openDialogTreEm, setOpenDialogTreEm] = useState(false);
 
-
   const getAllNews = async () => {
     try {
       const url = `${process.env.REACT_APP_API_URL}/tintuc/getAll`;
@@ -115,7 +114,7 @@ export default function ImgMediaCard() {
   }, []);
 
   const handleClickDetailChildren = (id) => {
-    setSelectedTreEm(id)
+    setSelectedTreEm(id);
     setOpenDialogTreEm(true);
   };
 
@@ -132,14 +131,24 @@ export default function ImgMediaCard() {
             const { _id, hoTen, ngaySinh, hinhAnh, doiTuong, truong, hoanCanh } = children;
 
             return (
-              <Card sx={{ maxWidth: 345, height: 450 }}>
+              <Card
+                sx={{
+                  maxWidth: 345,
+                  height: 450,
+                  '&:hover': {
+                    border: '1px solid black',
+                  },
+                }}
+              >
                 <CardHeader
                   style={{ textAlign: 'center' }}
                   title={`${hoTen} - ${moment(ngaySinh).format('DD/MM/YYYY')}`}
                   subheader={truong}
                 />
                 <CardMedia component="img" height="194" image={hinhAnh[0].url} alt="Paella dish" />
-                <CardContent style={{ textAlign: 'justify', height: 131, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <CardContent
+                  style={{ textAlign: 'justify', height: 131, overflow: 'hidden', textOverflow: 'ellipsis' }}
+                >
                   <Typography variant="body2" color="text.secondary">
                     {hoanCanh}
                   </Typography>
@@ -169,7 +178,7 @@ export default function ImgMediaCard() {
       </div>
       <TreEmDialog openDialog={openDialogTreEm} _id={selectedTreEm} handleClose={handleCloseDialogTreEm} />
 
-      <h3 className="title__hompage__two">Tin tức</h3>
+      <h3 className="title__hompage__two">Tin mới</h3>
       <div className="divider__hompage" />
 
       <div style={{ marginTop: '20px', width: '75%', marginLeft: 'auto', marginRight: 'auto' }}>
@@ -190,11 +199,11 @@ export default function ImgMediaCard() {
       <div style={{ marginTop: '20px', width: '75%', marginLeft: 'auto', marginRight: 'auto' }}>
         <Slider {...settings}>
           {baiVietList.map((data, index) => {
-            return <BlogPostCard post={data} index={index} />;
+            return <BlogPostCard post={data} index={index} trangchu='true' />;
           })}
         </Slider>
-        <div style={{ textAlign: 'center' }}>
-          <Link>
+        <div style={{ marginTop: '30px', textAlign: 'center' }}>
+          <Link to={'/news'}> 
             <Typography variant="subtitle2" noWrap>
               Xem thêm
             </Typography>

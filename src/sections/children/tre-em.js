@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Box, Dialog, Grid, Card, Tab, Typography, Tooltip } from '@mui/material';
+import { Box, Dialog, Grid, Card, Tab, Typography, Tooltip, Pagination } from '@mui/material';
 import parse from 'html-react-parser';
 // components
 import { useNavigate, useParams } from 'react-router-dom';
@@ -16,7 +16,7 @@ export default function TreEm() {
   const [openWards, setOpenWards] = useState([]);
   const [sponsor, setSponsor] = useState('');
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(9);
+  const [rowsPerPage, setRowsPerPage] = useState(12);
   const [childrenList, setChildrenList] = useState([]);
   const [total, setTotal] = useState(0);
   const [filterNamNhan, setFilterNamNhan] = useState('');
@@ -134,6 +134,19 @@ export default function TreEm() {
     setOpenDialogTreEm(false);
   };
 
+  const handleChangePage = async (event, newPage) => {
+    setPage(newPage - 1);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&don_vi_tai_tro=${sponsor}`;
+
+      const { data } = await axios.get(url, { withCredentials: true });
+      setChildrenList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div style={{ marginTop: '15px' }}>
       <div
@@ -163,9 +176,16 @@ export default function TreEm() {
           {childrenList?.map((child, index) => (
             <Grid key={child._id} item xs={4}>
               <Card
-                sx={{ display: 'flex', alignItems: 'center', p: 2, border: '1px solid black' }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  p: 2,
+                  border: '1px solid #99FFFF',
+                  '&:hover': {
+                    border: '1px solid black',
+                  },
+                }}
                 onClick={(e) => {
-                  e.stopPropagation();
                   handleClickDetailChildren(child._id);
                 }}
               >
@@ -198,13 +218,6 @@ export default function TreEm() {
                         )}
                       </Typography>
                     </Box>
-                    {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-                      {hocbong.namHoanThanh > moment().format('YYYY')
-                        ? `Còn lại: ${hocbong.namHoanThanh - moment().format('YYYY')} năm`
-                        : ''}
-                    </Typography>
-                  </Box> */}
                   </Box>
                 </Grid>
               </Card>
@@ -213,6 +226,9 @@ export default function TreEm() {
         </Grid>
       </div>
       <TreEmDialog openDialog={openDialogTreEm} _id={selectedTreEm} handleClose={handleCloseDialogTreEm} />
+      <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
+        <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+      </Box>
     </div>
   );
 }

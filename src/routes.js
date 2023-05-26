@@ -26,6 +26,7 @@ import EditBlog from './pages/admin/components/blog/EditBlog';
 import TitleBlog from './pages/TitleBlog';
 import DetailNews from './sections/home/tinbai/DetailNews';
 import TreEmpage from './pages/client/TreEmPage';
+import NewsPage from './pages/client/NewsPage';
 
 // import AccountPopover from './layouts/dashboard/header/AccountPopover';
 
@@ -65,6 +66,10 @@ export default function Router() {
     {
       element: <DetailNews />,
       children: [{ element: <Navigate to="/news/:id" />, index: true }, { path: '/news/:id' }],
+    },
+    {
+      element: <NewsPage />,
+      children: [{ element: <Navigate to="/news" />, index: true }, { path: '/news/' }],
     },
     {
       element: <TreEmpage />,

@@ -46,6 +46,7 @@ export default function DashboardLayout() {
       const url = `${process.env.REACT_APP_API_URL}/currentUser`;
       const { data } = await axios.get(url, { withCredentials: true });
       if (data) {
+        sessionStorage.setItem('email', data.email);
         sessionStorage.setItem('role', data.quyen);
         sessionStorage.setItem('name', data.hoTen);
         sessionStorage.setItem('avatar', data.avatar);

@@ -1,0 +1,29 @@
+.grid-noi-dung{
+    margin: 20px 60px;
+}
+
+.noi-dung{
+    text-align: justify;
+    width: 100%;
+}
+
+.noi-dung img{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+.post-comment{
+    margin: 4%;
+    padding: 4%;
+    border-radius: 20px;
+    border: 1px solid black;
+}
+
+.info-comment{
+    display: flex;
+    justify-content: center;
+    gap: 5%;
+}

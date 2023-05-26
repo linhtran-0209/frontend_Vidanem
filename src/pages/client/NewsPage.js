@@ -3,23 +3,19 @@ import PropTypes from 'prop-types';
 import { styled, useTheme } from '@mui/material/styles';
 
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
-
+import News from '../../sections/home/tinbai/ListNews'; 
 import { bgBlur } from '../../utils/cssStyles';
 //
 import Navbar from '../../sections/home/nav/navbar';
 
-import Slider from '../../sections/home/slider/sliderHomepage';
 import '../../sections/home/slider/sliderHomepage.css';
-// import Carousel from '../../sections/home/carousel/carousel'
-// import {StyleCarousel} from'../../sections/home/carousel/carousel.css';
-import HomePage from '../../sections/home/trang-chu/trang-chu';
-import '../../sections/home/trang-chu/trang-chu.css';
-import '../../sections/home/dialog/tre-em-dialog.css';
-import '../../sections/home/tinbai/detail-new.css';
-import Couter from '../../sections/home/count/count';
-import '../../sections/home/count/count.css';
+import '../../sections/cong-dong/cong-dong.css';
+import Slider from '../../sections/home/slider/sliderHomepage';
+
 import Contact from '../../sections/home/contact/contact';
 import '../../sections/home/contact/contact.css';
+
+import '../../sections/contactform/contact.css';
 import Footer from '../../sections/home/footer/footer';
 import '../../sections/home/footer/footer.css';
 
@@ -44,16 +40,14 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
     padding: theme.spacing(0, 0),
   },
 }));
-export default function Homepage() {
+export default function NewsPage() {
   return (
     <>
       <StyledToolbar style={{ background: 'rgb(255,255,255)' }}>
         <Navbar />
       </StyledToolbar>
       <Slider />
-      {/* <Carousel /> */}
-      <HomePage />
-      <Couter />
+      <News />
       <Contact />
       <Footer />
     </>
