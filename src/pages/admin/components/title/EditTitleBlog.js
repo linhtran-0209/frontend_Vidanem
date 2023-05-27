@@ -8,6 +8,8 @@ export function EditTitleBlog(props) {
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [title, setTitle] = useState({});
   const [preview, setPreview] = useState(null);
+  const [imageError, setImageError] = useState(false);
+  const [textFieldChuDeError, setTextFieldChuDeError] = useState(false);
 
   useEffect(() => {
     if (props.row._id) {
@@ -27,26 +29,32 @@ export function EditTitleBlog(props) {
   };
 
   const handleSubmit = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/chude/update`;
+    if (!title.tenChuDe) {
+      setTextFieldChuDeError(true);
+    } else setTextFieldChuDeError(false);
 
-      const formData = new FormData();
-      formData.append('id', title._id);
-      formData.append('image', title.hinhAnh);
-      formData.append('tenChuDe', title.tenChuDe);
+    if (title.tenChuDe) {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/admin/chude/update`;
 
-      await axios
-        .put(url, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          withCredentials: true,
-        })
-        .then((data) => {
-          setOpenSuccessMessage(data.data.message);
-        });
-    } catch (err) {
-      setOpenErrMessage(err.response.data.message);
+        const formData = new FormData();
+        formData.append('id', title._id);
+        formData.append('image', title.hinhAnh);
+        formData.append('tenChuDe', title.tenChuDe);
+
+        await axios
+          .put(url, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+            withCredentials: true,
+          })
+          .then((data) => {
+            setOpenSuccessMessage(data.data.message);
+          });
+      } catch (err) {
+        setOpenErrMessage(err.response.data.message);
+      }
     }
     // props.handleClose()
   };
@@ -123,9 +131,14 @@ export function EditTitleBlog(props) {
                 margin="dense"
                 label="Chủ đề"
                 value={title.tenChuDe || ''}
-                onChange={(e) => setTitle({ ...title, tenChuDe: e.target.value })}
+                onChange={(e) => {
+                  setTitle({ ...title, tenChuDe: e.target.value });
+                  setTextFieldChuDeError(false);
+                }}
                 type="text"
                 fullWidth
+                error={textFieldChuDeError}
+                helperText={textFieldChuDeError && 'Vui lòng nhập chủ đề'}
               />
             </FormControl>
           </div>

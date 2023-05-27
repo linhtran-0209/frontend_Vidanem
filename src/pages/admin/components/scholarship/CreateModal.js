@@ -23,6 +23,13 @@ export function CreateModal(props) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
 
+  const [textFieldMaHocBongError, setTextFieldMaHocBongError] = useState(false);
+  const [textFieldTenHocBongError, setTextFieldTenHocBongError] = useState(false);
+  const [selectedDonViBaoTroError, setSelectedDonViBaoTroError] = useState(false);
+  const [textFieldSoLuongError, setTextFieldSoLuongError] = useState(false);
+  const [textFieldSoTienError, setTextFieldSoTienError] = useState(false);
+  const [textFieldHinhThucError, setTextFieldHinhThucError] = useState(false);
+
   // useEffect(async () => {
   //   const url = `${process.env.REACT_APP_API_URL}/sponsor/getAll`;
   //   const { data } = await axios.get(url, { withCredentials: true });
@@ -31,32 +38,61 @@ export function CreateModal(props) {
   // }, []);
 
   const handleChange = (e) => {
+    setSelectedDonViBaoTroError(false);
     setSelected(e.target.value);
     setScholarship({ ...scholarship, donViBaoTro: e.target.value._id });
   };
 
   const handleSubmit = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/insert`;
-      await axios
-        .post(
-          url,
-          {
-            maHocBong: scholarship.maHocBong,
-            tenHocBong: scholarship.tenHocBong,
-            donViBaoTro: scholarship.donViBaoTro,
-            soLuong: scholarship.soLuong,
-            soTien: scholarship.soTien,
-            hinhThuc: scholarship.hinhThuc,
-            ghiChu: scholarship.ghiChu,
-          },
-          { withCredentials: true }
-        )
-        .then((data) => {
-          setOpenSuccessMessage(data.data.message);
-        });
-    } catch (err) {
-      setOpenErrMessage(err.response.data.message);
+    if (!scholarship.maHocBong) {
+      setTextFieldMaHocBongError(true);
+    } else setTextFieldMaHocBongError(false);
+    if (!scholarship.tenHocBong) {
+      setTextFieldTenHocBongError(true);
+    } else setTextFieldTenHocBongError(false);
+    if (!scholarship.donViBaoTro) {
+      setSelectedDonViBaoTroError(true);
+    } else setSelectedDonViBaoTroError(false);
+    if (!scholarship.soLuong) {
+      setTextFieldSoLuongError(true);
+    } else setTextFieldSoLuongError(false);
+    if (!scholarship.soTien) {
+      setTextFieldSoTienError(true);
+    } else setTextFieldSoTienError(false);
+    if (!scholarship.hinhThuc) {
+      setTextFieldHinhThucError(true);
+    } else setTextFieldHinhThucError(false);
+
+    if (
+      scholarship.maHocBong &&
+      scholarship.tenHocBong &&
+      scholarship.donViBaoTro &&
+      scholarship.soLuong &&
+      scholarship.soTien &&
+      scholarship.hinhThuc
+    ) {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/insert`;
+        await axios
+          .post(
+            url,
+            {
+              maHocBong: scholarship.maHocBong,
+              tenHocBong: scholarship.tenHocBong,
+              donViBaoTro: scholarship.donViBaoTro,
+              soLuong: scholarship.soLuong,
+              soTien: scholarship.soTien,
+              hinhThuc: scholarship.hinhThuc,
+              ghiChu: scholarship.ghiChu,
+            },
+            { withCredentials: true }
+          )
+          .then((data) => {
+            setOpenSuccessMessage(data.data.message);
+          });
+      } catch (err) {
+        setOpenErrMessage(err.response.data.message);
+      }
     }
   };
 
@@ -102,24 +138,32 @@ export function CreateModal(props) {
               <TextField
                 margin="dense"
                 label="Mã học bổng"
-                onChange={(e) => setScholarship({ ...scholarship, maHocBong: e.target.value })}
+                onChange={(e) => {
+                  setTextFieldMaHocBongError(false)
+                  setScholarship({ ...scholarship, maHocBong: e.target.value })}}
                 type="text"
                 fullWidth
+                error={textFieldMaHocBongError}
+                helperText={textFieldMaHocBongError && 'Vui lòng nhập mã học bổng'}
               />
             </FormControl>
             <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
               <TextField
                 margin="dense"
                 label="Tên học bổng"
-                onChange={(e) => setScholarship({ ...scholarship, tenHocBong: e.target.value })}
+                onChange={(e) => {
+                  setTextFieldTenHocBongError(false)
+                  setScholarship({ ...scholarship, tenHocBong: e.target.value })}}
                 type="text"
                 fullWidth
+                error={textFieldTenHocBongError}
+                helperText={textFieldTenHocBongError && 'Vui lòng nhập tên học bổng'}
               />
             </FormControl>
           </div>
           <FormControl className="formcontrolcreatesholarship__name" variant="outlined" fullWidth>
             <InputLabel id="demo-simple-select-standard-label">Đơn vị tài trợ</InputLabel>
-            <Select onChange={handleChange} label="Đơn vị tài trợ" value={selected} fullWidth margin="dense">
+            <Select onChange={handleChange} label="Đơn vị tài trợ" value={selected} fullWidth margin="dense" style={{border:selectedDonViBaoTroError? '1px solid red': ''}}>
               <TextField
                 placeholder="Tên đơn vị tài trợ..."
                 value={search}
@@ -138,33 +182,48 @@ export function CreateModal(props) {
                 </MenuItem>
               ))}
             </Select>
+            {selectedDonViBaoTroError && (
+                <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn đơn vị bảo trợ</div>
+              )}
           </FormControl>
           <div className="form__info__moneyscholarship__container">
             <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
               <TextField
                 margin="dense"
                 label="Số lượng"
-                onChange={(e) => setScholarship({ ...scholarship, soLuong: e.target.value })}
-                type="phone"
+                onChange={(e) => {
+                  setTextFieldSoLuongError(false)
+                  setScholarship({ ...scholarship, soLuong: e.target.value })}}
+                type="number"
                 fullWidth
+                error={textFieldSoLuongError}
+                helperText={textFieldSoLuongError && 'Vui lòng nhập số lượng trẻ em được nhận'}
               />
             </FormControl>
             <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
               <TextField
                 margin="dense"
                 label="Số tiền mỗi suất"
-                onChange={(e) => setScholarship({ ...scholarship, soTien: e.target.value })}
-                type="text"
+                onChange={(e) => {
+                  setTextFieldSoTienError(false)
+                  setScholarship({ ...scholarship, soTien: e.target.value })}}
+                type="number"
                 fullWidth
+                error={textFieldSoTienError}
+                helperText={textFieldSoTienError && 'Vui lòng nhập số tiền mỗi suất'}
               />
             </FormControl>
             <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
               <TextField
                 margin="dense"
                 label="Hình thức"
-                onChange={(e) => setScholarship({ ...scholarship, hinhThuc: e.target.value })}
+                onChange={(e) => {
+                  setTextFieldHinhThucError(false)
+                  setScholarship({ ...scholarship, hinhThuc: e.target.value })}}
                 type="text"
                 fullWidth
+                error={textFieldHinhThucError}
+                helperText={textFieldHinhThucError && 'Vui lòng nhập hình thức trao tặng học bổng'}
               />
             </FormControl>
           </div>

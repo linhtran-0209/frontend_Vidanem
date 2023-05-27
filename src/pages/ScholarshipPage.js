@@ -110,22 +110,40 @@ export default function ScholarshipPage() {
     setOpenCreateExcelModal(true);
   };
 
-  const handleCloseCreateExcel = () => {
+  const handleCloseCreateExcel = async () => {
     setOpenCreateExcelModal(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${page+1}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setScholarshipList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleClickOpenCreate = () => {
     setOpenScholarshipCreate(true);
   };
-  const handleCloseCreate = () => {
+  const handleCloseCreate = async () => {
     setOpenScholarshipCreate(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${page+1}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setScholarshipList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleCloseEdit = async () => {
     setOpenDialogEdit(false);
 
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${page+1}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setScholarshipList(data.data);
@@ -166,8 +184,16 @@ export default function ScholarshipPage() {
     setOpenDialogEdit(true);
   };
 
-  const handleCloseDelete = () => {
+  const handleCloseDelete = async () => {
     setOpenDialogDelete(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${page+1}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      setScholarshipList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -284,9 +310,7 @@ export default function ScholarshipPage() {
                   <EditModal setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} row={selectedRow} />
                 )}
 
-                {openDialogDelete && (
-                  <DeleteModal openDialogDelete={openDialogDelete} handleClose={handleCloseDelete} row={selectedRow} />
-                )}
+                <DeleteModal openDialogDelete={openDialogDelete} handleClose={handleCloseDelete} row={selectedRow} />
 
                 {isNotFound && (
                   <TableBody>

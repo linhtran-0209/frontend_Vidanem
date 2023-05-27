@@ -39,7 +39,6 @@
 
 .formcontrolcreateuser > div {
   border-radius: 0px;
-  background-color: aliceblue;
 }
 
 .formcontrolcreateuser > div:hover {
@@ -55,7 +54,6 @@
 }
 .formcontrol__changerole > div {
   border-radius: 0px;
-  background-color: aliceblue;
 }
 
 .formcontrol__changerole > div:hover {

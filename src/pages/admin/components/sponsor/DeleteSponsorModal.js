@@ -17,7 +17,7 @@ export function DeleteSponsorModal(props) {
     try {
       const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/delete`;
 
-      axios
+      await axios
         .put(
           url,
           {
@@ -43,12 +43,12 @@ export function DeleteSponsorModal(props) {
   return (
     <>
       {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 100, top: 150 }} severity="success">
+        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 150, top: 150 }} severity="success">
           {openSuccessMessage}
         </Alert>
       )}
       {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 500000, right: 100 }} severity="error">
+        <Alert style={{ position: 'fixed', zIndex: 500000, right: 100, top: 150 }} severity="error">
           {openErrMessage}
         </Alert>
       )}

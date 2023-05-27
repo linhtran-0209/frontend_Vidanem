@@ -44,6 +44,11 @@ export default function BlogNewPostForm() {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [openDialogReasonReject, setOpenDialogReasonReject] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [textFieldTieuDeError, setTextFieldTieuDeError] = useState(false);
+  const [textFieldMoTaError, setTextFieldMoTaError] = useState(false);
+  const [textNoiDungError, setTextNoiDungError] = useState(false);
+  const [selectChuDeError, setSelectChuDeError] = useState(false);
 
   const handleOpenPreview = () => {
     setBaiViet({ ...baiViet, anhTieuDe: preview, noiDung: content });
@@ -59,7 +64,7 @@ export default function BlogNewPostForm() {
     setPreview(`${process.env.REACT_APP_API_URL}${data.data.anhTieuDe}`);
     setContent(data.data.noiDung);
     setSelected(data.data.chuDe._id);
-    setAuthStatus(data.data.authStatus)
+    setAuthStatus(data.data.authStatus);
     if (data.data.nguoiDuyet) setNguoiDuyet(data.data.nguoiDuyet.hoTen);
     console.log(data.data.authStatus);
   };
@@ -81,6 +86,7 @@ export default function BlogNewPostForm() {
   const handleChange = (e) => {
     setSelected(e.target.value);
     setBaiViet({ ...baiViet, chuDe: e.target.value });
+    setSelectChuDeError(false)
   };
 
   const handleClosePreview = () => {
@@ -94,11 +100,12 @@ export default function BlogNewPostForm() {
       setBaiViet({ ...baiViet, anhTieuDe: preview });
       setImgCover(file);
     }
+    setImageError(false)
   };
 
   const handleContentChange = (value) => {
     setContent(value);
-    console.log(value);
+    setTextNoiDungError(false)
     // setBaiViet({ ...baiViet, noiDung: value });
   };
 
@@ -109,40 +116,57 @@ export default function BlogNewPostForm() {
   };
 
   const handleSubmit = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/admin/tintuc/update`;
-    const formData = new FormData();
-    formData.append('id', baiViet._id);
-    formData.append('image', imgCover);
-    formData.append('chuDe', selected);
-    formData.append('tieuDe', baiViet.tieuDe);
-    formData.append('moTa', baiViet.moTa);
-    formData.append('noiDung', content);
-    const result = await axios.put(url, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      withCredentials: true,
-    });
+    if (!imgCover) {
+      setImageError(true);
+    } else setImageError(false);
+    if (!baiViet.tieuDe) {
+      setTextFieldTieuDeError(true);
+    } else setTextFieldTieuDeError(false);
+    if (!baiViet.moTa) {
+      setTextFieldMoTaError(true);
+    } else setTextFieldMoTaError(false);
+    if (!content) {
+      setTextNoiDungError(true);
+    } else setTextNoiDungError(false);
+    if (!selected) {
+      setSelectChuDeError(true);
+    } else setSelectChuDeError(false);
 
-    setAuthStatus('ChoDuyet')
-
-    const urlMove = `${process.env.REACT_APP_API_URL}/admin/tintuc/move`;
-    if (listImgContent.length > 0) {
-      listImgContent.forEach(async (img) => {
-        await axios.put(
-          urlMove,
-          {
-            source: img,
-          },
-          { withCredentials: true }
-        );
+    if (imgCover && selected && baiViet.tieuDe && baiViet.moTa && content) {
+      const url = `${process.env.REACT_APP_API_URL}/admin/tintuc/update`;
+      const formData = new FormData();
+      formData.append('id', baiViet._id);
+      formData.append('image', imgCover);
+      formData.append('chuDe', selected);
+      formData.append('tieuDe', baiViet.tieuDe);
+      formData.append('moTa', baiViet.moTa);
+      formData.append('noiDung', content);
+      const result = await axios.put(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
       });
+
+      setAuthStatus('ChoDuyet');
+
+      const urlMove = `${process.env.REACT_APP_API_URL}/admin/tintuc/move`;
+      if (listImgContent.length > 0) {
+        listImgContent.forEach(async (img) => {
+          await axios.put(
+            urlMove,
+            {
+              source: img,
+            },
+            { withCredentials: true }
+          );
+        });
+      }
+
+      if (result.status === 200) {
+        setOpenSuccessMessage(result.data.message);
+      } else setOpenErrMessage(result.data.message);
     }
-
-    if (result.status === 200) {
-      setOpenSuccessMessage(result.data.message);
-    } else setOpenErrMessage(result.data.message);
-
     // props.handleClose();
   };
 
@@ -216,7 +240,12 @@ export default function BlogNewPostForm() {
                 name="title"
                 value={baiViet.tieuDe || ''}
                 label="Tiêu đề"
-                onChange={(e) => setBaiViet({ ...baiViet, tieuDe: e.target.value })}
+                onChange={(e) => {
+                  setBaiViet({ ...baiViet, tieuDe: e.target.value });
+                  setTextFieldTieuDeError(false);
+                }}
+                error={textFieldTieuDeError}
+                helperText={textFieldTieuDeError && 'Vui lòng nhập tiêu đề'}
               />
               <div className="cover">
                 <LabelStyle>Hình ảnh</LabelStyle>
@@ -243,6 +272,11 @@ export default function BlogNewPostForm() {
                   style={{ display: 'none' }}
                   onChange={handleImageChange}
                 />
+                {imageError && (
+                  <Typography component="span" variant="body2" style={{ textAlign: 'center', color: 'red' }}>
+                    <p>Vui lòng chọn ảnh cho tiêu đề</p>
+                  </Typography>
+                )}
                 <label
                   htmlFor="image-input"
                   style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 16 }}
@@ -258,12 +292,17 @@ export default function BlogNewPostForm() {
                 value={baiViet.moTa || ''}
                 multiline
                 rows={3}
-                onChange={(e) => setBaiViet({ ...baiViet, moTa: e.target.value })}
+                onChange={(e) => {
+                  setBaiViet({ ...baiViet, moTa: e.target.value });
+                  setTextFieldMoTaError(false);
+                }}
+                error={textFieldMoTaError}
+                helperText={textFieldMoTaError && 'Vui lòng nhập mô tả'}
               />
 
               <div>
-                <LabelStyle>Content</LabelStyle>
-                <Editor theme="snow" value={content} onChange={handleContentChange} handleImg={handleListImg} />
+                <LabelStyle>Nội dunng</LabelStyle>
+                <Editor theme="snow" value={content} onChange={handleContentChange} handleImg={handleListImg} error={textNoiDungError}/>
               </div>
             </Stack>
           </Card>
@@ -297,16 +336,16 @@ export default function BlogNewPostForm() {
                 </div>
               )}
               <InputLabel id="demo-simple-select-standard-label">Chủ đề</InputLabel>
-              <Select onChange={handleChange} value={selected} fullWidth margin="dense">
+              <Select onChange={handleChange} value={selected} fullWidth margin="dense" style={{border:selectChuDeError? '1px solid red': ''}}>
                 {listTitle.map((option) => (
                   <MenuItem key={option._id} value={option._id} label={option.tenChuDe}>
                     {option.tenChuDe}
                   </MenuItem>
                 ))}
               </Select>
-
+              {selectChuDeError && <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn chủ đề</div>}
               <TextField name="metaTitle" label="Người đăng bài" value={nguoiTao || ''} disabled />
-              {nguoiDuyet && <TextField name="metaTitle" label="Người đăng bài" value={nguoiDuyet || ''} disabled />}
+              {nguoiDuyet && <TextField name="metaTitle" label="Người duyệt" value={nguoiDuyet || ''} disabled />}
             </Stack>
           </Card>
           <DialogReasonReject

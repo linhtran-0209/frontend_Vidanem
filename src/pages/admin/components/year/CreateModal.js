@@ -25,27 +25,33 @@ export function CreateModal(props) {
   const [selectedDateBatDau, setSelectedDateBatDau] = useState(moment());
   const [selectedDateKetThuc, setSelectedDateKetThuc] = useState(moment());
   const [isChecked, setIsChecked] = useState(false);
+  const [namHocError, setNamHocError] = useState(false);
 
   const handleSubmit = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/insert`;
-      await axios
-        .post(
-          url,
-          {
-            namHoc: year.namHoc,
-            batDau: year.batDau,
-            ketThuc: year.ketThuc,
-            namHienTai: isChecked,
-          },
-          { withCredentials: true }
-        )
-        .then((data) => {
-          setOpenSuccessMessage(data.data.message);
-        });
+    if (!year.namHoc) {
+      setNamHocError(true);
+    } else {
+      setNamHocError(false);
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/insert`;
+        await axios
+          .post(
+            url,
+            {
+              namHoc: year.namHoc,
+              batDau: year.batDau,
+              ketThuc: year.ketThuc,
+              namHienTai: isChecked,
+            },
+            { withCredentials: true }
+          )
+          .then((data) => {
+            setOpenSuccessMessage(data.data.message);
+          });
         props.handleClose();
-    } catch (err) {
-      setOpenErrMessage(err.response.data.message);
+      } catch (err) {
+        setOpenErrMessage(err.response.data.message);
+      }
     }
   };
 
@@ -68,9 +74,9 @@ export function CreateModal(props) {
   return (
     <>
       {openSuccessMessage && (
-        <Alert style={{position: 'fixed', zIndex: 500000, right: 30, top: 60 }} severity="success">
-        {openSuccessMessage}
-      </Alert>
+        <Alert style={{ position: 'fixed', zIndex: 500000, right: 30, top: 60 }} severity="success">
+          {openSuccessMessage}
+        </Alert>
       )}
       {openErrMessage && (
         <Alert style={{ position: 'fixed', zIndex: 10000, right: 30, top: 60 }} severity="error">
@@ -93,11 +99,15 @@ export function CreateModal(props) {
               <TextField
                 margin="dense"
                 label="Năm học"
-                onChange={(e) => setYear({ ...year, namHoc: e.target.value })}
+                onChange={(e) => {
+                  setNamHocError(false)
+                  setYear({ ...year, namHoc: e.target.value })
+                }}
                 type="text"
                 fullWidth
                 style={{ background: 'white' }}
-                helperText="Ví dụ: 2019-2020"
+                error={namHocError}
+                helperText={namHocError ? 'Vui lòng nhập họ tên' : 'Ví dụ: 2019-2020'}
               />
             </FormControl>
           </div>
@@ -107,7 +117,7 @@ export function CreateModal(props) {
                 <DatePicker
                   format="DD/MM/YYYY"
                   label="Ngày bắt đầu"
-                  selected={selectedDateBatDau}
+                  value={selectedDateBatDau}
                   onChange={handleDateBatDauChange}
                 />
               </LocalizationProvider>
@@ -117,7 +127,7 @@ export function CreateModal(props) {
                 <DatePicker
                   format="DD/MM/YYYY"
                   label="Ngày kết thúc"
-                  selected={selectedDateKetThuc}
+                  value={selectedDateKetThuc}
                   onChange={handleDateKetThucChange}
                 />
               </LocalizationProvider>

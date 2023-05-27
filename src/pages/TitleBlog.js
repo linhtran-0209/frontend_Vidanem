@@ -61,8 +61,17 @@ export default function BlogPage() {
     setOpenDialogDelete(true);
   };
 
-  const handleCloseDelete = () => {
+  const handleCloseDelete = async () => {
     setOpenDialogDelete(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/chude/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setTitleList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleRowClick = (event, row) => {
@@ -74,12 +83,31 @@ export default function BlogPage() {
     setOpenTitleBlogCreate(true);
   };
 
-  const handleCloseCreate = () => {
+  const handleCloseCreate = async () => {
     setOpenTitleBlogCreate(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/chude/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setTitleList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleCloseEdit = async () => {
     setOpenDialogEdit(false);
+
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/chude/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setTitleList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -179,13 +207,7 @@ export default function BlogPage() {
                 <EditTitleBlog setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} row={selectedRow} />
               )}
 
-              {openDialogDelete && (
-                <DeleteTitleBlog
-                  openDialogDelete={openDialogDelete}
-                  handleClose={handleCloseDelete}
-                  row={selectedRow}
-                />
-              )}
+              <DeleteTitleBlog openDialogDelete={openDialogDelete} handleClose={handleCloseDelete} row={selectedRow} />
 
               {isNotFound && (
                 <TableBody>
@@ -221,4 +243,3 @@ export default function BlogPage() {
     </>
   );
 }
- 

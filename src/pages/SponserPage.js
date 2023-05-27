@@ -109,22 +109,40 @@ export default function SponserPage() {
     setOpenCreateExcelModal(true);
   };
 
-  const handleCloseCreateExcel = () => {
+  const handleCloseCreateExcel = async () => {
     setOpenCreateExcelModal(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll?keyword=${filterName}&curPage=${page+1}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setSPONSERLIST(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleClickOpenCreate = () => {
     setOpenSponsorCreate(true);
   };
-  const handleCloseCreate = () => {
+  const handleCloseCreate = async () => {
     setOpenSponsorCreate(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll?keyword=${filterName}&curPage=${page+1}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setSPONSERLIST(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleCloseEdit = async () => {
     setOpenDialogEdit(false);
 
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll?keyword=${filterName}&curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll?keyword=${filterName}&curPage=${page+1}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setSPONSERLIST(data.data);
@@ -165,8 +183,17 @@ export default function SponserPage() {
     setOpenDialogEdit(true);
   };
 
-  const handleCloseDelete = () => {
+  const handleCloseDelete = async () => {
     setOpenDialogDelete(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll?keyword=${filterName}&curPage=${page+1}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setSPONSERLIST(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -236,19 +263,21 @@ export default function SponserPage() {
                         onDoubleClick={(event) => handleRowClick(event, row)}
                         sx={{ cursor: 'pointer', width: '200px', height: '60px' }}
                       >
-                        <TableCell align="center">
-                          <img src={logo} alt="Logo" width="40" height="40" />
+                        <TableCell align="center" textAlign='center' style={{width:'15%'}}>
+                          <img src={logo} alt="Logo" width="60" height="60" />
                         </TableCell>
 
-                        <TableCell align="left">{maDonVi}</TableCell>
+                        <TableCell align="left" style={{width:'10%'}}>{maDonVi}</TableCell>
 
-                        <TableCell align="left">{tenDonVi}</TableCell>
+                        <TableCell align="left" style={{width:'35%'}}>
+                        {tenDonVi.length > 60 ? `${tenDonVi.slice(0, 60)}...` : tenDonVi}</TableCell>
 
-                        <TableCell align="left">{SDT}</TableCell>
+                        <TableCell align="left" style={{width:'20%'}}>
+                        {SDT.length > 20 ? `${SDT.slice(0, 20)}...` : SDT}</TableCell>
 
-                        <TableCell align="left">{soLuongDaTrao}</TableCell>
+                        <TableCell align="left" style={{width:'10%'}}>{soLuongDaTrao}</TableCell>
 
-                        <TableCell className="icon__container" style={{ justifyContent: 'left', alignItems: 'center' }}>
+                        <TableCell className="icon__container" style={{ justifyContent: 'left', alignItems: 'center',height: 100 , width:'10%' }}>
                           <Tooltip title="Cập nhật">
                             <MenuItem className="sponser__update" onClick={(event) => handleRowClick(event, row)}>
                               <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
@@ -267,11 +296,7 @@ export default function SponserPage() {
                       </TableRow>
                     );
                   })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={5} />
-                    </TableRow>
-                  )}
+
                 </TableBody>
 
                 <EditModal setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} row={selectedRow} />
@@ -281,11 +306,6 @@ export default function SponserPage() {
                   handleClose={handleCloseDelete}
                   row={selectedRow}
                 />
-                {/* <EditModal
-                  setOpenDialogEdit={openDialogEdit}
-                  handleClose={handleCloseEdit}
-                  id={selectedRow}
-                /> */}
 
                 {isNotFound && (
                   <TableBody>

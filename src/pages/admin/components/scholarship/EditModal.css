@@ -40,7 +40,6 @@
 
 .formcontrolupdatesholarship > div {
   border-radius: 0px;
-  background-color: aliceblue;
   margin: 0;
 }
 
@@ -54,7 +53,6 @@
 }
 .formcontrolupdatesholarship__name > div {
   border-radius: 0px;
-  background-color: aliceblue;
   
 }
 .formcontrolupdatesholarship__name > div:hover {
@@ -79,7 +77,6 @@
 }
 .formcontrolupdatesholarship__note > div{
     border-radius: 0px;
-  background-color: aliceblue;
   margin: 0;
   }
   .formcontrolupdatesholarship__note > div:hover{

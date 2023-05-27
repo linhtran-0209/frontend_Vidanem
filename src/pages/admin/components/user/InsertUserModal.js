@@ -28,6 +28,13 @@ export function InsertUserModal(props) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
 
+  const [textFieldEmailError, setTextFieldEmailError] = useState(false);
+  const [textFieldHoTenError, setTextFieldHoTenError] = useState(false);
+  const [selectedQuyenError, setSelectedQuyenError] = useState(false);
+  const [selectedQuanError, setSelectedQuanError] = useState(false);
+  const [selectedPhuongError, setSelectedPhuongError] = useState(false);
+  const [detailEmailError, setdetailEmailError] = useState('');
+
   const getUser = async () => {
     try {
       const email = props.row.email || '';
@@ -108,6 +115,8 @@ export function InsertUserModal(props) {
 
   const handleChangeQuan = async (event) => {
     setOpenQuan(event.target.value);
+    setSelectedQuanError(false);
+
     try {
       const url = `https://provinces.open-api.vn/api/d/${event.target.value}?depth=2`;
       const { data } = await axios.get(url);
@@ -119,31 +128,79 @@ export function InsertUserModal(props) {
 
   const handleChangePhuong = async (event) => {
     setOpenPhuong(event.target.value);
+    setSelectedPhuongError(false);
   };
 
   const handleSubmit = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/account/update`;
+    // Kiểm tra định dạng email
+    const validateEmail = (value) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(value);
+    };
 
-      axios
-        .put(
-          url,
-          {
-            email: account.email,
-            hoTen: account.hoTen,
-            ma_quan: openQuan,
-            ma_phuong: openPhuong,
-            quyen: openQuyen,
-          },
-          { withCredentials: true }
-        )
-        .then((data) => {
-          setOpenSuccessMessage(data.data.message);
-        });
-      props.handleClose();
-    } catch (err) {
-      console.log(err);
-      setOpenErrMessage(err.response.data.message);
+    if (!account.email) {
+      setTextFieldEmailError(true);
+      setdetailEmailError('Vui lòng nhập email');
+    } else {
+      console.log(validateEmail(account.email));
+      if (validateEmail(account.email) === false) {
+        setTextFieldEmailError(true);
+        setdetailEmailError('Nhập sai định dạng email');
+      } else setTextFieldEmailError(false);
+    }
+    if (!account.hoTen) {
+      setTextFieldHoTenError(true);
+    } else setTextFieldHoTenError(false);
+    if (!openQuyen) {
+      setSelectedQuyenError(true);
+    } else {
+      setSelectedQuyenError(false);
+      if (openQuyen === 2) {
+        if (!openQuan) {
+          setSelectedQuanError(true);
+        } else setSelectedQuanError(false);
+      } else if (openQuyen === 3) {
+        if (!openQuan) {
+          setSelectedQuanError(true);
+        } else setSelectedQuanError(false);
+        if (!openPhuong) {
+          setSelectedPhuongError(true);
+        } else setSelectedPhuongError(false);
+      }
+    }
+    console.log({ email: account.email, hoTen: account.hoTen, quyen: openQuyen, quan: openQuan, phuong: openPhuong });
+    if (
+      account.email &&
+      validateEmail(account.email) &&
+      account.hoTen &&
+      openQuyen &&
+      ((openQuyen === 2 && openQuan) || (openQuyen === 3 && openQuan && openPhuong) || openQuyen === 1)
+    ) {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/admin/account/update`;
+
+        axios
+          .put(
+            url,
+            {
+              email: account.email,
+              hoTen: account.hoTen,
+              ma_quan: openQuan,
+              ma_phuong: openPhuong,
+              quyen: openQuyen,
+            },
+            { withCredentials: true }
+          )
+          .then((data) => {
+            if (data.status === 200) {
+              setOpenSuccessMessage(data.data.message);
+            } else setOpenErrMessage(data.data.message);
+          });
+        props.handleClose();
+      } catch (err) {
+        console.log(err);
+        setOpenErrMessage(err.response.data.message);
+      }
     }
   };
 
@@ -156,12 +213,12 @@ export function InsertUserModal(props) {
   return (
     <>
       {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 50, top: 150 }} severity="success">
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 50, top: 150 }} severity="success">
           {openSuccessMessage}
         </Alert>
       )}
       {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 50, top: 150 }} severity="error">
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 50, top: 150 }} severity="error">
           {openErrMessage}
         </Alert>
       )}
@@ -185,9 +242,14 @@ export function InsertUserModal(props) {
                   id="email"
                   value={account.email || ''}
                   label="Địa chỉ Email *"
-                  onChange={(e) => setAccount({ ...account, email: e.target.value })}
+                  onChange={(e) => {
+                    setTextFieldEmailError(false);
+                    setAccount({ ...account, email: e.target.value });
+                  }}
                   type="email"
                   fullWidth
+                  error={textFieldEmailError}
+                  helperText={textFieldEmailError && detailEmailError}
                 />
               ) : (
                 <TextField
@@ -196,9 +258,14 @@ export function InsertUserModal(props) {
                   id="email"
                   value={account.email || ''}
                   label="Địa chỉ Email *"
-                  onChange={(e) => setAccount({ ...account, email: e.target.value })}
+                  onChange={(e) => {
+                    setTextFieldEmailError(false);
+                    setAccount({ ...account, email: e.target.value });
+                  }}
                   type="email"
                   fullWidth
+                  error={textFieldEmailError}
+                  helperText={textFieldEmailError && detailEmailError}
                 />
               )}
             </FormControl>
@@ -211,9 +278,14 @@ export function InsertUserModal(props) {
                   id="hoTen"
                   value={account.hoTen || ''}
                   label="Họ tên *"
-                  onChange={(e) => setAccount({ ...account, hoTen: e.target.value })}
-                  type="email"
+                  onChange={(e) => {
+                    setTextFieldHoTenError(false);
+                    setAccount({ ...account, hoTen: e.target.value });
+                  }}
+                  type="text"
                   fullWidth
+                  error={textFieldHoTenError}
+                  helperText={textFieldHoTenError && 'Vui lòng nhập họ tên'}
                 />
               ) : (
                 <TextField
@@ -222,9 +294,14 @@ export function InsertUserModal(props) {
                   id="hoTen"
                   label="Họ tên *"
                   value={account.hoTen || ''}
-                  onChange={(e) => setAccount({ ...account, hoTen: e.target.value })}
-                  type="email"
+                  onChange={(e) => {
+                    setTextFieldHoTenError(false);
+                    setAccount({ ...account, hoTen: e.target.value });
+                  }}
+                  type="text"
                   fullWidth
+                  error={textFieldHoTenError}
+                  helperText={textFieldHoTenError && 'Vui lòng nhập họ tên'}
                 />
               )}
             </FormControl>
@@ -266,6 +343,9 @@ export function InsertUserModal(props) {
                 <MenuItem value={3}>Cấp Liên Đội</MenuItem>
               </Select>
             )}
+            {selectedQuyenError && (
+              <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn quyền cho tài khoản</div>
+            )}
           </FormControl>
 
           <div className="form__update__address">
@@ -289,6 +369,11 @@ export function InsertUserModal(props) {
                         </MenuItem>
                       ))}
                     </Select>
+                    {selectedQuanError && (
+                      <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>
+                        Vui lòng chọn quận/thành phố cho tài khoản
+                      </div>
+                    )}
                   </FormControl>
                 </div>
               )}
@@ -314,6 +399,11 @@ export function InsertUserModal(props) {
                         </MenuItem>
                       ))}
                     </Select>
+                    {selectedPhuongError && (
+                      <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>
+                        Vui lòng chọn phường/xã cho tài khoản
+                      </div>
+                    )}
                   </FormControl>
                 </div>
               )}

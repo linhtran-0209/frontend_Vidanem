@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 
 import {
-  Alert,
   Card,
   Table,
   Stack,
@@ -87,8 +86,17 @@ export default function BlogPage() {
     setOpenDialogDelete(true);
   };
 
-  const handleCloseDelete = () => {
+  const handleCloseDelete =async () => {
     setOpenDialogDelete(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/tintuc/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setListTinTuc(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -112,20 +120,20 @@ export default function BlogPage() {
           </Button>
         </Stack>
         <Card>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <UserListHead headLabel={TABLE_HEAD} rowCount={total} />
-                <TableBody>
-                  {listTinTuc.map((row) => {
-                    const { _id, anhTieuDe, tieuDe, createdAt, authStatus } = row;
-                    // const selectedUser = selected.indexOf(tenDonVi) !== -1;
-                    let trangthai = '';
-                    if (authStatus === 'DeXuat') trangthai = 'Đề Xuất';
-                    else if (authStatus === 'ChoDuyet') trangthai = 'Chờ Duyệt';
-                    else if (authStatus === 'TuChoi') trangthai = 'Từ Chối';
-                    else trangthai = 'Đã Duyệt';
-                    return (
-                      <TableRow hover key={_id} sx={{ cursor: 'pointer', width: '200px', height: '10px' }}>
+          <TableContainer sx={{ minWidth: 800 }}>
+            <Table>
+              <UserListHead headLabel={TABLE_HEAD} rowCount={total} />
+              <TableBody>
+                {listTinTuc.map((row) => {
+                  const { _id, anhTieuDe, tieuDe, createdAt, authStatus } = row;
+                  // const selectedUser = selected.indexOf(tenDonVi) !== -1;
+                  let trangthai = '';
+                  if (authStatus === 'DeXuat') trangthai = 'Đề Xuất';
+                  else if (authStatus === 'ChoDuyet') trangthai = 'Chờ Duyệt';
+                  else if (authStatus === 'TuChoi') trangthai = 'Từ Chối';
+                  else trangthai = 'Đã Duyệt';
+                  return (
+                    <TableRow hover key={_id} sx={{ cursor: 'pointer', width: '200px', height: '10px' }}>
                       <TableCell align="center" style={{ width: 200, height: 60 }}>
                         <img
                           src={`${process.env.REACT_APP_API_URL}${anhTieuDe}`}
@@ -135,19 +143,19 @@ export default function BlogPage() {
                         />
                       </TableCell>
 
-                        <TableCell align="left" style={{ width: 550 }}>
-                          {tieuDe}
-                        </TableCell>
+                      <TableCell align="left" style={{ width: 550 }}>
+                        {tieuDe}
+                      </TableCell>
 
-                        <TableCell align="left" style={{ width: 180 }}>
-                          {moment(createdAt).format('DD/MM/YYYY')}
-                        </TableCell>
+                      <TableCell align="left" style={{ width: 180 }}>
+                        {moment(createdAt).format('DD/MM/YYYY')}
+                      </TableCell>
 
-                        <TableCell align="left" style={{ width: 150 }}>
-                          {trangthai}
-                        </TableCell>
+                      <TableCell align="left" style={{ width: 150 }}>
+                        {trangthai}
+                      </TableCell>
 
-                        <TableCell
+                      <TableCell
                         className="icon__container"
                         style={{ justifyContent: 'left', alignItems: 'center', height: 100 }}
                       >
@@ -166,45 +174,43 @@ export default function BlogPage() {
                           </MenuItem>
                         </Tooltip>
                       </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={5} />
                     </TableRow>
-                  )}
+                  );
+                })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={5} />
+                  </TableRow>
+                )}
+              </TableBody>
+
+              <DeleteModal openDialogDelete={openDialogDelete} handleClose={handleCloseDelete} row={selectedRow} />
+
+              {isNotFound && (
+                <TableBody>
+                  <TableRow>
+                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <Paper
+                        sx={{
+                          textAlign: 'center',
+                        }}
+                      >
+                        <Typography variant="h6" paragraph>
+                          Không tìm thấy
+                        </Typography>
+
+                        <Typography variant="body2">
+                          Không tìm thấy đơn vị bảo trợ có tên là &nbsp;
+                          <strong>&quot;{filterName}&quot;</strong>.
+                          <br /> Hãy thử kiểm tra lỗi chính tả hoặc sử dụng các từ hoàn chỉnh.
+                        </Typography>
+                      </Paper>
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
-
-                {openDialogDelete && (
-                  <DeleteModal openDialogDelete={openDialogDelete} handleClose={handleCloseDelete} row={selectedRow} />
-                )}
-
-                {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Không tìm thấy
-                          </Typography>
-
-                          <Typography variant="body2">
-                            Không tìm thấy đơn vị bảo trợ có tên là &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Hãy thử kiểm tra lỗi chính tả hoặc sử dụng các từ hoàn chỉnh.
-                          </Typography>
-                        </Paper>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
-              </Table>
-            </TableContainer>
+              )}
+            </Table>
+          </TableContainer>
 
           <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
             <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} />

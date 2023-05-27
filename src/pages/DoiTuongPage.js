@@ -71,8 +71,17 @@ export default function DoiTuongPage() {
   const handleClickOpenCreate = () => {
     setOpenScholarshipCreate(true);
   };
-  const handleCloseCreate = () => {
+  const handleCloseCreate = async () => {
     setOpenScholarshipCreate(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/doituong/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setDoiTuongList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleCloseEdit = async () => {
@@ -189,7 +198,7 @@ export default function DoiTuongPage() {
                               <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
                             </MenuItem>
                           </Tooltip>
-                          <Tooltip title="Xóa">
+                          {/* <Tooltip title="Xóa">
                             <MenuItem
                               className="doituong__delete"
                               sx={{ color: 'error.main' }}
@@ -197,7 +206,7 @@ export default function DoiTuongPage() {
                             >
                               <Iconify icon={'eva:trash-2-outline'} />
                             </MenuItem>
-                          </Tooltip>
+                          </Tooltip> */}
                         </TableCell>
                       </TableRow>
                     );
@@ -212,9 +221,9 @@ export default function DoiTuongPage() {
                   <EditModal setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} row={selectedRow} />
                 )}
 
-                {openDialogDelete && (
+                {/* {openDialogDelete && (
                   <DeleteModal openDialogDelete={openDialogDelete} handleClose={handleCloseDelete} row={selectedRow} />
-                )}
+                )} */}
 
                 {isNotFound && (
                   <TableBody>

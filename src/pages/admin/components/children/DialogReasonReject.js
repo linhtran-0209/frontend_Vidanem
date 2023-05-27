@@ -1,21 +1,20 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControl
-} from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-
 
 export function DialogReasonReject(props) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
-  const [reason, setReason] = useState('')
+  const [reason, setReason] = useState('');
+  const [textReasonError, setTextReasonError] = useState(false);
 
   const handleSubmit = () => {
-    props.handleReject(reason)
+    if (!reason) {
+      setTextReasonError(true);
+    } else {
+      setTextReasonError(false);
+      props.handleReject(reason);
+      props.handleClose();
+    }
   };
 
   useEffect(() => {
@@ -31,13 +30,18 @@ export function DialogReasonReject(props) {
         <DialogContent>
           <div className="container__hoancanh">
             <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
-              <textarea
+              <TextField
                 id="hoanCanh"
                 label="Lí do trả về *"
                 type="text"
-                placeholder="Lí do trả về"
+                placeholder="Lí do từ chối"
                 // value={treEm.hoanCanh || ''}
-                onChange={(e) => setReason(e.target.value )}
+                onChange={(e) => {
+                  setTextReasonError(false);
+                  setReason(e.target.value);
+                }}
+                error={textReasonError}
+                helperText={textReasonError && 'Vui lòng nhập lí do từ chối'}
               />
             </FormControl>
           </div>

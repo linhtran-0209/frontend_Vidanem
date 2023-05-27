@@ -24,6 +24,13 @@ export function EditModal(props) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
 
+  const [textFieldMaHocBongError, setTextFieldMaHocBongError] = useState(false);
+  const [textFieldTenHocBongError, setTextFieldTenHocBongError] = useState(false);
+  const [selectedDonViBaoTroError, setSelectedDonViBaoTroError] = useState(false);
+  const [textFieldSoLuongError, setTextFieldSoLuongError] = useState(false);
+  const [textFieldSoTienError, setTextFieldSoTienError] = useState(false);
+  const [textFieldHinhThucError, setTextFieldHinhThucError] = useState(false);
+
   const getSponsorList = async () => {
     const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll`;
     const { data } = await axios.get(url, { withCredentials: true });
@@ -52,6 +59,7 @@ export function EditModal(props) {
   };
 
   const handleChange = (e) => {
+    setSelectedDonViBaoTroError(false);
     setSelected(e.target.value);
     setScholarship({ ...scholarship, donViBaoTro: e.target.value });
   };
@@ -59,32 +67,60 @@ export function EditModal(props) {
   const defaultSelectedValue = selected;
 
   const handleSubmit = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/update`;
+    if (!scholarship.maHocBong) {
+      setTextFieldMaHocBongError(true);
+    } else setTextFieldMaHocBongError(false);
+    if (!scholarship.tenHocBong) {
+      setTextFieldTenHocBongError(true);
+    } else setTextFieldTenHocBongError(false);
+    if (!scholarship.donViBaoTro) {
+      setSelectedDonViBaoTroError(true);
+    } else setSelectedDonViBaoTroError(false);
+    if (!scholarship.soLuong) {
+      setTextFieldSoLuongError(true);
+    } else setTextFieldSoLuongError(false);
+    if (!scholarship.soTien) {
+      setTextFieldSoTienError(true);
+    } else setTextFieldSoTienError(false);
+    if (!scholarship.hinhThuc) {
+      setTextFieldHinhThucError(true);
+    } else setTextFieldHinhThucError(false);
 
-      await axios
-        .put(
-          url,
-          {
-            id: props.row._id,
-            maHocBong: scholarship.maHocBong,
-            tenHocBong: scholarship.tenHocBong,
-            donViBaoTro: scholarship.donViBaoTro,
-            soLuong: scholarship.soLuong,
-            soTien: scholarship.soTien,
-            hinhThuc: scholarship.hinhThuc,
-            ghiChu: scholarship.ghiChu,
-          },
-          { withCredentials: true }
-        )
-        .then((res) => {
-          if (res.status === 200) {
-            setOpenSuccessMessage(res.data.message);
-          } else setOpenErrMessage(res.data.message);
-        });
-      // props.handleClose();
-    } catch (err) {
-      console.log(err);
+    if (
+      scholarship.maHocBong &&
+      scholarship.tenHocBong &&
+      scholarship.donViBaoTro &&
+      scholarship.soLuong &&
+      scholarship.soTien &&
+      scholarship.hinhThuc
+    ) {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/update`;
+
+        await axios
+          .put(
+            url,
+            {
+              id: props.row._id,
+              maHocBong: scholarship.maHocBong,
+              tenHocBong: scholarship.tenHocBong,
+              donViBaoTro: scholarship.donViBaoTro,
+              soLuong: scholarship.soLuong,
+              soTien: scholarship.soTien,
+              hinhThuc: scholarship.hinhThuc,
+              ghiChu: scholarship.ghiChu,
+            },
+            { withCredentials: true }
+          )
+          .then((res) => {
+            if (res.status === 200) {
+              setOpenSuccessMessage(res.data.message);
+            } else setOpenErrMessage(res.data.message);
+          });
+        // props.handleClose();
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
   return (
@@ -115,9 +151,13 @@ export function EditModal(props) {
                 margin="dense"
                 label="Mã học bổng"
                 value={scholarship.maHocBong || ''}
-                onChange={(e) => setScholarship({ ...scholarship, maHocBong: e.target.value })}
+                onChange={(e) => {
+                  setTextFieldMaHocBongError(false)
+                  setScholarship({ ...scholarship, maHocBong: e.target.value })}}
                 type="text"
                 fullWidth
+                error={textFieldMaHocBongError}
+                helperText={textFieldMaHocBongError && 'Vui lòng nhập mã học bổng'}
               />
             </FormControl>
             <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
@@ -125,14 +165,18 @@ export function EditModal(props) {
                 margin="dense"
                 label="Tên học bổng"
                 value={scholarship.tenHocBong || ''}
-                onChange={(e) => setScholarship({ ...scholarship, tenHocBong: e.target.value })}
+                onChange={(e) => {
+                  setTextFieldTenHocBongError(false)
+                  setScholarship({ ...scholarship, tenHocBong: e.target.value })}}
                 type="text"
                 fullWidth
+                error={textFieldTenHocBongError}
+                helperText={textFieldTenHocBongError && 'Vui lòng nhập tên học bổng'}
               />
             </FormControl>
           </div>
           <FormControl className="formcontrolupdatesholarship__name" variant="outlined" fullWidth>
-            <Select onChange={handleChange} label="Đơn vị tài trợ" value={selected} fullWidth margin="dense">
+            <Select onChange={handleChange} label="Đơn vị tài trợ" value={selected} fullWidth margin="dense" style={{border:selectedDonViBaoTroError? '1px solid red': ''}}>
               <TextField
                 autoFocus
                 placeholder="Tên đơn vị tài trợ..."
@@ -150,6 +194,9 @@ export function EditModal(props) {
                 </MenuItem>
               ))}
             </Select>
+            {selectedDonViBaoTroError && (
+                <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn đơn vị bảo trợ</div>
+              )}
           </FormControl>
           <div className="form__info__moneyupdatescholarship__container">
             <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
@@ -157,9 +204,13 @@ export function EditModal(props) {
                 margin="dense"
                 label="Số lượng"
                 value={scholarship.soLuong || ''}
-                onChange={(e) => setScholarship({ ...scholarship, soLuong: e.target.value })}
-                type="phone"
+                onChange={(e) => {
+                  setTextFieldSoLuongError(false)
+                  setScholarship({ ...scholarship, soLuong: e.target.value })}}
+                type="number"
                 fullWidth
+                error={textFieldSoLuongError}
+                helperText={textFieldSoLuongError && 'Vui lòng nhập số lượng trẻ em được nhận'}
               />
             </FormControl>
             <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
@@ -167,9 +218,13 @@ export function EditModal(props) {
                 margin="dense"
                 label="Số tiền mỗi suất"
                 value={scholarship.soTien || ''}
-                onChange={(e) => setScholarship({ ...scholarship, soTien: e.target.value })}
-                type="text"
+                onChange={(e) => {
+                  setTextFieldSoTienError(false)
+                  setScholarship({ ...scholarship, soTien: e.target.value })}}
+                type="number"
                 fullWidth
+                error={textFieldSoTienError}
+                helperText={textFieldSoTienError && 'Vui lòng nhập số tiền mỗi suất'}
               />
             </FormControl>
             <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
@@ -177,9 +232,13 @@ export function EditModal(props) {
                 margin="dense"
                 label="Hình thức"
                 value={scholarship.hinhThuc || ''}
-                onChange={(e) => setScholarship({ ...scholarship, hinhThuc: e.target.value })}
+                onChange={(e) => {
+                  setTextFieldHinhThucError(false)
+                  setScholarship({ ...scholarship, hinhThuc: e.target.value })}}
                 type="text"
                 fullWidth
+                error={textFieldHinhThucError}
+                helperText={textFieldHinhThucError && 'Vui lòng nhập hình thức trao tặng học bổng'}
               />
             </FormControl>
           </div>

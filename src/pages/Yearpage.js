@@ -77,15 +77,24 @@ export default function YearPage() {
   const handleClickOpenCreate = () => {
     setOpenScholarshipCreate(true);
   };
-  const handleCloseCreate = () => {
+  const handleCloseCreate = async () => {
     setOpenScholarshipCreate(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setYearsList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleCloseEdit = async () => {
     setOpenDialogEdit(false);
 
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setYearsList(data.data);
@@ -122,8 +131,17 @@ export default function YearPage() {
     setOpenDialogEdit(true);
   };
 
-  const handleCloseDelete = () => {
+  const handleCloseDelete = async () => {
     setOpenDialogDelete(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setYearsList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

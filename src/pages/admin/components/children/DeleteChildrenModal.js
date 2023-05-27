@@ -17,7 +17,7 @@ export function DeleteChildrenModal(props) {
     try {
       const url = `${process.env.REACT_APP_API_URL}/admin/treem/delete`;
 
-      axios
+      await axios
         .put(
           url,
           {
@@ -26,7 +26,9 @@ export function DeleteChildrenModal(props) {
           { withCredentials: true }
         )
         .then((data) => {
-          setOpenSuccessMessage(data.data.message);
+          if (data.status === 200) {
+            setOpenSuccessMessage(data.data.message);
+          } else setOpenErrMessage(data.data.message);
         });
       props.handleClose();
     } catch (err) {
@@ -48,7 +50,7 @@ export function DeleteChildrenModal(props) {
         </Alert>
       )}
       {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 500000, right: 100 }} severity="error">
+        <Alert style={{ position: 'fixed', zIndex: 500000, right: 100, top: 150 }} severity="error">
           {openErrMessage}
         </Alert>
       )}

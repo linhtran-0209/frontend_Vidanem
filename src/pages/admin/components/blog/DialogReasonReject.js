@@ -4,7 +4,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl
+  FormControl,
+  TextField
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
@@ -13,10 +14,17 @@ export function DialogReasonReject(props) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
   const [reason, setReason] = useState('')
+  const [textReasonError, setTextReasonError] = useState(false);
 
   const handleSubmit = () => {
-    props.handleReject(reason)
-    props.handleClose()
+    if (!reason) {
+      setTextReasonError(true)
+    } else {
+      setTextReasonError(false)
+      props.handleReject(reason)
+      props.handleClose()
+    }
+
   };
 
   useEffect(() => {
@@ -32,12 +40,17 @@ export function DialogReasonReject(props) {
         <DialogContent>
           <div className="container__hoancanh">
             <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
-              <textarea
+              <TextField
                 id="hoanCanh"
-                label="Lí do trả về *"
+                label="Lí do từ chối *"
                 type="text"
-                placeholder="Lí do trả về"
-                onChange={(e) => setReason(e.target.value )}
+                placeholder="Lí do từ chối"
+                onChange={(e) => {
+                  setTextReasonError(false)
+                  setReason(e.target.value )}
+                }
+                error={textReasonError}
+                helperText={textReasonError && 'Vui lòng nhập lí do từ chối'}
               />
             </FormControl>
           </div>

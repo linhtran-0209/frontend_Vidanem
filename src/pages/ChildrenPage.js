@@ -176,8 +176,19 @@ export default function ChildrenPage() {
     navigate(`/dashboard/children/edit/${row._id}`);
   };
 
-  const handleCloseDelete = () => {
+  const handleCloseDelete = async () => {
     setOpenDialogDelete(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/treem/getAll?hoten=${filterName}&doituong=${doiTuong}&curPage=${page+1}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&trang_thai=${trangThai}&don_vi_tai_tro=${sponsor}`;
+
+      const { data } = await axios.get(url, { withCredentials: true });
+
+      setChildrenList(data.data);
+
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleDeleteClick = (row) => {
@@ -239,10 +250,6 @@ export default function ChildrenPage() {
   const handleClickOpen = () => {
     if (+sessionStorage.getItem('role') !== 3) setOpenErrMessage('Tài khoản không thể thực hiện chức năng này');
     else navigate(`/dashboard/children/insert`);
-  };
-
-  const handleClose = () => {
-    setOpenDialog(false);
   };
 
   useEffect(() => {
@@ -330,7 +337,7 @@ export default function ChildrenPage() {
 
                       <TableCell align="left">{truong}</TableCell>
                       <TableCell className="children__hoancanh" align="left">
-                        {hoanCanh.length > 25 ? `${hoanCanh.slice(0, 25)}...` : hoanCanh}
+                        {hoanCanh.length > 25 ? `${hoanCanh.slice(0, 24)}...` : hoanCanh}
                       </TableCell>
 
                       <TableCell align="left">{trangthai}</TableCell>

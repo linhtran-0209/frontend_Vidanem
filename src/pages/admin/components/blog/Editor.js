@@ -85,14 +85,21 @@ const modules = {
   },
 };
 
-function Editor({ value, onChange, handleImg }) {
+function Editor({ value, onChange, handleImg, error }) {
   useEffect(() => {
     handleImg(localStorage.getItem('imageUrls'));
   }, [localStorage.getItem('imageUrls')]);
 
   return (
-    <div style={{height: '300px'}}>
-      <ReactQuill style={{height: '250px'}} theme="snow" value={value} onChange={onChange} modules={modules} />
+    <div style={{ height: '300px' }}>
+      <ReactQuill
+        style={{ height: '250px', border: error ? '1px solid red' : '' }}
+        theme="snow"
+        value={value}
+        onChange={onChange}
+        modules={modules}
+      />
+      {error && <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng nhập nội dung</div>}
     </div>
   );
 }

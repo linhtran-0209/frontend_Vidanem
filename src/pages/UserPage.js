@@ -195,7 +195,6 @@ export default function UserPage() {
   const handleClickOpenInsert = (event, row) => {
     setSelectedRow(row);
     setOpenDialogInsert(true);
-    console.log(row);
   };
   const handleClickOpenDelete = (event, row) => {
     setSelectedRow(row);
@@ -205,21 +204,66 @@ export default function UserPage() {
     setSelectedRow(row);
     setOpenDialogChangeActive(true);
   };
-  const handleCloseCreate = () => {
+  const handleCloseCreate = async () => {
     setOpenDialogCreate(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setUSERLIST(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
-  const handleCloseCreateExcel = () => {
+  const handleCloseCreateExcel = async () => {
     setOpenCreateExcelModal(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setUSERLIST(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const handleCloseInsert = () => {
+  const handleCloseInsert = async () => {
     setOpenDialogInsert(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setUSERLIST(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
-  const handleCloseDelete = () => {
+  const handleCloseDelete = async () => {
     setOpenDialogDelete(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setUSERLIST(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
-  const handleCloseChangeActive = () => {
+  const handleCloseChangeActive = async () => {
     setOpenDialogChangeActive(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll?email=${filterName}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&quyen=${quyen}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setUSERLIST(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

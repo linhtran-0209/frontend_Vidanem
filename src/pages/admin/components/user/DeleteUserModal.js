@@ -17,7 +17,7 @@ export function DeleteUserModal(props) {
     try {
       const url = `${process.env.REACT_APP_API_URL}/admin/account/delete`;
 
-      axios
+      await axios
         .put(
           url,
           {

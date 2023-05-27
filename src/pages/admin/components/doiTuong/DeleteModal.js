@@ -15,9 +15,9 @@ export function DeleteModal(props) {
 
   const handleSubmit = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/delete`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/doituong/delete`;
 
-      axios
+      await axios
         .put(
           url,
           {

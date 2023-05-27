@@ -1,17 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import {
-  Grid,
-  Card,
-  Stack,
-  Typography,
-  FormControl,
-  TextField,
-  Button,
-  IconButton,
-  Alert,
-} from '@mui/material';
+import { Grid, Card, Stack, Typography, FormControl, TextField, Button, IconButton, Alert } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -62,9 +52,17 @@ export default function EditChildren() {
   const [infoHocTap, setInfoHocTap] = useState({});
   const [selectedHocTapIndex, setSelectedHocTapIndex] = useState(0);
   const [selectedDate, setSelectedDate] = useState(moment());
-
   const [openDialogReasonReject, setOpenDialogReasonReject] = useState(false);
 
+  const [imageError, setImageError] = useState(false);
+  const [textFieldHoTenError, setTextFieldHoTenError] = useState(false);
+  const [textFieldDiaChiError, setTextFieldDiaChiError] = useState(false);
+  const [textFieldSDTError, setTextFieldSDTError] = useState(false);
+  const [textFieldTruongError, setTextFieldTruongError] = useState(false);
+  const [textFieldHoanCanhError, setTextFieldHoanCanhError] = useState(false);
+  const [doiTuongError, setDoiTuongError] = useState(false);
+  const [hocBongError, setHocBongError] = useState(false);
+  const [hocTapError, setHocTapError] = useState(false);
   useEffect(() => {
     setTimeout(() => {
       setOpenSuccessMessage('');
@@ -112,6 +110,7 @@ export default function EditChildren() {
   };
 
   const handleCickAddHocBong = (hocbong) => {
+    setHocBongError(false);
     const newId = uuidv4();
     setHocBong([{ ...hocbong, _id: `temp${newId}` }, ...hocBong]);
     sethocBongNew([...hocBongNew, { ...hocbong, _id: `temp${newId}` }]);
@@ -145,6 +144,7 @@ export default function EditChildren() {
   };
 
   const handleCickEditHocBong = (hocbong) => {
+    setHocBongError(false);
     const hocbongs = [...hocBong];
     hocbongs[selectedHocBongIndex] = hocbong;
     setHocBong(hocbongs);
@@ -229,6 +229,7 @@ export default function EditChildren() {
       const newId = uuidv4();
       setPreview([...preview, { _id: `temp${newId}`, url: URL.createObjectURL(file) }]);
       setImages([...images, { _id: `temp${newId}`, image: file }]);
+      setImageError(false);
     }
   };
 
@@ -266,6 +267,7 @@ export default function EditChildren() {
   };
 
   const handleAddDoiTuong = (doituongs) => {
+    setDoiTuongError(false);
     setNewDoiTuong(doituongs);
   };
 
@@ -284,6 +286,7 @@ export default function EditChildren() {
   };
 
   const handleCickAdd = (hoctap) => {
+    setHocTapError(false);
     const newId = uuidv4();
     setHocTap([{ ...hoctap, _id: `temp${newId}` }, ...hocTap]);
     sethocTapNew([...hocTapNew, { ...hoctap, _id: `temp${newId}` }]);
@@ -317,6 +320,7 @@ export default function EditChildren() {
   };
 
   const handleCickEditHocTap = (hoctap) => {
+    setHocTapError(false);
     const hoctaps = [...hocTap];
     hoctaps[selectedHocTapIndex] = hoctap;
     setHocTap(hoctaps);
@@ -344,6 +348,34 @@ export default function EditChildren() {
   };
 
   const handleSubmit = async () => {
+    if (images.length === 0) {
+      setImageError(true);
+    } else setImageError(false);
+    if (!treEm.hoTen) {
+      setTextFieldHoTenError(true);
+    } else setTextFieldHoTenError(false);
+    if (!treEm.truong) {
+      setTextFieldTruongError(true);
+    } else setTextFieldTruongError(false);
+    if (!treEm.SDT) {
+      setTextFieldSDTError(true);
+    } else setTextFieldSDTError(false);
+    if (!treEm.diaChi) {
+      setTextFieldDiaChiError(true);
+    } else setTextFieldDiaChiError(false);
+    if (!treEm.hoanCanh) {
+      setTextFieldHoanCanhError(true);
+    } else setTextFieldHoanCanhError(false);
+    if (oldDoiTuong.length === 0) {
+      setDoiTuongError(true);
+    } else setDoiTuongError(false);
+    if (hocBong.length === 0) {
+      setHocBongError(true);
+    } else setHocBongError(false);
+    if (hocTap.length === 0) {
+      setHocTapError(true);
+    } else setHocTapError(false);
+
     const url = `${process.env.REACT_APP_API_URL}/admin/treem/update`;
 
     if (treEm.authStatus === 'DeXuat' || treEm.authStatus === 'TuChoi') {
@@ -362,7 +394,7 @@ export default function EditChildren() {
             namHoanThanh: treEm.namHoanThanh,
             hoanCanh: treEm.hoanCanh,
             doiTuong: newDoiTuong.map((doituong) => doituong._id),
-            donViBaoTro: hocBong.map(hocbong => hocbong.donViBaoTro._id)
+            donViBaoTro: hocBong.map((hocbong) => hocbong.donViBaoTro._id),
           },
           { withCredentials: true }
         )
@@ -741,6 +773,11 @@ export default function EditChildren() {
                   style={{ display: 'none' }}
                   onChange={handleFileUpload}
                 />
+                {imageError && (
+                  <Typography component="span" variant="body2" style={{ textAlign: 'center', color: 'red' }}>
+                    <p>Vui lòng chọn ảnh</p>
+                  </Typography>
+                )}
                 <label
                   htmlFor="image-input"
                   style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 16 }}
@@ -788,10 +825,15 @@ export default function EditChildren() {
                   margin="dense"
                   id="hoTen"
                   value={treEm.hoTen || ''}
-                  onChange={(e) => setTreEm({ ...treEm, hoTen: e.target.value })}
+                  onChange={(e) => {
+                    setTextFieldHoTenError(false);
+                    setTreEm({ ...treEm, hoTen: e.target.value });
+                  }}
                   label="Họ và tên *"
                   type="text"
                   fullWidth
+                  error={textFieldHoTenError}
+                  helperText={textFieldHoTenError && 'Vui lòng nhập họ tên'}
                 />
               </FormControl>
               <FormControl className="formcontrol__inform" variant="standard" fullWidth>
@@ -812,9 +854,14 @@ export default function EditChildren() {
                   id="hoanCanh"
                   label="Địa chỉ *"
                   value={treEm.diaChi || ''}
-                  onChange={(e) => setTreEm({ ...treEm, diaChi: e.target.value })}
+                  onChange={(e) => {
+                    setTextFieldDiaChiError(false);
+                    setTreEm({ ...treEm, diaChi: e.target.value });
+                  }}
                   type="text"
                   placeholder="Địa chỉ"
+                  error={textFieldDiaChiError}
+                  helperText={textFieldDiaChiError && 'Vui lòng nhập địa chỉ'}
                 />
               </FormControl>
             </div>
@@ -823,12 +870,17 @@ export default function EditChildren() {
                 <TextField
                   htmlFor="demo-customized-textbox"
                   margin="dense"
-                  id="SDT"
+                  id="SDT *"
                   value={treEm.SDT || ''}
-                  onChange={(e) => setTreEm({ ...treEm, SDT: e.target.value })}
+                  onChange={(e) => {
+                    setTextFieldSDTError(false);
+                    setTreEm({ ...treEm, SDT: e.target.value });
+                  }}
                   label="Số điện thoại"
                   type="number"
                   fullWidth
+                  error={textFieldSDTError}
+                  helperText={textFieldSDTError && 'Vui lòng nhập số điện thoại'}
                 />
               </FormControl>
               <FormControl className="formcontrol__inform" variant="standard" fullWidth>
@@ -837,10 +889,15 @@ export default function EditChildren() {
                   margin="dense"
                   id="diaChi"
                   value={treEm.truong || ''}
-                  onChange={(e) => setTreEm({ ...treEm, truong: e.target.value })}
+                  onChange={(e) => {
+                    setTextFieldTruongError(false);
+                    setTreEm({ ...treEm, truong: e.target.value });
+                  }}
                   label="Trường *"
                   type="text"
                   fullWidth
+                  error={textFieldTruongError}
+                  helperText={textFieldTruongError && 'Vui lòng nhập tên trường'}
                 />
               </FormControl>
             </div>
@@ -860,6 +917,9 @@ export default function EditChildren() {
                   >
                     <Iconify style={{ color: 'green', padding: 0 }} icon={'material-symbols:add-circle-outline'} />
                   </Button>
+                  {doiTuongError && (
+                    <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn đối tượng trẻ em</div>
+                  )}
                 </div>
               </FormControl>
             </div>
@@ -893,13 +953,20 @@ export default function EditChildren() {
 
             <div className="container__hoancanh">
               <FormControl className="formcontrol__hoancanh" variant="standard" fullWidth>
-                <textarea
+                <TextField
                   id="hoanCanh"
                   label="Hoàn Cảnh *"
                   type="text"
+                  multiline
+                  rows={4}
                   placeholder="Hoàn cảnh"
                   value={treEm.hoanCanh || ''}
-                  onChange={(e) => setTreEm({ ...treEm, hoanCanh: e.target.value })}
+                  onChange={(e) => {
+                    setTextFieldHoanCanhError(false);
+                    setTreEm({ ...treEm, hoanCanh: e.target.value });
+                  }}
+                  error={textFieldHoanCanhError}
+                  helperText={textFieldHoanCanhError && 'Vui lòng nhập hoàn cảnh'}
                 />
               </FormControl>
             </div>
@@ -919,6 +986,9 @@ export default function EditChildren() {
                   >
                     <Iconify style={{ color: 'green', padding: 0 }} icon={'material-symbols:add-circle-outline'} />
                   </Button>
+                  {hocBongError && (
+                    <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng thêm thông tin học bổng</div>
+                  )}
                 </div>
                 {hocBong.length > 0 &&
                   hocBong.map((hocbong, index) => {
@@ -988,6 +1058,9 @@ export default function EditChildren() {
                   >
                     <Iconify style={{ color: 'green', padding: 0 }} icon={'material-symbols:add-circle-outline'} />
                   </Button>
+                  {hocTapError && (
+                    <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng thêm thông tin học tập</div>
+                  )}
                 </div>
                 {hocTap.length > 0 &&
                   hocTap.slice(0, 2).map((hoctap, index) => {
@@ -1073,7 +1146,7 @@ export default function EditChildren() {
               {quyen === 3 ? (
                 <>
                   {treEm.authStatus === 'DaDuyet' ? (
-                    <LoadingButton type="submit" color='error' variant="contained" >
+                    <LoadingButton type="submit" color="error" variant="contained">
                       Yêu cầu chỉnh sửa
                     </LoadingButton>
                   ) : (

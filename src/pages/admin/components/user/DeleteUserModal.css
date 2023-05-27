@@ -11,10 +11,12 @@
   font-size: 20px;
 }
 .titledeleteuser > button {
-  margin-left: 21rem;
+  margin-left: auto;
+  margin-right: 5px;
 }
 .titledeleteuser > button:hover {
-  margin-left: 21rem;
+  margin-left: auto;
+  margin-right: 5px;
   color: black;
   background-color: rgb(241, 84, 84);;
 }

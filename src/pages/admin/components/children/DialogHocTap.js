@@ -9,6 +9,7 @@ import {
   Select,
   InputLabel,
   IconButton,
+  TextField,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -20,11 +21,27 @@ export function DialogHocTap(props) {
   const [selectedHocKy, setSelectedHocKy] = useState(null);
   const [selectedHocLuc, setSelectedHocLuc] = useState(null);
 
+  const [selectedNamHocError, setSelectedNamHocError] = useState(false);
+  const [selectedHocKyError, setSelectedHocKyError] = useState(false);
+  const [selectedHocLucError, setSelectedHocLucError] = useState(false);
+
   const handleSubmit = async () => {
-    if (props.isEdit) {
-      props.handleCickEdit(hocTap);
-    } else props.handleCickAdd(hocTap);
-    props.handleClose();
+    if (!hocTap.namHoc) {
+      setSelectedNamHocError(true);
+    } else setSelectedNamHocError(false);
+    if (!hocTap.hocKy) {
+      setSelectedHocKyError(true);
+    } else setSelectedHocKyError(false);
+    if (!hocTap.hocLuc) {
+      setSelectedHocLucError(true);
+    } else setSelectedHocLucError(false);
+
+    if (hocTap.namHoc && hocTap.hocKy && hocTap.hocLuc){
+      if (props.isEdit) {
+        props.handleCickEdit(hocTap);
+      } else props.handleCickAdd(hocTap);
+      props.handleClose();
+    }
   };
 
   useEffect(() => {
@@ -44,30 +61,35 @@ export function DialogHocTap(props) {
       const { data } = await axios.get(url, { withCredentials: true });
       setYearsList(data.data);
       const namHienTai = data.data.find((nam) => nam.namHienTai === true);
-      if (!props.isEdit) setSelectedNamHoc(namHienTai.namHoc);
+      if (!props.isEdit) {
+        setSelectedNamHoc(namHienTai.namHoc);
+        setHocTap({ ...hocTap, namHoc: namHienTai.namHoc })
+      }
     } catch (err) {
       console.log(err);
     }
   };
 
   const handleChangeNamHoc = (e) => {
+    setSelectedNamHocError(false);
     setSelectedNamHoc(e.target.value);
     setHocTap({ ...hocTap, namHoc: e.target.value });
   };
 
   const handleChangeHocKy = (e) => {
+    setSelectedHocKyError(false);
     setSelectedHocKy(e.target.value);
     setHocTap({ ...hocTap, hocKy: e.target.value });
   };
 
   const handleChangeHocLuc = (e) => {
+    setSelectedHocLucError(false);
     setSelectedHocLuc(e.target.value);
     setHocTap({ ...hocTap, hocLuc: e.target.value });
   };
 
   return (
     <>
-
       <Dialog className="dialogcreatehoctap" open={props.openDialogCreate} onClose={props.handleClose}>
         <div className="titlecreatehoctap">
           {' '}
@@ -82,33 +104,45 @@ export function DialogHocTap(props) {
           <DialogContent className="form_info_hoctap">
             <div className="form__info__hoctap__container">
               <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
-              <InputLabel id="demo-simple-select-standard-label">Năm học</InputLabel>
+                <InputLabel id="demo-simple-select-standard-label">Năm học</InputLabel>
                 <Select onChange={handleChangeNamHoc} label="Năm học" value={selectedNamHoc} fullWidth margin="dense">
-
                   {YearsList.map((option) => (
                     <MenuItem key={option._id} value={option.namHoc} label={option.namHoc}>
                       {option.namHoc}
                     </MenuItem>
                   ))}
                 </Select>
+              {selectedNamHocError && <div style={{backgroundColor:'white', color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn năm học</div>}
               </FormControl>
-
               <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
-              <InputLabel id="demo-simple-select-standard-label">Học kỳ</InputLabel>
-                <Select onChange={handleChangeHocKy} label="Năm học" value={selectedHocKy || ''} fullWidth margin="dense">
-                    <MenuItem key={'HK1'} value={'Học Kỳ 1'} label={'Học Kỳ 1'}>
+                <InputLabel id="demo-simple-select-standard-label">Học kỳ</InputLabel>
+                <Select
+                  onChange={handleChangeHocKy}
+                  label="Năm học"
+                  value={selectedHocKy || ''}
+                  fullWidth
+                  margin="dense"
+                >
+                  <MenuItem key={'HK1'} value={'Học Kỳ 1'} label={'Học Kỳ 1'}>
                     Học Kỳ 1
                   </MenuItem>
                   <MenuItem key={'HK2'} value={'Học Kỳ 2'} label={'Học Kỳ 2'}>
                     Học Kỳ 2
                   </MenuItem>
                 </Select>
+              {selectedHocKyError && <div style={{backgroundColor:'white', color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn học kỳ</div>}
               </FormControl>
 
               <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
-              <InputLabel id="demo-simple-select-standard-label">Học lực</InputLabel>
-                <Select onChange={handleChangeHocLuc} label="Năm học" value={selectedHocLuc || ''} fullWidth margin="dense">
-                    <MenuItem key={'gioi'} value={'Giỏi'} label={'Giỏi'}>
+                <InputLabel id="demo-simple-select-standard-label">Học lực</InputLabel>
+                <Select
+                  onChange={handleChangeHocLuc}
+                  label="Năm học"
+                  value={selectedHocLuc || ''}
+                  fullWidth
+                  margin="dense"
+                >
+                  <MenuItem key={'gioi'} value={'Giỏi'} label={'Giỏi'}>
                     Giỏi
                   </MenuItem>
                   <MenuItem key={'kha'} value={'Khá'} label={'Khá'}>
@@ -121,25 +155,31 @@ export function DialogHocTap(props) {
                     Yếu
                   </MenuItem>
                 </Select>
+              {selectedHocLucError && <div style={{backgroundColor:'white', color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn học lực</div>}
               </FormControl>
-              </div>
-              <div className="container__hoctap__hoancanh">
-                <FormControl className="formcontrol__hoctap__hoancanh" variant="standard" fullWidth>
-                  <label label="Thành tích *" htmlFor="thanh-tich" style={{ marginTop: 15 }}>
-                    Thành tích
-                  </label>
-                  <textarea
-                    id="thanh-tich"
-                    label="Thành tích *"
-                    type="text"
-                    defaultValue={props.infoHocTap.thanhTich}
-                    onChange={(e) => setHocTap({ ...hocTap, thanhTich: e.target.value })}
-                    placeholder="Thành tích"
-                    style={{ margin: 0, backgroundColor: 'aliceblue' }}
-                  />
-                </FormControl>
-              </div>
-            
+
+            </div>
+            <div className="container__hoctap__hoancanh">
+              <FormControl className="formcontrol__hoctap__hoancanh" variant="standard" fullWidth>
+                <label label="Thành tích *" htmlFor="thanh-tich" style={{ marginTop: 15 }}>
+                  Thành tích
+                </label>
+                <TextField
+                  id="thanh-tich"
+                  label="Thành tích *"
+                  type="text"
+                  multiline
+                  rows={4}
+                  defaultValue={props.infoHocTap.thanhTich}
+                  onChange={(e) => {
+                    setHocTap({ ...hocTap, thanhTich: e.target.value });
+                  }}
+                  placeholder="Thành tích"
+                  style={{ margin: 0, backgroundColor: 'aliceblue' }}
+  
+                />
+              </FormControl>
+            </div>
           </DialogContent>
         ) : (
           <DialogContent className="form_info_hoctap">
@@ -159,10 +199,11 @@ export function DialogHocTap(props) {
                     </MenuItem>
                   ))}
                 </Select>
+                {selectedNamHocError && <div style={{backgroundColor:'white', color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn năm học</div>}
               </FormControl>
 
               <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
-              <InputLabel id="demo-simple-select-standard-label">Học kỳ</InputLabel>
+                <InputLabel id="demo-simple-select-standard-label">Học kỳ</InputLabel>
                 <Select onChange={handleChangeHocKy} label="Năm học" fullWidth margin="dense">
                   <MenuItem key={'HK1'} value={'Học Kỳ 1'} label={'Học Kỳ 1'}>
                     Học Kỳ 1
@@ -171,10 +212,11 @@ export function DialogHocTap(props) {
                     Học Kỳ 2
                   </MenuItem>
                 </Select>
+                {selectedHocKyError && <div style={{backgroundColor:'white', color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn học kỳ</div>}
               </FormControl>
 
               <FormControl className="formcontrolcreatehoctap" variant="outlined" fullWidth>
-              <InputLabel id="demo-simple-select-standard-label">Học lực</InputLabel>
+                <InputLabel id="demo-simple-select-standard-label">Học lực</InputLabel>
                 <Select onChange={handleChangeHocLuc} label="Năm học" fullWidth margin="dense">
                   <MenuItem key={'gioi'} value={'Giỏi'} label={'Giỏi'}>
                     Giỏi
@@ -189,29 +231,32 @@ export function DialogHocTap(props) {
                     Yếu
                   </MenuItem>
                 </Select>
+              {selectedHocLucError && <div style={{backgroundColor:'white', color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn học lực</div>}
               </FormControl>
-              </div>
-              <div className="container__hoctap__hoancanh">
-                <FormControl className="formcontrol__hoctap__hoancanh" variant="standard" fullWidth>
-                  <label label="Thành tích *" htmlFor="thanh-tich" style={{ marginTop: 15 }}>
-                    Thành tích
-                  </label>
-                  <textarea
-                    id="thanh-tich"
-                    label="Thành tích *"
-                    type="text"
-                    onChange={(e) => setHocTap({ ...hocTap, thanhTich: e.target.value })}
-                    placeholder="Thành tích"
-                    style={{ margin: 0, backgroundColor: 'aliceblue' }}
-                  />
-                </FormControl>
-              </div>
-            
+            </div>
+            <div className="container__hoctap__hoancanh">
+              <FormControl className="formcontrol__hoctap__hoancanh" variant="standard" fullWidth>
+                <TextField
+                  id="thanh-tich"
+                  label="Thành tích"
+                  type="text"
+                  onChange={(e) => {
+                    setHocTap({ ...hocTap, thanhTich: e.target.value });
+                  }}
+                  placeholder="Thành tích"
+                  style={{ margin: 0, backgroundColor: 'aliceblue' }}
+                />
+              </FormControl>
+            </div>
           </DialogContent>
         )}
         <DialogActions>
-          <Button className="huythemhoctap" onClick={props.handleClose}>Hủy</Button>
-          <Button className="themhoctap" onClick={handleSubmit}>{props.isEdit ? 'Cập nhật' : 'Thêm'}</Button>
+          <Button className="huythemhoctap" onClick={props.handleClose}>
+            Hủy
+          </Button>
+          <Button className="themhoctap" onClick={handleSubmit}>
+            {props.isEdit ? 'Cập nhật' : 'Thêm'}
+          </Button>
         </DialogActions>
       </Dialog>
     </>

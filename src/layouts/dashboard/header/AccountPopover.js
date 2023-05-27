@@ -36,6 +36,7 @@ export default function AccountPopover() {
     sessionStorage.removeItem('role');
     sessionStorage.removeItem('avatar');
     sessionStorage.removeItem('name');
+    sessionStorage.removeItem('email');
     await axios.get(`${process.env.REACT_APP_API_URL}/logout`, { withCredentials: true });
     navigate(`/`); 
   };

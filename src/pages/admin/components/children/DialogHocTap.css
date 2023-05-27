@@ -39,7 +39,6 @@
 }
 .formcontrolcreatehoctap > div{
     border-radius: 0px;
-  background-color: aliceblue;
 }
 .divider {
     height: 3px;
@@ -54,7 +53,7 @@
 
 .formcontrol__hoctap__hoancanh{
     width: 660px;
-    margin: 0px 10px;
+    margin: 20px 10px 0;
 }
 .formcontrol__hoctap__hoancanh >textarea{
     padding: 10px 15px;

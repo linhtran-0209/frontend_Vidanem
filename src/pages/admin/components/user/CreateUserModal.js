@@ -31,6 +31,13 @@ export function CreateUserModal(props) {
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
 
+  const [textFieldEmailError, setTextFieldEmailError] = useState(false);
+  const [textFieldHoTenError, setTextFieldHoTenError] = useState(false);
+  const [selectedQuyenError, setSelectedQuyenError] = useState(false);
+  const [selectedQuanError, setSelectedQuanError] = useState(false);
+  const [selectedPhuongError, setSelectedPhuongError] = useState(false);
+  const [detailEmailError, setdetailEmailError] = useState('');
+
   const handleChangeQuyen = (event) => {
     setOpenQuyen(event.target.value);
     if (event.target.value === 1) {
@@ -60,6 +67,7 @@ export function CreateUserModal(props) {
   };
 
   const handleChangeQuan = async (event) => {
+    setSelectedQuanError(false);
     setOpenQuan(event.target.value);
     try {
       const url = `https://provinces.open-api.vn/api/d/${event.target.value}?depth=2`;
@@ -71,31 +79,79 @@ export function CreateUserModal(props) {
   };
 
   const handleChangePhuong = async (event) => {
+    setSelectedPhuongError(false);
     setOpenPhuong(event.target.value);
   };
 
   const handleSubmit = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/account/insert`;
-      await axios
-        .post(
-          url,
-          {
-            email: account.email,
-            hoTen: account.hoTen,
-            ma_quan: openQuan,
-            ma_phuong: openPhuong,
-            quyen: openQuyen,
-          },
-          { withCredentials: true }
-        )
-        .then((data) => {
-          setOpenSuccessMessage(data.data.message);
-        });
+    // Kiểm tra định dạng email
+    const validateEmail = (value) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(value);
+    };
+
+    if (!account.email) {
+      setTextFieldEmailError(true);
+      setdetailEmailError('Vui lòng nhập email');
+    } else {
+      console.log(validateEmail(account.email));
+      if (validateEmail(account.email) === false) {
+        setTextFieldEmailError(true);
+        setdetailEmailError('Nhập sai định dạng email');
+      } else setTextFieldEmailError(false);
+    }
+    if (!account.hoTen) {
+      setTextFieldHoTenError(true);
+    } else setTextFieldHoTenError(false);
+    if (!openQuyen) {
+      setSelectedQuyenError(true);
+    } else {
+      setSelectedQuyenError(false);
+      if (openQuyen === 2) {
+        if (!openQuan) {
+          setSelectedQuanError(true);
+        } else setSelectedQuanError(false);
+      } else if (openQuyen === 3) {
+        if (!openQuan) {
+          setSelectedQuanError(true);
+        } else setSelectedQuanError(false);
+        if (!openPhuong) {
+          setSelectedPhuongError(true);
+        } else setSelectedPhuongError(false);
+      }
+    }
+
+    if (
+      account.email &&
+      validateEmail(account.email) &&
+      account.hoTen &&
+      openQuyen &&
+      ((openQuyen === 2 && openQuan) || (openQuyen === 3 && openQuan && openPhuong) || openQuyen === 1)
+    ) {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/admin/account/insert`;
+        await axios
+          .post(
+            url,
+            {
+              email: account.email,
+              hoTen: account.hoTen,
+              ma_quan: openQuan,
+              ma_phuong: openPhuong,
+              quyen: openQuyen,
+            },
+            { withCredentials: true }
+          )
+          .then((data) => {
+            if (data.status === 200) {
+              setOpenSuccessMessage(data.data.message);
+            } else setOpenErrMessage(data.data.message);
+          });
         props.handleClose();
-    } catch (err) {
-      console.log(err);
-      setOpenErrMessage(err.response.data.message);
+      } catch (err) {
+        console.log(err);
+        setOpenErrMessage(err.response.data.message);
+      }
     }
   };
 
@@ -103,18 +159,18 @@ export function CreateUserModal(props) {
     setTimeout(() => {
       setOpenSuccessMessage('');
       setOpenErrMessage('');
-    }, 3000);
+    }, 5000);
   }, [openErrMessage, openSuccessMessage]);
 
   return (
     <>
       {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 50, top: 150 }} severity="success">
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 50, top: 150 }} severity="success">
           {openSuccessMessage}
         </Alert>
       )}
       {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 50, top: 150 }} severity="error">
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 50, top: 150 }} severity="error">
           {openErrMessage}
         </Alert>
       )}
@@ -127,30 +183,40 @@ export function CreateUserModal(props) {
           </IconButton>
         </div>
         <div className="divider" />
-        <DialogContent className='form__info'>
-        <div className='form__info__container'>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
-            <TextField
-              htmlFor="demo-customized-textbox"
-              margin="dense"
-              id="email"
-              label="Địa chỉ Email *"
-              onChange={(e) => setAccount({ ...account, email: e.target.value })}
-              type="email"
-              fullWidth
-            />
-          </FormControl>
-          <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
-            <TextField
-              htmlFor="demo-customized-textbox"
-              margin="dense"
-              id="hoTen"
-              label="Họ tên *"
-              onChange={(e) => setAccount({ ...account, hoTen: e.target.value })}
-              type="text"
-              fullWidth
-            />
-          </FormControl>
+        <DialogContent className="form__info">
+          <div className="form__info__container">
+            <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+              <TextField
+                htmlFor="demo-customized-textbox"
+                margin="dense"
+                id="email"
+                label="Địa chỉ Email *"
+                onChange={(e) => {
+                  setTextFieldEmailError(false);
+                  setAccount({ ...account, email: e.target.value });
+                }}
+                type="email"
+                fullWidth
+                error={textFieldEmailError}
+                helperText={textFieldEmailError && detailEmailError}
+              />
+            </FormControl>
+            <FormControl className="formcontrolcreateuser" variant="standard" fullWidth>
+              <TextField
+                htmlFor="demo-customized-textbox"
+                margin="dense"
+                id="hoTen"
+                label="Họ tên *"
+                onChange={(e) => {
+                  setTextFieldHoTenError(false);
+                  setAccount({ ...account, hoTen: e.target.value });
+                }}
+                type="text"
+                fullWidth
+                error={textFieldHoTenError}
+                helperText={textFieldHoTenError && 'Vui lòng nhập họ tên'}
+              />
+            </FormControl>
           </div>
           <FormControl
             className="formcontrol__changerole"
@@ -167,64 +233,79 @@ export function CreateUserModal(props) {
               label="Quyền"
               fullWidth
               margin="dense"
+              style={{ border: selectedQuyenError ? '1px solid red' : '' }}
             >
               <MenuItem value={1}>Hội đồng Đội Thành phố</MenuItem>
               <MenuItem value={2}>Hội đồng Đội quận, huyện</MenuItem>
               <MenuItem value={3}>Cấp Liên Đội</MenuItem>
             </Select>
+            {selectedQuyenError && (
+              <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn quyền cho tài khoản</div>
+            )}
           </FormControl>
-          <div className='form__address'>
-          <div className='form__address__info'>
-          {enableQuan && (
-            <div className='form__address__quan'>
-            <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
-              <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
-              <Select
-                labelId="quan"
-                id="quan"
-                value={openQuan}
-                onChange={handleChangeQuan}
-                label="Quận"
-                fullWidth
-                margin="dense"
-              >
-                {openDistricts.map((item) => (
-                  <MenuItem key={item.code} value={item.code}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+          <div className="form__address">
+            <div className="form__address__info">
+              {enableQuan && (
+                <div className="form__address__quan">
+                  <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
+                    <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
+                    <Select
+                      labelId="quan"
+                      id="quan"
+                      value={openQuan}
+                      onChange={handleChangeQuan}
+                      label="Quận"
+                      fullWidth
+                      margin="dense"
+                      style={{ border: selectedQuanError ? '1px solid red' : '' }}
+                    >
+                      {openDistricts.map((item) => (
+                        <MenuItem key={item.code} value={item.code}>
+                          {item.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {selectedQuanError && (
+                      <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>
+                        Vui lòng chọn quận/thành phố cho tài khoản
+                      </div>
+                    )}
+                  </FormControl>
+                </div>
+              )}
             </div>
-          )}
-          </div>
 
-          <div className='form__address__info'>
-          {enablePhuong && (
-            <div className='form__address__phuong'>
-            <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
-              <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
-              <Select
-                labelId="phuong"
-                id="phuong"
-                value={openPhuong}
-                onChange={handleChangePhuong}
-                label="Phường"
-                fullWidth
-                margin="dense"
-              >
-                {openWards.map((item) => (
-                  <MenuItem key={item.code} value={item.code}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <div className="form__address__info">
+              {enablePhuong && (
+                <div className="form__address__phuong">
+                  <FormControl className="formcontrolcreateuser" variant="outlined" fullWidth>
+                    <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
+                    <Select
+                      labelId="phuong"
+                      id="phuong"
+                      value={openPhuong}
+                      onChange={handleChangePhuong}
+                      label="Phường"
+                      fullWidth
+                      margin="dense"
+                      style={{ border: selectedPhuongError ? '1px solid red' : '' }}
+                    >
+                      {openWards.map((item) => (
+                        <MenuItem key={item.code} value={item.code}>
+                          {item.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {selectedPhuongError && (
+                      <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>
+                        Vui lòng chọn phường/xã cho tài khoản
+                      </div>
+                    )}
+                  </FormControl>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-        
-        </div>
+          </div>
         </DialogContent>
         <DialogActions>
           {/* <Button onClick={handleClose}>Hủy</Button> */}

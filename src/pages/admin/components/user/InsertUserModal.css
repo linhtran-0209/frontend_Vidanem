@@ -39,7 +39,6 @@
 }
 .formcontrolupdateuser > div {
   border-radius: 0px;
-  background-color: aliceblue;
 }
 .formcontrolupdate__changerole{
   width: 550px;
@@ -48,7 +47,6 @@
 }
 .formcontrolupdate__changerole > div {
   border-radius: 0px;
-  background-color: aliceblue;
 }
 .formcontrolupdate__changerole > div:hover {
   border: none;
