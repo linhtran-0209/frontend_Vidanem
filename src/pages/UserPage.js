@@ -351,11 +351,11 @@ export default function UserPage() {
                         </TableCell>
 
                         <TableCell style={{ height: 40 }} align="left">
-                          {quan}
+                          {row.quyen > 1 && quan}
                         </TableCell>
 
                         <TableCell style={{ height: 40 }} align="left">
-                          {phuong}
+                          {row.quyen > 2 && phuong}
                         </TableCell>
 
                         <TableCell style={{ paddingLeft: 17 }} align="left">

@@ -80,7 +80,7 @@ export default function YearPage() {
   const handleCloseCreate = async () => {
     setOpenScholarshipCreate(false);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/getAll?curPage=${page + 1}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setYearsList(data.data);
@@ -94,7 +94,7 @@ export default function YearPage() {
     setOpenDialogEdit(false);
 
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/getAll?curPage=${page + 1}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setYearsList(data.data);
@@ -134,7 +134,7 @@ export default function YearPage() {
   const handleCloseDelete = async () => {
     setOpenDialogDelete(false);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/namhoc/getAll?curPage=${page + 1}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setYearsList(data.data);
@@ -244,13 +244,10 @@ export default function YearPage() {
                     </TableRow>
                   )}
                 </TableBody>
-                {openDialogEdit && (
-                  <EditModal setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} row={selectedRow} />
-                )}
 
-                {openDialogDelete && (
-                  <DeleteModal openDialogDelete={openDialogDelete} handleClose={handleCloseDelete} row={selectedRow} />
-                )}
+                <EditModal setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} row={selectedRow} />
+
+                <DeleteModal openDialogDelete={openDialogDelete} handleClose={handleCloseDelete} row={selectedRow} />
 
                 {isNotFound && (
                   <TableBody>

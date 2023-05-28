@@ -88,7 +88,7 @@ export default function DoiTuongPage() {
     setOpenDialogEdit(false);
 
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/doituong/getAll?curPage=${page}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/doituong/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setDoiTuongList(data.data);
@@ -125,8 +125,17 @@ export default function DoiTuongPage() {
     setOpenDialogEdit(true);
   };
 
-  const handleCloseDelete = () => {
+  const handleCloseDelete =async () => {
     setOpenDialogDelete(false);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/doituong/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setDoiTuongList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -198,7 +207,7 @@ export default function DoiTuongPage() {
                               <Iconify style={{ color: 'green' }} icon={'eva:edit-2-outline'} />
                             </MenuItem>
                           </Tooltip>
-                          {/* <Tooltip title="Xóa">
+                          <Tooltip title="Xóa">
                             <MenuItem
                               className="doituong__delete"
                               sx={{ color: 'error.main' }}
@@ -206,7 +215,7 @@ export default function DoiTuongPage() {
                             >
                               <Iconify icon={'eva:trash-2-outline'} />
                             </MenuItem>
-                          </Tooltip> */}
+                          </Tooltip>
                         </TableCell>
                       </TableRow>
                     );
@@ -217,13 +226,9 @@ export default function DoiTuongPage() {
                     </TableRow>
                   )}
                 </TableBody>
-                {openDialogEdit && (
                   <EditModal setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} row={selectedRow} />
-                )}
 
-                {/* {openDialogDelete && (
                   <DeleteModal openDialogDelete={openDialogDelete} handleClose={handleCloseDelete} row={selectedRow} />
-                )} */}
 
                 {isNotFound && (
                   <TableBody>

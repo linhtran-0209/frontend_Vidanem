@@ -91,7 +91,7 @@ export function EditModal(props) {
   return (
     <>
       {openSuccessMessage && (
-        <Alert style={{position: 'fixed', zIndex: 500000, right: 30, top: 60 }} severity="success">
+        <Alert style={{position: 'fixed', zIndex: 10000, right: 30, top: 60 }} severity="success">
         {openSuccessMessage}
       </Alert>
       )}

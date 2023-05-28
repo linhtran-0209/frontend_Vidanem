@@ -179,7 +179,7 @@ export function InsertUserModal(props) {
       try {
         const url = `${process.env.REACT_APP_API_URL}/admin/account/update`;
 
-        axios
+        await axios
           .put(
             url,
             {
@@ -234,7 +234,7 @@ export function InsertUserModal(props) {
         <DialogContent className="form__info">
           <div className="form__info__container">
             <FormControl className="formcontrolupdateuser" variant="standard" fullWidth>
-              {openQuyen === 1 ? (
+              {account.quyen === 1 ? (
                 <TextField
                   htmlFor="demo-customized-textbox"
                   margin="dense"
@@ -270,7 +270,7 @@ export function InsertUserModal(props) {
               )}
             </FormControl>
             <FormControl className="formcontrolupdateuser" variant="standard" fullWidth>
-              {openQuyen === 1 ? (
+              {account.quyen === 1 ? (
                 <TextField
                   htmlFor="demo-customized-textbox"
                   margin="dense"
@@ -313,7 +313,7 @@ export function InsertUserModal(props) {
             fullWidth
           >
             <InputLabel id="demo-simple-select-standard-label">Quyền</InputLabel>
-            {openQuyen === 1 ? (
+            {account.quyen === 1 ? (
               <Select
                 labelId="quyen"
                 id="quyen"
