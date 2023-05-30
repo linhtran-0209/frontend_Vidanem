@@ -5,7 +5,7 @@ import { Grid, Card, Stack, Typography, FormControl, TextField, Button, IconButt
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LoadingButton } from '@mui/lab';
+import { LoadingButton, treeItemClasses } from '@mui/lab';
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import CloseIcon from '@mui/icons-material/Close';
@@ -19,6 +19,7 @@ import { DialogListHocTap } from './DialogListHocTap';
 import { DialogReasonReject } from './DialogReasonReject';
 import { DialogHocBong } from './DialogHocBong';
 import { DialogListDoiTuong } from './DialogListDoiTuong';
+import { DialogReasonEdit } from './DialogReasonEdit';
 
 export default function EditChildren() {
   const { id } = useParams();
@@ -53,8 +54,8 @@ export default function EditChildren() {
   const [selectedHocTapIndex, setSelectedHocTapIndex] = useState(0);
   const [selectedDate, setSelectedDate] = useState(moment());
   const [openDialogReasonReject, setOpenDialogReasonReject] = useState(false);
+  const [openDialogReasonEdit, setOpenDialogReasonEdit] = useState(false);
 
-  const [imageError, setImageError] = useState(false);
   const [textFieldHoTenError, setTextFieldHoTenError] = useState(false);
   const [textFieldDiaChiError, setTextFieldDiaChiError] = useState(false);
   const [textFieldSDTError, setTextFieldSDTError] = useState(false);
@@ -63,6 +64,7 @@ export default function EditChildren() {
   const [doiTuongError, setDoiTuongError] = useState(false);
   const [hocBongError, setHocBongError] = useState(false);
   const [hocTapError, setHocTapError] = useState(false);
+
   useEffect(() => {
     setTimeout(() => {
       setOpenSuccessMessage('');
@@ -181,17 +183,6 @@ export default function EditChildren() {
     setHocTap(data.data);
   };
 
-  // const handleChangeSponsor = (e) => {
-  //   setSelectedSponsor(e.target.value);
-  //   setTreEm({ ...treEm, donViBaoTro: e.target.value });
-  //   getScholarshipList(e.target.value);
-  // };
-
-  // const handleChangeScholarship = (e) => {
-  //   setSelectedScholarship(e.target.value);
-  //   setTreEm({ ...treEm, hocBong: e.target.value });
-  // };
-
   const handleClickOpenDialogHocBong = () => {
     setOpenDialogHocBong(true);
   };
@@ -229,7 +220,6 @@ export default function EditChildren() {
       const newId = uuidv4();
       setPreview([...preview, { _id: `temp${newId}`, url: URL.createObjectURL(file) }]);
       setImages([...images, { _id: `temp${newId}`, image: file }]);
-      setImageError(false);
     }
   };
 
@@ -348,9 +338,6 @@ export default function EditChildren() {
   };
 
   const handleSubmit = async () => {
-    if (images.length === 0) {
-      setImageError(true);
-    } else setImageError(false);
     if (!treEm.hoTen) {
       setTextFieldHoTenError(true);
     } else setTextFieldHoTenError(false);
@@ -366,7 +353,7 @@ export default function EditChildren() {
     if (!treEm.hoanCanh) {
       setTextFieldHoanCanhError(true);
     } else setTextFieldHoanCanhError(false);
-    if (oldDoiTuong.length === 0) {
+    if (oldDoiTuong.length === 0 && newDoiTuong.length === 0) {
       setDoiTuongError(true);
     } else setDoiTuongError(false);
     if (hocBong.length === 0) {
@@ -378,7 +365,16 @@ export default function EditChildren() {
 
     const url = `${process.env.REACT_APP_API_URL}/admin/treem/update`;
 
-    if (treEm.authStatus === 'DeXuat' || treEm.authStatus === 'TuChoi') {
+    if (
+      treEm.hoTen &&
+      treEm.truong &&
+      treEm.SDT &&
+      treEm.diaChi &&
+      treEm.hoanCanh &&
+      (oldDoiTuong.length > 0 || newDoiTuong.length > 0) &&
+      hocBong.length > 0 &&
+      hocTap.length > 0
+    ) {
       await axios
         .post(
           url,
@@ -400,59 +396,43 @@ export default function EditChildren() {
         )
         .then((result) => {
           if (result.status === 200) {
-            console.log(result.status);
             setOpenSuccessMessage(result.data.message);
           } else setOpenErrMessage(result.data.message);
         });
-    }
-    // Cập nhật nếu thêm đối tượng mới
-    newDoiTuong.forEach(async (doituong) => {
-      if (!oldDoiTuong.find((item) => item._id === doituong._id)) {
-        const url = `${process.env.REACT_APP_API_URL}/admin/doituong/updateQuantity`;
-        await axios.put(
-          url,
-          {
-            id: doituong._id,
-            change: 'increase',
-          },
-          { withCredentials: true }
-        );
-      }
-    });
 
-    // Cập nhật nếu xóa đối tượng cũ
-    oldDoiTuong.forEach(async (doituong) => {
-      if (!newDoiTuong.find((item) => item._id === doituong._id)) {
-        const url = `${process.env.REACT_APP_API_URL}/admin/doituong/updateQuantity`;
-        await axios.put(
-          url,
-          {
-            id: doituong._id,
-            change: 'decrease',
-          },
-          { withCredentials: true }
-        );
-      }
-    });
-
-    // Lưu hình ảnh
-    if (images.length > 0) {
-      images.forEach(async (image) => {
-        const urlHinhAnh = `${process.env.REACT_APP_API_URL}/admin/hinhanh/insert`;
-        const formData = new FormData();
-        formData.append('image', image.image);
-        formData.append('refId', treEm._id);
-        await axios.post(urlHinhAnh, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          withCredentials: true,
-        });
+      // Cập nhật nếu thêm đối tượng mới
+      newDoiTuong.forEach(async (doituong) => {
+        if (!oldDoiTuong.find((item) => item._id === doituong._id)) {
+          const url = `${process.env.REACT_APP_API_URL}/admin/doituong/updateQuantity`;
+          await axios.put(
+            url,
+            {
+              id: doituong._id,
+              change: 'increase',
+            },
+            { withCredentials: true }
+          );
+        }
       });
-    }
-    if (imagesEdit.length > 0) {
-      imagesEdit.forEach(async (image) => {
-        if (image._id.includes('temp')) {
+
+      // Cập nhật nếu xóa đối tượng cũ
+      oldDoiTuong.forEach(async (doituong) => {
+        if (!newDoiTuong.find((item) => item._id === doituong._id)) {
+          const url = `${process.env.REACT_APP_API_URL}/admin/doituong/updateQuantity`;
+          await axios.put(
+            url,
+            {
+              id: doituong._id,
+              change: 'decrease',
+            },
+            { withCredentials: true }
+          );
+        }
+      });
+
+      // Lưu hình ảnh
+      if (images.length > 0) {
+        images.forEach(async (image) => {
           const urlHinhAnh = `${process.env.REACT_APP_API_URL}/admin/hinhanh/insert`;
           const formData = new FormData();
           formData.append('image', image.image);
@@ -463,135 +443,146 @@ export default function EditChildren() {
             },
             withCredentials: true,
           });
-        } else {
-          const urlHinhAnh = `${process.env.REACT_APP_API_URL}/admin/hinhanh/update`;
-          const formData = new FormData();
-          formData.append('image', image.image);
-          formData.append('id', image._id);
-          await axios.put(urlHinhAnh, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            withCredentials: true,
-          });
-        }
-      });
-    }
+        });
+      }
+      if (imagesEdit.length > 0) {
+        imagesEdit.forEach(async (image) => {
+          if (image._id.includes('temp')) {
+            const urlHinhAnh = `${process.env.REACT_APP_API_URL}/admin/hinhanh/insert`;
+            const formData = new FormData();
+            formData.append('image', image.image);
+            formData.append('refId', treEm._id);
+            await axios.post(urlHinhAnh, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+              withCredentials: true,
+            });
+          } else {
+            const urlHinhAnh = `${process.env.REACT_APP_API_URL}/admin/hinhanh/update`;
+            const formData = new FormData();
+            formData.append('image', image.image);
+            formData.append('id', image._id);
+            await axios.put(urlHinhAnh, formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+              withCredentials: true,
+            });
+          }
+        });
+      }
 
-    if (imagesDelete.length > 0) {
-      imagesDelete.forEach(async (image) => {
-        if (!image._id.includes('temp')) {
-          const urlHinhAnh = `${process.env.REACT_APP_API_URL}/admin/hinhanh/delete?id=${image._id}`;
-          await axios.put(urlHinhAnh, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            withCredentials: true,
-          });
-        }
-      });
-    }
+      if (imagesDelete.length > 0) {
+        imagesDelete.forEach(async (image) => {
+          if (!image._id.includes('temp')) {
+            const urlHinhAnh = `${process.env.REACT_APP_API_URL}/admin/hinhanh/delete`;
+            await axios.put(urlHinhAnh, { id: image._id }, { withCredentials: true });
+          }
+        });
+      }
 
-    // Lưu thành tích học tập
-    if (hocTapNew.length > 0) {
-      const urlHocTap = `${process.env.REACT_APP_API_URL}/admin/hoctap/insert`;
-      await axios.post(
-        urlHocTap,
-        {
-          treEm: treEm._id,
-          hocTaps: hocTapNew,
-        },
-        { withCredentials: true }
-      );
-    }
+      // Lưu thành tích học tập
+      if (hocTapNew.length > 0) {
+        const urlHocTap = `${process.env.REACT_APP_API_URL}/admin/hoctap/insert`;
+        await axios.post(
+          urlHocTap,
+          {
+            treEm: treEm._id,
+            hocTaps: hocTapNew,
+          },
+          { withCredentials: true }
+        );
+      }
 
-    if (hocTapEdit.length > 0) {
-      hocTapEdit.forEach(async (hoctap) => {
-        if (hoctap._id.includes('temp')) {
-          const urlHocTap = `${process.env.REACT_APP_API_URL}/admin/hoctap/insert`;
-          await axios.post(
-            urlHocTap,
-            {
-              treEm: treEm._id,
-              hocTaps: [hoctap],
-            },
-            { withCredentials: true }
-          );
-        } else {
-          const urlHocTap = `${process.env.REACT_APP_API_URL}/admin/hoctap/update`;
-          await axios.put(
-            urlHocTap,
-            {
-              id: hoctap._id,
-              namHoc: hoctap.namHoc,
-              hocKy: hoctap.hocKy,
-              hocLuc: hoctap.hocLuc,
-              thanhTich: hoctap.thanhTich,
-            },
-            { withCredentials: true }
-          );
-        }
-      });
-    }
+      if (hocTapEdit.length > 0) {
+        hocTapEdit.forEach(async (hoctap) => {
+          if (hoctap._id.includes('temp')) {
+            const urlHocTap = `${process.env.REACT_APP_API_URL}/admin/hoctap/insert`;
+            await axios.post(
+              urlHocTap,
+              {
+                treEm: treEm._id,
+                hocTaps: [hoctap],
+              },
+              { withCredentials: true }
+            );
+          } else {
+            const urlHocTap = `${process.env.REACT_APP_API_URL}/admin/hoctap/update`;
+            await axios.put(
+              urlHocTap,
+              {
+                id: hoctap._id,
+                namHoc: hoctap.namHoc,
+                hocKy: hoctap.hocKy,
+                hocLuc: hoctap.hocLuc,
+                thanhTich: hoctap.thanhTich,
+              },
+              { withCredentials: true }
+            );
+          }
+        });
+      }
 
-    if (hocTapDelete.length > 0) {
-      hocTapDelete.forEach(async (hoctap) => {
-        if (!hoctap._id.includes('temp')) {
-          const urlHocTap = `${process.env.REACT_APP_API_URL}/admin/hoctap/delete?id=${hoctap._id}`;
-          await axios.delete(urlHocTap, { withCredentials: true });
-        }
-      });
-    }
+      if (hocTapDelete.length > 0) {
+        hocTapDelete.forEach(async (hoctap) => {
+          if (!hoctap._id.includes('temp')) {
+            const urlHocTap = `${process.env.REACT_APP_API_URL}/admin/hoctap/delete?id=${hoctap._id}`;
+            await axios.delete(urlHocTap, { withCredentials: true });
+          }
+        });
+      }
 
-    // Lưu thành tích học bổng
-    if (hocBongNew.length > 0) {
-      const urlHocBong = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/insert`;
-      await axios.post(
-        urlHocBong,
-        {
-          treEm: treEm._id,
-          hocBongs: hocBongNew,
-        },
-        { withCredentials: true }
-      );
-    }
+      // Lưu thành tích học bổng
+      if (hocBongNew.length > 0) {
+        const urlHocBong = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/insert`;
+        await axios.post(
+          urlHocBong,
+          {
+            treEm: treEm._id,
+            hocBongs: hocBongNew,
+          },
+          { withCredentials: true }
+        );
+      }
 
-    if (hocBongEdit.length > 0) {
-      hocBongEdit.forEach(async (hocbong) => {
-        if (hocbong._id.includes('temp')) {
-          const urlHocBong = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/insert`;
-          await axios.post(
-            urlHocBong,
-            {
-              treEm: treEm._id,
-              hocBongs: [hocbong],
-            },
-            { withCredentials: true }
-          );
-        } else {
-          const urlHocBong = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/update`;
-          await axios.put(
-            urlHocBong,
-            {
-              id: hocbong._id,
-              donViBaoTro: hocbong.donViBaoTro._id,
-              hocBong: hocbong.hocBong._id,
-              namNhan: hocbong.namNhan,
-              namHoanThanh: hocbong.namHoanThanh,
-            },
-            { withCredentials: true }
-          );
-        }
-      });
-    }
+      if (hocBongEdit.length > 0) {
+        hocBongEdit.forEach(async (hocbong) => {
+          if (hocbong._id.includes('temp')) {
+            const urlHocBong = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/insert`;
+            await axios.post(
+              urlHocBong,
+              {
+                treEm: treEm._id,
+                hocBongs: [hocbong],
+              },
+              { withCredentials: true }
+            );
+          } else {
+            const urlHocBong = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/update`;
+            await axios.put(
+              urlHocBong,
+              {
+                id: hocbong._id,
+                donViBaoTro: hocbong.donViBaoTro._id,
+                hocBong: hocbong.hocBong._id,
+                namNhan: hocbong.namNhan,
+                namHoanThanh: hocbong.namHoanThanh,
+              },
+              { withCredentials: true }
+            );
+          }
+        });
+      }
 
-    if (hocBongDelete.length > 0) {
-      hocBongDelete.forEach(async (hocbong) => {
-        if (!hocbong._id.includes('temp')) {
-          const urlHocBong = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/delete?id=${hocbong._id}`;
-          await axios.delete(urlHocBong, { withCredentials: true });
-        }
-      });
+      if (hocBongDelete.length > 0) {
+        hocBongDelete.forEach(async (hocbong) => {
+          if (!hocbong._id.includes('temp')) {
+            const urlHocBong = `${process.env.REACT_APP_API_URL}/admin/hocbongtreem/delete?id=${hocbong._id}`;
+            await axios.delete(urlHocBong, { withCredentials: true });
+          }
+        });
+      }
     }
   };
 
@@ -652,6 +643,64 @@ export default function EditChildren() {
         });
       setTreEm({ ...treEm, authStatus: 'DaDuyet' });
     } else alert('Không thể thực hiện chức năng này');
+  };
+
+  const handleRejectRequest = async () => {
+    const url = `${process.env.REACT_APP_API_URL}/admin/treem/rejectrequest`;
+    await axios
+      .put(
+        url,
+        {
+          id: treEm._id,
+        },
+        { withCredentials: true }
+      )
+      .then((result) => {
+        if (result.status === 200) {
+          setOpenSuccessMessage(result.data.message);
+        } else setOpenErrMessage(result.data.message);
+        setTreEm({ ...treEm, isRequestEdit: false });
+      });
+  };
+
+  const handleAcceptRequest = async () => {
+    const url = `${process.env.REACT_APP_API_URL}/admin/treem/accppetrequest`;
+    await axios
+      .put(
+        url,
+        {
+          id: treEm._id,
+        },
+        { withCredentials: true }
+      )
+      .then((result) => {
+        if (result.status === 200) {
+          setOpenSuccessMessage(result.data.message);
+        } else setOpenErrMessage(result.data.message);
+        setTreEm({ ...treEm, isRequestEdit: false });
+      });
+  };
+
+  const handleCloseDialogEdit = () => {
+    setOpenDialogReasonEdit(false);
+  };
+
+  const handleRequestEdit = async (reason) => {
+    const url = `${process.env.REACT_APP_API_URL}/admin/treem/requestedit`;
+    await axios
+      .post(
+        url,
+        {
+          id: treEm._id,
+          reasonEdit: reason,
+        },
+        { withCredentials: true }
+      )
+      .then((result) => {
+        if (result.status === 200) {
+          setOpenSuccessMessage(result.data.message);
+        } else setOpenErrMessage(result.data.message);
+      });
   };
 
   return (
@@ -773,11 +822,7 @@ export default function EditChildren() {
                   style={{ display: 'none' }}
                   onChange={handleFileUpload}
                 />
-                {imageError && (
-                  <Typography component="span" variant="body2" style={{ textAlign: 'center', color: 'red' }}>
-                    <p>Vui lòng chọn ảnh</p>
-                  </Typography>
-                )}
+
                 <label
                   htmlFor="image-input"
                   style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 16 }}
@@ -815,6 +860,17 @@ export default function EditChildren() {
                     <u>Lí do từ chối:</u>{' '}
                   </b>{' '}
                   {treEm.reasonReject}
+                </p>
+              </>
+            )}
+            {treEm.reasonEdit && treEm.isRequestEdit && (
+              <>
+                <p style={{ backgroundColor: '#FAFAD2', paddingLeft: 40, fontSize: 20 }}>
+                  <b>
+                    {' '}
+                    <u>Lí do cần chỉnh sửa:</u>{' '}
+                  </b>{' '}
+                  {treEm.reasonEdit}
                 </p>
               </>
             )}
@@ -1142,21 +1198,58 @@ export default function EditChildren() {
               handleReject={handleReject}
               handleClose={handleCloseDialogReason}
             />
+            <DialogReasonEdit
+              openDialog={openDialogReasonEdit}
+              handleRequestEdit={handleRequestEdit}
+              handleClose={handleCloseDialogEdit}
+            />
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
               {quyen === 3 ? (
                 <>
                   {treEm.authStatus === 'DaDuyet' ? (
-                    <LoadingButton type="submit" color="error" variant="contained">
+                    <LoadingButton
+                      type="submit"
+                      color="error"
+                      variant="contained"
+                      onClick={(e) => setOpenDialogReasonEdit(true)}
+                    >
                       Yêu cầu chỉnh sửa
                     </LoadingButton>
                   ) : (
-                    <LoadingButton type="submit" variant="contained" onClick={handleSubmit}>
-                      Cập nhật
-                    </LoadingButton>
+                    <>
+                      {treEm.authStatus === 'DeXuat' ||
+                        (treEm.authStatus === 'ChoChinhSua' && (
+                          <LoadingButton type="submit" variant="contained" onClick={handleSubmit}>
+                            Cập nhật
+                          </LoadingButton>
+                        ))}
+                    </>
                   )}
                 </>
               ) : (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  {treEm.reasonEdit && treEm.isRequestEdit && (
+                    <>
+                      <LoadingButton
+                        style={{ marginRight: 20, background: 'red' }}
+                        type="submit"
+                        variant="contained"
+                        onClick={(e) => {
+                          handleRejectRequest();
+                        }}
+                      >
+                        Từ chối
+                      </LoadingButton>
+                      <LoadingButton
+                        style={{ marginRight: 20, background: 'green' }}
+                        type="submit"
+                        variant="contained"
+                        onClick={handleAcceptRequest}
+                      >
+                        Phê Duyệt
+                      </LoadingButton>
+                    </>
+                  )}
                   {(treEm.authStatus === 'DeXuat' || (treEm.authStatus === 'ChoDuyet' && quyen === 1)) && (
                     <>
                       <LoadingButton

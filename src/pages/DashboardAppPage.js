@@ -26,20 +26,60 @@ const icons = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{
 export default function DashboardAppPage() {
   const theme = useTheme();
 
-  const [total, setTotal] = useState({});
   const [treEm, setTreEm] = useState({});
+  const [taiKhoan, setTaiKhoan] = useState([]);
+  const [tinTuc, setTinTuc] = useState([]);
+  const [donVi, setDonVi] = useState([]);
 
   useEffect(() => {
-    const thongKeSoLuong = async () => {
+    const thongKeTaiKhoan = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/admin/dashboard/soLuong`;
-        const  data  = await axios.get(url, { withCredentials: true });
+        const url = `${process.env.REACT_APP_API_URL}/admin/dashboard/taikhoan`;
+        const  {data}  = await axios.get(url, { withCredentials: true });
         console.log(data);
-        setTotal({...data.data});
+        setTaiKhoan(data.data);
       } catch (err) {
         console.log(err);
       }
     };
+
+    thongKeTaiKhoan();
+
+  }, []);
+  useEffect(() => {
+
+    const thongKeDonVi = async () => {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/admin/dashboard/donvi`;
+        const  {data}  = await axios.get(url, { withCredentials: true });
+        console.log(data);
+        setDonVi(data.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    thongKeDonVi();
+  }, []);
+  
+  useEffect(() => {
+    const thongKeTinTuc = async () => {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/admin/dashboard/tintuc`;
+        const  {data}  = await axios.get(url, { withCredentials: true });
+        console.log(data);
+        setTinTuc(data.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    thongKeTinTuc();
+
+  }, []);
+
+  useEffect(() => {
+
     const thongKeTreEm = async () => {
       try {
         const url = `${process.env.REACT_APP_API_URL}/admin/dashboard/treem`;
@@ -50,7 +90,6 @@ export default function DashboardAppPage() {
       }
     };
 
-    thongKeSoLuong();
     thongKeTreEm();
   }, []);
 
@@ -67,24 +106,24 @@ export default function DashboardAppPage() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Tài khoản" total={total.taiKhoan} icon="carbon:user-avatar-filled" />
+            <AppWidgetSummary title="Tài khoản" total={taiKhoan.length} icon="carbon:user-avatar-filled" />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Nhà tài trợ"
-              total={total.donViBaoTro}
+              total={donVi.length}
               color="info"
               icon={'fa6-solid:people-roof'}
             />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Trẻ em" total={total.treEm} color="warning" icon={'solar:people-nearby-bold'} />
+            <AppWidgetSummary title="Trẻ em" total={treEm.total} color="warning" icon={'solar:people-nearby-bold'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Tin bài" total={total.tinTuc} color="error" icon={'material-symbols:event-note'} />
+            <AppWidgetSummary title="Tin bài" total={tinTuc.length} color="error" icon={'material-symbols:event-note'} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={8}>

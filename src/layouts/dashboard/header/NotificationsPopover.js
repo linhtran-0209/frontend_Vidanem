@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import { set, sub } from 'date-fns';
 import { noCase } from 'change-case';
+import { useNavigate } from 'react-router-dom';
 import { faker } from '@faker-js/faker';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 // @mui
 import {
   Box,
@@ -77,11 +79,20 @@ const NOTIFICATIONS = [
 ];
 
 export default function NotificationsPopover() {
-  const [notifications, setNotifications] = useState(NOTIFICATIONS);
+  const [notifications, setNotifications] = useState([]);
 
-  const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
+  const totalUnRead = notifications.filter((item) => item.daDoc === false).length;
 
   const [open, setOpen] = useState(null);
+
+  useEffect(() => {
+    const getNotification = async () => {
+      const url = `${process.env.REACT_APP_API_URL}/admin/thongbao/getAll`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      setNotifications(data.data);
+    };
+    getNotification();
+  }, [open]);
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -95,7 +106,7 @@ export default function NotificationsPopover() {
     setNotifications(
       notifications.map((notification) => ({
         ...notification,
-        isUnRead: false,
+        daDoc: true,
       }))
     );
   };
@@ -104,7 +115,7 @@ export default function NotificationsPopover() {
     <>
       <IconButton color={open ? 'primary' : 'default'} onClick={handleOpen} sx={{ width: 40, height: 40 }}>
         {/* <Badge badgeContent={totalUnRead} color="error"> */}
-          <Iconify icon="eva:bell-fill" />
+        <Iconify icon="eva:bell-fill" />
         {/* </Badge> */}
       </IconButton>
 
@@ -124,14 +135,14 @@ export default function NotificationsPopover() {
       >
         <Box sx={{ display: 'flex', alignItems: 'center', py: 2, px: 2.5 }}>
           <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="subtitle1">Notifications</Typography>
-            {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              You have {totalUnRead} unread messages
-            </Typography> */}
+            <Typography variant="subtitle1">Thông báo</Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              Bạn có {totalUnRead} thông báo chưa đọc
+            </Typography>
           </Box>
 
           {totalUnRead > 0 && (
-            <Tooltip title=" Mark all as read">
+            <Tooltip title=" Đánh dấu tất cả đã đọc">
               <IconButton color="primary" onClick={handleMarkAllAsRead}>
                 <Iconify icon="eva:done-all-fill" />
               </IconButton>
@@ -142,16 +153,16 @@ export default function NotificationsPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Scrollbar sx={{ height: { xs: 340, sm: 'auto' } }}>
-          {/* <List
+          <List
             disablePadding
             subheader={
               <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
-                New
+                Mới
               </ListSubheader>
             }
           >
             {notifications.slice(0, 2).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
+              <NotificationItem handleClose={handleClose} key={notification._id} notification={notification} />
             ))}
           </List>
 
@@ -159,14 +170,14 @@ export default function NotificationsPopover() {
             disablePadding
             subheader={
               <ListSubheader disableSticky sx={{ py: 1, px: 2.5, typography: 'overline' }}>
-                Before that
+                Trước đó
               </ListSubheader>
             }
           >
             {notifications.slice(2, 5).map((notification) => (
-              <NotificationItem key={notification.id} notification={notification} />
+              <NotificationItem handleClose={handleClose} key={notification._id} notification={notification} />
             ))}
-          </List> */}
+          </List>
         </Scrollbar>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
@@ -195,16 +206,24 @@ NotificationItem.propTypes = {
   }),
 };
 
-function NotificationItem({ notification }) {
+function NotificationItem({ notification, handleClose }) {
   const { avatar, title } = renderContent(notification);
+  const navigate = useNavigate();
 
+  const handleOpenDetail = async (notification) => {
+    const url = `${process.env.REACT_APP_API_URL}/admin/thongbao/dadoc`;
+    await axios.put(url, { id: notification._id }, { withCredentials: true });
+    handleClose();
+    navigate(`/dashboard/children/edit/${notification.treEm}`);
+  };
   return (
     <ListItemButton
+      onClick={() => handleOpenDetail(notification)}
       sx={{
         py: 1.5,
         px: 2.5,
         mt: '1px',
-        ...(notification.isUnRead && {
+        ...(!notification.daDoc && {
           bgcolor: 'action.selected',
         }),
       }}
@@ -238,39 +257,18 @@ function NotificationItem({ notification }) {
 function renderContent(notification) {
   const title = (
     <Typography variant="subtitle2">
-      {notification.title}
+      {notification.nguoiTao.hoTen}
       <Typography component="span" variant="body2" sx={{ color: 'text.secondary' }}>
-        &nbsp; {noCase(notification.description)}
+        &nbsp; {notification.tieuDe}
+      </Typography>
+      <Typography component="div" variant="body2" sx={{ color: 'text.secondary' }}>
+        &nbsp; {notification.moTa}
       </Typography>
     </Typography>
   );
 
-  if (notification.type === 'order_placed') {
-    return {
-      avatar: <img alt={notification.title} src="/assets/icons/ic_notification_package.svg" />,
-      title,
-    };
-  }
-  if (notification.type === 'order_shipped') {
-    return {
-      avatar: <img alt={notification.title} src="/assets/icons/ic_notification_shipping.svg" />,
-      title,
-    };
-  }
-  if (notification.type === 'mail') {
-    return {
-      avatar: <img alt={notification.title} src="/assets/icons/ic_notification_mail.svg" />,
-      title,
-    };
-  }
-  if (notification.type === 'chat_message') {
-    return {
-      avatar: <img alt={notification.title} src="/assets/icons/ic_notification_chat.svg" />,
-      title,
-    };
-  }
   return {
-    avatar: notification.avatar ? <img alt={notification.title} src={notification.avatar} /> : null,
+    avatar: notification.nguoiTao.avatar ? <img alt={notification.title} src={notification.nguoiTao.avatar} /> : null,
     title,
   };
 }

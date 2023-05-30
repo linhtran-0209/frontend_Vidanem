@@ -242,10 +242,7 @@ export default function ChildrenPage() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - childrenList.length) : 0;
-
   const isNotFound = !childrenList.length;
-  const [opendialog, setOpenDialog] = React.useState(false);
 
   const handleClickOpen = () => {
     if (+sessionStorage.getItem('role') !== 3) setOpenErrMessage('Tài khoản không thể thực hiện chức năng này');
@@ -323,7 +320,8 @@ export default function ChildrenPage() {
                   if (authStatus === 'DeXuat') trangthai = 'Đề Xuất';
                   else if (authStatus === 'ChoDuyet') trangthai = 'Chờ Duyệt';
                   else if (authStatus === 'TuChoi') trangthai = 'Từ Chối';
-                  else trangthai = 'Đã Duyệt';
+                  else if (authStatus === 'DaDuyet') trangthai = 'Đã Duyệt'
+                  else if (authStatus === 'ChoChinhSua') trangthai = 'Chờ Chỉnh Sửa';
                   return (
                     <TableRow
                       hover
@@ -363,11 +361,11 @@ export default function ChildrenPage() {
                     </TableRow>
                   );
                 })}
-                {emptyRows > 0 && (
+                {/* {emptyRows > 0 && (
                   <TableRow style={{ height: 53 * emptyRows }}>
                     <TableCell colSpan={6} />
                   </TableRow>
-                )}
+                )} */}
               </TableBody>
               <DeleteChildrenModal
                 openDialogDelete={openDialogDelete}
