@@ -41,7 +41,7 @@ export default function BlogPostCard({ post, index, trangchu }) {
       <Card>
         <Avatar
           alt={nguoiTao.hoTen}
-          // src={nguoiTao.avatarUrl}
+          src={nguoiTao.avatar}
           sx={{
             zIndex: 9,
             top: 24,

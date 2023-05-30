@@ -133,8 +133,8 @@ export default function ImgMediaCard() {
                 }}
               >
                 <CardHeader
-                  style={{ textAlign: 'center' }}
-                  title={`${hoTen} - ${moment(ngaySinh).format('DD/MM/YYYY')}`}
+                  style={{ textAlign: 'center', height: '74px' }}
+                  title={`${hoTen} - ${moment(ngaySinh).format('YYYY')}`}
                   subheader={truong}
                 />
                 <CardMedia component="img" height="194" image={hinhAnh[0].url} alt="Paella dish" />
@@ -146,15 +146,15 @@ export default function ImgMediaCard() {
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing style={{ justifyContent: 'center' }}>
-                  <IconButton aria-label="add to favorites">
+                  {/* <IconButton aria-label="add to favorites">
                     <FavoriteIcon />
-                  </IconButton>
+                  </IconButton> */}
                   <IconButton aria-label="show detail" onClick={(e) => handleClickDetailChildren(_id)}>
                     <VisibilityIcon />
                   </IconButton>
-                  <IconButton aria-label="share">
+                  {/* <IconButton aria-label="share">
                     <ShareIcon />
-                  </IconButton>
+                  </IconButton> */}
                 </CardActions>
               </Card>
             );
