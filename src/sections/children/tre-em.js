@@ -14,7 +14,7 @@ export default function TreEm() {
   const [openWards, setOpenWards] = useState([]);
   const [sponsor, setSponsor] = useState('');
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(12);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
   const [childrenList, setChildrenList] = useState([]);
   const [total, setTotal] = useState(0);
   const [filterNamNhan, setFilterNamNhan] = useState('');
@@ -24,7 +24,7 @@ export default function TreEm() {
   useEffect(() => {
     const getChildren = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/treem/getAll`;
+        const url = `${process.env.REACT_APP_API_URL}/treem/getAll?perPage=${itemsPerPage}`;
         const { data } = await axios.get(url, { withCredentials: true });
         // const  parse=data.data.email;
 
@@ -46,7 +46,7 @@ export default function TreEm() {
   const handleChangeDoiTuong = async (event) => {
     setDoiTuong(event.target.value);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&doituong=${event.target.value}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&don_vi_tai_tro=${sponsor}`;
+      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&doituong=${event.target.value}&curPage=${page}&perPage=${itemsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&don_vi_tai_tro=${sponsor}`;
 
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
@@ -69,7 +69,7 @@ export default function TreEm() {
       }
     } else setPhuong('');
     try {
-      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&doituong=${doiTuong}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${event.target.value}&don_vi_tai_tro=${sponsor}`;
+      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&doituong=${doiTuong}&curPage=${page}&perPage=${itemsPerPage}&ma_quan=${event.target.value}&don_vi_tai_tro=${sponsor}`;
 
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
@@ -83,7 +83,7 @@ export default function TreEm() {
   const handleChangePhuong = async (event) => {
     setPhuong(event.target.value);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${event.target.value}&don_vi_tai_tro=${sponsor}`;
+      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${itemsPerPage}&ma_quan=${quan}&ma_phuong=${event.target.value}&don_vi_tai_tro=${sponsor}`;
 
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
@@ -98,7 +98,7 @@ export default function TreEm() {
     setSponsor(event.target.value);
     console.log(event.target.value);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&don_vi_tai_tro=${event.target.value}`;
+      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${page}&perPage=${itemsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&don_vi_tai_tro=${event.target.value}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setChildrenList(data.data);
@@ -111,7 +111,7 @@ export default function TreEm() {
   const handleSearch = async (event) => {
     if (event.key === 'Enter' || !event.key) {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&doituong=${doiTuong}&curPage=${page}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&don_vi_tai_tro=${sponsor}`;
+        const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&doituong=${doiTuong}&curPage=${page}&perPage=${itemsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&don_vi_tai_tro=${sponsor}`;
 
         const { data } = await axios.get(url, { withCredentials: true });
 
@@ -135,7 +135,7 @@ export default function TreEm() {
   const handleChangePage = async (event, newPage) => {
     setPage(newPage - 1);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${newPage}&perPage=${rowsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&don_vi_tai_tro=${sponsor}`;
+      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoten=${filterName}&namNhan=${filterNamNhan}&curPage=${newPage}&perPage=${itemsPerPage}&ma_quan=${quan}&ma_phuong=${phuong}&don_vi_tai_tro=${sponsor}`;
 
       const { data } = await axios.get(url, { withCredentials: true });
       setChildrenList(data.data);
@@ -225,7 +225,7 @@ export default function TreEm() {
       </div>
       <TreEmDialog openDialog={openDialogTreEm} _id={selectedTreEm} handleClose={handleCloseDialogTreEm} />
       <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
-        <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+        <Pagination count={Math.ceil(total / itemsPerPage)} page={page + 1} onChange={handleChangePage} />
       </Box>
     </div>
   );

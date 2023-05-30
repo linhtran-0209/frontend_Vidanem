@@ -62,7 +62,7 @@ export default function BlogPostCard({ post, index, trangchu }) {
     <Card
       sx={{
         maxWidth: 345,
-        height: 420,
+        height: trangchu ? 420 : 350,
         margin: '40px 15px 25px 15px',
         '&:hover': {
           border: '1px solid black',
