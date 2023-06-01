@@ -33,7 +33,7 @@ export default function Contact() {
                   />
                 </div>
                 <div className="form__informcontact__control">
-                  <input className="form__contact__content" type="text" name="ngaysinh" placeholder="NNhập Email..." />
+                  <input className="form__contact__content" type="text" name="ngaysinh" placeholder="Nhập Email..." />
                 </div>
                 <div className="form__informcontact__control">
                   <input className="form__contact__content" type="text" name="diachi" placeholder="Nhập tiêu đề..." />
