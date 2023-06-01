@@ -23,6 +23,7 @@ export function CreateModal(props) {
   const [imageError, setImageError] = useState(false);
   const [textFieldMaDonViError, setTextFieldMaDonViError] = useState(false);
   const [textFieldTenDonViError, setTextFieldTenDonViError] = useState(false);
+  const [textFieldDiaChiError, setTextFieldDiaChiError] = useState(false);
   const [textFieldSDTError, setTextFieldSDTError] = useState(false);
   const [textFieldGioiThieuError, setTextFieldGioiThieuError] = useState(false);
 
@@ -45,6 +46,9 @@ export function CreateModal(props) {
     if (!SPONSER.tenDonVi) {
       setTextFieldTenDonViError(true);
     } else setTextFieldTenDonViError(false);
+    if (!SPONSER.diaChi) {
+      setTextFieldDiaChiError(true);
+    } else setTextFieldDiaChiError(false);
     if (!SPONSER.SDT) {
       setTextFieldSDTError(true);
     } else setTextFieldSDTError(false);
@@ -52,7 +56,7 @@ export function CreateModal(props) {
       setTextFieldGioiThieuError(true);
     } else setTextFieldGioiThieuError(false);
 
-    if (SPONSER.logo && SPONSER.maDonVi && SPONSER.tenDonVi && SPONSER.SDT && SPONSER.gioiThieu) {
+    if (SPONSER.logo && SPONSER.maDonVi && SPONSER.tenDonVi && SPONSER.diaChi && SPONSER.SDT && SPONSER.gioiThieu) {
       try {
         const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/insert`;
 
@@ -60,6 +64,7 @@ export function CreateModal(props) {
         formData.append('logo', SPONSER.logo);
         formData.append('maDonVi', SPONSER.maDonVi);
         formData.append('tenDonVi', SPONSER.tenDonVi);
+        formData.append('diaChi', SPONSER.diaChi);
         formData.append('SDT', SPONSER.SDT);
         formData.append('gioiThieu', SPONSER.gioiThieu);
         axios
@@ -171,6 +176,21 @@ export function CreateModal(props) {
               fullWidth
               error={textFieldTenDonViError}
               helperText={textFieldTenDonViError && 'Vui lòng nhập tên đơn vị'}
+            />
+          </FormControl>
+          <FormControl className="formcontrolupdatesponsor" variant="standard" fullWidth>
+            <TextField
+              margin="dense"
+              label="Địa chỉ"
+              onChange={(e) => {
+                setTextFieldSDTError(false);
+                setSPONSER({ ...SPONSER, diaChi: e.target.value });
+              }}
+              value={SPONSER.diaChi || ''}
+              type="phone"
+              fullWidth
+              error={textFieldDiaChiError}
+              helperText={textFieldDiaChiError && 'Vui lòng nhập địa chỉ'}
             />
           </FormControl>
           <FormControl className="formcontrolcreatesponsor" variant="standard" fullWidth>

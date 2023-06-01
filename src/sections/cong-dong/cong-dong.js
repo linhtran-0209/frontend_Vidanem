@@ -4,6 +4,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import Marquee from 'react-fast-marquee';
 import { Grid, Paper, Tooltip } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { DialogSponsor } from './DialogSponsor';
 
 export default function CongDong() {
   const Item = styled(Paper)(({ theme }) => ({
@@ -42,9 +43,11 @@ export default function CongDong() {
   }));
 
   const [listSponsor, setListSponsor] = useState([]);
+  const [selectedSponsor, setSelectedSponsor] = useState()
   const [imageList, setImageList] = useState([]);
   const [visibleItems, setVisibleItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const [openDialogSponsor, setOpenDialogSponsor] = useState(false);
 
   useEffect(() => {
     const updateImageList = async () => {
@@ -78,6 +81,16 @@ export default function CongDong() {
     }
   };
 
+  const handleOpenInfo = (item) => {
+    setOpenDialogSponsor(true)
+    setSelectedSponsor(item)
+    console.log(item);
+  }
+
+  const handleCloseInfo = () => {
+    setOpenDialogSponsor(false)
+  }
+
   return (
     <div className="sponsor">
       <div>
@@ -103,7 +116,7 @@ export default function CongDong() {
             {visibleItems.map((item, index) => (
               <Grid item xs={5}>
                 <Tooltip title={item.gioiThieu.length > 350 ? item.gioiThieu : '' } placement="right">
-                  <Item data-info={item.gioiThieu.length > 350 ? `${item.gioiThieu.substr(0, 350)}...` : item.gioiThieu }>
+                  <Item onClick={(e)=> handleOpenInfo(item)} data-info={item.gioiThieu.length > 350 ? `${item.gioiThieu.substr(0, 350)}...` : item.gioiThieu }>
                     <img key={index} src={item.logo} alt={`logo ${item.tenDonVi}`} />
                   </Item>
                 </Tooltip>
@@ -112,6 +125,7 @@ export default function CongDong() {
           </Grid>
         </InfiniteScroll>
       </div>
+      <DialogSponsor openDialog={openDialogSponsor} handleClose={handleCloseInfo} sponsor={selectedSponsor}/>
     </div>
   );
 }

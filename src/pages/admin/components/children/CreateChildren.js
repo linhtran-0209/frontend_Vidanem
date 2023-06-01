@@ -138,6 +138,7 @@ export default function InsertChildren() {
   const handleCickAddHocBong = (hocbong) => {
     setHocBongError(false)
     setHocBong([...hocBong, hocbong]);
+    console.log(hocbong);
   };
 
   const handleCickAddHocTap = (hoctap) => {
@@ -217,6 +218,7 @@ export default function InsertChildren() {
           hoanCanh: treEm.hoanCanh,
           doiTuong: doiTuong.map((doituong) => doituong._id),
           donViBaoTro: hocBong.map((hocbong) => hocbong.donViBaoTro._id),
+          hocBong: hocBong.map((hocbong) => hocbong.hocBong._id),
         },
         { withCredentials: true }
       );

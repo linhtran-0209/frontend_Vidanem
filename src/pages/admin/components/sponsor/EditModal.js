@@ -26,6 +26,8 @@ export function EditModal(props) {
   const [SPONSER, setSPONSER] = useState({});
   const [hocBongs, setHocBongs] = useState([]);
   const [preview, setPreview] = useState(null);
+  const [childrenList, setChildrenList] = useState([]);
+
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
 
@@ -33,6 +35,7 @@ export function EditModal(props) {
   const [textFieldMaDonViError, setTextFieldMaDonViError] = useState(false);
   const [textFieldTenDonViError, setTextFieldTenDonViError] = useState(false);
   const [textFieldSDTError, setTextFieldSDTError] = useState(false);
+  const [textFieldDiaChiError, setTextFieldDiaChiError] = useState(false);
   const [textFieldGioiThieuError, setTextFieldGioiThieuError] = useState(false);
   const [tab, setTab] = useState('1');
 
@@ -58,6 +61,7 @@ export function EditModal(props) {
       setSPONSER(data.data);
       setPreview(data.data.logo);
       getHocBong(data.data._id);
+      getChildren(data.data._id);
     } catch (err) {
       console.log(err);
     }
@@ -67,6 +71,17 @@ export function EditModal(props) {
     const url = `${process.env.REACT_APP_API_URL}/scholarship/getAll?donViBaoTro=${idDonVi}&all=true`;
     const { data } = await axios.get(url, { withCredentials: true });
     setHocBongs(data.data);
+  };
+
+  const getChildren = async (idDonVi) => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?don_vi_tai_tro=${idDonVi}&all=true`;
+      const { data } = await axios.get(url, { withCredentials: true });
+
+      setChildrenList(data.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleChangeTab = (event, newValue) => {
@@ -83,6 +98,9 @@ export function EditModal(props) {
     if (!SPONSER.tenDonVi) {
       setTextFieldTenDonViError(true);
     } else setTextFieldTenDonViError(false);
+    if (!SPONSER.diaChi) {
+      setTextFieldDiaChiError(true);
+    } else setTextFieldDiaChiError(false);
     if (!SPONSER.SDT) {
       setTextFieldSDTError(true);
     } else setTextFieldSDTError(false);
@@ -90,7 +108,7 @@ export function EditModal(props) {
       setTextFieldGioiThieuError(true);
     } else setTextFieldGioiThieuError(false);
 
-    if (SPONSER.logo && SPONSER.maDonVi && SPONSER.tenDonVi && SPONSER.SDT && SPONSER.gioiThieu) {
+    if (SPONSER.logo && SPONSER.maDonVi && SPONSER.tenDonVi && SPONSER.diaChi && SPONSER.SDT && SPONSER.gioiThieu) {
       try {
         const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/update?id=${props.row._id}`;
 
@@ -98,6 +116,7 @@ export function EditModal(props) {
         formData.append('image', SPONSER.logo);
         formData.append('maDonVi', SPONSER.maDonVi);
         formData.append('tenDonVi', SPONSER.tenDonVi);
+        formData.append('diaChi', SPONSER.diaChi);
         formData.append('SDT', SPONSER.SDT);
         formData.append('gioiThieu', SPONSER.gioiThieu);
         axios
@@ -150,7 +169,7 @@ export function EditModal(props) {
       <Dialog className="dialogupdatesponsor" open={props.setOpenDialogEdit} onClose={props.handleClose}>
         <div className="titleupdatesponsor">
           {' '}
-          Cập nhật nhà tài trợ
+          Đơn vị bảo trợ
           <IconButton onClick={props.handleClose}>
             <CloseIcon />
           </IconButton>
@@ -165,7 +184,7 @@ export function EditModal(props) {
                 <Tab label="Trẻ em" value="3" />
               </TabList>
             </Box>
-            <TabPanel value="1" style={{ height: '500px', width:'100%' }}>
+            <TabPanel value="1" style={{ height: '500px', width: '100%' }}>
               <div className="dialog-container">
                 <div className="content-container">
                   <DialogContent>
@@ -252,6 +271,21 @@ export function EditModal(props) {
                     <FormControl className="formcontrolupdatesponsor" variant="standard" fullWidth>
                       <TextField
                         margin="dense"
+                        label="Địa chỉ"
+                        onChange={(e) => {
+                          setTextFieldDiaChiError(false);
+                          setSPONSER({ ...SPONSER, diaChi: e.target.value });
+                        }}
+                        value={SPONSER.diaChi || ''}
+                        type="phone"
+                        fullWidth
+                        error={textFieldDiaChiError}
+                        helperText={textFieldDiaChiError && 'Vui lòng nhập địa chỉ'}
+                      />
+                    </FormControl>
+                    <FormControl className="formcontrolupdatesponsor" variant="standard" fullWidth>
+                      <TextField
+                        margin="dense"
                         label="Giới thiệu"
                         onChange={(e) => {
                           setTextFieldGioiThieuError(false);
@@ -276,10 +310,15 @@ export function EditModal(props) {
                 </div>
               </div>
             </TabPanel>
-            <TabPanel value="2" style={{ height: '500px',  width:'100%' }}>
+            <TabPanel value="2" style={{ height: '500px', width: '100%' }}>
               <div className="dialog-container">
                 <div className="content-container">
                   <Grid container spacing={1}>
+                    {hocBongs.length === 0 && (
+                      <div style={{width:'100%', display:'flex', justifyContent:'center', alignItems:'center', height:'300px'}}>
+                        <p style={{marginLeft:'auto', marginRight:'auto', color:'gray'}}>Không có thông tin học bổng</p>
+                      </div>
+                    )}
                     {hocBongs.map((hocbong, index) => (
                       <Grid item xs={6}>
                         <Card
@@ -308,6 +347,58 @@ export function EditModal(props) {
                               </Typography>
                             </Box>
                           </Box>
+                        </Card>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </div>
+              </div>
+            </TabPanel>
+            <TabPanel value="3" style={{ height: '500px', width: '100%' }}>
+              <div className="dialog-container">
+                <div className="content-container">
+                  <Grid container spacing={1}>
+                  {childrenList?.length === 0 && (
+                      <div style={{width:'100%', display:'flex', justifyContent:'center', alignItems:'center', height:'300px'}}>
+                        <p style={{marginLeft:'auto', marginRight:'auto', color:'gray'}}>Không có thông tin trẻ em</p>
+                      </div>
+                    )}
+                    {childrenList?.map((child) => (
+                      <Grid key={child._id} item xs={6}>
+                        <Card
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            p: 2,
+                            border: '1px solid #99FFFF',
+                            '&:hover': {
+                              border: '1px solid black',
+                            },
+                          }}
+                        >
+                          <Grid item xs={3}>
+                            <img src={child.hinhAnh[0].url} alt="" style={{ width: 80, height: 80, margin: 'auto' }} />
+                          </Grid>
+                          <Grid item xs={9}>
+                            <Box sx={{ flexGrow: 1, minWidth: 0, pl: 2, pr: 1, color: '#1E90FF' }}>
+                              <Typography variant="subtitle2" noWrap>
+                                {child.hoTen}
+                              </Typography>
+                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+                                  <b>Đối tượng:</b>{' '}
+                                  {child.doiTuong.map((doituong, index) =>
+                                    index === child.doiTuong.length - 1 ? doituong.ten : `${doituong.ten}, `
+                                  )}
+                                </Typography>
+                              </Box>
+                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+                                  <b>Hoàn cảnh:</b> {child.hoanCanh}
+                                </Typography>
+                              </Box>
+                            </Box>
+                          </Grid>
                         </Card>
                       </Grid>
                     ))}
