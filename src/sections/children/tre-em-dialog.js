@@ -22,7 +22,7 @@ export function TreEmDialog(props) {
   const [hocTaps, setHocTaps] = useState([]);
   const [hocBongs, setHocBongs] = useState([]);
   const [comments, setComments] = useState([]);
-  const [tab, setTab] = React.useState('1');
+  const [tab, setTab] = useState('1');
 
   useEffect(() => {
     const getTreEm = async () => {

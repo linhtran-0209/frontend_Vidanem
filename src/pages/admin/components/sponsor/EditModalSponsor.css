@@ -12,10 +12,12 @@
       font-size: 20px;
     }
     .titleupdatesponsor> button {
-      margin-left: 22rem;
+      margin-right: 0.5rem;
+      margin-left: auto;
     }
     .titleupdatesponsor > button:hover {
-      margin-left: 22rem;
+      margin-right: 0.5rem;
+      margin-left: auto;
       color: black;
       background-color: rgb(241, 84, 84);
     }

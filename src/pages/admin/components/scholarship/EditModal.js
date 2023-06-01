@@ -6,7 +6,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   TextField,
   FormControl,
   MenuItem,
@@ -30,7 +29,6 @@ export function EditModal(props) {
   const [textFieldSoLuongError, setTextFieldSoLuongError] = useState(false);
   const [textFieldSoTienError, setTextFieldSoTienError] = useState(false);
   const [textFieldHinhThucError, setTextFieldHinhThucError] = useState(false);
-
   const getSponsorList = async () => {
     const url = `${process.env.REACT_APP_API_URL}/admin/sponsor/getAll`;
     const { data } = await axios.get(url, { withCredentials: true });
@@ -145,114 +143,126 @@ export function EditModal(props) {
         </div>
         <div className="divider" />
         <DialogContent className="form__info__updatescholarship">
-          <div className="form__info__updatescholarship__container">
-            <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
-              <TextField
-                margin="dense"
-                label="Mã học bổng"
-                value={scholarship.maHocBong || ''}
-                onChange={(e) => {
-                  setTextFieldMaHocBongError(false)
-                  setScholarship({ ...scholarship, maHocBong: e.target.value })}}
-                type="text"
-                fullWidth
-                error={textFieldMaHocBongError}
-                helperText={textFieldMaHocBongError && 'Vui lòng nhập mã học bổng'}
-              />
-            </FormControl>
-            <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
-              <TextField
-                margin="dense"
-                label="Tên học bổng"
-                value={scholarship.tenHocBong || ''}
-                onChange={(e) => {
-                  setTextFieldTenHocBongError(false)
-                  setScholarship({ ...scholarship, tenHocBong: e.target.value })}}
-                type="text"
-                fullWidth
-                error={textFieldTenHocBongError}
-                helperText={textFieldTenHocBongError && 'Vui lòng nhập tên học bổng'}
-              />
-            </FormControl>
-          </div>
-          <FormControl className="formcontrolupdatesholarship__name" variant="outlined" fullWidth>
-            <Select onChange={handleChange} label="Đơn vị tài trợ" value={selected} fullWidth margin="dense" style={{border:selectedDonViBaoTroError? '1px solid red': ''}}>
-              <TextField
-                autoFocus
-                placeholder="Tên đơn vị tài trợ..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                fullWidth
-                inputProps={{
-                  autoComplete: 'off',
-                }}
-              />
+                <div className="form__info__updatescholarship__container">
+                  <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
+                    <TextField
+                      margin="dense"
+                      label="Mã học bổng"
+                      value={scholarship.maHocBong || ''}
+                      onChange={(e) => {
+                        setTextFieldMaHocBongError(false);
+                        setScholarship({ ...scholarship, maHocBong: e.target.value });
+                      }}
+                      type="text"
+                      fullWidth
+                      error={textFieldMaHocBongError}
+                      helperText={textFieldMaHocBongError && 'Vui lòng nhập mã học bổng'}
+                    />
+                  </FormControl>
+                  <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
+                    <TextField
+                      margin="dense"
+                      label="Tên học bổng"
+                      value={scholarship.tenHocBong || ''}
+                      onChange={(e) => {
+                        setTextFieldTenHocBongError(false);
+                        setScholarship({ ...scholarship, tenHocBong: e.target.value });
+                      }}
+                      type="text"
+                      fullWidth
+                      error={textFieldTenHocBongError}
+                      helperText={textFieldTenHocBongError && 'Vui lòng nhập tên học bổng'}
+                    />
+                  </FormControl>
+                </div>
+                <FormControl className="formcontrolupdatesholarship__name" variant="outlined" fullWidth>
+                  <Select
+                    onChange={handleChange}
+                    label="Đơn vị tài trợ"
+                    value={selected}
+                    fullWidth
+                    margin="dense"
+                    style={{ border: selectedDonViBaoTroError ? '1px solid red' : '' }}
+                  >
+                    <TextField
+                      autoFocus
+                      placeholder="Tên đơn vị tài trợ..."
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      fullWidth
+                      inputProps={{
+                        autoComplete: 'off',
+                      }}
+                    />
 
-              {SPONSERLIST.filter((option) => option.tenDonVi.toLowerCase().includes(search)).map((option) => (
-                <MenuItem key={option._id} value={option._id}>
-                  {option.tenDonVi}
-                </MenuItem>
-              ))}
-            </Select>
-            {selectedDonViBaoTroError && (
-                <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn đơn vị bảo trợ</div>
-              )}
-          </FormControl>
-          <div className="form__info__moneyupdatescholarship__container">
-            <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
-              <TextField
-                margin="dense"
-                label="Số lượng"
-                value={scholarship.soLuong || ''}
-                onChange={(e) => {
-                  setTextFieldSoLuongError(false)
-                  setScholarship({ ...scholarship, soLuong: e.target.value })}}
-                type="number"
-                fullWidth
-                error={textFieldSoLuongError}
-                helperText={textFieldSoLuongError && 'Vui lòng nhập số lượng trẻ em được nhận'}
-              />
-            </FormControl>
-            <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
-              <TextField
-                margin="dense"
-                label="Số tiền mỗi suất"
-                value={scholarship.soTien || ''}
-                onChange={(e) => {
-                  setTextFieldSoTienError(false)
-                  setScholarship({ ...scholarship, soTien: e.target.value })}}
-                type="number"
-                fullWidth
-                error={textFieldSoTienError}
-                helperText={textFieldSoTienError && 'Vui lòng nhập số tiền mỗi suất'}
-              />
-            </FormControl>
-            <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
-              <TextField
-                margin="dense"
-                label="Hình thức"
-                value={scholarship.hinhThuc || ''}
-                onChange={(e) => {
-                  setTextFieldHinhThucError(false)
-                  setScholarship({ ...scholarship, hinhThuc: e.target.value })}}
-                type="text"
-                fullWidth
-                error={textFieldHinhThucError}
-                helperText={textFieldHinhThucError && 'Vui lòng nhập hình thức trao tặng học bổng'}
-              />
-            </FormControl>
-          </div>
-          <FormControl className="formcontrolupdatesholarship__note" variant="standard" fullWidth>
-            <TextField
-              margin="dense"
-              label="Ghi chú"
-              value={scholarship.ghiChu || ''}
-              onChange={(e) => setScholarship({ ...scholarship, ghiChu: e.target.value })}
-              type="text"
-              fullWidth
-            />
-          </FormControl>
-        </DialogContent>
+                    {SPONSERLIST.filter((option) => option.tenDonVi.toLowerCase().includes(search)).map((option) => (
+                      <MenuItem key={option._id} value={option._id}>
+                        {option.tenDonVi}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {selectedDonViBaoTroError && (
+                    <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn đơn vị bảo trợ</div>
+                  )}
+                </FormControl>
+                <div className="form__info__moneyupdatescholarship__container">
+                  <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
+                    <TextField
+                      margin="dense"
+                      label="Số lượng"
+                      value={scholarship.soLuong || ''}
+                      onChange={(e) => {
+                        setTextFieldSoLuongError(false);
+                        setScholarship({ ...scholarship, soLuong: e.target.value });
+                      }}
+                      type="number"
+                      fullWidth
+                      error={textFieldSoLuongError}
+                      helperText={textFieldSoLuongError && 'Vui lòng nhập số lượng trẻ em được nhận'}
+                    />
+                  </FormControl>
+                  <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
+                    <TextField
+                      margin="dense"
+                      label="Số tiền mỗi suất"
+                      value={scholarship.soTien || ''}
+                      onChange={(e) => {
+                        setTextFieldSoTienError(false);
+                        setScholarship({ ...scholarship, soTien: e.target.value });
+                      }}
+                      type="number"
+                      fullWidth
+                      error={textFieldSoTienError}
+                      helperText={textFieldSoTienError && 'Vui lòng nhập số tiền mỗi suất'}
+                    />
+                  </FormControl>
+                  <FormControl className="formcontrolupdatesholarship" variant="standard" fullWidth>
+                    <TextField
+                      margin="dense"
+                      label="Hình thức"
+                      value={scholarship.hinhThuc || ''}
+                      onChange={(e) => {
+                        setTextFieldHinhThucError(false);
+                        setScholarship({ ...scholarship, hinhThuc: e.target.value });
+                      }}
+                      type="text"
+                      fullWidth
+                      error={textFieldHinhThucError}
+                      helperText={textFieldHinhThucError && 'Vui lòng nhập hình thức trao tặng học bổng'}
+                    />
+                  </FormControl>
+                </div>
+                <FormControl className="formcontrolupdatesholarship__note" variant="standard" fullWidth>
+                  <TextField
+                    margin="dense"
+                    label="Ghi chú"
+                    value={scholarship.ghiChu || ''}
+                    onChange={(e) => setScholarship({ ...scholarship, ghiChu: e.target.value })}
+                    type="text"
+                    fullWidth
+                  />
+                </FormControl>
+              </DialogContent>
         <DialogActions>
           <Button className="huycapnhathocbong" onClick={props.handleClose}>
             Hủy
