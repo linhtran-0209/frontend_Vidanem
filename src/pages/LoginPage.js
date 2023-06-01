@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-
+import { useNavigate } from 'react-router-dom';
 
 import styles from '../layouts/simple/styles.module.css';
 
 function Login() {
-  const googleAuth = () => {
-    window.open(`${process.env.REACT_APP_API_URL}/auth/google`, '_self');
+  const navigate = useNavigate();
+
+  const googleAuth = async () => {
+    try {
+      window.open(`${process.env.REACT_APP_API_URL}/auth/google`, '_self');
+    } catch (error) {
+      navigate(`/error`);
+    }
   };
 
   return (
@@ -27,7 +33,6 @@ function Login() {
               />
               <span>Đăng nhập với Google</span>
             </button>
-
           </div>
         </div>
       </div>

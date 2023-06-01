@@ -27,6 +27,7 @@ import TitleBlog from './pages/TitleBlog';
 import DetailNews from './sections/home/tinbai/DetailNews';
 import TreEmpage from './pages/client/TreEmPage';
 import NewsPage from './pages/client/NewsPage';
+import ErrorPage from './sections/home/error/error';
 
 // import AccountPopover from './layouts/dashboard/header/AccountPopover';
 
@@ -85,6 +86,10 @@ export default function Router() {
         { element: <Navigate to="/login" />, index: true },
         { path: '/login', element: <LoginPage /> },
       ],
+    },
+    {
+      element: <ErrorPage />,
+      children: [{ element: <Navigate to="/error" />, index: true }, { path: '/error' }],
     },
     {
       path: '/dashboard',

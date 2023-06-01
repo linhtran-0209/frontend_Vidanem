@@ -18,19 +18,20 @@ function ResponsiveAppBar() {
     <AppBar style={{ background: 'rgb(255,255,255)', boxShadow: 'none' }} position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <div style={{ marginRight: 250 }}>
+          <div >
             <Link to={'/'}>
               <img style={{ width: 200 }} src={img} alt="ima" />
             </Link>
           </div>
 
-          <Box style={{ color: '#103996' }} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, mx: '10' }}>
+          <Box style={{ color: '#103996', marginLeft:480 }} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {menuItems.map((item, index) => (
               <Button
+                style={{paddingLeft:12, paddingRight:12}}
                 key={index}
                 href={item.url}
                 className={item.cName}
-                sx={{ my: 2, color: '#103996', display: 'block', mx: '10' }}
+                sx={{ my: 2, color: '#103996', display: 'block'}}
               >
                 {item.title}
               </Button>
