@@ -90,6 +90,7 @@
     "react-scripts": "^5.0.1",
     "react-show-more-text": "^1.6.2",
     "react-slick": "^0.29.0",
+    "react-spring": "^9.7.1",
     "react-visibility-sensor": "^5.1.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.2",

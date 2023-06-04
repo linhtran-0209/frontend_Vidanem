@@ -99,6 +99,19 @@ export default function BlogPage() {
     }
   };
 
+  const handleChangePage = async (event, newPage) => {
+    setPage(newPage - 1);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/tintuc/getAll?curPage=${newPage}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setListTinTuc(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -212,8 +225,14 @@ export default function BlogPage() {
             </Table>
           </TableContainer>
 
-          <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
-            <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} />
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <p style={{ marginRight: 'auto', marginLeft: 30, color: 'gray' }}>
+              Có <b>{total}</b> kết quả tìm kiếm
+            </p>
+
+            <div style={{ marginRight: 30, marginLeft: 'auto'}}>
+              <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+            </div>
           </Box>
         </Card>
       </Container>

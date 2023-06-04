@@ -74,7 +74,7 @@ export function DialogHocBong(props) {
   };
 
   const handleSubmit = async () => {
-    if (!hocBong.donViBaoTro) {
+    if (!hocBong.donViBaoTro && !selectedSponsor) {
       setSelectedDonViError(true);
     } else setSelectedDonViError(false);
     if (!hocBong.hocBong) {
@@ -113,7 +113,7 @@ export function DialogHocBong(props) {
           {openErrMessage}
         </Alert>
       )}
-
+ 
       <Dialog className="dialogcreatescholarship" open={props.openDialogCreate} onClose={props.handleClose}>
         <div className="titlecreatesholarship">
           {' '}
@@ -135,7 +135,7 @@ export function DialogHocBong(props) {
                     value={selectedSponsor || ''}
                     fullWidth
                     margin="dense"
-                    style={{ border: setSelectedDonViError ? '1px solid red' : '' }}
+                    style={{ border: selectedDonViError ? '1px solid red' : '' }}
                   >
                     <TextField
                       placeholder="Tên đơn vị tài trợ..."
@@ -156,7 +156,7 @@ export function DialogHocBong(props) {
                     ))}
                   </Select>
                 </div>
-                {setSelectedDonViError && (
+                {selectedDonViError && (
                   <div style={{ backgroundColor: 'white', color: 'red', marginTop: 4, fontSize: '13px' }}>
                     Vui lòng chọn đơn vị bảo trợ
                   </div>
@@ -180,6 +180,28 @@ export function DialogHocBong(props) {
                     ))}
                   </Select>
                 </div>
+              </FormControl>
+            </div>
+            <div className="form__info__createscholarship__container">
+              <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
+                <TextField
+                disabled
+                  margin="dense"
+                  label="Giá trị mỗi suất"
+                  value={hocBong?.hocBong?.soTien.toLocaleString() || ''}
+                  type="text"
+                  fullWidth
+                />
+              </FormControl>
+              <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
+                <TextField
+                disabled
+                  margin="dense"
+                  label="Hình thức nhận"
+                  value={hocBong?.hocBong?.hinhThuc || ''}
+                  type="text"
+                  fullWidth
+                />
               </FormControl>
             </div>
             <div className="form__info__createscholarship__container">
@@ -266,6 +288,28 @@ export function DialogHocBong(props) {
                     Vui lòng chọn học bổng
                   </div>
                 )}
+              </FormControl>
+            </div>
+            <div className="form__info__createscholarship__container">
+              <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
+                <TextField
+                disabled
+                  margin="dense"
+                  label="Giá trị mỗi suất"
+                  value={hocBong?.hocBong?.soTien.toLocaleString() || ''}
+                  type="text"
+                  fullWidth
+                />
+              </FormControl>
+              <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
+                <TextField
+                disabled
+                  margin="dense"
+                  label="Hình thức nhận"
+                  value={hocBong?.hocBong?.hinhThuc || ''}
+                  type="text"
+                  fullWidth
+                />
               </FormControl>
             </div>
             <div className="form__info__createscholarship__container">

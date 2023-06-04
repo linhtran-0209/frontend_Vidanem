@@ -56,7 +56,7 @@ export function EditTitleBlog(props) {
         setOpenErrMessage(err.response.data.message);
       }
     }
-    // props.handleClose()
+    props.handleClose();
   };
 
   const handleImageChange = (e) => {
@@ -75,18 +75,18 @@ export function EditTitleBlog(props) {
   }, [openErrMessage, openSuccessMessage]);
   return (
     <>
-      <Dialog className="dialogcreatescholarship" open={props.setOpenDialogEdit} onClose={props.handleClose}>
-        {openSuccessMessage && (
-          <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 100, top: 100 }} severity="success">
-            {openSuccessMessage}
-          </Alert>
-        )}
+      {openSuccessMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 100, top: 100 }} severity="success">
+          {openSuccessMessage}
+        </Alert>
+      )}
 
-        {openErrMessage && (
-          <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 100, top: 100 }} severity="error">
-            {openErrMessage}
-          </Alert>
-        )}
+      {openErrMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 'inherit', right: 100, top: 100 }} severity="error">
+          {openErrMessage}
+        </Alert>
+      )}
+      <Dialog className="dialogcreatescholarship" open={props.setOpenDialogEdit} onClose={props.handleClose}>
         <div className="titlecreatesholarship">
           {' '}
           Chủ đề

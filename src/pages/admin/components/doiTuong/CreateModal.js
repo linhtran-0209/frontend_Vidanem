@@ -33,6 +33,7 @@ export function CreateModal(props) {
         .then((data) => {
           setOpenSuccessMessage(data.data.message);
         });
+        props.handleClose();
     } catch (err) {
       setOpenErrMessage(err.response.data.message);
     }

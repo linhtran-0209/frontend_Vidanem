@@ -39,7 +39,7 @@ const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
-  
+
   width: 400,
   bgcolor: 'background.paper',
   border: '2px solid #000',
@@ -318,7 +318,6 @@ export default function UserPage() {
             handleChangeQuyen={handleChangeQuyen}
             onClickSearch={handleSearch}
           />
-
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -446,8 +445,14 @@ export default function UserPage() {
             </TableContainer>
           </Scrollbar>
 
-          <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
-            <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <p style={{ marginRight: 'auto', marginLeft: 30, color: 'gray' }}>
+              Có <b>{total}</b> kết quả tìm kiếm
+            </p>
+
+            <div style={{ marginRight: 30, marginLeft: 'auto'}}>
+              <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+            </div>
           </Box>
         </Card>
       </Container>

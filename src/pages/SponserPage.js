@@ -41,7 +41,7 @@ const TABLE_HEAD = [
   { id: 'ma_don_vi', label: 'Mã đơn vị', alignRight: false },
   { id: 'name', label: 'Tên đơn vị', alignRight: false },
   { id: 'phone', label: 'Số điện thoại', alignRight: false },
-  { id: 'so_luong_da_trao', label: 'Đã trao', alignRight: false },
+  // { id: 'so_luong_da_trao', label: 'Đã trao', alignRight: false },
   { id: 'action', label: 'Hành động', alignRight: false },
 ];
 
@@ -269,13 +269,13 @@ export default function SponserPage() {
 
                         <TableCell align="left" style={{width:'10%'}}>{maDonVi}</TableCell>
 
-                        <TableCell align="left" style={{width:'35%'}}>
+                        <TableCell align="left" style={{width:'40%'}}>
                         {tenDonVi.length > 60 ? `${tenDonVi.slice(0, 60)}...` : tenDonVi}</TableCell>
 
-                        <TableCell align="left" style={{width:'20%'}}>
+                        <TableCell align="left" style={{width:'25%'}}>
                         {SDT.length > 20 ? `${SDT.slice(0, 20)}...` : SDT}</TableCell>
 
-                        <TableCell align="left" style={{width:'10%'}}>{soLuongDaTrao}</TableCell>
+                        {/* <TableCell align="left" style={{width:'10%'}}>{soLuongDaTrao}</TableCell> */}
 
                         <TableCell className="icon__container" style={{ justifyContent: 'left', alignItems: 'center',height: 100 , width:'10%' }}>
                           <Tooltip title="Cập nhật">
@@ -334,8 +334,14 @@ export default function SponserPage() {
             </TableContainer>
           </Scrollbar>
 
-          <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
-            <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <p style={{ marginRight: 'auto', marginLeft: 30, color: 'gray' }}>
+              Có <b>{total}</b> kết quả tìm kiếm
+            </p>
+
+            <div style={{ marginRight: 30, marginLeft: 'auto'}}>
+              <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+            </div>
           </Box>
         </Card>
       </Container>

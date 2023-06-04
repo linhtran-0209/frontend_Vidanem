@@ -198,7 +198,7 @@ export default function DoiTuongPage() {
                         </TableCell>
 
                         <TableCell align="left" style={{ width: 180 }} sx={{ px: 10 }}>
-                          {soLuong}
+                          {soLuong || 0} 
                         </TableCell>
 
                         <TableCell className="icon__container" style={{ alignItems: 'center' }}>
@@ -256,9 +256,14 @@ export default function DoiTuongPage() {
               </Table>
             </TableContainer>
           </Scrollbar>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <p style={{ marginRight: 'auto', marginLeft: 30, color: 'gray' }}>
+              Có <b>{total}</b> kết quả tìm kiếm
+            </p>
 
-          <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
-            <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+            <div style={{ marginRight: 30, marginLeft: 'auto'}}>
+              <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+            </div>
           </Box>
         </Card>
       </Container>

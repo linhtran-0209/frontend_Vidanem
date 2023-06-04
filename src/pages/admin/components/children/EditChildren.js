@@ -1217,12 +1217,12 @@ export default function EditChildren() {
                     </LoadingButton>
                   ) : (
                     <>
-                      {treEm.authStatus === 'DeXuat' ||
-                        (treEm.authStatus === 'ChoChinhSua' && (
+                      {(treEm.authStatus === 'DeXuat' ||
+                        treEm.authStatus === 'ChoChinhSua') && (
                           <LoadingButton type="submit" variant="contained" onClick={handleSubmit}>
                             Cập nhật
                           </LoadingButton>
-                        ))}
+                        )}
                     </>
                   )}
                 </>

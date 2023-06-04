@@ -240,6 +240,8 @@ export function DialogHocTap(props) {
                   id="thanh-tich"
                   label="Thành tích"
                   type="text"
+                  multiline
+                  rows={3}
                   onChange={(e) => {
                     setHocTap({ ...hocTap, thanhTich: e.target.value });
                   }}
