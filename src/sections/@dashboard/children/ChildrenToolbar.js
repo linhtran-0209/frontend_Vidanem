@@ -139,7 +139,7 @@ export default function ChildrenToolbar({
       <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
         <InputLabel id="demo-simple-select-standard-label">Đối tượng</InputLabel>
         <Select labelId="doituong" id="doituong" value={doiTuong} onChange={handleChangeDoiTuong} label="Đối tượng" margin="dense">
-          <MenuItem value="">--------------Chọn Đối tượng-----------------</MenuItem>
+          <MenuItem value="">Chọn Đối tượng</MenuItem>
           {listDoiTuong.map((item) => (
             <MenuItem key={item._id} value={item._id}>
               {item.ten}
@@ -196,7 +196,7 @@ export default function ChildrenToolbar({
               autoComplete: 'off',
             }}
           />
-          <MenuItem value="">--------------Chọn đơn vị---------------</MenuItem>
+          <MenuItem value="">Chọn đơn vị</MenuItem>
           {SPONSERLIST.filter((option) => option.tenDonVi.toLowerCase().includes(search)).map((option) => (
             <MenuItem key={option._id} value={option._id} label={option.tenDonVi}>
               {option.tenDonVi}

@@ -31,7 +31,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 export default function TreEmpage() {
   return (
     <div>
-      <StyledToolbar style={{ background: 'rgb(255,255,255)', position: 'sticky', top: '0px', zIndex: 10000 }}>
+      <StyledToolbar style={{ background: 'rgb(255,255,255)',}}>
         <Navbar />
       </StyledToolbar>
       <Slider />

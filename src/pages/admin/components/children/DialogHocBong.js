@@ -148,7 +148,7 @@ export function DialogHocBong(props) {
                         autoComplete: 'off',
                       }}
                     />
-                    <MenuItem value="">--------------Chọn đơn vị---------------</MenuItem>
+                    <MenuItem value="">Chọn đơn vị</MenuItem>
                     {SPONSERLIST.filter((option) => option.tenDonVi.toLowerCase().includes(search)).map((option) => (
                       <MenuItem key={option._id} value={option._id} label={option.tenDonVi}>
                         {option.tenDonVi}
@@ -251,7 +251,7 @@ export function DialogHocBong(props) {
                         autoComplete: 'off',
                       }}
                     />
-                    <MenuItem value="">--------------Chọn đơn vị---------------</MenuItem>
+                    <MenuItem value="">Chọn đơn vị</MenuItem>
                     {SPONSERLIST.filter((option) => option.tenDonVi.toLowerCase().includes(search)).map((option) => (
                       <MenuItem key={option._id} value={option._id} label={option.tenDonVi}>
                         {option.tenDonVi}

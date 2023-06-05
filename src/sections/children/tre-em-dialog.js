@@ -149,7 +149,7 @@ export function TreEmDialog(props) {
                   <div className="content-container">
                     <Grid container spacing={1}>
                       {hocBongs.map((hocbong, index) => (
-                        <Grid item xs={6}>
+                        <Grid item xs={12}>
                           <Card sx={{ display: 'flex', alignItems: 'center', p: 2, border: '1px solid black' }}>
                             <img src={hocbong.donViBaoTro.logo} alt="" style={{ width: 60, height: 60 }} />
                             <Box sx={{ flexGrow: 1, minWidth: 0, pl: 2, pr: 1 }}>
@@ -164,6 +164,11 @@ export function TreEmDialog(props) {
                                     {hocbong.hocBong.tenHocBong}
                                   </Typography>
                                 </Tooltip>
+                              </Box>
+                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+                                  Giá trị: {hocbong.hocBong.soTien} VND ({hocbong.hocBong.hinhThuc})
+                                </Typography>
                               </Box>
                               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>

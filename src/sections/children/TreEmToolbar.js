@@ -102,7 +102,7 @@ export default function TreEmToolbar({
   return (
     <StyledRoot
       sx={{
-        height: 74
+        height: 74,
       }}
     >
       <StyledSearch
@@ -138,6 +138,7 @@ export default function TreEmToolbar({
       <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
         <InputLabel id="demo-simple-select-standard-label">Đối tượng</InputLabel>
         <Select
+
           labelId="doituong"
           id="doituong"
           value={doiTuong}
@@ -145,7 +146,7 @@ export default function TreEmToolbar({
           label="Đối tượng"
           margin="dense"
         >
-          <MenuItem value="">--------------Chọn Đối tượng-----------------</MenuItem>
+          <MenuItem value="">Chọn Đối tượng</MenuItem>
           {listDoiTuong.map((item) => (
             <MenuItem key={item._id} value={item._id}>
               {item.ten}
@@ -154,12 +155,12 @@ export default function TreEmToolbar({
         </Select>
       </FormControl>
 
-      <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
+      <FormControl className="formcontrolsearch" variant="outlined" fullWidth >
         <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
-        <Select labelId="quan" id="quan" value={quan} onChange={handleChangeQuan} label="Quận" margin="dense">
+        <Select  labelId="quan" id="quan" value={quan} onChange={handleChangeQuan} label="Quận" margin="dense">
           <MenuItem value="">Chọn Quận/Thành phố</MenuItem>
           {openDistricts.map((item) => (
-            <MenuItem key={item.code} value={item.code}>
+            <MenuItem key={item.code} value={item.code} >
               {item.name}
             </MenuItem>
           ))}
@@ -192,7 +193,7 @@ export default function TreEmToolbar({
               autoComplete: 'off',
             }}
           />
-          <MenuItem value="">--------------Chọn đơn vị---------------</MenuItem>
+          <MenuItem value="">Chọn đơn vị</MenuItem>
           {SPONSERLIST.filter((option) => option.tenDonVi.toLowerCase().includes(search)).map((option) => (
             <MenuItem key={option._id} value={option._id} label={option.tenDonVi}>
               {option.tenDonVi}
