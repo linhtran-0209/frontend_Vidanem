@@ -56,8 +56,6 @@ export default function ScholarshipPage() {
   const [openScholarshipCreate, setOpenScholarshipCreate] = React.useState(false);
   const [openDialogEdit, setOpenDialogEdit] = React.useState(false);
   const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
-  const [openSuccessMessage, setOpenSuccessMessage] = useState('');
-  const [openErrMessage, setOpenErrMessage] = useState('');
   const [openCreateExcelModal, setOpenCreateExcelModal] = React.useState(false);
 
   useEffect(() => {
@@ -113,7 +111,9 @@ export default function ScholarshipPage() {
   const handleCloseCreateExcel = async () => {
     setOpenCreateExcelModal(false);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${page+1}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${
+        page + 1
+      }&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setScholarshipList(data.data);
@@ -129,7 +129,9 @@ export default function ScholarshipPage() {
   const handleCloseCreate = async () => {
     setOpenScholarshipCreate(false);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${page+1}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${
+        page + 1
+      }&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setScholarshipList(data.data);
@@ -143,7 +145,9 @@ export default function ScholarshipPage() {
     setOpenDialogEdit(false);
 
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${page+1}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${
+        page + 1
+      }&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setScholarshipList(data.data);
@@ -187,7 +191,9 @@ export default function ScholarshipPage() {
   const handleCloseDelete = async () => {
     setOpenDialogDelete(false);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${page+1}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/scholarship/getAll?keyword=${filterName}&curPage=${
+        page + 1
+      }&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       setScholarshipList(data.data);
       setTotal(data.total);
@@ -198,16 +204,6 @@ export default function ScholarshipPage() {
 
   return (
     <>
-      {openSuccessMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
-          {openSuccessMessage}
-        </Alert>
-      )}
-      {openErrMessage && (
-        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
-          {openErrMessage}
-        </Alert>
-      )}
       <Helmet>
         <title> Học bổng</title>
       </Helmet>
@@ -306,9 +302,8 @@ export default function ScholarshipPage() {
                     </TableRow>
                   )}
                 </TableBody>
-                {openDialogEdit && (
-                  <EditModal setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} row={selectedRow} />
-                )}
+
+                <EditModal setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} row={selectedRow} />
 
                 <DeleteModal openDialogDelete={openDialogDelete} handleClose={handleCloseDelete} row={selectedRow} />
 
@@ -339,8 +334,14 @@ export default function ScholarshipPage() {
             </TableContainer>
           </Scrollbar>
 
-          <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
-            <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <p style={{ marginRight: 'auto', marginLeft: 30, color: 'gray' }}>
+              Có <b>{total}</b> kết quả tìm kiếm
+            </p>
+
+            <div style={{ marginRight: 30, marginLeft: 'auto' }}>
+              <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+            </div>
           </Box>
         </Card>
       </Container>

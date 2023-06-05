@@ -65,7 +65,6 @@ export default function CongDong() {
   const fetchMoreData = () => {
     // Tính toán số phần tử mới sẽ hiển thị
     const newVisibleItems = visibleItems.length + 8;
-    console.log(visibleItems.length, listSponsor.length);
     if (visibleItems.length >= listSponsor.length) {
       setHasMore(false); // Không còn dữ liệu để tải
     }
@@ -76,7 +75,6 @@ export default function CongDong() {
     } else {
       // Lấy số lượng phần tử mới từ danh sách `listSponsor`
       const updatedItems = listSponsor.slice(0, newVisibleItems);
-      console.log(updatedItems);
       setVisibleItems(updatedItems); // Cập nhật danh sách hiển thị mới
     }
   };
@@ -84,7 +82,6 @@ export default function CongDong() {
   const handleOpenInfo = (item) => {
     setOpenDialogSponsor(true)
     setSelectedSponsor(item)
-    console.log(item);
   }
 
   const handleCloseInfo = () => {

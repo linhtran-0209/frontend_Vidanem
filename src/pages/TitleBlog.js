@@ -21,7 +21,6 @@ import {
   Tooltip,
   MenuItem,
 } from '@mui/material';
-import moment from 'moment';
 // components
 import Iconify from '../components/iconify';
 import { UserListHead } from '../sections/@dashboard/user';
@@ -64,7 +63,7 @@ export default function BlogPage() {
   const handleCloseDelete = async () => {
     setOpenDialogDelete(false);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/chude/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/chude/getAll?curPage=${page + 1}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setTitleList(data.data);
@@ -86,7 +85,7 @@ export default function BlogPage() {
   const handleCloseCreate = async () => {
     setOpenTitleBlogCreate(false);
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/chude/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/chude/getAll?curPage=${page + 1}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setTitleList(data.data);
@@ -100,7 +99,20 @@ export default function BlogPage() {
     setOpenDialogEdit(false);
 
     try {
-      const url = `${process.env.REACT_APP_API_URL}/admin/chude/getAll?curPage=${page+1}&perPage=${rowsPerPage}`;
+      const url = `${process.env.REACT_APP_API_URL}/admin/chude/getAll?curPage=${page + 1}&perPage=${rowsPerPage}`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // const  parse=data.data.email;
+      setTitleList(data.data);
+      setTotal(data.total);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleChangePage = async (event, newPage) => {
+    setPage(newPage - 1);
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/admin/account/getAll?email=${filterName}&curPage=${newPage}&perPage=${rowsPerPage}`;
       const { data } = await axios.get(url, { withCredentials: true });
       // const  parse=data.data.email;
       setTitleList(data.data);
@@ -203,9 +215,8 @@ export default function BlogPage() {
                   </TableRow>
                 )}
               </TableBody>
-              {openDialogEdit && (
-                <EditTitleBlog setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} row={selectedRow} />
-              )}
+
+              <EditTitleBlog setOpenDialogEdit={openDialogEdit} handleClose={handleCloseEdit} row={selectedRow} />
 
               <DeleteTitleBlog openDialogDelete={openDialogDelete} handleClose={handleCloseDelete} row={selectedRow} />
 
@@ -234,9 +245,14 @@ export default function BlogPage() {
               )}
             </Table>
           </TableContainer>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <p style={{ marginRight: 'auto', marginLeft: 30, color: 'gray' }}>
+              Có <b>{total}</b> kết quả tìm kiếm
+            </p>
 
-          <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
-            <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} />
+            <div style={{ marginRight: 30, marginLeft: 'auto' }}>
+              <Pagination count={Math.ceil(total / rowsPerPage)} page={page + 1} onChange={handleChangePage} />
+            </div>
           </Box>
         </Card>
       </Container>

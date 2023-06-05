@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import PropTypes from 'prop-types';
 import {
   Alert,
   Box,
@@ -20,7 +20,9 @@ import TabPanel from '@mui/lab/TabPanel';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import CloseIcon from '@mui/icons-material/Close';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { useSpring, animated } from 'react-spring';
+import moment from 'moment';
 
 export function EditModal(props) {
   const [SPONSER, setSPONSER] = useState({});
@@ -30,6 +32,7 @@ export function EditModal(props) {
 
   const [openSuccessMessage, setOpenSuccessMessage] = useState('');
   const [openErrMessage, setOpenErrMessage] = useState('');
+  const [indexShowMore, setIndexShowMore] = useState(false);
 
   const [imageError, setImageError] = useState(false);
   const [textFieldMaDonViError, setTextFieldMaDonViError] = useState(false);
@@ -61,7 +64,7 @@ export function EditModal(props) {
       setSPONSER(data.data);
       setPreview(data.data.logo);
       getHocBong(data.data._id);
-      getChildren(data.data._id);
+      getChildrenByDonVi(data.data._id);
     } catch (err) {
       console.log(err);
     }
@@ -73,7 +76,7 @@ export function EditModal(props) {
     setHocBongs(data.data);
   };
 
-  const getChildren = async (idDonVi) => {
+  const getChildrenByDonVi = async (idDonVi) => {
     try {
       const url = `${process.env.REACT_APP_API_URL}/treem/getAll?don_vi_tai_tro=${idDonVi}&all=true`;
       const { data } = await axios.get(url, { withCredentials: true });
@@ -315,39 +318,23 @@ export function EditModal(props) {
                 <div className="content-container">
                   <Grid container spacing={1}>
                     {hocBongs.length === 0 && (
-                      <div style={{width:'100%', display:'flex', justifyContent:'center', alignItems:'center', height:'300px'}}>
-                        <p style={{marginLeft:'auto', marginRight:'auto', color:'gray'}}>Không có thông tin học bổng</p>
+                      <div
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          height: '300px',
+                        }}
+                      >
+                        <p style={{ marginLeft: 'auto', marginRight: 'auto', color: 'gray' }}>
+                          Không có thông tin học bổng
+                        </p>
                       </div>
                     )}
                     {hocBongs.map((hocbong, index) => (
-                      <Grid item xs={6}>
-                        <Card
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            p: 2,
-                            border: '1px solid gray',
-                            backgroundColor: '#CAE1FF',
-                          }}
-                        >
-                          <Box sx={{ flexGrow: 1, minWidth: 0, pl: 2, pr: 1 }}>
-                            <Tooltip title={hocbong.tenHocBong} placement="top">
-                              <Typography variant="subtitle2" noWrap>
-                                {hocbong.tenHocBong}
-                              </Typography>
-                            </Tooltip>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                              <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-                                Số lượng: {hocbong.soLuong}
-                              </Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                              <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-                                Giá trị mỗi suất: {hocbong.soTien}
-                              </Typography>
-                            </Box>
-                          </Box>
-                        </Card>
+                      <Grid item xs={12}>
+                        <ScholarshipItem hocBong={hocbong} />
                       </Grid>
                     ))}
                   </Grid>
@@ -358,9 +345,19 @@ export function EditModal(props) {
               <div className="dialog-container">
                 <div className="content-container">
                   <Grid container spacing={1}>
-                  {childrenList?.length === 0 && (
-                      <div style={{width:'100%', display:'flex', justifyContent:'center', alignItems:'center', height:'300px'}}>
-                        <p style={{marginLeft:'auto', marginRight:'auto', color:'gray'}}>Không có thông tin trẻ em</p>
+                    {childrenList?.length === 0 && (
+                      <div
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          height: '300px',
+                        }}
+                      >
+                        <p style={{ marginLeft: 'auto', marginRight: 'auto', color: 'gray' }}>
+                          Không có thông tin trẻ em
+                        </p>
                       </div>
                     )}
                     {childrenList?.map((child) => (
@@ -410,5 +407,152 @@ export function EditModal(props) {
         </Box>
       </Dialog>
     </>
+  );
+}
+
+ScholarshipItem.propTypes = {
+  item: PropTypes.object,
+  curentTitle: PropTypes.string,
+  handleTitle: PropTypes.func,
+};
+
+function ScholarshipItem({ hocBong }) {
+  const [openShowMore, setOpenShowMore] = useState(false);
+  const [children, setChildren] = useState([]);
+
+  const [showMoreHeight, setShowMoreHeight] = useState(null);
+  const showMoreContentRef = useRef(null);
+
+  useEffect(() => {
+    if (openShowMore) {
+      const contentElement = showMoreContentRef.current;
+      const contentHeight = contentElement.scrollHeight;
+  
+      setShowMoreHeight(contentHeight);
+    } else {
+      setShowMoreHeight(null);
+    }
+  }, [openShowMore]);
+
+  const showMoreAnimation = useSpring({ height: showMoreHeight !== null ? showMoreHeight : 0 });
+
+  const handleShowMore = () => {
+    setOpenShowMore(!openShowMore);
+    if (!openShowMore) {
+      getChildren(hocBong._id);
+    }
+  };
+
+  const getChildren = async (idHocBong) => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/treem/getAll?hoc_bong=${idHocBong}&all=true`;
+      const { data } = await axios.get(url, { withCredentials: true });
+
+      setChildren(data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  return (
+    <Card
+      onClick={handleShowMore}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        p: 2,
+        border: '1px solid gray',
+        backgroundColor: '#CAE1FF',
+      }}
+    >
+      <Box sx={{ flexGrow: 1, minWidth: 0, pl: 2, pr: 1 }}>
+        <Tooltip title={hocBong.tenHocBong} placement="top">
+          <Typography variant="subtitle2" noWrap>
+            {hocBong.tenHocBong}
+          </Typography>
+        </Tooltip>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Grid item xs={6}>
+            <Typography variant="body2" sx={{ color: 'text.secondary', margin: 'auto' }} noWrap>
+              <b>Giá trị mỗi suất: </b> {hocBong.soTien.toLocaleString()} VND
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="body2" sx={{ color: 'text.secondary', margin: 'auto' }} noWrap>
+              <b> Số lượng: </b> {hocBong.soLuong} em
+            </Typography>
+          </Grid>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+            <b> Hình thức trao tặng </b> {hocBong.hinhThuc}
+          </Typography>
+        </Box>
+        <animated.div style={showMoreAnimation}>
+          <div ref={showMoreContentRef}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+                {openShowMore && (
+                  <>
+                    <b style={{ fontSize: '18px', marginTop: '10px' }}> Danh sách trẻ em nhận học bổng </b>
+                    {children.length === 0 && (
+                      <p style={{ marginLeft: 'auto', marginRight: 'auto', color: 'gray' }}>
+                        Không có thông tin trẻ em nhận học bổng này
+                      </p>
+                    )}
+                    {children.map((child) => (
+                      <Grid key={child._id} item xs={12}>
+                        <Card
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            p: 2,
+                            margin: 1,
+                            border: '1px solid #9C9C9C',
+                            backgroundColor: '#CAE1FF',
+                            '&:hover': {
+                              border: '1px solid black',
+                            },
+                          }}
+                        >
+                          <Grid item xs={3}>
+                            <img
+                              src={child.hinhAnh[0].url}
+                              alt=""
+                              style={{ width: 100, height: 100, margin: 'auto' }}
+                            />
+                          </Grid>
+                          <Grid item xs={9}>
+                            <Box sx={{ flexGrow: 1, minWidth: 0, pl: 2, pr: 1, color: '#1E90FF' }}>
+                              <Typography variant="subtitle2" noWrap>
+                                {child.hoTen}
+                              </Typography>
+                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+                                  <b>Ngày sinh:</b> {moment(child.ngaySinh).format('DD/MM/YYYY')}
+                                </Typography>
+                              </Box>
+                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+                                  <b>SĐT:</b> {child.SDT}
+                                </Typography>
+                              </Box>
+                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+                                  <b>Địa chỉ:</b> {child.diaChi}
+                                </Typography>
+                              </Box>
+                            </Box>
+                          </Grid>
+                        </Card>
+                      </Grid>
+                    ))}
+                  </>
+                )}
+              </Typography>
+            </Box>
+          </div>
+        </animated.div>
+      </Box>
+    </Card>
   );
 }

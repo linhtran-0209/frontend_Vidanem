@@ -93,6 +93,7 @@ export function CreateModal(props) {
       } catch (err) {
         setOpenErrMessage(err.response.data.message);
       }
+      props.handleClose();
     }
   };
 
@@ -113,17 +114,17 @@ export function CreateModal(props) {
   }, [openErrMessage, openSuccessMessage]);
   return (
     <>
+      {openSuccessMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
+          {openSuccessMessage}
+        </Alert>
+      )}
+      {openErrMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
+          {openErrMessage}
+        </Alert>
+      )}
       <Dialog className="dialogcreatescholarship" open={props.openDialogCreate} onClose={props.handleClose}>
-        {openSuccessMessage && (
-          <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
-            {openSuccessMessage}
-          </Alert>
-        )}
-        {openErrMessage && (
-          <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
-            {openErrMessage}
-          </Alert>
-        )}
         <div className="titlecreatesholarship">
           {' '}
           Thêm học bổng
@@ -139,8 +140,9 @@ export function CreateModal(props) {
                 margin="dense"
                 label="Mã học bổng"
                 onChange={(e) => {
-                  setTextFieldMaHocBongError(false)
-                  setScholarship({ ...scholarship, maHocBong: e.target.value })}}
+                  setTextFieldMaHocBongError(false);
+                  setScholarship({ ...scholarship, maHocBong: e.target.value });
+                }}
                 type="text"
                 fullWidth
                 error={textFieldMaHocBongError}
@@ -152,8 +154,9 @@ export function CreateModal(props) {
                 margin="dense"
                 label="Tên học bổng"
                 onChange={(e) => {
-                  setTextFieldTenHocBongError(false)
-                  setScholarship({ ...scholarship, tenHocBong: e.target.value })}}
+                  setTextFieldTenHocBongError(false);
+                  setScholarship({ ...scholarship, tenHocBong: e.target.value });
+                }}
                 type="text"
                 fullWidth
                 error={textFieldTenHocBongError}
@@ -163,7 +166,14 @@ export function CreateModal(props) {
           </div>
           <FormControl className="formcontrolcreatesholarship__name" variant="outlined" fullWidth>
             <InputLabel id="demo-simple-select-standard-label">Đơn vị tài trợ</InputLabel>
-            <Select onChange={handleChange} label="Đơn vị tài trợ" value={selected} fullWidth margin="dense" style={{border:selectedDonViBaoTroError? '1px solid red': ''}}>
+            <Select
+              onChange={handleChange}
+              label="Đơn vị tài trợ"
+              value={selected}
+              fullWidth
+              margin="dense"
+              style={{ border: selectedDonViBaoTroError ? '1px solid red' : '' }}
+            >
               <TextField
                 placeholder="Tên đơn vị tài trợ..."
                 value={search}
@@ -183,8 +193,8 @@ export function CreateModal(props) {
               ))}
             </Select>
             {selectedDonViBaoTroError && (
-                <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn đơn vị bảo trợ</div>
-              )}
+              <div style={{ color: 'red', marginTop: 4, fontSize: '13px' }}>Vui lòng chọn đơn vị bảo trợ</div>
+            )}
           </FormControl>
           <div className="form__info__moneyscholarship__container">
             <FormControl className="formcontrolcreatesholarship" variant="standard" fullWidth>
@@ -192,8 +202,9 @@ export function CreateModal(props) {
                 margin="dense"
                 label="Số lượng"
                 onChange={(e) => {
-                  setTextFieldSoLuongError(false)
-                  setScholarship({ ...scholarship, soLuong: e.target.value })}}
+                  setTextFieldSoLuongError(false);
+                  setScholarship({ ...scholarship, soLuong: e.target.value });
+                }}
                 type="number"
                 fullWidth
                 error={textFieldSoLuongError}
@@ -205,8 +216,9 @@ export function CreateModal(props) {
                 margin="dense"
                 label="Số tiền mỗi suất"
                 onChange={(e) => {
-                  setTextFieldSoTienError(false)
-                  setScholarship({ ...scholarship, soTien: e.target.value })}}
+                  setTextFieldSoTienError(false);
+                  setScholarship({ ...scholarship, soTien: e.target.value });
+                }}
                 type="number"
                 fullWidth
                 error={textFieldSoTienError}
@@ -218,8 +230,9 @@ export function CreateModal(props) {
                 margin="dense"
                 label="Hình thức"
                 onChange={(e) => {
-                  setTextFieldHinhThucError(false)
-                  setScholarship({ ...scholarship, hinhThuc: e.target.value })}}
+                  setTextFieldHinhThucError(false);
+                  setScholarship({ ...scholarship, hinhThuc: e.target.value });
+                }}
                 type="text"
                 fullWidth
                 error={textFieldHinhThucError}

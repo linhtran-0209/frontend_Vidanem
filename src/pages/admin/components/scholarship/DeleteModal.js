@@ -36,6 +36,7 @@ export function DeleteModal(props) {
       setOpenErrMessage(err.response.data.message);
       console.log(err);
     }
+    props.handleClose();
   };
   useEffect(() => {
     setTimeout(() => {

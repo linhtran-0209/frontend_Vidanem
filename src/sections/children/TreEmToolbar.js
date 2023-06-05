@@ -7,7 +7,7 @@ import { styled, alpha } from '@mui/material/styles';
 import { Toolbar, OutlinedInput, InputAdornment, FormControl, InputLabel, Select, TextField } from '@mui/material';
 // component
 import Iconify from '../../components/iconify';
-import StyleTreEmToolBar from './TreEmToolBar.css'
+import StyleTreEmToolBar from './TreEmToolBar.css';
 
 // ----------------------------------------------------------------------
 
@@ -103,7 +103,7 @@ export default function TreEmToolbar({
   return (
     <StyledRoot
       sx={{
-        height: 74
+        height: 74,
       }}
     >
       <StyledSearch
@@ -146,7 +146,7 @@ export default function TreEmToolbar({
           label="Đối tượng"
           margin="dense"
         >
-          <MenuItem value="">--------------Chọn Đối tượng-----------------</MenuItem>
+          <MenuItem value="">Chọn Đối tượng</MenuItem>
           {listDoiTuong.map((item) => (
             <MenuItem key={item._id} value={item._id}>
               {item.ten}
@@ -157,10 +157,13 @@ export default function TreEmToolbar({
 
       <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
         <InputLabel id="demo-simple-select-standard-label">Quận</InputLabel>
+
         <Select labelId="quan" id="quan" value={quan} onChange={handleChangeQuan} label="Quận" margin="dense">
-          <MenuItem  className ="menu_item" value="">Chọn Quận/Thành phố</MenuItem>
+          <MenuItem className="menu_item" value="">
+            Chọn Quận/Thành phố
+          </MenuItem>
           {openDistricts.map((item) => (
-            <MenuItem className='child_menu_item' key={item.code} value={item.code}>
+            <MenuItem className="child_menu_item" key={item.code} value={item.code}>
               {item.name}
             </MenuItem>
           ))}
@@ -170,9 +173,11 @@ export default function TreEmToolbar({
       <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
         <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
         <Select labelId="phuong" id="phuong" value={phuong} onChange={handleChangePhuong} label="Phường" margin="dense">
-          <MenuItem className ="menu_item_phuong" value="">Chọn Phường/Xã</MenuItem>
+          <MenuItem className="menu_item_phuong" value="">
+            Chọn Phường/Xã
+          </MenuItem>
           {openWards.map((item) => (
-            <MenuItem className='child_menu_item_phuong' key={item.code} value={item.code}>
+            <MenuItem className="child_menu_item_phuong" key={item.code} value={item.code}>
               {item.name}
             </MenuItem>
           ))}
@@ -193,7 +198,7 @@ export default function TreEmToolbar({
               autoComplete: 'off',
             }}
           />
-          <MenuItem value="">--------------Chọn đơn vị---------------</MenuItem>
+          <MenuItem value="">Chọn đơn vị</MenuItem>
           {SPONSERLIST.filter((option) => option.tenDonVi.toLowerCase().includes(search)).map((option) => (
             <MenuItem key={option._id} value={option._id} label={option.tenDonVi}>
               {option.tenDonVi}

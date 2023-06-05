@@ -79,6 +79,7 @@ export function CreateModal(props) {
               setOpenSuccessMessage(res.data.message);
             } else setOpenErrMessage(res.data.message);
           });
+        props.handleClose();
       } catch (err) {
         setOpenErrMessage(err.response.data.message);
       }
@@ -93,17 +94,17 @@ export function CreateModal(props) {
   }, [openErrMessage, openSuccessMessage]);
   return (
     <>
+      {openSuccessMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
+          {openSuccessMessage}
+        </Alert>
+      )}
+      {openErrMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
+          {openErrMessage}
+        </Alert>
+      )}
       <Dialog className="dialogcreatesponsor" open={props.openDialogCreate} onClose={props.handleClose}>
-        {openSuccessMessage && (
-          <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
-            {openSuccessMessage}
-          </Alert>
-        )}
-        {openErrMessage && (
-          <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
-            {openErrMessage}
-          </Alert>
-        )}
         <div className="titlecreatesponsor">
           {' '}
           Thêm nhà tài trợ mới

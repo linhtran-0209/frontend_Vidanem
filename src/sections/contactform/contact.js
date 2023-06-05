@@ -1,22 +1,43 @@
-import React, { useState, useRef  } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Alert } from '@mui/material';
 import emailjs from '@emailjs/browser';
 
 export default function Contact() {
   const form = useRef();
 
+  const [openSuccessMessage, setOpenSuccessMessage] = useState('');
+  const [openErrMessage, setOpenErrMessage] = useState('');
+
   const sendEmail = (e) => {
     e.preventDefault();
 
-    emailjs.sendForm('service_0zdsxki', 'template_gbryx3c', form.current, 'Pjanom3gJGvUA5wb1')
-      .then((result) => {
-          console.log(result.text);
-          console.log('Send mail');
-      }, (error) => {
-          console.log(error.text);
-      });
+    emailjs.sendForm('service_0zdsxki', 'template_gbryx3c', form.current, 'Pjanom3gJGvUA5wb1').then(
+      (result) => {
+        setOpenSuccessMessage('Đã gửi mail thành công');
+      },
+      (error) => {
+        setOpenErrMessage('Gửi không thành công');
+      }
+    );
   };
+  useEffect(() => {
+    setTimeout(() => {
+      setOpenSuccessMessage('');
+      setOpenErrMessage('');
+    }, 3000);
+  }, [openErrMessage, openSuccessMessage]);
   return (
     <>
+      {openSuccessMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 50, top: 150 }} severity="success">
+          {openSuccessMessage}
+        </Alert>
+      )}
+      {openErrMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 50, top: 150 }} severity="error">
+          {openErrMessage}
+        </Alert>
+      )}
       <div className="divider" />
       <div>
         <form className="form__contact" ref={form} onSubmit={sendEmail}>
@@ -57,7 +78,7 @@ export default function Contact() {
                 </div>
               </div>
             </div>
-            <button type="submit" value="submit" >
+            <button type="submit" value="submit">
               Gửi
             </button>
           </fieldset>

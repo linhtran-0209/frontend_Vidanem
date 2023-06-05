@@ -91,7 +91,7 @@ export default function NewsToolbar({
       <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
         <InputLabel id="demo-simple-select-standard-label">Chủ đề</InputLabel>
         <Select labelId="chude" id="chude" value={chuDe} onChange={handleChangeChuDe} label="Chủ đề" margin="dense">
-          <MenuItem value="">--------------Chọn Chủ đề-----------------</MenuItem>
+          <MenuItem value="">Chọn Chủ đề</MenuItem>
           {listChuDe.map((item) => (
             <MenuItem key={item._id} value={item._id}>
               {item.tenChuDe}

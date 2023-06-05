@@ -30,13 +30,13 @@ export default function DashboardAppPage() {
   const [taiKhoan, setTaiKhoan] = useState([]);
   const [tinTuc, setTinTuc] = useState([]);
   const [donVi, setDonVi] = useState([]);
+  const [doThi, setDoThi] = useState([]);
 
   useEffect(() => {
     const thongKeTaiKhoan = async () => {
       try {
         const url = `${process.env.REACT_APP_API_URL}/admin/dashboard/taikhoan`;
         const  {data}  = await axios.get(url, { withCredentials: true });
-        console.log(data);
         setTaiKhoan(data.data);
       } catch (err) {
         console.log(err);
@@ -52,7 +52,6 @@ export default function DashboardAppPage() {
       try {
         const url = `${process.env.REACT_APP_API_URL}/admin/dashboard/donvi`;
         const  {data}  = await axios.get(url, { withCredentials: true });
-        console.log(data);
         setDonVi(data.data);
       } catch (err) {
         console.log(err);
@@ -67,7 +66,6 @@ export default function DashboardAppPage() {
       try {
         const url = `${process.env.REACT_APP_API_URL}/admin/dashboard/tintuc`;
         const  {data}  = await axios.get(url, { withCredentials: true });
-        console.log(data);
         setTinTuc(data.data);
       } catch (err) {
         console.log(err);
@@ -93,6 +91,20 @@ export default function DashboardAppPage() {
     thongKeTreEm();
   }, []);
 
+  useEffect(() => {
+
+    const getDoThi = async () => {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/admin/dashboard/chart`;
+        const { data } = await axios.get(url, { withCredentials: true });
+        setDoThi(data.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getDoThi();
+  }, []);
   return (
     <>
       <Helmet>
@@ -126,41 +138,16 @@ export default function DashboardAppPage() {
             <AppWidgetSummary title="Tin bài" total={tinTuc.length} color="error" icon={'material-symbols:event-note'} />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}>
+          <Grid item xs={12} md={6} lg={8} style={{height:'400px', overflowY:'hidden'}}>
             <AppWebsiteVisits
               title="Đơn vị bảo trợ"
-              subheader="(+43%) hơn một năm"
-              chartLabels={[
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
-              ]}
+              chartLabels={doThi.map((item)=>item.donVi) || []}
               chartData={[
                 {
-                  name: 'Đơn vị 1',
+                  name: 'Tổng giá trị',
                   type: 'column',
                   fill: 'solid',
-                  data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-                },
-                {
-                  name: 'Đơn vị 2',
-                  type: 'area',
-                  fill: 'gradient',
-                  data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
-                },
-                {
-                  name: 'Đơn vị 3',
-                  type: 'line',
-                  fill: 'solid',
-                  data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
+                  data:  doThi.map((item)=>item.soTien) || [],
                 },
               ]}
             />
@@ -170,10 +157,10 @@ export default function DashboardAppPage() {
             <AppCurrentVisits
               title="Hồ sơ trẻ em"
               chartData={[
-                { label: 'Đã duyệt', value: treEm.daDuyet },
-                { label: 'Chờ Duyệt', value: treEm.choDuyet },
-                { label: 'Đề Xuất', value: treEm.deXuat },
-                { label: 'Từ chối', value: treEm.tuChoi },
+                { label: 'Đã duyệt', value: treEm.daDuyet || 0},
+                { label: 'Chờ Duyệt', value: treEm.choDuyet || 0},
+                { label: 'Đề Xuất', value: treEm.deXuat || 0},
+                { label: 'Từ chối', value: treEm.tuChoi || 0},
               ]}
               chartColors={[
                 theme.palette.primary.main,

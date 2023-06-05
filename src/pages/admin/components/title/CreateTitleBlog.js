@@ -47,6 +47,7 @@ export function CreateTitleModal(props) {
           .then((data) => {
             setOpenSuccessMessage(data.data.message);
           });
+        props.handleClose();
       } catch (err) {
         setOpenErrMessage(err.response.data.message);
       }
@@ -54,7 +55,7 @@ export function CreateTitleModal(props) {
   };
 
   const handleImageChange = (e) => {
-    setImageError(false)
+    setImageError(false);
     const file = e.target.files[0];
     if (file) {
       setPreview(URL.createObjectURL(file));
@@ -70,17 +71,17 @@ export function CreateTitleModal(props) {
   }, [openErrMessage, openSuccessMessage]);
   return (
     <>
+      {openSuccessMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
+          {openSuccessMessage}
+        </Alert>
+      )}
+      {openErrMessage && (
+        <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
+          {openErrMessage}
+        </Alert>
+      )}
       <Dialog className="dialogcreatescholarship" open={props.openDialogCreate} onClose={props.handleClose}>
-        {openSuccessMessage && (
-          <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="success">
-            {openSuccessMessage}
-          </Alert>
-        )}
-        {openErrMessage && (
-          <Alert style={{ position: 'fixed', zIndex: 10000, right: 100 }} severity="error">
-            {openErrMessage}
-          </Alert>
-        )}
         <div className="titlecreatesholarship">
           {' '}
           Thêm chủ đề

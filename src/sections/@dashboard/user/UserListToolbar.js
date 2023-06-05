@@ -104,7 +104,7 @@ export default function UserListToolbar({
       <FormControl className="formcontrolsearch" variant="outlined" fullWidth>
         <InputLabel id="demo-simple-select-standard-label">Phường</InputLabel>
         <Select labelId="phuong" id="phuong" value={phuong} onChange={handleChangePhuong} label="Phường" margin="dense">
-              <MenuItem value="">-------Chọn Phường/Xã-------</MenuItem>
+              <MenuItem value="">Chọn Phường/Xã</MenuItem>
               {openWards.map((item) => (
                 <MenuItem key={item.code} value={item.code}>
                   {item.name}
