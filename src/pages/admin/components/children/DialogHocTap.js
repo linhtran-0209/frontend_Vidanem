@@ -161,9 +161,6 @@ export function DialogHocTap(props) {
             </div>
             <div className="container__hoctap__hoancanh">
               <FormControl className="formcontrol__hoctap__hoancanh" variant="standard" fullWidth>
-                <label label="Thành tích *" htmlFor="thanh-tich" style={{ marginTop: 15 }}>
-                  Thành tích
-                </label>
                 <TextField
                   id="thanh-tich"
                   label="Thành tích *"
@@ -175,7 +172,7 @@ export function DialogHocTap(props) {
                     setHocTap({ ...hocTap, thanhTich: e.target.value });
                   }}
                   placeholder="Thành tích"
-                  style={{ margin: 0, backgroundColor: 'aliceblue' }}
+                  style={{ margin: 0 }}
   
                 />
               </FormControl>
@@ -246,7 +243,7 @@ export function DialogHocTap(props) {
                     setHocTap({ ...hocTap, thanhTich: e.target.value });
                   }}
                   placeholder="Thành tích"
-                  style={{ margin: 0, backgroundColor: 'aliceblue' }}
+                  style={{ margin: 0 }}
                 />
               </FormControl>
             </div>
