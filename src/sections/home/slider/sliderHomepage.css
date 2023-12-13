@@ -1,23 +1,23 @@
 .slider_one{
-    background-image: url(../../../assets/images/home/Slider1.png);
-   
+    background-image: url(../../../assets/images/home/banner.png);
+
     width: 100%;
-    height: 500px;
+    height: calc(100vw / 3);
     background-size: cover;
     background-repeat: no-repeat;
 }
 .slider_two{
-    background-image: url(../../../assets/images/home/Slider2.png);
+    background-image: url(../../../assets/images/home/banner.png);
     width: 100%;
-    height: 500px;
+    height: calc(100vw / 3);
     background-size: cover;
     background-repeat: no-repeat;
     object-fit: cover;
 }
 .slider_three{
-    background-image: url(../../../assets/images/home/Slider3.png);
+    background-image: url(../../../assets/images/home/banner.png);
     width: 100%;
-    height: 500px;
+    height: calc(100vw / 3);
     background-size: cover;
     background-repeat: no-repeat;
     object-fit: cover;

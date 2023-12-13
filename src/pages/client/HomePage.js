@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { styled, useTheme } from '@mui/material/styles';
 
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
-
-import { bgBlur } from '../../utils/cssStyles';
 //
 import Navbar from '../../sections/home/nav/navbar';
 

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 // Material UI ============================================================= //
 import {
-    Box, 
+    Box,
     IconButton,
     Modal,
 } from '@mui/material';
@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 // Styles ================================================================== //
 import styles from './BaseModalmodule.css';
 // Assets ================================================================== //
-import logo from '../../assets/images/home/header_logo_lg.png';
+import logo from '../../assets/images/home/logo.png';
 
 
 // ============================|| BASE MODAL ||============================= //

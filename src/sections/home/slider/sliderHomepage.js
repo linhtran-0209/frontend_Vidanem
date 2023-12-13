@@ -17,7 +17,6 @@ export default function SliderHomepage() {
 
   return (
     <div>
-      <div className="divider" />
       <Slider {...settings}>
         <div className="slider_one">
           <></>

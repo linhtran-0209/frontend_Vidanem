@@ -137,7 +137,7 @@ export default function ImgMediaCard() {
                   title={`${hoTen} - ${moment(ngaySinh).format('YYYY')}`}
                   subheader={truong}
                 />
-                <CardMedia component="img" height="194" image={hinhAnh[0].url} alt="Paella dish" />
+                <CardMedia className='h-48' component="img" image={hinhAnh[0].url} />
                 <CardContent
                   style={{ textAlign: 'justify', height: 131, overflow: 'hidden', textOverflow: 'ellipsis' }}
                 >

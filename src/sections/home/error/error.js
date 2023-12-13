@@ -27,7 +27,7 @@ import '../contact/contact.css';
 import Footer from '../footer/footer';
 import '../footer/footer.css';
 import './error.css';
-import * as logo from '../../../assets/images/home/header_logo_lg.png';
+import * as logo from '../../../assets/images/home/logo.png';
 
 const NAV_WIDTH = 400;
 

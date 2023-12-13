@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { BsFacebook, BsMessenger, BsLinkedin, BsTwitter, BsGlobe } from 'react-icons/bs';
 import PlaceIcon from '@mui/icons-material/Place';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import CallIcon from '@mui/icons-material/Call';
-import * as logo from '../../../assets/images/home/header_logo_lg.png';
+import * as logo from '../../../assets/images/home/logo.png';
 
 export default function Contact() {
-  
+
   const img = logo.default;
 
   return (

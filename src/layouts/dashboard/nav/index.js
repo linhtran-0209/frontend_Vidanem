@@ -1,24 +1,20 @@
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
-import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
-import { Image } from 'mui-image';
-import { userReducer } from '../../../reducer/useReducer';
+import { Box, Link, Button, Drawer, Typography, Avatar } from '@mui/material';
+
 // mock
 // import account from '../../../_mock/account';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 // components
-import Logo from '../../../components/logo';
 import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
-// import logo from '../../../assets/images/home/header_logo_lg.png';
-import * as logo from '../../../assets/images/home/header_logo_lg.png';
+import * as logo from '../../../assets/images/home/logo.png';
 
 // ----------------------------------------------------------------------
 
