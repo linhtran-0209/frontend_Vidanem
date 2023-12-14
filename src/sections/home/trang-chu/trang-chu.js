@@ -146,15 +146,11 @@ export default function ImgMediaCard() {
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing style={{ justifyContent: 'center' }}>
-                  {/* <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
-                  </IconButton> */}
+
                   <IconButton aria-label="show detail" onClick={(e) => handleClickDetailChildren(_id)}>
                     <VisibilityIcon />
                   </IconButton>
-                  {/* <IconButton aria-label="share">
-                    <ShareIcon />
-                  </IconButton> */}
+
                 </CardActions>
               </Card>
             );

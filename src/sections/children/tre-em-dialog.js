@@ -78,9 +78,6 @@ export function TreEmDialog(props) {
                 <p>
                   <b>Ngày sinh:</b> {moment(treEm.ngaySinh).format('DD/MM/YYYY')}
                 </p>
-                {/* <p>
-                  <b>Địa chỉ:</b> {treEm.diaChi}
-                </p> */}
                 <p>
                   <b>Số điện thoại:</b> {treEm.SDT}
                 </p>

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import moment from 'moment';
 import TreEmToolbar from './TreEmToolbar';
 import { TreEmDialog } from './tre-em-dialog';
+import { TreEmDrawer } from './tre-em-drawer';
 
 export default function TreEm() {
   const [filterName, setFilterName] = useState('');
@@ -146,14 +147,8 @@ export default function TreEm() {
   };
 
   return (
-    <div style={{ marginTop: '15px' }}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+    <div className='mt-4' >
+      <div className='flex justify-center items-center'>
         <TreEmToolbar
           filterName={filterName}
           doiTuong={doiTuong}
@@ -173,57 +168,12 @@ export default function TreEm() {
         <Grid container spacing={3}>
           {childrenList?.map((child) => (
             <Grid key={child._id} item xs={4}>
-              <Card
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  p: 2,
-                  border: '1px solid #99FFFF',
-                  '&:hover': {
-                    border: '1px solid black',
-                  },
-                }}
-                onClick={(e) => {
-                  handleClickDetailChildren(child._id);
-                }}
-              >
-                <Grid item xs={3}>
-                  <img src={child.hinhAnh[0].url} alt="" style={{ width: 100, height: 100, margin: 'auto' }} />
-                </Grid>
-                <Grid item xs={9}>
-                  <Box sx={{ flexGrow: 1, minWidth: 0, pl: 2, pr: 1, color: '#1E90FF' }}>
-                    <Typography variant="subtitle2" noWrap>
-                      {child.hoTen} - {moment(child.ngaySinh).format('DD/MM/YYYY')}
-                    </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-                        <b>Đối tượng:</b>{' '}
-                        {child.doiTuong.map((doituong, index) =>
-                          index === child.doiTuong.length - 1 ? doituong.ten : `${doituong.ten}, `
-                        )}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-                        <b>Hoàn cảnh:</b> {child.hoanCanh}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-                        <b>Đơn vị bảo trợ:</b>{' '}
-                        {child.donViBaoTro.map((donvi, index) =>
-                          index === child.donViBaoTro.length - 1 ? donvi.tenDonVi : `${donvi.tenDonVi}, `
-                        )}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Grid>
-              </Card>
+              <TreEmDrawer child={child} id={child._id}/>
             </Grid>
           ))}
         </Grid>
       </div>
-      <TreEmDialog openDialog={openDialogTreEm} _id={selectedTreEm} handleClose={handleCloseDialogTreEm} />
+      {/* <TreEmDialog openDialog={openDialogTreEm} _id={selectedTreEm} handleClose={handleCloseDialogTreEm} /> */}
       <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
         <Pagination count={Math.ceil(total / itemsPerPage)} page={page + 1} onChange={handleChangePage} />
       </Box>

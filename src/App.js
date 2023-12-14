@@ -7,7 +7,7 @@ import ThemeProvider from './theme';
 import ScrollToTop from './components/scroll-to-top';
 import { StyledChart } from './components/chart';
 import './pages/admin/components/user/CreateUserModal.css';
-import  './pages/admin/components/user/CreateUserExcelModal.css';
+import './pages/admin/components/user/CreateUserExcelModal.css';
 import './pages/UserPage.css';
 import './pages/ScholarshipPage.css';
 import './pages/admin/components/user/InsertUserModal.css';
@@ -37,10 +37,14 @@ import 'slick-carousel/slick/slick-theme.css';
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <ScrollToTop />
-      <StyledChart />
-      <Router />
-    </ThemeProvider>
+    <div className="dialog-container lg:overflow-x-hidden overflow-x-auto">
+      <div className="content-container">
+        <ThemeProvider>
+          <ScrollToTop />
+          <StyledChart />
+          <Router />
+        </ThemeProvider>
+      </div>
+    </div>
   );
 }

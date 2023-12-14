@@ -1,13 +1,9 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 import menuItems from './menuitem';
 import * as logo from '../../../assets/images/home/logo.png';
 
@@ -20,7 +16,7 @@ function ResponsiveAppBar() {
         <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
           <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <Link to={'/'} className="flex items-center space-x-3 rtl:space-x-reverse">
-              <img src={img} className="w-60" alt="Logo" />
+              <img src={img} className="w-80" alt="Logo" />
             </Link>
             <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             {sessionStorage.getItem('name') ? (
@@ -40,59 +36,21 @@ function ResponsiveAppBar() {
               </button>
             </div>
             <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
-              <Box className='text-sky-600 ml-auto mr-auto flex justify-center' sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+              <Box className='text-sky-600 flex justify-center' sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 {menuItems.map((item, index) => (
                   <Button
-                    style={{ paddingLeft: 12, paddingRight: 12 }}
                     key={index}
                     href={item.url}
-                    className={item.cName}
-                    sx={{ my: 2, color: '#103996', display: 'block' }}
+                    className={`${item.cName} px-4 mx-4 my-2`}
+                    sx={{ color: '#103996', display: 'block' }}
                   >
-                    {item.title}
+                    {item.title.toUpperCase()}
                   </Button>
                 ))}
               </Box>
             </div>
           </div>
         </nav>
-        {/* <Toolbar disableGutters>
-          <div >
-            <Link to={'/'}>
-              <img style={{ width: 200 }} src={img} alt="ima" />
-            </Link>
-          </div>
-
-          <Box className='text-sky-600 ml-auto mr-auto flex justify-center'  sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {menuItems.map((item, index) => (
-              <Button
-                style={{ paddingLeft: 12, paddingRight: 12 }}
-                key={index}
-                href={item.url}
-                className={item.cName}
-                sx={{ my: 2, color: '#103996', display: 'block' }}
-              >
-                {item.title}
-              </Button>
-            ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <IconButton sx={{ p: 0 }}>
-              <Stack direction="row" spacing={2}>
-                {sessionStorage.getItem('name') ? (
-                  <Button variant="contained" href="/dashboard/app">
-                    Quản lý
-                  </Button>
-                ) : (
-                  <Button variant="contained" href="/login">
-                    Đăng nhập
-                  </Button>
-                )}
-              </Stack>
-            </IconButton>
-          </Box>
-        </Toolbar> */}
       </Container>
     </AppBar>
   );

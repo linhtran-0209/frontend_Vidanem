@@ -62,7 +62,7 @@ export default function ScholarshipToolbar({ filterName, onFilterName, onClickSe
         />
 
         <Tooltip title="Tìm kiếm" sx={{marginLeft: 2}}>
-        <Button variant="contained" onClick={onClickSearch}>
+        <Button className='bg-blue-700' variant="contained" onClick={onClickSearch}>
             Tìm kiếm
         </Button>
        

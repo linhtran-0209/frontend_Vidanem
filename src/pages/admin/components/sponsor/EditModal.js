@@ -424,6 +424,7 @@ function ScholarshipItem({ hocBong }) {
   const showMoreContentRef = useRef(null);
 
   useEffect(() => {
+    getChildren(hocBong._id);
     if (openShowMore) {
       const contentElement = showMoreContentRef.current;
       const contentHeight = contentElement.scrollHeight;
@@ -438,9 +439,6 @@ function ScholarshipItem({ hocBong }) {
 
   const handleShowMore = () => {
     setOpenShowMore(!openShowMore);
-    if (!openShowMore) {
-      getChildren(hocBong._id);
-    }
   };
 
   const getChildren = async (idHocBong) => {

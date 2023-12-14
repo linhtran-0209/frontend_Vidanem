@@ -8,11 +8,8 @@ import Navbar from '../../sections/home/nav/navbar';
 
 import Slider from '../../sections/home/slider/sliderHomepage';
 import '../../sections/home/slider/sliderHomepage.css';
-// import Carousel from '../../sections/home/carousel/carousel'
-// import {StyleCarousel} from'../../sections/home/carousel/carousel.css';
 import HomePage from '../../sections/home/trang-chu/trang-chu';
 import '../../sections/home/trang-chu/trang-chu.css';
-import '../../sections/children/tre-em-dialog.css';
 import '../../sections/home/tinbai/detail-new.css';
 import Couter from '../../sections/home/count/count';
 import '../../sections/home/count/count.css';
@@ -20,8 +17,6 @@ import Contact from '../../sections/home/contact/contact';
 import '../../sections/home/contact/contact.css';
 import Footer from '../../sections/home/footer/footer';
 import '../../sections/home/footer/footer.css';
-
-const NAV_WIDTH = 400;
 
 const HEADER_MOBILE = 64;
 
@@ -41,7 +36,6 @@ export default function Homepage() {
         <Navbar />
       </StyledToolbar>
       <Slider />
-      {/* <Carousel /> */}
       <HomePage />
       <Couter />
       <Contact />

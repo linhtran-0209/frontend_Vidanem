@@ -12,7 +12,7 @@ export function CommentList({ treEm, comments }) {
       <PostComment id={treEm} />
       <div>
         {comments.length > 0 ? (
-          <h3 style={{ color: '#FF3030' }}>Lời chúc</h3>
+          <p className="mb-4 mt-6 font-bold tracking-tight text-gray-900 dark:text-white font-serif text-xl">Lời chúc</p>
         ) : (
           <p style={{ textAlign: 'center' }}>
             <span style={{ color: '#DF0029' }}>❤</span> 
